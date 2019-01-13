@@ -13,6 +13,10 @@
         <property name="show_sql">true</property>
 
         <mapping class="am.aca.quiz_software.entities.CategoryEntity"/>
+        <mapping class="am.aca.quiz_software.entities.SubCategoryEntity"/>
+        <mapping class="am.aca.quiz_software.entities.TopicEntity"/>
+
+
 
     </session-factory>
 </hibernate-configuration>
