@@ -13,6 +13,9 @@
         <property name="show_sql">true</property>
 
         <mapping class="am.aca.quiz_software.entities.CategoryEntity"/>
-
+        <mapping class="am.aca.quiz_software.entities.QuestionEntity"/>
+        <mapping class="am.aca.quiz_software.entities.QuestionEntity"/>
+        <mapping class="am.aca.quiz_software.entities.AnswerEntity"/>
+        <mapping class="am.aca.quiz_software.entities.TestEntity"/>
     </session-factory>
 </hibernate-configuration>
