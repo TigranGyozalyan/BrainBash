@@ -16,6 +16,15 @@ public class SubCategoryEntity {
     @ManyToOne
     CategoryEntity category;
 
+    public SubCategoryEntity(){
+
+    }
+
+    public SubCategoryEntity(String typeName, CategoryEntity category) {
+        this.typeName = typeName;
+        this.category = category;
+    }
+
     public long getId() {
         return id;
     }
@@ -34,5 +43,14 @@ public class SubCategoryEntity {
 
     public void setCategory(CategoryEntity category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "SubCategoryEntity{" +
+                "id=" + id +
+                ", typeName='" + typeName + '\'' +
+                ", category=" + category +
+                '}';
     }
 }
