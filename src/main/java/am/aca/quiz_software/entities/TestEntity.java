@@ -34,6 +34,9 @@ public class TestEntity {
         this.questionEntities = questionEntities;
     }
 
+    public TestEntity() {
+    }
+
     public long getId() {
         return id;
     }

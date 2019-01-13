@@ -23,6 +23,9 @@ public class AnswerEntity {
     @ManyToOne
     private QuestionEntity questionEntity;
 
+    public AnswerEntity() {
+    }
+
     public AnswerEntity(String description, boolean is_correct, String answer_text, QuestionEntity questionEntity) {
         this.description = description;
         this.is_correct = is_correct;

@@ -1,6 +1,7 @@
 package am.aca.quiz_software.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "topic")
@@ -15,6 +16,9 @@ public class TopicEntity {
 
    @ManyToOne
     private SubCategoryEntity subCategory;
+
+   @OneToMany(mappedBy = "topicEntity")
+   private List<QuestionEntity> questionEntities;
 
    public TopicEntity(){
 
