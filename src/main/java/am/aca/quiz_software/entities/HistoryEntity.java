@@ -14,13 +14,17 @@ public class HistoryEntity {
     private Date startTime;
     @Column(name = "end_time")
     private Date endTime;
-    @Column(name = "status",nullable = false,columnDefinition = "upcoming")
+    @Column(name = "status",nullable = false)
     private String status;
     @Column(name = "score")
     private double score;
+
     @ManyToOne
+    @JoinColumn(name = "user_id",insertable = false,updatable = false)
     private UserEntity userEntity;
+
     @ManyToOne
+    @JoinColumn(name = "test_id",insertable = false,updatable = false)
     private TestEntity testEntity;
 
     public HistoryEntity() {

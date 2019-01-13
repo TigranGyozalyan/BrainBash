@@ -1,6 +1,7 @@
 package am.aca.quiz_software.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "sub_category")
@@ -14,15 +15,20 @@ public class SubCategoryEntity {
     private String typeName;
 
     @ManyToOne
-    CategoryEntity category;
+    @JoinColumn(name = "category_id",insertable = false,updatable = false)
+    private CategoryEntity category;
+
+    @OneToMany(mappedBy = "subCategory")
+    private List<TopicEntity> topicEntityList;
 
     public SubCategoryEntity(){
 
     }
 
-    public SubCategoryEntity(String typeName, CategoryEntity category) {
+    public SubCategoryEntity(String typeName, CategoryEntity category, List<TopicEntity> topicEntityList) {
         this.typeName = typeName;
         this.category = category;
+        this.topicEntityList = topicEntityList;
     }
 
     public long getId() {
@@ -45,12 +51,25 @@ public class SubCategoryEntity {
         this.category = category;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public List<TopicEntity> getTopicEntityList() {
+        return topicEntityList;
+    }
+
+    public void setTopicEntityList(List<TopicEntity> topicEntityList) {
+        this.topicEntityList = topicEntityList;
+    }
+
     @Override
     public String toString() {
         return "SubCategoryEntity{" +
                 "id=" + id +
                 ", typeName='" + typeName + '\'' +
                 ", category=" + category +
+                ", topicEntityList=" + topicEntityList +
                 '}';
     }
 }

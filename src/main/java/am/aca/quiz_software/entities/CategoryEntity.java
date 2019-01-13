@@ -1,6 +1,7 @@
 package am.aca.quiz_software.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -13,8 +14,17 @@ public class CategoryEntity {
     @Column(name = "type",unique = true,nullable = false)
     private String type;
 
+
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    private List<SubCategoryEntity> subCategoryEntityLists;
+
+
     public CategoryEntity(){
 
+    }
+    public CategoryEntity(String type, List<SubCategoryEntity> subCategoryEntityLists) {
+        this.type = type;
+        this.subCategoryEntityLists = subCategoryEntityLists;
     }
 
     public CategoryEntity(String type) {
@@ -41,4 +51,6 @@ public class CategoryEntity {
                 ", type='" + type + '\'' +
                 '}';
     }
+
+
 }

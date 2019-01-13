@@ -28,6 +28,9 @@ public class QuestionEntity {
     private List<AnswerEntity> answerEntities;
 
     @ManyToMany
+    @JoinTable(name = "question_test",
+            joinColumns = {@JoinColumn(name = "question_id",insertable = false,updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "test_id",insertable = false,updatable = false)})
     private List<TestEntity> testEntities;
 
     @ManyToOne
@@ -87,5 +90,19 @@ public class QuestionEntity {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionEntity{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", points=" + points +
+                ", level=" + level +
+                ", correct_amount=" + correct_amount +
+                ", answerEntities=" + answerEntities +
+                ", testEntities=" + testEntities +
+                ", topicEntity=" + topicEntity +
+                '}';
     }
 }

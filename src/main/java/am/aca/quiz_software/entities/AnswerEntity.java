@@ -21,6 +21,7 @@ public class AnswerEntity {
     private String answer_text;
 
     @ManyToOne
+    @JoinColumn(name = "question_id",insertable = false,updatable = false)
     private QuestionEntity questionEntity;
 
     public AnswerEntity() {
@@ -67,5 +68,16 @@ public class AnswerEntity {
 
     public void setQuestionEntity(QuestionEntity questionEntity) {
         this.questionEntity = questionEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "AnswerEntity{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", is_correct=" + is_correct +
+                ", answer_text='" + answer_text + '\'' +
+                ", questionEntity=" + questionEntity +
+                '}';
     }
 }
