@@ -21,7 +21,7 @@ public class TopicEntity {
    @OneToMany(mappedBy = "topicEntity")
    private List<QuestionEntity> questionEntities;
 
-   @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "topic")
    private  List<ScoreEntity> scoreEntityList;
 
    public TopicEntity(){
