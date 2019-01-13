@@ -21,21 +21,21 @@ public class UserEntity {
     private String nickname;
     @Column(name = "password",nullable = false)
     private String password;
-    @Column(name = "is_admin",columnDefinition = "false")
+    @Column(name = "is_admin")
     private boolean is_admin;
     @Column(name = "avatar_image")
-    private byte[] image;
+    private String image;
 
-    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userEntity")
     private List<HistoryEntity> historyList;
 
-    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userEntity")
     private List<ScoreEntity> scoreList;
 
     public UserEntity() {
     }
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, byte[] image, List<HistoryEntity> historyList) {
+    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, String image, List<HistoryEntity> historyList, List<ScoreEntity> scoreList) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -44,12 +44,12 @@ public class UserEntity {
         this.is_admin = is_admin;
         this.image = image;
         this.historyList = historyList;
+        this.scoreList = scoreList;
     }
 
     public long getId() {
         return id;
     }
-
 
     public String getName() {
         return name;
@@ -91,7 +91,7 @@ public class UserEntity {
         this.password = password;
     }
 
-    public boolean isIs_admin() {
+    public boolean getIs_admin() {
         return is_admin;
     }
 
@@ -99,11 +99,11 @@ public class UserEntity {
         this.is_admin = is_admin;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -113,6 +113,14 @@ public class UserEntity {
 
     public void setHistoryList(List<HistoryEntity> historyList) {
         this.historyList = historyList;
+    }
+
+    public List<ScoreEntity> getScoreList() {
+        return scoreList;
+    }
+
+    public void setScoreList(List<ScoreEntity> scoreList) {
+        this.scoreList = scoreList;
     }
 
     @Override
@@ -125,8 +133,9 @@ public class UserEntity {
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", is_admin=" + is_admin +
-                ", image=" + Arrays.toString(image) +
+                ", image='" + image + '\'' +
                 ", historyList=" + historyList +
+                ", scoreList=" + scoreList +
                 '}';
     }
 }

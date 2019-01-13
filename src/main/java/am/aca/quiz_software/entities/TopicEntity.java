@@ -15,18 +15,24 @@ public class TopicEntity {
     private String topicName;
 
    @ManyToOne
-    private SubCategoryEntity subCategory;
+   @JoinColumn(name = "subcategory_id",insertable = false,updatable = false)
+   private SubCategoryEntity subCategory;
 
    @OneToMany(mappedBy = "topicEntity")
    private List<QuestionEntity> questionEntities;
+
+   @OneToMany(mappedBy = "topic")
+   private  List<ScoreEntity> scoreEntityList;
 
    public TopicEntity(){
 
    }
 
-    public TopicEntity(String topicName, SubCategoryEntity subCategory) {
+    public TopicEntity(String topicName, SubCategoryEntity subCategory, List<QuestionEntity> questionEntities, List<ScoreEntity> scoreEntityList) {
         this.topicName = topicName;
         this.subCategory = subCategory;
+        this.questionEntities = questionEntities;
+        this.scoreEntityList = scoreEntityList;
     }
 
     public long getId() {
@@ -56,5 +62,20 @@ public class TopicEntity {
                 ", topicName='" + topicName + '\'' +
                 ", subCategory=" + subCategory +
                 '}';
+    }
+    public List<QuestionEntity> getQuestionEntities() {
+        return questionEntities;
+    }
+
+    public void setQuestionEntities(List<QuestionEntity> questionEntities) {
+        this.questionEntities = questionEntities;
+    }
+
+    public List<ScoreEntity> getScoreEntityList() {
+        return scoreEntityList;
+    }
+
+    public void setScoreEntityList(List<ScoreEntity> scoreEntityList) {
+        this.scoreEntityList = scoreEntityList;
     }
 }

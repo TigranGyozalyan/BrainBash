@@ -9,12 +9,15 @@ public class ScoreEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "score_value",nullable = false,columnDefinition = "0")
+    @Column(name = "score_value",nullable = false)
     private double value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "topic_id",insertable = false,updatable = false)
     private TopicEntity topic;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",insertable = false,updatable = false)
     private UserEntity userEntity;
 
     public ScoreEntity() {
