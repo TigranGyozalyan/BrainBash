@@ -32,6 +32,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
     private List<ScoreEntity> scoreList;
 
+    public UserEntity() {
+    }
+
     public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, byte[] image, List<HistoryEntity> historyList) {
         this.name = name;
         this.surname = surname;
@@ -47,9 +50,6 @@ public class UserEntity {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -8,7 +8,7 @@ public class ScoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private long id;
     @Column(name = "score_value",nullable = false,columnDefinition = "0")
     private double value;
@@ -17,6 +17,9 @@ public class ScoreEntity {
     private TopicEntity topic;
     @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity userEntity;
+
+    public ScoreEntity() {
+    }
 
     public ScoreEntity(long id, double value, TopicEntity topic, UserEntity userEntity) {
         this.id = id;
@@ -27,10 +30,6 @@ public class ScoreEntity {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public double getValue() {

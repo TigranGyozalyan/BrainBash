@@ -8,7 +8,7 @@ import java.sql.Date;
 public class HistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private long id;
     @Column(name = "start_time",nullable = false)
     private Date startTime;
@@ -23,6 +23,9 @@ public class HistoryEntity {
     @ManyToOne
     private TestEntity testEntity;
 
+    public HistoryEntity() {
+    }
+
     public HistoryEntity(Date startTime, Date endTime, String status, double score, UserEntity userEntity, TestEntity testEntity) {
         this.startTime = startTime;
         this.endTime = endTime;
@@ -34,10 +37,6 @@ public class HistoryEntity {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Date getStartTime() {
