@@ -16,6 +16,15 @@ public class TopicEntity {
    @ManyToOne
     private SubCategoryEntity subCategory;
 
+   public TopicEntity(){
+
+   }
+
+    public TopicEntity(String topicName, SubCategoryEntity subCategory) {
+        this.topicName = topicName;
+        this.subCategory = subCategory;
+    }
+
     public long getId() {
         return id;
     }
@@ -34,5 +43,14 @@ public class TopicEntity {
 
     public void setSubCategory(SubCategoryEntity subCategory) {
         this.subCategory = subCategory;
+    }
+
+    @Override
+    public String toString() {
+        return "TopicEntity{" +
+                "id=" + id +
+                ", topicName='" + topicName + '\'' +
+                ", subCategory=" + subCategory +
+                '}';
     }
 }

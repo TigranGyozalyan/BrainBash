@@ -13,6 +13,14 @@ public class CategoryEntity {
     @Column(name = "type",unique = true,nullable = false)
     private String type;
 
+    public CategoryEntity(){
+
+    }
+
+    public CategoryEntity(String type) {
+        this.type = type;
+    }
+
     public long getId() {
         return id;
     }
@@ -24,5 +32,13 @@ public class CategoryEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryEntity{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                '}';
     }
 }
