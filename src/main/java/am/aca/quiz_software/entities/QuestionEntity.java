@@ -24,7 +24,7 @@ public class QuestionEntity {
     @Column (name = "correct_amount",nullable = false)
     private int correct_amount;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "questionEntity")
     private List<AnswerEntity> answerEntities;
 
     @ManyToMany

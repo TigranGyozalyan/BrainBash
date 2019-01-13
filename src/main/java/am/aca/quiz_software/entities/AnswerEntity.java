@@ -11,7 +11,7 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "description",nullable = false)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "is_correct",nullable = false)
@@ -22,6 +22,7 @@ public class AnswerEntity {
 
     @ManyToOne
     private QuestionEntity questionEntity;
+
 
 
     public long getId() {
