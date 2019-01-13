@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Table(name="user")
+@Table(name="_user")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +15,11 @@ public class UserEntity {
     private String name;
     @Column(name="last_name",nullable = false)
     private String surname;
-    @Column(name = "email",nullable = false,unique = true)
+    @Column(name = "_email",nullable = false,unique = true)
     private String email;
     @Column(name = "nickname",nullable = false)
     private String nickname;
-    @Column(name = "password",nullable = false)
+    @Column(name = "_password",nullable = false)
     private String password;
     @Column(name = "is_admin")
     private boolean is_admin;
