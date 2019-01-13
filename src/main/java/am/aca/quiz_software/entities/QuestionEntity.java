@@ -21,6 +21,15 @@ public class QuestionEntity {
     @Column (name = "level",nullable = false)
     private int level;
 
+    public QuestionEntity(String question, int points, int level, int correct_amount, List<AnswerEntity> answerEntities, List<TestEntity> testEntities) {
+        this.question = question;
+        this.points = points;
+        this.level = level;
+        this.correct_amount = correct_amount;
+        this.answerEntities = answerEntities;
+        this.testEntities = testEntities;
+    }
+
     @Column (name = "correct_amount",nullable = false)
     private int correct_amount;
 

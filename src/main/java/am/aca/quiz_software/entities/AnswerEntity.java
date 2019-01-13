@@ -23,7 +23,12 @@ public class AnswerEntity {
     @ManyToOne
     private QuestionEntity questionEntity;
 
-
+    public AnswerEntity(String description, boolean is_correct, String answer_text, QuestionEntity questionEntity) {
+        this.description = description;
+        this.is_correct = is_correct;
+        this.answer_text = answer_text;
+        this.questionEntity = questionEntity;
+    }
 
     public long getId() {
         return id;

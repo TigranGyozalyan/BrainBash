@@ -27,6 +27,12 @@ public class TestEntity {
     @ManyToMany
     private List<QuestionEntity> questionEntities;
 
+    public TestEntity(String test_name, Date duration, String description, List<QuestionEntity> questionEntities) {
+        this.test_name = test_name;
+        this.duration = duration;
+        this.description = description;
+        this.questionEntities = questionEntities;
+    }
 
     public long getId() {
         return id;
