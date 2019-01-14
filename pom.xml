@@ -13,6 +13,7 @@
 
         <hibernateVersion>5.4.0.Final</hibernateVersion>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
+        <springDataJPAVersion>2.1.4.RELEASE</springDataJPAVersion>
     </properties>
 
     <dependencies>
@@ -28,6 +29,14 @@
             <artifactId>postgresql</artifactId>
             <version>${postgreSQLVersion}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${springDataJPAVersion}</version>
+        </dependency>
+
 
     </dependencies>
 

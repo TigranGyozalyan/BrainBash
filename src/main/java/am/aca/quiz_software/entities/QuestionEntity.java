@@ -10,7 +10,7 @@ public class QuestionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "question",nullable = false)
     private String question;

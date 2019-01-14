@@ -9,7 +9,7 @@ public class SubCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "type_name", unique = true,nullable = false)
     private String typeName;

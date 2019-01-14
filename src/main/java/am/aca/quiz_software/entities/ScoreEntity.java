@@ -8,7 +8,7 @@ public class ScoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "score_value",nullable = false)
     private double value;
 

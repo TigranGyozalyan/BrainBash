@@ -9,7 +9,7 @@ public class HistoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private long id;
+    private Long id;
     @Column(name = "start_time",nullable = false)
     private Date startTime;
     @Column(name = "end_time")
