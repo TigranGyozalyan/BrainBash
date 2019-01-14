@@ -39,7 +39,7 @@ public class HistoryEntity {
         this.testEntity = testEntity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

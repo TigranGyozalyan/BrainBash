@@ -88,7 +88,7 @@ public class QuestionEntity {
         this.answerEntities = anwerEntities;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

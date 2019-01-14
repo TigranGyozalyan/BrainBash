@@ -31,7 +31,7 @@ public class CategoryEntity {
         this.type = type;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
