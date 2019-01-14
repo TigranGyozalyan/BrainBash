@@ -12,7 +12,7 @@ public class TestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "test_name",nullable = false)
     private String test_name;
