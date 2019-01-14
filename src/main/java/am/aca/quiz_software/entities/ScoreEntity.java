@@ -8,7 +8,6 @@ public class ScoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
     @Column(name = "score_value",nullable = false)
     private double value;
@@ -31,7 +30,7 @@ public class ScoreEntity {
         this.userEntity = userEntity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

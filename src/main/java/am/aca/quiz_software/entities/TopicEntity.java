@@ -9,7 +9,7 @@ public class TopicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "topic_name",nullable = false)
     private String topicName;
