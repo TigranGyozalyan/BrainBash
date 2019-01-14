@@ -1,14 +1,20 @@
 package am.aca.quiz_software;
 
-
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import am.aca.quiz_software.entities.CategoryEntity;
+import am.aca.quiz_software.repositories.CategoryRepository;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
     public static void main(String[] args) {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        sessionFactory.openSession();
+        CategoryRepository categoryRepository = ctx.getBean(CategoryRepository.class);
+
+        CategoryEntity categoryEntity = new CategoryEntity("Programing");
+
+        categoryRepository.save(categoryEntity);
+        categoryRepository.flush();
 
     }
 }

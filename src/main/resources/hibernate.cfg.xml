@@ -1,26 +1,26 @@
-<hibernate-configuration>
-    <session-factory>
+<!--<hibernate-configuration>-->
+    <!--<session-factory>-->
 
-        <property name="connection.url">jdbc:postgresql://localhost:5432/quiz</property>
-        <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.username">postgres</property>
-        <property name="connection.password">root</property>
+        <!--<property name="connection.url">jdbc:postgresql://localhost:5432/quiz</property>-->
+        <!--<property name="connection.driver_class">org.postgresql.Driver</property>-->
+        <!--<property name="connection.username">postgres</property>-->
+        <!--<property name="connection.password">root</property>-->
 
-        <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        <!--<property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>-->
 
-        <property name="hbm2ddl.auto">create</property>
+        <!--<property name="hbm2ddl.auto">create</property>-->
 
-        <property name="show_sql">true</property>
+        <!--<property name="show_sql">true</property>-->
 
-        <mapping class="am.aca.quiz_software.entities.ScoreEntity"/>
-        <mapping class="am.aca.quiz_software.entities.UserEntity"/>
-        <mapping class="am.aca.quiz_software.entities.HistoryEntity"/>
-        <mapping class="am.aca.quiz_software.entities.SubCategoryEntity"/>
-        <mapping class="am.aca.quiz_software.entities.TopicEntity"/>
-        <mapping class="am.aca.quiz_software.entities.CategoryEntity"/>
-        <mapping class="am.aca.quiz_software.entities.QuestionEntity"/>
-        <mapping class="am.aca.quiz_software.entities.AnswerEntity"/>
-        <mapping class="am.aca.quiz_software.entities.TestEntity"/>
+        <!--<mapping class="am.aca.quiz_software.entities.ScoreEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.UserEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.HistoryEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.SubCategoryEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.TopicEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.CategoryEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.QuestionEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.AnswerEntity"/>-->
+        <!--<mapping class="am.aca.quiz_software.entities.TestEntity"/>-->
 
-    </session-factory>
-</hibernate-configuration>
+    <!--</session-factory>-->
+<!--</hibernate-configuration>-->
