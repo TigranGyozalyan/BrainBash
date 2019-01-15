@@ -1,6 +1,5 @@
 package am.aca.quiz_software.service.dto;
 
-<<<<<<< HEAD
 import am.aca.quiz_software.entity.SubCategoryEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,4 @@ public interface SubCategoryService {
 
     //delete
     void remove(SubCategoryEntity subcCtegory) throws SQLException;
-=======
-import org.springframework.stereotype.Service;
-
-@Service
-public interface SubCategoryService {
-    //TODO methods and constructor
->>>>>>> dfa5e88c635184eb52a4efb6a23550b85acf9daa
 }

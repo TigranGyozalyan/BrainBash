@@ -20,5 +20,5 @@ public interface QuestionService {
     //delete
     void remove(QuestionEntity question) throws SQLException;
 
-
+}
 
