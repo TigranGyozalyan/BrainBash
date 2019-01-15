@@ -1,5 +1,6 @@
 package am.aca.quiz_software.service.dto;
 
+<<<<<<< HEAD
 import am.aca.quiz_software.entity.HistoryEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,11 @@ public interface HistoryService {
 
     //delete
     void remove(HistoryEntity history) throws SQLException;
+=======
+import org.springframework.stereotype.Service;
+
+@Service
+public interface HistoryService {
+    //TODO methods and constructor
+>>>>>>> dfa5e88c635184eb52a4efb6a23550b85acf9daa
 }

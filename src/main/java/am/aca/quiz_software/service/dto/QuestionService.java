@@ -1,6 +1,5 @@
 package am.aca.quiz_software.service.dto;
 
-import am.aca.quiz_software.entity.AnswerEntity;
 import am.aca.quiz_software.entity.QuestionEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +19,6 @@ public interface QuestionService {
 
     //delete
     void remove(QuestionEntity question) throws SQLException;
-}
+
+
+
