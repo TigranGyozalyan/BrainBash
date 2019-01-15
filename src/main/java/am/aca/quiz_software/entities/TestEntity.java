@@ -44,7 +44,7 @@ public class TestEntity {
     public TestEntity() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

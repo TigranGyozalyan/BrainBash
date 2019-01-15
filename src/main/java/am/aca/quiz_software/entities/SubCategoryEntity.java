@@ -31,7 +31,7 @@ public class SubCategoryEntity {
         this.topicEntityList = topicEntityList;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
