@@ -33,7 +33,7 @@ public class AnswerEntity {
         this.questionEntity = questionEntity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

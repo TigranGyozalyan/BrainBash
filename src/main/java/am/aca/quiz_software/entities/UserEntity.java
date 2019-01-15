@@ -47,7 +47,7 @@ public class UserEntity {
         this.scoreList = scoreList;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

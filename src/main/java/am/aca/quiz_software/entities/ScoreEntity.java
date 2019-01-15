@@ -30,7 +30,7 @@ public class ScoreEntity {
         this.userEntity = userEntity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

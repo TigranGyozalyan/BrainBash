@@ -14,6 +14,8 @@
         <hibernateVersion>5.4.0.Final</hibernateVersion>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
         <springDataJPAVersion>2.1.4.RELEASE</springDataJPAVersion>
+        <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+
     </properties>
 
     <dependencies>
@@ -37,6 +39,11 @@
             <version>${springDataJPAVersion}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${commons-dbcp2.version}</version>
+        </dependency>
 
     </dependencies>
 

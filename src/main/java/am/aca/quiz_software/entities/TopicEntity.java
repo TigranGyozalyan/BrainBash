@@ -35,7 +35,7 @@ public class TopicEntity {
         this.scoreEntityList = scoreEntityList;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
