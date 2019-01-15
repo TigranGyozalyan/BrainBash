@@ -19,5 +19,4 @@ public interface UserService {
     void update(UserEntity user) throws SQLException;
 
     //delete
-    void remove(UserEntity user) throws SQLException;
 }

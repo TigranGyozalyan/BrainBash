@@ -1,6 +1,5 @@
 package am.aca.quiz_software.service.dto;
 
-
 import am.aca.quiz_software.entity.CategoryEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,3 +20,4 @@ public interface CategoryService {
     //delete
     void remove(CategoryEntity category) throws SQLException;
 }
+
