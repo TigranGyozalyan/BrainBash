@@ -1,7 +1,6 @@
-package am.aca.quiz_software.entities;
+package am.aca.quiz_software.entity;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
