@@ -20,7 +20,7 @@ public interface CategoryService {
     //delete
     CategoryEntity remove(CategoryEntity category) throws SQLException;
 
-    CategoryEntity removeById(Long id) throws SQLException;
+    boolean removeById(Long id) throws SQLException;
 
     CategoryEntity getById(Long id) throws SQLException;
 }

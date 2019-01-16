@@ -15,14 +15,14 @@ public interface QuestionService {
     List<QuestionEntity> getAll() throws SQLException;
 
     //update
-    boolean update(QuestionEntity question,Long id) throws SQLException;
+    boolean update(QuestionEntity question, Long id) throws SQLException;
 
     //delete
     QuestionEntity remove(QuestionEntity question) throws SQLException;
 
     QuestionEntity getById(Long id) throws SQLException;
 
-    QuestionEntity removeByid(Long id) throws SQLException;
+    boolean removeByid(Long id) throws SQLException;
 
 }
 

@@ -21,7 +21,7 @@ public interface HistoryService {
     //delete
     HistoryEntity remove(HistoryEntity history) throws SQLException;
 
-    HistoryEntity removeById(Long id) throws SQLException;
+    boolean removeById(Long id) throws SQLException;
 
     HistoryEntity getByid(Long id) throws SQLException;
 }
