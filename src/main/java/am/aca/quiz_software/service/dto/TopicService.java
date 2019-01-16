@@ -16,8 +16,13 @@ public interface TopicService {
     List<TopicEntity> getAll() throws SQLException;
 
     //update
-    boolean update(TopicEntity topic) throws SQLException;
+    boolean update(TopicEntity topic, Long id) throws SQLException;
 
     //delete
     TopicEntity remove(TopicEntity topic) throws SQLException;
+
+
+    boolean removeByid(Long id) throws SQLException;
+
+    TopicEntity getById(Long id) throws SQLException;
 }

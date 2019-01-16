@@ -21,7 +21,7 @@ public interface ScoreService {
     //delete
     ScoreEntity remove(ScoreEntity score) throws SQLException;
 
-    ScoreEntity removeById(Long id) throws SQLException;
+    ScoreEntity getByid(Long id) throws SQLException;
 
-    ScoreEntity getById(Long id) throws SQLException;
+    boolean removeByid(Long id) throws SQLException;
 }
