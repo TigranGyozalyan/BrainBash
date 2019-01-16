@@ -17,8 +17,10 @@ public interface AnswerService {
     List<AnswerEntity> getAll() throws SQLException;
 
     //update
-    boolean update(AnswerEntity answer) throws SQLException;
+    boolean update(AnswerEntity answer,Long id) throws SQLException;
 
     //delete
     AnswerEntity remove(AnswerEntity answer) throws SQLException;
+
+    //
 }

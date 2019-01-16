@@ -1,6 +1,9 @@
 package am.aca.quiz_software.entity;
 
+import org.hibernate.annotations.Check;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -10,11 +13,14 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name = "first_name",nullable = false)
     private String name;
     @Column(name="last_name",nullable = false)
     private String surname;
+
     @Column(name = "_email",nullable = false,unique = true)
+    @Pattern(regexp=".+@.+\\.[a-z]+", message="Invalid email address!")
     private String email;
     @Column(name = "nickname",nullable = false)
     private String nickname;

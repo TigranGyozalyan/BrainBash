@@ -13,6 +13,9 @@
 
         <hibernateVersion>5.4.0.Final</hibernateVersion>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <spring-data-jpa.version>2.1.4.RELEASE</spring-data-jpa.version>
+
     </properties>
 
     <dependencies>
@@ -28,11 +31,19 @@
             <artifactId>postgresql</artifactId>
             <version>${postgreSQLVersion}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.1.4.RELEASE</version>
+            <version>${spring-data-jpa.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+
 
     </dependencies>
 
