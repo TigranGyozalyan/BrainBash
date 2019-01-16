@@ -22,5 +22,7 @@ public interface AnswerService {
     //delete
     AnswerEntity remove(AnswerEntity answer) throws SQLException;
 
-    //
+    AnswerEntity getById(Long id) throws SQLException;
+
+    boolean removeById(Long id) throws  SQLException;
 }

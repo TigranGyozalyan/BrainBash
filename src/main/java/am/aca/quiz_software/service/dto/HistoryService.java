@@ -16,8 +16,12 @@ public interface HistoryService {
     List<HistoryEntity> getAll() throws SQLException;
 
     //update
-    boolean update(HistoryEntity history) throws SQLException;
+    boolean update(HistoryEntity history, Long id) throws SQLException;
 
     //delete
     HistoryEntity remove(HistoryEntity history) throws SQLException;
+
+    boolean removeById(Long id) throws SQLException;
+
+    HistoryEntity getByid(Long id) throws SQLException;
 }
