@@ -15,9 +15,13 @@ public interface CategoryService {
     List<CategoryEntity> getAll() throws SQLException;
 
     //update
-    boolean update(CategoryEntity category) throws SQLException;
+    boolean update(CategoryEntity category,Long id) throws SQLException;
 
     //delete
     CategoryEntity remove(CategoryEntity category) throws SQLException;
+
+    CategoryEntity removeById(Long id) throws SQLException;
+
+    CategoryEntity getById(Long id) throws SQLException;
 }
 

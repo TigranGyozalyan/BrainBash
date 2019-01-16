@@ -7,12 +7,14 @@
     <groupId>am.aca</groupId>
     <artifactId>quiz-software</artifactId>
     <version>1.0</version>
+
     <properties>
         <maven.compile.source>1.8</maven.compile.source>
         <maven.compile.target>1.8</maven.compile.target>
 
         <hibernateVersion>5.4.0.Final</hibernateVersion>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
+        <spring-data-jpa.version>2.1.4.RELEASE</spring-data-jpa.version>
     </properties>
 
     <dependencies>
@@ -31,10 +33,23 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.1.4.RELEASE</version>
+            <version>${spring-data-jpa.version}</version>
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

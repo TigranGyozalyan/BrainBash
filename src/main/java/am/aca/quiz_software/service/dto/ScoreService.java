@@ -16,8 +16,12 @@ public interface ScoreService {
     List<ScoreEntity> getAll() throws SQLException;
 
     //update
-    boolean update(ScoreEntity score) throws SQLException;
+    boolean update(ScoreEntity score, Long id) throws SQLException;
 
     //delete
     ScoreEntity remove(ScoreEntity score) throws SQLException;
+
+    ScoreEntity removeById(Long id) throws SQLException;
+
+    ScoreEntity getById(Long id) throws SQLException;
 }

@@ -1,7 +1,6 @@
 package am.aca.quiz_software.service.dto;
 
 import am.aca.quiz_software.entity.AnswerEntity;
-import am.aca.quiz_software.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -17,8 +16,12 @@ public interface AnswerService {
     List<AnswerEntity> getAll() throws SQLException;
 
     //update
-    boolean update(AnswerEntity answer) throws SQLException;
+    boolean update(AnswerEntity answer,Long id) throws SQLException;
 
     //delete
     AnswerEntity remove(AnswerEntity answer) throws SQLException;
+
+    AnswerEntity getById(Long id) throws SQLException;
+
+    boolean removeById(Long id) throws  SQLException;
 }
