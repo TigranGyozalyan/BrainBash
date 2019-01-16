@@ -38,5 +38,5 @@ public  class AnswerServiceImp implements AnswerService {
     public void remove(AnswerEntity answer) throws SQLException {
 
     }
-    //TODO implement methods
+
 }

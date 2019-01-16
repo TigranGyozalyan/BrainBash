@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public interface ScoreService {
     //create
-    void addCategory(ScoreEntity score) throws SQLException;
+    boolean addCategory(ScoreEntity score) throws SQLException;
 
     //read
     List<ScoreEntity> getAll() throws SQLException;
 
     //update
-    void update(ScoreEntity score) throws SQLException;
+    boolean update(ScoreEntity score) throws SQLException;
 
     //delete
-    void remove(ScoreEntity score) throws SQLException;
+    ScoreEntity remove(ScoreEntity score) throws SQLException;
 }
