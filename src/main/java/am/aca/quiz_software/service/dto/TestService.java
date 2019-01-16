@@ -16,8 +16,13 @@ public interface TestService {
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    boolean update(TestEntity test) throws SQLException;
+    boolean update(TestEntity test,Long id) throws SQLException;
 
     //delete
     TestEntity remove(TestEntity test) throws SQLException;
+
+
+    boolean removeByid(Long id) throws SQLException;
+
+    TestEntity getByid(Long id) throws SQLException;
 }

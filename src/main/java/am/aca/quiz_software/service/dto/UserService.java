@@ -16,8 +16,13 @@ public interface UserService {
     List<UserEntity> getAll() throws SQLException;
 
     //update
-    boolean update(UserEntity user) throws SQLException;
+    boolean update(UserEntity user, Long id) throws SQLException;
 
     //delete
     UserEntity remove(UserEntity user) throws SQLException;
+
+
+    boolean removeByid(Long id) throws SQLException;
+
+    UserEntity getById(Long id) throws SQLException;
 }

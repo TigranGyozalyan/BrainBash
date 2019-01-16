@@ -16,8 +16,12 @@ public interface SubCategoryService {
     List<SubCategoryEntity> getAll() throws SQLException;
 
     //update
-    boolean update(SubCategoryEntity subCategory) throws SQLException;
+    boolean update(SubCategoryEntity subCategory,Long id) throws SQLException;
 
     //delete
     SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException;
+
+    SubCategoryEntity removeById(Long id) throws SQLException;
+
+    boolean removeByid(Long id) throws SQLException;
 }
