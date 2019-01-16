@@ -27,18 +27,20 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     public void addCategory(SubCategoryEntity subCategory) throws SQLException {
-
+        subCategoryRepository.saveAndFlush(subCategory);
+        return true;
     }
 
     public List<SubCategoryEntity> getAll() throws SQLException {
-        return null;
+        return subCategoryRepository.findAll();
     }
 
     public void update(SubCategoryEntity subCategory) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(SubCategoryEntity subCategory) throws SQLException {
-
+    public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
+        subCategoryRepository.delete(subCategory);
+        return subCategory;
     }
 }

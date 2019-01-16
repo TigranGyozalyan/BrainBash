@@ -25,18 +25,20 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     public void addCategory(CategoryEntity category) throws SQLException {
-
+        categoryRepository.saveAndFlush(category);
+        return true;
     }
 
     public List<CategoryEntity> getAll() throws SQLException {
-        return null;
+        return categoryRepository.findAll();
     }
 
     public void update(CategoryEntity category) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(CategoryEntity category) throws SQLException {
-
+    public CategoryEntity remove(CategoryEntity category) throws SQLException {
+        categoryRepository.delete(category);
+        return category;
     }
 }

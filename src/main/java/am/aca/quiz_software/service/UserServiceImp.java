@@ -27,18 +27,20 @@ public class UserServiceImp implements UserService {
     }
 
     public void addCategory(UserEntity user) throws SQLException {
-
+        userRepository.saveAndFlush(user);
+        return true;
     }
 
     public List<UserEntity> getAll() throws SQLException {
-        return null;
+        return userRepository.findAll();
     }
 
     public void update(UserEntity user) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(UserEntity user) throws SQLException {
-
+    public UserEntity remove(UserEntity user) throws SQLException {
+        userRepository.delete(user);
+        return user;
     }
 }

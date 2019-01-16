@@ -15,30 +15,24 @@ import java.util.List;
 @Service
 public class TestServiceImp implements TestService {
 
-    private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
-    private final HistoryRepository historyRepository;
-
     @Autowired
-    public TestServiceImp(TestRepository testRepository, QuestionRepository questionRepository, HistoryRepository historyRepository) {
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.historyRepository = historyRepository;
-    }
+    private  TestRepository testRepository;
 
     public void addCategory(TestEntity test) throws SQLException {
-
+        testRepository.saveAndFlush(test);
+        return true;
     }
 
     public List<TestEntity> getAll() throws SQLException {
-        return null;
+        return testRepository.findAll();
     }
 
     public void update(TestEntity test) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(TestEntity test) throws SQLException {
-
+    public TestEntity remove(TestEntity test) throws SQLException {
+        testRepository.delete(test);
+        return test;
     }
 }

@@ -27,18 +27,20 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     public void addCategory(ScoreEntity score) throws SQLException {
-
+        scoreRepository.saveAndFlush(score);
+        return true;
     }
 
     public List<ScoreEntity> getAll() throws SQLException {
-        return null;
+        return scoreRepository.findAll();
     }
 
     public void update(ScoreEntity score) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(ScoreEntity score) throws SQLException {
-
+    public ScoreEntity remove(ScoreEntity score) throws SQLException {
+        scoreRepository.delete(score);
+        return score;
     }
 }

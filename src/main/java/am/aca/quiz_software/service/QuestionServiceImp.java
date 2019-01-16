@@ -27,18 +27,20 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     public void addCategory(QuestionEntity question) throws SQLException {
-
+        questionRepository.saveAndFlush(question);
+        return true;
     }
 
     public List<QuestionEntity> getAll() throws SQLException {
-        return null;
+        return questionRepository.findAll();
     }
 
     public void update(QuestionEntity question) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(QuestionEntity question) throws SQLException {
-
+    public QuestionEntity remove(QuestionEntity question) throws SQLException {
+        questionRepository.delete(question);
+        return question;
     }
 }

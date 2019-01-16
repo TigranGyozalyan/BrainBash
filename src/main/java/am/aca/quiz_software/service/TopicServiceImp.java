@@ -30,18 +30,20 @@ public class TopicServiceImp implements TopicService {
     }
 
     public void addCategory(TopicEntity topic) throws SQLException {
-
+        topicRepository.saveAndFlush(topic);
+        return true;
     }
 
     public List<TopicEntity> getAll() throws SQLException {
-        return null;
+        return topicRepository.findAll();
     }
 
     public void update(TopicEntity topic) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(TopicEntity topic) throws SQLException {
-
+    public TopicEntity remove(TopicEntity topic) throws SQLException {
+        topicRepository.delete(topic);
+        return topic;
     }
 }

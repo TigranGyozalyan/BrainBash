@@ -24,19 +24,22 @@ public  class AnswerServiceImp implements AnswerService {
     }
 
     public void addCategory(AnswerEntity answer) throws SQLException {
+        answerRepository.saveAndFlush(answer);
+        return true;
 
     }
 
     public List<AnswerEntity> getAll() throws SQLException {
-        return null;
+        return answerRepository.findAll();
     }
 
     public void update(AnswerEntity answer) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(AnswerEntity answer) throws SQLException {
-
+    public AnswerEntity remove(AnswerEntity answer) throws SQLException {
+        answerRepository.delete(answer);
+        return answer;
     }
     //TODO implement methods
 }

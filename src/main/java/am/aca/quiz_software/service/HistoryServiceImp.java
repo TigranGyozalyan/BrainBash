@@ -27,18 +27,20 @@ public class HistoryServiceImp implements HistoryService {
     }
 
     public void addCategory(HistoryEntity history) throws SQLException {
-
+        historyRepository.saveAndFlush(history);
+        return true;
     }
 
     public List<HistoryEntity> getAll() throws SQLException {
-        return null;
+        return historyRepository.findAll();
     }
 
     public void update(HistoryEntity history) throws SQLException {
-
+        //toDO
     }
 
-    public void remove(HistoryEntity history) throws SQLException {
-
+    public HistoryEntity remove(HistoryEntity history) throws SQLException {
+        historyRepository.delete(history);
+        return history;
     }
 }
