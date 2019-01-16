@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public interface TopicService {
     //create
-    void addCategory(TopicEntity topic) throws SQLException;
+    boolean addCategory(TopicEntity topic) throws SQLException;
 
     //read
     List<TopicEntity> getAll() throws SQLException;
 
     //update
-    void update(TopicEntity topic) throws SQLException;
+    boolean update(TopicEntity topic) throws SQLException;
 
     //delete
-    void remove(TopicEntity topic) throws SQLException;
+    TopicEntity remove(TopicEntity topic) throws SQLException;
 }

@@ -9,16 +9,16 @@ import java.util.List;
 @Service
 public interface QuestionService {
     //create
-    void addCategory(QuestionEntity question) throws SQLException;
+    boolean addCategory(QuestionEntity question) throws SQLException;
 
     //read
     List<QuestionEntity> getAll() throws SQLException;
 
     //update
-    void update(QuestionEntity question) throws SQLException;
+    boolean update(QuestionEntity question) throws SQLException;
 
     //delete
-    void remove(QuestionEntity question) throws SQLException;
+    QuestionEntity remove(QuestionEntity question) throws SQLException;
 
 }
 

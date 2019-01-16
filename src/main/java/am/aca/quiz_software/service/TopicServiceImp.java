@@ -16,20 +16,10 @@ import java.util.List;
 @Service
 public class TopicServiceImp implements TopicService {
 
-    private final TopicRepository topicRepository;
-    private final QuestionRepository questionRepository;
-    private final ScoreRepository scoreRepository;
-    private final SubCategoryRepository subCategoryRepository;
-
     @Autowired
-    public TopicServiceImp(TopicRepository topicRepository, QuestionRepository questionRepository, ScoreRepository scoreRepository, SubCategoryRepository subCategoryRepository) {
-        this.topicRepository = topicRepository;
-        this.questionRepository = questionRepository;
-        this.scoreRepository = scoreRepository;
-        this.subCategoryRepository = subCategoryRepository;
-    }
+    private  TopicRepository topicRepository;
 
-    public void addCategory(TopicEntity topic) throws SQLException {
+    public boolean addCategory(TopicEntity topic) throws SQLException {
         topicRepository.saveAndFlush(topic);
         return true;
     }
@@ -38,8 +28,9 @@ public class TopicServiceImp implements TopicService {
         return topicRepository.findAll();
     }
 
-    public void update(TopicEntity topic) throws SQLException {
+    public boolean update(TopicEntity topic) throws SQLException {
         //toDO
+        return false;
     }
 
     public TopicEntity remove(TopicEntity topic) throws SQLException {

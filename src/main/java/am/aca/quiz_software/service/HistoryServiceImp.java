@@ -15,18 +15,10 @@ import java.util.List;
 @Service
 public class HistoryServiceImp implements HistoryService {
 
-    private final HistoryRepository historyRepository;
-    private final UserRepository userRepository;
-    private final TestRepository testRepository;
-
     @Autowired
-    public HistoryServiceImp(HistoryRepository historyRepository, UserRepository userRepository, TestRepository testRepository) {
-        this.historyRepository = historyRepository;
-        this.userRepository = userRepository;
-        this.testRepository = testRepository;
-    }
+    private  HistoryRepository historyRepository;
 
-    public void addCategory(HistoryEntity history) throws SQLException {
+    public boolean addCategory(HistoryEntity history) throws SQLException {
         historyRepository.saveAndFlush(history);
         return true;
     }
@@ -35,8 +27,9 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAll();
     }
 
-    public void update(HistoryEntity history) throws SQLException {
+    public boolean update(HistoryEntity history) throws SQLException {
         //toDO
+        return false;
     }
 
     public HistoryEntity remove(HistoryEntity history) throws SQLException {

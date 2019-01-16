@@ -12,11 +12,11 @@ public class ScoreEntity {
     @Column(name = "score_value",nullable = false)
     private double value;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "topic_id",insertable = false,updatable = false)
     private TopicEntity topic;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",insertable = false,updatable = false)
     private UserEntity userEntity;
 

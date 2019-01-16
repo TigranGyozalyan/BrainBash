@@ -15,18 +15,10 @@ import java.util.List;
 @Service
 public class ScoreServiceImp implements ScoreService {
 
-    private final ScoreRepository scoreRepository;
-    private final UserRepository userRepository;
-    private final TopicRepository topicRepository;
-
     @Autowired
-    public ScoreServiceImp(ScoreRepository scoreRepository, UserRepository userRepository, TopicRepository topicRepository) {
-        this.scoreRepository = scoreRepository;
-        this.userRepository = userRepository;
-        this.topicRepository = topicRepository;
-    }
+    private  ScoreRepository scoreRepository;
 
-    public void addCategory(ScoreEntity score) throws SQLException {
+    public boolean addCategory(ScoreEntity score) throws SQLException {
         scoreRepository.saveAndFlush(score);
         return true;
     }
@@ -35,8 +27,9 @@ public class ScoreServiceImp implements ScoreService {
         return scoreRepository.findAll();
     }
 
-    public void update(ScoreEntity score) throws SQLException {
+    public boolean update(ScoreEntity score) throws SQLException {
         //toDO
+        return false;
     }
 
     public ScoreEntity remove(ScoreEntity score) throws SQLException {

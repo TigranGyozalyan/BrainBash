@@ -14,32 +14,25 @@ import java.util.List;
 @Service
 public  class AnswerServiceImp implements AnswerService {
 
-    private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
-
     @Autowired
-    public AnswerServiceImp(AnswerRepository answerRepository, QuestionRepository questionRepository) {
-        this.answerRepository = answerRepository;
-        this.questionRepository = questionRepository;
-    }
+    private  AnswerRepository answerRepository;
 
-    public void addCategory(AnswerEntity answer) throws SQLException {
-        answerRepository.saveAndFlush(answer);
-        return true;
-
+    public boolean addCategory(AnswerEntity answer) throws SQLException {
+            answerRepository.saveAndFlush(answer);
+            return true;
     }
 
     public List<AnswerEntity> getAll() throws SQLException {
         return answerRepository.findAll();
     }
 
-    public void update(AnswerEntity answer) throws SQLException {
-        //toDO
+
+    public boolean update(AnswerEntity answer) throws SQLException {
+        return false;
     }
 
     public AnswerEntity remove(AnswerEntity answer) throws SQLException {
         answerRepository.delete(answer);
         return answer;
     }
-    //TODO implement methods
 }

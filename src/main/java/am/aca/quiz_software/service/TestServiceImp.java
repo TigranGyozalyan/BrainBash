@@ -18,7 +18,7 @@ public class TestServiceImp implements TestService {
     @Autowired
     private  TestRepository testRepository;
 
-    public void addCategory(TestEntity test) throws SQLException {
+    public boolean addCategory(TestEntity test) throws SQLException {
         testRepository.saveAndFlush(test);
         return true;
     }
@@ -27,8 +27,9 @@ public class TestServiceImp implements TestService {
         return testRepository.findAll();
     }
 
-    public void update(TestEntity test) throws SQLException {
+    public boolean update(TestEntity test) throws SQLException {
         //toDO
+        return false;
     }
 
     public TestEntity remove(TestEntity test) throws SQLException {

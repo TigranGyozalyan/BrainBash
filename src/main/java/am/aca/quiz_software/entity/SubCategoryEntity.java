@@ -14,11 +14,11 @@ public class SubCategoryEntity {
     @Column(name = "type_name", unique = true,nullable = false)
     private String typeName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id",insertable = false,updatable = false)
     private CategoryEntity category;
 
-    @OneToMany(mappedBy = "subCategory")
+    @OneToMany(mappedBy = "subCategory",cascade = CascadeType.ALL)
     private List<TopicEntity> topicEntityList;
 
     public SubCategoryEntity(){

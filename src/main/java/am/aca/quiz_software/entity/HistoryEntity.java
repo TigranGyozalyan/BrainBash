@@ -19,11 +19,11 @@ public class HistoryEntity {
     @Column(name = "score")
     private double score;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",insertable = false,updatable = false)
     private UserEntity userEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id",insertable = false,updatable = false)
     private TestEntity testEntity;
 

@@ -15,18 +15,10 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService {
 
-    private final UserRepository userRepository;
-    private final HistoryRepository historyRepository;
-    private final ScoreRepository scoreRepository;
-
     @Autowired
-    public UserServiceImp(UserRepository userRepository, HistoryRepository historyRepository, ScoreRepository scoreRepository) {
-        this.userRepository = userRepository;
-        this.historyRepository = historyRepository;
-        this.scoreRepository = scoreRepository;
-    }
+    private  UserRepository userRepository;
 
-    public void addCategory(UserEntity user) throws SQLException {
+    public boolean addCategory(UserEntity user) throws SQLException {
         userRepository.saveAndFlush(user);
         return true;
     }
@@ -35,8 +27,9 @@ public class UserServiceImp implements UserService {
         return userRepository.findAll();
     }
 
-    public void update(UserEntity user) throws SQLException {
+    public boolean update(UserEntity user) throws SQLException {
         //toDO
+        return false;
     }
 
     public UserEntity remove(UserEntity user) throws SQLException {

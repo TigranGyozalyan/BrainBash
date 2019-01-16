@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public interface HistoryService {
     //create
-    void addCategory(HistoryEntity history) throws SQLException;
+    boolean addCategory(HistoryEntity history) throws SQLException;
 
     //read
     List<HistoryEntity> getAll() throws SQLException;
 
     //update
-    void update(HistoryEntity history) throws SQLException;
+    boolean update(HistoryEntity history) throws SQLException;
 
     //delete
-    void remove(HistoryEntity history) throws SQLException;
+    HistoryEntity remove(HistoryEntity history) throws SQLException;
 }
