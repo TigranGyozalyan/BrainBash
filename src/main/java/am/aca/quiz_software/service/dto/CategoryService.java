@@ -9,15 +9,15 @@ import java.util.List;
 @Service
 public interface CategoryService {
     //create
-    void addCategory(CategoryEntity category) throws SQLException;
+    boolean addCategory(CategoryEntity category) throws SQLException;
 
     //read
     List<CategoryEntity> getAll() throws SQLException;
 
     //update
-    void update(CategoryEntity category) throws SQLException;
+    boolean update(CategoryEntity category) throws SQLException;
 
     //delete
-    void remove(CategoryEntity category) throws SQLException;
+    CategoryEntity remove(CategoryEntity category) throws SQLException;
 }
 

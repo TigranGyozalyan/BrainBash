@@ -25,10 +25,10 @@ public class UserEntity {
     @Column(name = "avatar_image")
     private String image;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
     private List<ScoreEntity> scoreList;
 
     public UserEntity() {

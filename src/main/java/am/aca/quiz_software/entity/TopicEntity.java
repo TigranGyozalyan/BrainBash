@@ -14,14 +14,14 @@ public class TopicEntity {
     @Column(name = "topic_name",nullable = false)
     private String topicName;
 
-   @ManyToOne
+   @ManyToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "subcategory_id",insertable = false,updatable = false)
    private SubCategoryEntity subCategory;
 
-   @OneToMany(mappedBy = "topicEntity")
+   @OneToMany(mappedBy = "topicEntity",cascade = CascadeType.ALL)
    private List<QuestionEntity> questionEntities;
 
-   @OneToMany(mappedBy = "topic")
+   @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
    private  List<ScoreEntity> scoreEntityList;
 
    public TopicEntity(){

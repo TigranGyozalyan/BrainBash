@@ -15,16 +15,8 @@ import java.util.List;
 @Service
 public class HistoryServiceImp implements HistoryService {
 
-    private final HistoryRepository historyRepository;
-    private final UserRepository userRepository;
-    private final TestRepository testRepository;
-
     @Autowired
-    public HistoryServiceImp(HistoryRepository historyRepository, UserRepository userRepository, TestRepository testRepository) {
-        this.historyRepository = historyRepository;
-        this.userRepository = userRepository;
-        this.testRepository = testRepository;
-    }
+    private  HistoryRepository historyRepository;
 
     public void addCategory(HistoryEntity history) throws SQLException {
 

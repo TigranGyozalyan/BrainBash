@@ -15,18 +15,13 @@ import java.util.List;
 @Service
 public class TestServiceImp implements TestService {
 
-    private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
-    private final HistoryRepository historyRepository;
-
     @Autowired
-    public TestServiceImp(TestRepository testRepository, QuestionRepository questionRepository, HistoryRepository historyRepository) {
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.historyRepository = historyRepository;
-    }
+    private  TestRepository testRepository;
 
-    public void addCategory(TestEntity test) throws SQLException {
+
+
+
+    public boolean addCategory(TestEntity test) throws SQLException {
 
     }
 
@@ -34,11 +29,11 @@ public class TestServiceImp implements TestService {
         return null;
     }
 
-    public void update(TestEntity test) throws SQLException {
+    public boolean update(TestEntity test) throws SQLException {
 
     }
 
-    public void remove(TestEntity test) throws SQLException {
+    public TestEntity remove(TestEntity test) throws SQLException {
 
     }
 }

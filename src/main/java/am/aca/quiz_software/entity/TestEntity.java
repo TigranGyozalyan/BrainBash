@@ -23,13 +23,13 @@ public class TestEntity {
     @Column(name = "description",nullable = false)
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id")})
     private List<QuestionEntity> questionEntities;
 
-    @OneToMany(mappedBy = "testEntity")
+    @OneToMany(mappedBy = "testEntity",cascade = CascadeType.ALL)
     private List<HistoryEntity> historyEntities;
 
 

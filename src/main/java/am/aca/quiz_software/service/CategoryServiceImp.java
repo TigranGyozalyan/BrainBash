@@ -15,28 +15,22 @@ import java.util.List;
 @Service
 public class CategoryServiceImp implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
-    private final SubCategoryRepository subCategoryRepository;
-
     @Autowired
-    public CategoryServiceImp(CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository) {
-        this.categoryRepository = categoryRepository;
-        this.subCategoryRepository = subCategoryRepository;
-    }
+    private  CategoryRepository categoryRepository;
 
-    public void addCategory(CategoryEntity category) throws SQLException {
-
+    public boolean addCategory(CategoryEntity category) throws SQLException {
+       categoryRepository.saveAndFlush(category);
     }
 
     public List<CategoryEntity> getAll() throws SQLException {
-        return null;
+        return categoryRepository.findAll();
     }
 
-    public void update(CategoryEntity category) throws SQLException {
-
+    public boolean update(CategoryEntity category) throws SQLException {
+        categoryRepository.saveAndFlush(category);
     }
 
-    public void remove(CategoryEntity category) throws SQLException {
-
+    public CategoryEntity remove(CategoryEntity category) throws SQLException {
+        categoryRepository.delete(category);
     }
 }

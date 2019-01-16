@@ -15,7 +15,7 @@ public class CategoryEntity {
     private String type;
 
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<SubCategoryEntity> subCategoryEntityLists;
 
 

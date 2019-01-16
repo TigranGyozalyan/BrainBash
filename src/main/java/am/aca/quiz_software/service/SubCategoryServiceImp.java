@@ -15,18 +15,10 @@ import java.util.List;
 @Service
 public class SubCategoryServiceImp implements SubCategoryService {
 
-    private final SubCategoryRepository subCategoryRepository;
-    private final CategoryRepository categoryRepository;
-    private final TopicRepository topicRepository;
-
     @Autowired
-    public SubCategoryServiceImp(SubCategoryRepository subCategoryRepository, CategoryRepository categoryRepository, TopicRepository topicRepository) {
-        this.subCategoryRepository = subCategoryRepository;
-        this.categoryRepository = categoryRepository;
-        this.topicRepository = topicRepository;
-    }
+    private  SubCategoryRepository subCategoryRepository;
 
-    public void addCategory(SubCategoryEntity subCategory) throws SQLException {
+    public boolean addCategory(SubCategoryEntity subCategory) throws SQLException {
 
     }
 
@@ -34,11 +26,11 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return null;
     }
 
-    public void update(SubCategoryEntity subCategory) throws SQLException {
+    public boolean update(SubCategoryEntity subCategory) throws SQLException {
 
     }
 
-    public void remove(SubCategoryEntity subCategory) throws SQLException {
+    public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
 
     }
 }

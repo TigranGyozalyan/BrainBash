@@ -24,16 +24,16 @@ public class QuestionEntity {
     @Column (name = "correct_amount",nullable = false)
     private int correct_amount;
 
-    @OneToMany(mappedBy = "questionEntity")
+    @OneToMany(mappedBy = "questionEntity",cascade = CascadeType.ALL)
     private List<AnswerEntity> answerEntities;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "question_id",insertable = false,updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "test_id",insertable = false,updatable = false)})
     private List<TestEntity> testEntities;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private TopicEntity topicEntity;
 
     public QuestionEntity() {

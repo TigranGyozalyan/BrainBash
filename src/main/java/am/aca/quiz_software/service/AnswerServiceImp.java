@@ -14,16 +14,10 @@ import java.util.List;
 @Service
 public  class AnswerServiceImp implements AnswerService {
 
-    private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
-
     @Autowired
-    public AnswerServiceImp(AnswerRepository answerRepository, QuestionRepository questionRepository) {
-        this.answerRepository = answerRepository;
-        this.questionRepository = questionRepository;
-    }
+    private  AnswerRepository answerRepository;
 
-    public void addCategory(AnswerEntity answer) throws SQLException {
+    public boolean addCategory(AnswerEntity answer) throws SQLException {
 
     }
 
@@ -31,11 +25,11 @@ public  class AnswerServiceImp implements AnswerService {
         return null;
     }
 
-    public void update(AnswerEntity answer) throws SQLException {
+    public boolean update(AnswerEntity answer) throws SQLException {
 
     }
 
-    public void remove(AnswerEntity answer) throws SQLException {
+    public AnswerEntity remove(AnswerEntity answer) throws SQLException {
 
     }
     //TODO implement methods

@@ -15,18 +15,13 @@ import java.util.List;
 @Service
 public class QuestionServiceImp implements QuestionService {
 
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
-    private final TopicRepository topicRepository;
-
     @Autowired
-    public QuestionServiceImp(QuestionRepository questionRepository, AnswerRepository answerRepository, TopicRepository topicRepository) {
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-        this.topicRepository = topicRepository;
-    }
+    private final QuestionRepository questionRepository;
 
-    public void addCategory(QuestionEntity question) throws SQLException {
+
+
+
+    public boolean addCategory(QuestionEntity question) throws SQLException {
 
     }
 
@@ -34,11 +29,11 @@ public class QuestionServiceImp implements QuestionService {
         return null;
     }
 
-    public void update(QuestionEntity question) throws SQLException {
+    public boolean update(QuestionEntity question) throws SQLException {
 
     }
 
-    public void remove(QuestionEntity question) throws SQLException {
+    public QuestionEntity remove(QuestionEntity question) throws SQLException {
 
     }
 }

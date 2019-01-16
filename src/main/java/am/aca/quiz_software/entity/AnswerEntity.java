@@ -19,7 +19,7 @@ public class AnswerEntity {
     @Column(name = "answer_text",nullable = false)
     private String answer_text;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id",insertable = false,updatable = false)
     private QuestionEntity questionEntity;
 
