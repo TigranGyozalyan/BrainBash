@@ -11,14 +11,14 @@ import java.util.List;
 public interface AnswerService {
 
     //create
-    void addCategory(AnswerEntity answer) throws SQLException;
+    boolean addCategory(AnswerEntity answer) throws SQLException;
 
     //read
     List<AnswerEntity> getAll() throws SQLException;
 
     //update
-    void update(AnswerEntity answer) throws SQLException;
+    boolean update(AnswerEntity answer) throws SQLException;
 
     //delete
-    void remove(AnswerEntity answer) throws SQLException;
+    AnswerEntity remove(AnswerEntity answer) throws SQLException;
 }

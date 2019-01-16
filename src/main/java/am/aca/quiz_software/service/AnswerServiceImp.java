@@ -17,8 +17,9 @@ public  class AnswerServiceImp implements AnswerService {
     @Autowired
     private  AnswerRepository answerRepository;
 
-    public boolean addCategory(AnswerEntity answer) throws SQLException {
 
+    public boolean addCategory(AnswerEntity answer) throws SQLException {
+        return false;
     }
 
     public List<AnswerEntity> getAll() throws SQLException {
@@ -26,11 +27,10 @@ public  class AnswerServiceImp implements AnswerService {
     }
 
     public boolean update(AnswerEntity answer) throws SQLException {
-
+        return false;
     }
 
     public AnswerEntity remove(AnswerEntity answer) throws SQLException {
-
+        return null;
     }
-    //TODO implement methods
 }

@@ -20,7 +20,7 @@ public class UserServiceImp implements UserService {
 
 
     public boolean addCategory(UserEntity user) throws SQLException {
-
+        return false;
     }
 
     public List<UserEntity> getAll() throws SQLException {
@@ -28,10 +28,10 @@ public class UserServiceImp implements UserService {
     }
 
     public boolean update(UserEntity user) throws SQLException {
-
+        return false;
     }
 
     public UserEntity remove(UserEntity user) throws SQLException {
-
+        return null;
     }
 }

@@ -18,19 +18,20 @@ public class HistoryServiceImp implements HistoryService {
     @Autowired
     private  HistoryRepository historyRepository;
 
-    public void addCategory(HistoryEntity history) throws SQLException {
 
+    public boolean addCategory(HistoryEntity history) throws SQLException {
+        return false;
     }
 
     public List<HistoryEntity> getAll() throws SQLException {
         return null;
     }
 
-    public void update(HistoryEntity history) throws SQLException {
-
+    public boolean update(HistoryEntity history) throws SQLException {
+        return false;
     }
 
-    public void remove(HistoryEntity history) throws SQLException {
-
+    public HistoryEntity remove(HistoryEntity history) throws SQLException {
+        return null;
     }
 }

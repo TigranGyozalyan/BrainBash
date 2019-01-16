@@ -18,9 +18,8 @@ public class ScoreServiceImp implements ScoreService {
     @Autowired
     private  ScoreRepository scoreRepository;
 
-
     public boolean addCategory(ScoreEntity score) throws SQLException {
-
+        return false;
     }
 
     public List<ScoreEntity> getAll() throws SQLException {
@@ -28,10 +27,12 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     public boolean update(ScoreEntity score) throws SQLException {
-
+        return false;
     }
 
     public ScoreEntity remove(ScoreEntity score) throws SQLException {
-
+        return null;
     }
+
+
 }

@@ -16,13 +16,11 @@ import java.util.List;
 public class QuestionServiceImp implements QuestionService {
 
     @Autowired
-    private final QuestionRepository questionRepository;
-
-
+    private  QuestionRepository questionRepository;
 
 
     public boolean addCategory(QuestionEntity question) throws SQLException {
-
+        return false;
     }
 
     public List<QuestionEntity> getAll() throws SQLException {
@@ -30,10 +28,10 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     public boolean update(QuestionEntity question) throws SQLException {
-
+        return false;
     }
 
     public QuestionEntity remove(QuestionEntity question) throws SQLException {
-
+        return null;
     }
 }

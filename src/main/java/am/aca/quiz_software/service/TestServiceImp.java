@@ -19,10 +19,8 @@ public class TestServiceImp implements TestService {
     private  TestRepository testRepository;
 
 
-
-
     public boolean addCategory(TestEntity test) throws SQLException {
-
+        return false;
     }
 
     public List<TestEntity> getAll() throws SQLException {
@@ -30,10 +28,10 @@ public class TestServiceImp implements TestService {
     }
 
     public boolean update(TestEntity test) throws SQLException {
-
+        return false;
     }
 
     public TestEntity remove(TestEntity test) throws SQLException {
-
+        return null;
     }
 }

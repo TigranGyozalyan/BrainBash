@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public interface TestService {
     //create
-    void addCategory(TestEntity test) throws SQLException;
+    boolean addCategory(TestEntity test) throws SQLException;
 
     //read
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    void update(TestEntity test) throws SQLException;
+    boolean update(TestEntity test) throws SQLException;
 
     //delete
-    void remove(TestEntity test) throws SQLException;
+    TestEntity remove(TestEntity test) throws SQLException;
 }

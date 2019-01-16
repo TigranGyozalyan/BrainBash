@@ -21,7 +21,7 @@ public class TopicServiceImp implements TopicService {
 
 
     public boolean addCategory(TopicEntity topic) throws SQLException {
-
+        return false;
     }
 
     public List<TopicEntity> getAll() throws SQLException {
@@ -29,10 +29,10 @@ public class TopicServiceImp implements TopicService {
     }
 
     public boolean update(TopicEntity topic) throws SQLException {
-
+        return false;
     }
 
     public TopicEntity remove(TopicEntity topic) throws SQLException {
-
+        return null;
     }
 }

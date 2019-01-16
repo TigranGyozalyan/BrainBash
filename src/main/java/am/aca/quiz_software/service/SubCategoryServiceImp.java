@@ -18,8 +18,9 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Autowired
     private  SubCategoryRepository subCategoryRepository;
 
-    public boolean addCategory(SubCategoryEntity subCategory) throws SQLException {
 
+    public boolean addCategory(SubCategoryEntity subCategory) throws SQLException {
+            return false;
     }
 
     public List<SubCategoryEntity> getAll() throws SQLException {
@@ -27,10 +28,10 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     public boolean update(SubCategoryEntity subCategory) throws SQLException {
-
+        return false;
     }
 
     public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
-
+        return null;
     }
 }
