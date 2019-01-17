@@ -1,4 +1,4 @@
-package am.aca.quiz_software.service.dto;
+package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.CategoryEntity;
 
