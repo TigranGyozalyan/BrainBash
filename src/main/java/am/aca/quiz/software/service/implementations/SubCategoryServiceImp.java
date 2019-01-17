@@ -21,7 +21,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Autowired
     private CategoryServiceImp categoryServiceImp;
 
-    public boolean addCategory(SubCategoryEntity subCategory) throws SQLException {
+    public boolean addSubCategory(SubCategoryEntity subCategory) throws SQLException {
         subCategoryRepository.saveAndFlush(subCategory);
         return true;
     }
@@ -30,15 +30,13 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return subCategoryRepository.findAll();
     }
 
-    public boolean update(SubCategoryEntity subCategory,Long id) throws SQLException {
-        Optional<SubCategoryEntity> historyEntity=subCategoryRepository.findById(id);
-        if(!historyEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+    public boolean update(SubCategoryEntity subCategory, Long id) throws SQLException {
+        SubCategoryEntity updated_subCategory = getById(id);
+        if (updated_subCategory != null) {
+            subCategory.setId(id);
+            return addSubCategory(subCategory);
         }
-        subCategory.setId(id);
-
-        subCategoryRepository.saveAndFlush(subCategory);
-        return true;
+        return false;
     }
 
     public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
@@ -47,12 +45,18 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     @Override
-    public SubCategoryEntity removeById(Long id) throws SQLException {
-        return null;
+    public SubCategoryEntity getById(Long id) throws SQLException {
+        Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
+        if (!subCategoryEntity.isPresent()) {
+            throw new SQLException("Entity not found");
+        }
+        return subCategoryEntity.get();
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        SubCategoryEntity deleted_subCategory = getById(id);
+        subCategoryRepository.delete(deleted_subCategory);
+        return true;
     }
 }

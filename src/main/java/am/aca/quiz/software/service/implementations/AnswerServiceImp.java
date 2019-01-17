@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public  class AnswerServiceImp implements AnswerService {
+public class AnswerServiceImp implements AnswerService {
 
     @Autowired
-    private  AnswerRepository answerRepository;
+    private AnswerRepository answerRepository;
     @Autowired
-    private  QuestionServiceImp questionServiceImp;
+    private QuestionServiceImp questionServiceImp;
 
-    public boolean addCategory(AnswerEntity answer) throws SQLException {
-            answerRepository.saveAndFlush(answer);
-            return true;
+    public boolean addAnswer(AnswerEntity answer) throws SQLException {
+        answerRepository.saveAndFlush(answer);
+        return true;
     }
 
     public List<AnswerEntity> getAll() throws SQLException {
@@ -29,15 +29,12 @@ public  class AnswerServiceImp implements AnswerService {
 
     @Override
     public boolean update(AnswerEntity answer, Long id) throws SQLException {
-
-        Optional<AnswerEntity>answerEntity=answerRepository.findById(id);
-        if(!answerEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+        AnswerEntity updated_answer = getById(id);
+        if (updated_answer != null) {
+            answer.setId(id);
+            return addAnswer(answer);
         }
-
-        answer.setId(id);
-        answerRepository.saveAndFlush(answer);
-        return true;
+        return false;
     }
 
     public AnswerEntity remove(AnswerEntity answer) throws SQLException {
@@ -47,11 +44,19 @@ public  class AnswerServiceImp implements AnswerService {
 
     @Override
     public AnswerEntity getById(Long id) throws SQLException {
-        return null;
+        Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
+        if (!answerEntity.isPresent()) {
+            throw new SQLException("Entity Not Found");
+        }
+        return answerEntity.get();
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        return false;
+        AnswerEntity deleted_answer = getById(id);
+        answerRepository.delete(deleted_answer);
+        return true;
     }
+
+
 }

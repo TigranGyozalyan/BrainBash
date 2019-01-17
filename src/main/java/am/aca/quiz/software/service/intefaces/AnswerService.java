@@ -10,7 +10,7 @@ import java.util.List;
 public interface AnswerService {
 
     //create
-    boolean addCategory(AnswerEntity answer) throws SQLException;
+    boolean addAnswer(AnswerEntity answer) throws SQLException;
 
     //read
     List<AnswerEntity> getAll() throws SQLException;

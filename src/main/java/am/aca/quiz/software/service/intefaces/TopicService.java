@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface TopicService {
     //create
-    boolean addCategory(TopicEntity topic) throws SQLException;
+    boolean addTopic(TopicEntity topic) throws SQLException;
 
     //read
     List<TopicEntity> getAll() throws SQLException;
