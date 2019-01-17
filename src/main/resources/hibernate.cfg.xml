@@ -12,15 +12,15 @@
 
         <property name="show_sql">true</property>
 
-        <mapping class="am.aca.quiz_software.entity.ScoreEntity"/>
-        <mapping class="am.aca.quiz_software.entity.UserEntity"/>
-        <mapping class="am.aca.quiz_software.entity.HistoryEntity"/>
-        <mapping class="am.aca.quiz_software.entity.SubCategoryEntity"/>
-        <mapping class="am.aca.quiz_software.entity.TopicEntity"/>
-        <mapping class="am.aca.quiz_software.entity.CategoryEntity"/>
-        <mapping class="am.aca.quiz_software.entity.QuestionEntity"/>
-        <mapping class="am.aca.quiz_software.entity.AnswerEntity"/>
-        <mapping class="am.aca.quiz_software.entity.TestEntity"/>
+        <mapping class="am.aca.quiz.software.entity.ScoreEntity"/>
+        <mapping class="am.aca.quiz.software.entity.UserEntity"/>
+        <mapping class="am.aca.quiz.software.entity.HistoryEntity"/>
+        <mapping class="am.aca.quiz.software.entity.SubCategoryEntity"/>
+        <mapping class="am.aca.quiz.software.entity.TopicEntity"/>
+        <mapping class="am.aca.quiz.software.entity.CategoryEntity"/>
+        <mapping class="am.aca.quiz.software.entity.QuestionEntity"/>
+        <mapping class="am.aca.quiz.software.entity.AnswerEntity"/>
+        <mapping class="am.aca.quiz.software.entity.TestEntity"/>
 
     </session-factory>
 </hibernate-configuration>
