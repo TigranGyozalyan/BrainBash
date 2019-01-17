@@ -1,15 +1,14 @@
-package am.aca.quiz_software.service;
+package am.aca.quiz_software.service.implementations;
 
 import am.aca.quiz_software.entity.SubCategoryEntity;
-import am.aca.quiz_software.repository.CategoryRepository;
 import am.aca.quiz_software.repository.SubCategoryRepository;
-import am.aca.quiz_software.repository.TopicRepository;
-import am.aca.quiz_software.service.dto.SubCategoryService;
+import am.aca.quiz_software.service.intefaces.SubCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -17,6 +16,10 @@ public class SubCategoryServiceImp implements SubCategoryService {
 
     @Autowired
     private  SubCategoryRepository subCategoryRepository;
+    @Autowired
+    private TopicServiceImp topicServiceImp;
+    @Autowired
+    private CategoryServiceImp categoryServiceImp;
 
     public boolean addCategory(SubCategoryEntity subCategory) throws SQLException {
         subCategoryRepository.saveAndFlush(subCategory);
@@ -27,13 +30,29 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return subCategoryRepository.findAll();
     }
 
-    public boolean update(SubCategoryEntity subCategory) throws SQLException {
-        //toDO
-        return false;
+    public boolean update(SubCategoryEntity subCategory,Long id) throws SQLException {
+        Optional<SubCategoryEntity> historyEntity=subCategoryRepository.findById(id);
+        if(!historyEntity.isPresent()){
+            throw new SQLException("Argument Not Found ");
+        }
+        subCategory.setId(id);
+
+        subCategoryRepository.saveAndFlush(subCategory);
+        return true;
     }
 
     public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
         subCategoryRepository.delete(subCategory);
         return subCategory;
+    }
+
+    @Override
+    public SubCategoryEntity removeById(Long id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean removeByid(Long id) throws SQLException {
+        return false;
     }
 }

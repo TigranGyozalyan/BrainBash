@@ -1,8 +1,8 @@
-package am.aca.quiz_software.service;
+package am.aca.quiz_software.service.implementations;
 
 import am.aca.quiz_software.entity.AnswerEntity;
 import am.aca.quiz_software.repository.AnswerRepository;
-import am.aca.quiz_software.service.dto.AnswerService;
+import am.aca.quiz_software.service.intefaces.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,8 @@ public  class AnswerServiceImp implements AnswerService {
 
     @Autowired
     private  AnswerRepository answerRepository;
+    @Autowired
+    private  QuestionServiceImp questionServiceImp;
 
     public boolean addCategory(AnswerEntity answer) throws SQLException {
             answerRepository.saveAndFlush(answer);
@@ -36,11 +38,6 @@ public  class AnswerServiceImp implements AnswerService {
         answer.setId(id);
         answerRepository.saveAndFlush(answer);
         return true;
-    }
-
-
-    public boolean update(AnswerEntity answer) throws SQLException {
-        return false;
     }
 
     public AnswerEntity remove(AnswerEntity answer) throws SQLException {

@@ -11,6 +11,8 @@ public class ScoreEntity {
     private Long id;
     @Column(name = "score_value",nullable = false)
     private double value;
+    @Column(name = "count",nullable = false)
+    private int count;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "topic_id",insertable = false,updatable = false)
@@ -23,14 +25,27 @@ public class ScoreEntity {
     public ScoreEntity() {
     }
 
-    public ScoreEntity( double value, TopicEntity topic, UserEntity userEntity) {
+    public ScoreEntity(double value, int count, TopicEntity topic, UserEntity userEntity) {
         this.value = value;
+        this.count = count;
         this.topic = topic;
         this.userEntity = userEntity;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public double getValue() {

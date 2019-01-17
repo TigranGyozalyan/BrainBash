@@ -3,6 +3,7 @@ package am.aca.quiz_software.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,21 +28,23 @@ public class TestEntity {
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id")})
-    private List<QuestionEntity> questionEntities;
+    private List<QuestionEntity> questionEntities=new ArrayList<>();
 
     @OneToMany(mappedBy = "testEntity",cascade = CascadeType.ALL)
-    private List<HistoryEntity> historyEntities;
+    private List<HistoryEntity> historyEntities=new ArrayList<>();
 
 
-    public TestEntity(String test_name, Date duration, String description, List<QuestionEntity> questionEntities, List<HistoryEntity> historyEntities) {
+    public TestEntity(String test_name, Date duration, String description) {
         this.test_name = test_name;
         this.duration = duration;
         this.description = description;
-        this.questionEntities = questionEntities;
-        this.historyEntities = historyEntities;
     }
 
     public TestEntity() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

@@ -2,6 +2,7 @@ package am.aca.quiz_software.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,13 +26,13 @@ public class QuestionEntity {
     private int correct_amount;
 
     @OneToMany(mappedBy = "questionEntity",cascade = CascadeType.ALL)
-    private List<AnswerEntity> answerEntities;
+    private List<AnswerEntity> answerEntities=new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "question_id",insertable = false,updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "test_id",insertable = false,updatable = false)})
-    private List<TestEntity> testEntities;
+    private List<TestEntity> testEntities=new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     private TopicEntity topicEntity;
@@ -39,13 +40,31 @@ public class QuestionEntity {
     public QuestionEntity() {
     }
 
-    public QuestionEntity(String question, int points, int level, int correct_amount, List<AnswerEntity> answerEntities, List<TestEntity> testEntities) {
+    public QuestionEntity(String question, int points, int level, int correct_amount) {
         this.question = question;
         this.points = points;
         this.level = level;
         this.correct_amount = correct_amount;
-        this.answerEntities = answerEntities;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<TestEntity> getTestEntities() {
+        return testEntities;
+    }
+
+    public void setTestEntities(List<TestEntity> testEntities) {
         this.testEntities = testEntities;
+    }
+
+    public TopicEntity getTopicEntity() {
+        return topicEntity;
+    }
+
+    public void setTopicEntity(TopicEntity topicEntity) {
+        this.topicEntity = topicEntity;
     }
 
     public String getQuestion() {

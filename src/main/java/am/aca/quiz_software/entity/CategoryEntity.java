@@ -1,6 +1,7 @@
 package am.aca.quiz_software.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,16 +17,13 @@ public class CategoryEntity {
 
 
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
-    private List<SubCategoryEntity> subCategoryEntityLists;
+    private List<SubCategoryEntity> subCategoryEntityLists = new ArrayList<>();
 
 
     public CategoryEntity(){
 
     }
-    public CategoryEntity(String type, List<SubCategoryEntity> subCategoryEntityLists) {
-        this.type = type;
-        this.subCategoryEntityLists = subCategoryEntityLists;
-    }
+
 
     public CategoryEntity(String type) {
         this.type = type;
@@ -35,6 +33,17 @@ public class CategoryEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<SubCategoryEntity> getSubCategoryEntityLists() {
+        return subCategoryEntityLists;
+    }
+
+    public void setSubCategoryEntityLists(List<SubCategoryEntity> subCategoryEntityLists) {
+        this.subCategoryEntityLists = subCategoryEntityLists;
+    }
 
     public String getType() {
         return type;

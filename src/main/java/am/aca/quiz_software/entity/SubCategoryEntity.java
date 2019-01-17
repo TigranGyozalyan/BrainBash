@@ -1,6 +1,7 @@
 package am.aca.quiz_software.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,16 +20,19 @@ public class SubCategoryEntity {
     private CategoryEntity category;
 
     @OneToMany(mappedBy = "subCategory",cascade = CascadeType.ALL)
-    private List<TopicEntity> topicEntityList;
+    private List<TopicEntity> topicEntityList=new ArrayList<>();
 
     public SubCategoryEntity(){
 
     }
 
-    public SubCategoryEntity(String typeName, CategoryEntity category, List<TopicEntity> topicEntityList) {
+    public SubCategoryEntity(String typeName, CategoryEntity category) {
         this.typeName = typeName;
         this.category = category;
-        this.topicEntityList = topicEntityList;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

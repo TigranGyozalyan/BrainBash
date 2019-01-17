@@ -4,6 +4,7 @@ import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,15 +33,15 @@ public class UserEntity {
     private String image;
 
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
-    private List<HistoryEntity> historyList;
+    private List<HistoryEntity> historyList=new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
-    private List<ScoreEntity> scoreList;
+    private List<ScoreEntity> scoreList=new ArrayList<>();
 
     public UserEntity() {
     }
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, String image, List<HistoryEntity> historyList, List<ScoreEntity> scoreList) {
+    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, String image) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -48,8 +49,14 @@ public class UserEntity {
         this.password = password;
         this.is_admin = is_admin;
         this.image = image;
-        this.historyList = historyList;
-        this.scoreList = scoreList;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isIs_admin() {
+        return is_admin;
     }
 
     public Long getId() {

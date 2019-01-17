@@ -1,4 +1,4 @@
-package am.aca.quiz_software.service.dto;
+package am.aca.quiz_software.service.intefaces;
 
 
 import am.aca.quiz_software.entity.HistoryEntity;
