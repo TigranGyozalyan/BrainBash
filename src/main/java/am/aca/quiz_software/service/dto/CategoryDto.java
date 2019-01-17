@@ -11,19 +11,19 @@ public class CategoryDto {
 
     private String type;
 
-    public static CategoryDto mapEntityToDto(CategoryEntity categoryEntity){
-        CategoryDto categoryDto=new CategoryDto();
+    public static CategoryDto mapEntityToDto(CategoryEntity categoryEntity) {
+        CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(categoryEntity.getId());
         categoryDto.setType(categoryEntity.getType());
         return categoryDto;
     }
 
-    public static List<CategoryDto> mapEntityToDtos(List<CategoryEntity> categoryEntityList){
-        if(categoryEntityList==null){
+    public static List<CategoryDto> mapEntityToDtos(List<CategoryEntity> categoryEntityList) {
+        if (categoryEntityList == null) {
             return null;
         }
-        List<CategoryDto> categoryDtoList=new ArrayList<>();
-        for(CategoryEntity categoryEntity: categoryEntityList){
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for (CategoryEntity categoryEntity : categoryEntityList) {
             categoryDtoList.add(mapEntityToDto(categoryEntity));
         }
         return categoryDtoList;
