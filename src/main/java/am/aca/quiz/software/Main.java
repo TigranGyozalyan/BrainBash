@@ -18,8 +18,11 @@ public class Main {
 
         Scanner in=new Scanner(System.in);
         System.out.println("Choose User or Admin");
-        String authentication=in.nextLine();
-        while (true){
+        String authentication;
+        boolean stayInLoop=true;
+        while (stayInLoop){
+            stayInLoop=false;
+             authentication=in.nextLine();
             switch (authentication.toLowerCase()){
                 case "user" :
                     System.out.println("Opening Login Page Enter your Email and Password ");
@@ -37,34 +40,57 @@ public class Main {
                             switch (tab.toLowerCase()) {
                                 case "programming":
                                     System.out.println("Choose Language");
-                                    String language = in.nextLine();
-                                    switch (language.toLowerCase()) {
-                                        case "java":
-                                            System.out.println("Choose Test name");
-                                            String testName = in.nextLine();
+                                    boolean stayInSwitc=true;
+                                    while (stayInLoop) {
+                                        stayInLoop=false;
+                                        String language = in.nextLine();
+                                        switch (language.toLowerCase()) {
+                                            case "java":
+                                                System.out.println("Choose Test name");
+                                                String testName = in.nextLine();
 
-                                            switch (testName.toLowerCase()) {
-                                                case "test1":
-                                                    break;
-                                                case "test2":
-                                                    break;
-                                             }
-                                             break;
-                                        case "c#":
-                                            break;
+                                                switch (testName.toLowerCase()) {
+                                                    case "test1":
+                                                        break;
+                                                    case "test2":
+                                                        break;
+                                                    default:
+                                                        stayInLoop=true;
+                                                        System.out.println("No Such Test Found");
+                                                        break;
+                                                }
+                                                break;
+                                            case "c#":
+                                                break;
+                                        }
                                     }
                                     break;
                                 case "networking":
                                     break;
                                 case "DataBases":
                                     break;
+                                    default:
+                                        System.out.println("No Such Category Found");
                             }
                             break;
+                        case "o":
+                            System.exit(0);
+                            break;
+                        case "h":
+                            break;
+                        case "p":
+                            break;
                     }
+
                     break;
                 case "admin" :
                     break;
+                    default:
+                        System.out.println("Try Again");
+                        stayInLoop=true;
+                        break ;
             }
+
         }
 
     }
