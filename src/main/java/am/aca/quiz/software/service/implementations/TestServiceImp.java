@@ -21,7 +21,7 @@ public class TestServiceImp implements TestService {
     @Autowired
     private QuestionServiceImp questionServiceImp;
 
-    public boolean addCategory(TestEntity test) throws SQLException {
+    public boolean addTest(TestEntity test) throws SQLException {
         testRepository.saveAndFlush(test);
         return true;
     }
@@ -32,13 +32,12 @@ public class TestServiceImp implements TestService {
 
     @Override
     public boolean update(TestEntity test, Long id) throws SQLException {
-        Optional<TestEntity> historyEntity=testRepository.findById(id);
-        if(!historyEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+        TestEntity updated_test = getByid(id);
+        if (updated_test != null) {
+            test.setId(id);
+            return addTest(test);
         }
-        test.setId(id);
-        testRepository.saveAndFlush(test);
-        return true;
+        return false;
     }
 
 
@@ -49,11 +48,17 @@ public class TestServiceImp implements TestService {
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        TestEntity deleted_test = getByid(id);
+        testRepository.delete(deleted_test);
+        return true;
     }
 
     @Override
     public TestEntity getByid(Long id) throws SQLException {
-        return null;
+        Optional<TestEntity> testEntity = testRepository.findById(id);
+        if (!testEntity.isPresent()) {
+            throw new SQLException("Entity not found");
+        }
+        return testEntity.get();
     }
 }

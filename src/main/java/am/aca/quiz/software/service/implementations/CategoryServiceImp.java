@@ -32,15 +32,12 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public boolean update(CategoryEntity category, Long id) throws SQLException {
 
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
-        if (!categoryEntity.isPresent()) {
-            throw new SQLException("Argument Not Found ");
+        CategoryEntity updated_category = getById(id);
+        if (updated_category != null) {
+            category.setId(id);
+            return addCategory(category);
         }
-
-        category.setId(id);
-        categoryRepository.saveAndFlush(category);
-        return true;
-
+        return false;
     }
 
     public CategoryEntity remove(CategoryEntity category) throws SQLException {
@@ -50,11 +47,18 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        return false;
+        CategoryEntity deleted_category = getById(id);
+        categoryRepository.delete(deleted_category);
+        return true;
     }
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-        return null;
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
+
+        if (!categoryEntity.isPresent()) {
+            throw new SQLException("Entity Not Found");
+        }
+        return categoryEntity.get();
     }
 }

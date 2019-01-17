@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface QuestionService {
     //create
-    boolean addCategory(QuestionEntity question) throws SQLException;
+    boolean addQuestion(QuestionEntity question) throws SQLException;
 
     //read
     List<QuestionEntity> getAll() throws SQLException;
