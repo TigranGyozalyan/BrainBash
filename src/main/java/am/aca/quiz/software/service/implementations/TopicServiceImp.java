@@ -23,7 +23,7 @@ public class TopicServiceImp implements TopicService {
     @Autowired
     private QuestionServiceImp questionServiceImp;
 
-    public boolean addCategory(TopicEntity topic) throws SQLException {
+    public boolean addTopic(TopicEntity topic) throws SQLException {
         topicRepository.saveAndFlush(topic);
         return true;
     }
@@ -34,13 +34,12 @@ public class TopicServiceImp implements TopicService {
 
     @Override
     public boolean update(TopicEntity topic, Long id) throws SQLException {
-        Optional<TopicEntity> historyEntity=topicRepository.findById(id);
-        if(!historyEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+        TopicEntity updated_topic = getById(id);
+        if (updated_topic != null) {
+            topic.setId(id);
+            return addTopic(topic);
         }
-        topic.setId(id);
-        topicRepository.saveAndFlush(topic);
-        return true;
+        return false;
     }
 
 
@@ -51,11 +50,17 @@ public class TopicServiceImp implements TopicService {
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        TopicEntity deleted_topic = getById(id);
+        topicRepository.delete(deleted_topic);
+        return true;
     }
 
     @Override
     public TopicEntity getById(Long id) throws SQLException {
-        return null;
+        Optional<TopicEntity> topicEntity = topicRepository.findById(id);
+        if (!topicEntity.isPresent()) {
+            throw new SQLException("Entity not found");
+        }
+        return topicEntity.get();
     }
 }

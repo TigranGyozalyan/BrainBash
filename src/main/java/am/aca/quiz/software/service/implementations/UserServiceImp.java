@@ -20,7 +20,7 @@ public class UserServiceImp implements UserService {
     @Autowired
     private HistoryServiceImp historyServiceImp;
 
-    public boolean addCategory(UserEntity user) throws SQLException {
+    public boolean addUser(UserEntity user) throws SQLException {
         userRepository.saveAndFlush(user);
         return true;
     }
@@ -31,13 +31,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean update(UserEntity user, Long id) throws SQLException {
-        Optional<UserEntity> historyEntity=userRepository.findById(id);
-        if(!historyEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+        UserEntity updated_user = getById(id);
+        if (updated_user != null) {
+            user.setId(id);
+            return addUser(user);
         }
-        user.setId(id);
-        userRepository.saveAndFlush(user);
-        return true;
+        return false;
     }
 
 
@@ -49,12 +48,18 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        UserEntity deleted_user = getById(id);
+        userRepository.delete(deleted_user);
+        return true;
     }
 
     @Override
     public UserEntity getById(Long id) throws SQLException {
-        return null;
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        if(!userEntity.isPresent()) {
+            throw new SQLException("Entity not found");
+        }
+        return userEntity.get();
     }
 }
 

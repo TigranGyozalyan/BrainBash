@@ -21,7 +21,7 @@ public class ScoreServiceImp implements ScoreService {
     @Autowired
     private TopicServiceImp topicServiceImp;
 
-    public boolean addCategory(ScoreEntity score) throws SQLException {
+    public boolean addScore(ScoreEntity score) throws SQLException {
         scoreRepository.saveAndFlush(score);
         return true;
     }
@@ -32,13 +32,12 @@ public class ScoreServiceImp implements ScoreService {
 
     @Override
     public boolean update(ScoreEntity score, Long id) throws SQLException {
-        Optional<ScoreEntity> historyEntity = scoreRepository.findById(id);
-        if (!historyEntity.isPresent()) {
-            throw new SQLException("Argument Not Found ");
+        ScoreEntity updated_score = getByid(id);
+        if (updated_score != null) {
+            score.setId(id);
+            return addScore(score);
         }
-        score.setId(id);
-        scoreRepository.saveAndFlush(score);
-        return true;
+        return false;
     }
 
     public ScoreEntity remove(ScoreEntity score) throws SQLException {
@@ -48,11 +47,17 @@ public class ScoreServiceImp implements ScoreService {
 
     @Override
     public ScoreEntity getByid(Long id) throws SQLException {
-        return null;
+        Optional<ScoreEntity> scoreEntity = scoreRepository.findById(id);
+        if (!scoreEntity.isPresent()) {
+            throw new SQLException("Entity not found");
+        }
+        return scoreEntity.get();
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        ScoreEntity deleted_score = getByid(id);
+        scoreRepository.delete(deleted_score);
+        return true;
     }
 }

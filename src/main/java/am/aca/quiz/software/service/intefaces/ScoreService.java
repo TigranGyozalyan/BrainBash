@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface ScoreService {
     //create
-    boolean addCategory(ScoreEntity score) throws SQLException;
+    boolean addScore(ScoreEntity score) throws SQLException;
 
     //read
     List<ScoreEntity> getAll() throws SQLException;

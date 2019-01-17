@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface UserService {
     //create
-    boolean addCategory(UserEntity user) throws SQLException;
+    boolean addUser(UserEntity user) throws SQLException;
 
     //read
     List<UserEntity> getAll() throws SQLException;

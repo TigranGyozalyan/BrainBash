@@ -21,7 +21,7 @@ public class HistoryServiceImp implements HistoryService {
     @Autowired
     private UserServiceImp userServiceImp;
 
-    public boolean addCategory(HistoryEntity history) throws SQLException {
+    public boolean addHistory(HistoryEntity history) throws SQLException {
         historyRepository.saveAndFlush(history);
         return true;
     }
@@ -32,14 +32,12 @@ public class HistoryServiceImp implements HistoryService {
 
     @Override
     public boolean update(HistoryEntity history, Long id) throws SQLException {
-        Optional<HistoryEntity> historyEntity=historyRepository.findById(id);
-        if(!historyEntity.isPresent()){
-            throw new SQLException("Argument Not Found ");
+        HistoryEntity updated_history = getByid(id);
+        if (updated_history != null) {
+            history.setId(id);
+            return addHistory(history);
         }
-        history.setId(id);
-        historyRepository.saveAndFlush(history);
-        return true;
-
+        return false;
     }
 
 
@@ -50,11 +48,17 @@ public class HistoryServiceImp implements HistoryService {
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        return false;
+        HistoryEntity deleted_history = getByid(id);
+        historyRepository.delete(deleted_history);
+        return true;
     }
 
     @Override
     public HistoryEntity getByid(Long id) throws SQLException {
-        return null;
+        Optional<HistoryEntity> historyEntity = historyRepository.findById(id);
+        if (!historyEntity.isPresent()) {
+            throw new SQLException("Entity Not Found");
+        }
+        return historyEntity.get();
     }
 }
