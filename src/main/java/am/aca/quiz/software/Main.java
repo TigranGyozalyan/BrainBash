@@ -1,27 +1,33 @@
 package am.aca.quiz.software;
 
 
+import am.aca.quiz.software.config.DataBaseConfig;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        sessionFactory.openSession();
+//        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+//        sessionFactory.openSession();
+
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(DataBaseConfig.class);
+
         menu();
     }
 
-    private static void menu(){
+    private static void menu() {
 
-        Scanner in=new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         System.out.println("Choose User or Admin");
-        String authentication=in.nextLine();
-        while (true){
-            switch (authentication.toLowerCase()){
-                case "user" :
+        String authentication = in.nextLine();
+        while (true) {
+            switch (authentication.toLowerCase()) {
+                case "user":
                     System.out.println("Opening Login Page Enter your Email and Password ");
                     System.out.println("stex authentication and authorisation  kgna @ ete sax lava ancnuma myus ej");
                     System.out.println("*************************************************************");
@@ -29,7 +35,7 @@ public class Main {
                             "\n For History Press h" +
                             "\n For Profile press p" +
                             "\n To LogOut press o");
-                    String button =in.nextLine();
+                    String button = in.nextLine();
                     switch (button) {
                         case "c":
                             System.out.println("Choose Category");
@@ -48,8 +54,8 @@ public class Main {
                                                     break;
                                                 case "test2":
                                                     break;
-                                             }
-                                             break;
+                                            }
+                                            break;
                                         case "c#":
                                             break;
                                     }
@@ -62,7 +68,7 @@ public class Main {
                             break;
                     }
                     break;
-                case "admin" :
+                case "admin":
                     break;
             }
         }
