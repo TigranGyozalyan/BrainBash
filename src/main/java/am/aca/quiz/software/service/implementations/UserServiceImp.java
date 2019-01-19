@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.intefaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class UserServiceImp implements UserService {
         return true;
     }
 
-    public List<UserEntity> getAll() throws SQLException {
-        return userRepository.findAll();
+    public List<UserDto> getAll() throws SQLException {
+        return UserDto.mapEntitiesToDto(userRepository.findAll());
     }
 
     @Override
     public boolean update(UserEntity user, Long id) throws SQLException {
-        UserEntity updated_user = getById(id);
+        UserEntity updated_user = userRepository.findById(id).get();
         if (updated_user != null) {
             user.setId(id);
             return addUser(user);
@@ -41,25 +42,25 @@ public class UserServiceImp implements UserService {
 
 
 
-    public UserEntity remove(UserEntity user) throws SQLException {
+    public UserDto remove(UserEntity user) throws SQLException {
         userRepository.delete(user);
-        return user;
+        return UserDto.mapEntityToDto(user);
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        UserEntity deleted_user = getById(id);
+        UserEntity deleted_user = userRepository.findById(id).get();
         userRepository.delete(deleted_user);
         return true;
     }
 
     @Override
-    public UserEntity getById(Long id) throws SQLException {
+    public UserDto getById(Long id) throws SQLException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         if(!userEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
-        return userEntity.get();
+        return UserDto.mapEntityToDto(userEntity.get());
     }
 }
 

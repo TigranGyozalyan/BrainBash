@@ -31,7 +31,11 @@ public class AnswerDto {
         for (AnswerEntity answerEntity : answerEntities) {
             answerDtos.add(mapEntityToDto(answerEntity));
         }
-        return answerDtos;
+        /*
+        This will not work with stream as map method expects <? super AnswerEntity>
+        So for mapping two Lists, they should be the same type or mapper should be super type.
+         */
+       return answerDtos;
     }
 
 

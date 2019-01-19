@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.intefaces;
 
 import am.aca.quiz.software.entity.CategoryEntity;
+import am.aca.quiz.software.service.dto.CategoryDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,16 +13,16 @@ public interface CategoryService {
     boolean addCategory(CategoryEntity category) throws SQLException;
 
     //read
-    List<CategoryEntity> getAll() throws SQLException;
+    List<CategoryDto> getAll() throws SQLException;
 
     //update
     boolean update(CategoryEntity category,Long id) throws SQLException;
 
     //delete
-    CategoryEntity remove(CategoryEntity category) throws SQLException;
+    CategoryDto remove(CategoryEntity category) throws SQLException;
 
     boolean removeById(Long id) throws SQLException;
 
-    CategoryEntity getById(Long id) throws SQLException;
+    CategoryDto getById(Long id) throws SQLException;
 }
 

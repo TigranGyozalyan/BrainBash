@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.repository.SubCategoryRepository;
+import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.intefaces.SubCategoryService;
 import am.aca.quiz.software.entity.SubCategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return true;
     }
 
-    public List<SubCategoryEntity> getAll() throws SQLException {
-        return subCategoryRepository.findAll();
+    public List<SubCategoryDto> getAll() throws SQLException {
+        return SubCategoryDto.mapEntityToDtos(subCategoryRepository.findAll());
     }
 
     public boolean update(SubCategoryEntity subCategory, Long id) throws SQLException {
-        SubCategoryEntity updated_subCategory = getById(id);
+        SubCategoryEntity updated_subCategory = subCategoryRepository.findById(id).get();
         if (updated_subCategory != null) {
             subCategory.setId(id);
             return addSubCategory(subCategory);
@@ -39,23 +40,23 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return false;
     }
 
-    public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
+    public SubCategoryDto remove(SubCategoryEntity subCategory) throws SQLException {
         subCategoryRepository.delete(subCategory);
-        return subCategory;
+        return SubCategoryDto.mapEntityToDto(subCategory);
     }
 
     @Override
-    public SubCategoryEntity getById(Long id) throws SQLException {
+    public SubCategoryDto getById(Long id) throws SQLException {
         Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
         if (!subCategoryEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
-        return subCategoryEntity.get();
+        return SubCategoryDto.mapEntityToDto(subCategoryEntity.get());
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        SubCategoryEntity deleted_subCategory = getById(id);
+        SubCategoryEntity deleted_subCategory = subCategoryRepository.findById(id).get();
         subCategoryRepository.delete(deleted_subCategory);
         return true;
     }

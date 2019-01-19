@@ -1,17 +1,22 @@
 package am.aca.quiz.software;
 
 
+import am.aca.quiz.software.config.DataBaseConfig;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.applet.AppletContext;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        sessionFactory.openSession();
-        menu();
+//        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+//        sessionFactory.openSession();
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(DataBaseConfig.class);
+      //  menu();
     }
 
     private static void menu(){

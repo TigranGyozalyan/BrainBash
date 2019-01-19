@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.repository.HistoryRepository;
 import am.aca.quiz.software.entity.HistoryEntity;
+import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.intefaces.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,13 +27,13 @@ public class HistoryServiceImp implements HistoryService {
         return true;
     }
 
-    public List<HistoryEntity> getAll() throws SQLException {
-        return historyRepository.findAll();
+    public List<HistoryDto> getAll() throws SQLException {
+        return HistoryDto.mapEntitesToDto(historyRepository.findAll());
     }
 
     @Override
     public boolean update(HistoryEntity history, Long id) throws SQLException {
-        HistoryEntity updated_history = getByid(id);
+        HistoryEntity updated_history = historyRepository.findById(id).get();
         if (updated_history != null) {
             history.setId(id);
             return addHistory(history);
@@ -41,24 +42,24 @@ public class HistoryServiceImp implements HistoryService {
     }
 
 
-    public HistoryEntity remove(HistoryEntity history) throws SQLException {
+    public HistoryDto remove(HistoryEntity history) throws SQLException {
         historyRepository.delete(history);
-        return history;
+        return HistoryDto.mapEntityToDto(history);
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        HistoryEntity deleted_history = getByid(id);
+        HistoryEntity deleted_history = historyRepository.findById(id).get();
         historyRepository.delete(deleted_history);
         return true;
     }
 
     @Override
-    public HistoryEntity getByid(Long id) throws SQLException {
+    public HistoryDto getByid(Long id) throws SQLException {
         Optional<HistoryEntity> historyEntity = historyRepository.findById(id);
         if (!historyEntity.isPresent()) {
             throw new SQLException("Entity Not Found");
         }
-        return historyEntity.get();
+        return HistoryDto.mapEntityToDto(historyEntity.get());
     }
 }

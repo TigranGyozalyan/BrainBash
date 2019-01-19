@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.service.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -13,16 +14,16 @@ public interface UserService {
     boolean addUser(UserEntity user) throws SQLException;
 
     //read
-    List<UserEntity> getAll() throws SQLException;
+    List<UserDto> getAll() throws SQLException;
 
     //update
     boolean update(UserEntity user, Long id) throws SQLException;
 
     //delete
-    UserEntity remove(UserEntity user) throws SQLException;
+    UserDto remove(UserEntity user) throws SQLException;
 
 
     boolean removeByid(Long id) throws SQLException;
 
-    UserEntity getById(Long id) throws SQLException;
+    UserDto getById(Long id) throws SQLException;
 }
