@@ -26,4 +26,6 @@ public interface UserService {
     boolean removeByid(Long id) throws SQLException;
 
     UserDto getById(Long id) throws SQLException;
+
+    void sendEmail();
 }

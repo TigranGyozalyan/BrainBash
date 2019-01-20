@@ -2,6 +2,8 @@ package am.aca.quiz.software;
 
 
 import am.aca.quiz.software.config.DataBaseConfig;
+import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.intefaces.UserService;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +18,10 @@ public class Main {
 //        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 //        sessionFactory.openSession();
         ApplicationContext ctx=new AnnotationConfigApplicationContext(DataBaseConfig.class);
+
+        UserServiceImp userServiceImp=new UserServiceImp();
+        userServiceImp.sendEmail();
+
       //  menu();
     }
 
