@@ -11,7 +11,11 @@ import java.util.List;
 public interface SubCategoryService {
 
     //create
+<<<<<<< HEAD
     boolean addSubCategory(String typename,Long id) throws SQLException;
+=======
+    boolean addSubCategory(String typeName,Long id) throws SQLException;
+>>>>>>> 5c93e577157a65eda023a13a4e8620c8fa21f7c5
 
     //read
     List<SubCategoryDto> getAll() throws SQLException;

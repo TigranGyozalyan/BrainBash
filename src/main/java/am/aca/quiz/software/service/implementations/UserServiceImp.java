@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -27,12 +26,11 @@ public class UserServiceImp implements UserService {
     private static final String from = "quizsoftware.noreply@gmail.com";
     private static final String password = "quizsoftware1";
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ScoreServiceImp scoreServiceImp;
-    @Autowired
-    private HistoryServiceImp historyServiceImp;
+    private final UserRepository userRepository;
+
+    public UserServiceImp(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public boolean addUser(UserEntity user) throws SQLException {
         userRepository.saveAndFlush(user);

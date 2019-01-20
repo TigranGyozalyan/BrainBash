@@ -4,7 +4,6 @@ import am.aca.quiz.software.repository.ScoreRepository;
 import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.dto.ScoreDto;
 import am.aca.quiz.software.service.intefaces.ScoreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -15,12 +14,13 @@ import java.util.Optional;
 @Service
 public class ScoreServiceImp implements ScoreService {
 
-    @Autowired
-    private ScoreRepository scoreRepository;
-    @Autowired
-    private UserServiceImp userServiceImp;
-    @Autowired
-    private TopicServiceImp topicServiceImp;
+
+    private final ScoreRepository scoreRepository;
+
+    public ScoreServiceImp(ScoreRepository scoreRepository) {
+        this.scoreRepository = scoreRepository;
+    }
+
 
     public boolean addScore(ScoreEntity score) throws SQLException {
         scoreRepository.saveAndFlush(score);

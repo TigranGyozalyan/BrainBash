@@ -15,12 +15,12 @@ import java.util.Optional;
 @Service
 public class HistoryServiceImp implements HistoryService {
 
-    @Autowired
-    private HistoryRepository historyRepository;
-    @Autowired
-    private TestServiceImp testServiceImp;
-    @Autowired
-    private UserServiceImp userServiceImp;
+    private final HistoryRepository historyRepository;
+
+    public HistoryServiceImp(HistoryRepository historyRepository) {
+        this.historyRepository = historyRepository;
+    }
+
 
     public boolean addHistory(HistoryEntity history) throws SQLException {
         historyRepository.saveAndFlush(history);
