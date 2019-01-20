@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface HistoryService {
     //create
-    boolean addHistory(Long userId, Long testId, double score, Enum status,LocalDateTime startTime,LocalDateTime endTime) throws SQLException;
+    boolean addHistory(Long userId, Long testId, double score, String status,LocalDateTime startTime,LocalDateTime endTime) throws SQLException;
 
     //read
     List<HistoryEntity> getAll() throws SQLException;
@@ -22,5 +22,5 @@ public interface HistoryService {
 
     boolean removeById(Long id) throws SQLException;
 
-    HistoryEntity getByid(Long id) throws SQLException;
+    HistoryEntity getById(Long id) throws SQLException;
 }
