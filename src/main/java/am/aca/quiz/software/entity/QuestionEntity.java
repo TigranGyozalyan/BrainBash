@@ -1,7 +1,11 @@
 package am.aca.quiz.software.entity;
 
 
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +17,19 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "question",nullable = false)
+    @Column(name = "question",nullable = false,columnDefinition = "text")
     private String question;
 
+    @Min(value = 0,message = "Invalid Point Argument. Points must be >= 0")
     @Column(name = "points",nullable = false)
     private int points;
 
+    @Enumerated(EnumType.STRING)
     @Column (name = "level",nullable = false)
-    private int level;
+    private Level level;
 
-    @Column (name = "correct_amount",nullable = false)
+    @Min(value = 1,message = "The question must have at least one correct answer")
+    @Column (name = "correct_answer_count",nullable = false)
     private int correct_amount;
 
     @OneToMany(mappedBy = "questionEntity",cascade = CascadeType.ALL)
@@ -40,31 +47,20 @@ public class QuestionEntity {
     public QuestionEntity() {
     }
 
-    public QuestionEntity(String question, int points, int level, int correct_amount) {
+    public QuestionEntity(String question, @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0") int points, Level level, @Min(value = 1, message = "The question must have at least one correct answer") int correct_amount, TopicEntity topicEntity) {
         this.question = question;
         this.points = points;
         this.level = level;
         this.correct_amount = correct_amount;
+        this.topicEntity = topicEntity;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<TestEntity> getTestEntities() {
-        return testEntities;
-    }
-
-    public void setTestEntities(List<TestEntity> testEntities) {
-        this.testEntities = testEntities;
-    }
-
-    public TopicEntity getTopicEntity() {
-        return topicEntity;
-    }
-
-    public void setTopicEntity(TopicEntity topicEntity) {
-        this.topicEntity = topicEntity;
     }
 
     public String getQuestion() {
@@ -83,11 +79,11 @@ public class QuestionEntity {
         this.points = points;
     }
 
-    public int getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 
@@ -103,25 +99,44 @@ public class QuestionEntity {
         return answerEntities;
     }
 
-    public void setAnswerEntities(List<AnswerEntity> anwerEntities) {
-        this.answerEntities = anwerEntities;
+    public void setAnswerEntities(List<AnswerEntity> answerEntities) {
+        this.answerEntities = answerEntities;
     }
 
-    public Long getId() {
-        return id;
+    public List<TestEntity> getTestEntities() {
+        return testEntities;
     }
 
-    @Override
-    public String toString() {
-        return "QuestionEntity{" +
-                "id=" + id +
-                ", question='" + question + '\'' +
-                ", points=" + points +
-                ", level=" + level +
-                ", correct_amount=" + correct_amount +
-                ", answerEntities=" + answerEntities +
-                ", testEntities=" + testEntities +
-                ", topicEntity=" + topicEntity +
-                '}';
+    public void setTestEntities(List<TestEntity> testEntities) {
+        this.testEntities = testEntities;
     }
+
+    public TopicEntity getTopicEntity() {
+        return topicEntity;
+    }
+
+    public void setTopicEntity(TopicEntity topicEntity) {
+        this.topicEntity = topicEntity;
+    }
+
+    public enum Level {
+        BEGINNER("beginner"),
+        INTERMEDIATE("intermediate"),
+        ADVANCED("advanced");
+
+
+        private final String stringValue;
+
+        Level(String stringValue) {
+            this.stringValue = stringValue;
+        }
+
+        @Override
+        public String toString() {
+            return stringValue;
+        }
+    }
+
 }
+
+

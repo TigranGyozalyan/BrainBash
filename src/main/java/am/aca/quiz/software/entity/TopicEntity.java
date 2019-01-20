@@ -12,22 +12,22 @@ public class TopicEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "topic_name",nullable = false)
+    @Column(name = "topic_name", nullable = false)
     private String topicName;
 
-   @ManyToOne(cascade = CascadeType.ALL)
-   @JoinColumn(name = "subcategory_id",insertable = false,updatable = false)
-   private SubCategoryEntity subCategory;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subcategory_id", insertable = false, updatable = false)
+    private SubCategoryEntity subCategory;
 
-   @OneToMany(mappedBy = "topicEntity",cascade = CascadeType.ALL)
-   private List<QuestionEntity> questionEntities=new ArrayList<>();
+    @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL)
+    private List<QuestionEntity> questionEntities = new ArrayList<>();
 
-   @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-   private  List<ScoreEntity> scoreEntityList=new ArrayList<>();
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    private List<ScoreEntity> scoreEntityList = new ArrayList<>();
 
-   public TopicEntity(){
+    public TopicEntity() {
 
-   }
+    }
 
     public TopicEntity(String topicName, SubCategoryEntity subCategory) {
         this.topicName = topicName;
@@ -66,6 +66,7 @@ public class TopicEntity {
                 ", subCategory=" + subCategory +
                 '}';
     }
+
     public List<QuestionEntity> getQuestionEntities() {
         return questionEntities;
     }

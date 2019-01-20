@@ -2,7 +2,7 @@ package am.aca.quiz.software.entity;
 
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +19,12 @@ public class TestEntity {
     private String test_name;
 
     @Column(name = "duration",nullable = false)
-    private Date duration;
+    private LocalDateTime duration;
 
-    @Column(name = "description",nullable = false)
+    @Column(name = "description",nullable = false,columnDefinition = "text")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id")})
@@ -34,7 +34,7 @@ public class TestEntity {
     private List<HistoryEntity> historyEntities=new ArrayList<>();
 
 
-    public TestEntity(String test_name, Date duration, String description) {
+    public TestEntity(String test_name, LocalDateTime duration, String description) {
         this.test_name = test_name;
         this.duration = duration;
         this.description = description;
@@ -55,7 +55,7 @@ public class TestEntity {
         return this.test_name;
     }
 
-    public Date getDuration() {
+    public LocalDateTime getDuration() {
         return this.duration;
     }
 
@@ -67,7 +67,7 @@ public class TestEntity {
         this.test_name = test_name;
     }
 
-    public void setDuration(Date duration) {
+    public void setDuration(LocalDateTime duration) {
         this.duration = duration;
     }
 
@@ -102,8 +102,6 @@ public class TestEntity {
                 ", test_name='" + test_name + '\'' +
                 ", duration=" + duration +
                 ", description='" + description + '\'' +
-                ", questionEntities=" + questionEntities +
-                ", historyEntities=" + historyEntities +
                 '}';
     }
 }

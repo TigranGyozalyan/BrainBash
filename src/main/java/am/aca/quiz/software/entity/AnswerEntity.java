@@ -10,13 +10,13 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
+    @Column(name = "description",columnDefinition = "text")
     private String description;
 
     @Column(name = "is_correct",nullable = false)
     private boolean is_correct;
 
-    @Column(name = "answer_text",nullable = false)
+    @Column(name = "answer",nullable = false,columnDefinition = "text")
     private String answer_text;
 
     @ManyToOne(cascade = CascadeType.ALL)

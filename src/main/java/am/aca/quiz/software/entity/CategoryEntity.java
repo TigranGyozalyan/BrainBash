@@ -24,7 +24,6 @@ public class CategoryEntity {
 
     }
 
-
     public CategoryEntity(String type) {
         this.type = type;
     }

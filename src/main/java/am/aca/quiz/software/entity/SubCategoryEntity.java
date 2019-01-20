@@ -1,5 +1,7 @@
 package am.aca.quiz.software.entity;
 
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,6 @@ public class SubCategoryEntity {
                 "id=" + id +
                 ", typeName='" + typeName + '\'' +
                 ", category=" + category +
-                ", topicEntityList=" + topicEntityList +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package am.aca.quiz.software.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,17 +11,18 @@ public class ScoreEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "score_value",nullable = false)
+    @Column(name = "score_value", nullable = false,columnDefinition = "numeric default 0.0")
     private double value;
-    @Column(name = "count",nullable = false)
+
+    @Column(name = "count", nullable = false,columnDefinition = "bigint default '0'")
     private int count;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "topic_id",insertable = false,updatable = false)
+    @JoinColumn(name = "topic_id", insertable = false, updatable = false)
     private TopicEntity topic;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserEntity userEntity;
 
     public ScoreEntity() {
