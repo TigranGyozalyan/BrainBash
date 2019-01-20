@@ -1,5 +1,6 @@
 package am.aca.quiz.software.service.implementations;
 
+import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.SubCategoryRepository;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.intefaces.SubCategoryService;
@@ -22,7 +23,9 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Autowired
     private CategoryServiceImp categoryServiceImp;
 
-    public boolean addSubCategory(SubCategoryEntity subCategory) throws SQLException {
+    public boolean addSubCategory(String typename,Long id) throws SQLException {
+        CategoryEntity categoryEntity= categoryServiceImp.getById(id);
+        SubCategoryEntity subCategory=new SubCategoryEntity(typename,);
         subCategoryRepository.saveAndFlush(subCategory);
         return true;
     }

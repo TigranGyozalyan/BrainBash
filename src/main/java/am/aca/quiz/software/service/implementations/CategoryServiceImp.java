@@ -17,12 +17,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private SubCategoryServiceImp subCategoryServiceImp;
 
-
-    public boolean addCategory(CategoryEntity category) throws SQLException {
+    public boolean addCategory(String type) throws SQLException {
+        CategoryEntity category=new CategoryEntity(type);
         categoryRepository.saveAndFlush(category);
+
         return true;
     }
 
@@ -36,14 +35,10 @@ public class CategoryServiceImp implements CategoryService {
         CategoryEntity updated_category = categoryRepository.findById(id).get();
         if (updated_category != null) {
             category.setId(id);
-            return addCategory(category);
+            categoryRepository.saveAndFlush(category);
+            return true;
         }
         return false;
-    }
-
-    public CategoryDto remove(CategoryEntity category) throws SQLException {
-        categoryRepository.delete(category);
-        return CategoryDto.mapEntityToDto(category);
     }
 
     @Override

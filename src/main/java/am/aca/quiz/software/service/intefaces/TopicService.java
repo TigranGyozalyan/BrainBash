@@ -11,17 +11,13 @@ import java.util.List;
 @Service
 public interface TopicService {
     //create
-    boolean addTopic(TopicEntity topic) throws SQLException;
+    boolean addTopic(String topicName,Long id) throws SQLException;
 
     //read
     List<TopicDto> getAll() throws SQLException;
 
     //update
     boolean update(TopicEntity topic, Long id) throws SQLException;
-
-    //delete
-    TopicDto remove(TopicEntity topic) throws SQLException;
-
 
     boolean removeByid(Long id) throws SQLException;
 

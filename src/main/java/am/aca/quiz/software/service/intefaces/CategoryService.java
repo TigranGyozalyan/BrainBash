@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface CategoryService {
     //create
-    boolean addCategory(CategoryEntity category) throws SQLException;
+    boolean addCategory(String type) throws SQLException;
 
     //read
     List<CategoryDto> getAll() throws SQLException;
@@ -19,7 +19,6 @@ public interface CategoryService {
     boolean update(CategoryEntity category,Long id) throws SQLException;
 
     //delete
-    CategoryDto remove(CategoryEntity category) throws SQLException;
 
     boolean removeById(Long id) throws SQLException;
 
