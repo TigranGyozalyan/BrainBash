@@ -2,6 +2,7 @@ package am.aca.quiz.software.config;
 
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +27,12 @@ import java.util.Properties;
 @ComponentScan(value = "am.aca.quiz.software")
 public class DataBaseConfig {
 
-    @Resource
-    private Environment env;
+
+    private final Environment env;
+    @Autowired
+    public DataBaseConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
