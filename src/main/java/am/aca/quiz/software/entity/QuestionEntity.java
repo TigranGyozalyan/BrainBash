@@ -44,7 +44,7 @@ public class QuestionEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private TopicEntity topicEntity;
 
-    public QuestionEntity() {
+    public QuestionEntity(String question, Enum level, int correctAnswerCount, int points, TopicEntity topicEntity) {
     }
 
     public QuestionEntity(String question, @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0") int points, Level level, @Min(value = 1, message = "The question must have at least one correct answer") int correct_amount, TopicEntity topicEntity) {

@@ -24,9 +24,9 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
 
-    public boolean addSubCategory(String typename,Long id) throws SQLException {
-        CategoryEntity categoryEntity= categoryServiceImp.getById(id);
-        SubCategoryEntity subCategory=new SubCategoryEntity(typename,categoryEntity);
+    public boolean addSubCategory(String typename, Long id) throws SQLException {
+        CategoryEntity categoryEntity = categoryServiceImp.getById(id);
+        SubCategoryEntity subCategory = new SubCategoryEntity(typename, categoryEntity);
         subCategoryRepository.saveAndFlush(subCategory);
         return true;
     }
@@ -48,11 +48,11 @@ public class SubCategoryServiceImp implements SubCategoryService {
 
     @Override
     public SubCategoryEntity getById(Long id) throws SQLException {
-        Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
-        if (!subCategoryEntity.isPresent()) {
+        SubCategoryEntity subCategoryEntity = subCategoryRepository.findById(id).get();
+        if (subCategoryEntity == null) {
             throw new SQLException("Entity not found");
         }
-        return subCategoryEntity.get();
+        return subCategoryEntity;
     }
 
     @Override
