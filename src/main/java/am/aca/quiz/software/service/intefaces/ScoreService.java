@@ -19,7 +19,7 @@ public interface ScoreService {
     //update
     boolean update(ScoreEntity score, Long id) throws SQLException;
 
-    ScoreEntity getByid(Long id) throws SQLException;
+    ScoreEntity getById(Long id) throws SQLException;
 
-    boolean removeByid(Long id) throws SQLException;
+    boolean removeById(Long id) throws SQLException;
 }

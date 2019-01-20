@@ -21,7 +21,7 @@ public interface TestService {
     boolean update(TestEntity test,Long id) throws SQLException;
 
 
-    boolean removeByid(Long id) throws SQLException;
+    boolean removeById(Long id) throws SQLException;
 
-    TestEntity getByid(Long id) throws SQLException;
+    TestEntity getById(Long id) throws SQLException;
 }

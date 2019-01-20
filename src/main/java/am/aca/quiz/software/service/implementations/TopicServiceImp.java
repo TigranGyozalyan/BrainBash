@@ -28,6 +28,8 @@ public class TopicServiceImp implements TopicService {
         SubCategoryEntity subCategoryEntity = subCategoryServiceImpl.getById(subCategoryId);
         TopicEntity topicEntity = new TopicEntity(topicName, subCategoryEntity);
 
+        subCategoryEntity.getTopicEntityList().add(topicEntity);
+
         topicRepository.saveAndFlush(topicEntity);
         return true;
     }

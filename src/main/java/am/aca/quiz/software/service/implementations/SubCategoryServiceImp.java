@@ -27,6 +27,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
     public boolean addSubCategory(String typename, Long id) throws SQLException {
         CategoryEntity categoryEntity = categoryServiceImp.getById(id);
         SubCategoryEntity subCategory = new SubCategoryEntity(typename, categoryEntity);
+
+        categoryEntity.getSubCategoryEntityLists().add(subCategory);
         subCategoryRepository.saveAndFlush(subCategory);
         return true;
     }

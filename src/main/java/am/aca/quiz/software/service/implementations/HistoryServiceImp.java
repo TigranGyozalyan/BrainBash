@@ -1,10 +1,12 @@
 package am.aca.quiz.software.service.implementations;
 
+import am.aca.quiz.software.entity.TestEntity;
+import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.HistoryRepository;
 import am.aca.quiz.software.entity.HistoryEntity;
-import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.intefaces.HistoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import am.aca.quiz.software.service.intefaces.TestService;
+import am.aca.quiz.software.service.intefaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -17,16 +19,32 @@ import java.util.Optional;
 public class HistoryServiceImp implements HistoryService {
 
     private final HistoryRepository historyRepository;
+    private final UserService userService;
+    private final TestService testService;
 
-    public HistoryServiceImp(HistoryRepository historyRepository) {
+    public HistoryServiceImp(HistoryRepository historyRepository, UserService userService, TestService testService) {
         this.historyRepository = historyRepository;
+        this.userService = userService;
+        this.testService = testService;
     }
 
 
-
     @Override
-    public boolean addHistory(Long userId, Long testId, double score, Enum status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
-        return false;
+    public boolean addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
+        UserEntity userEntity=userService.getById(userId);
+        TestEntity testEntity=testService.getById(testId);
+
+        HistoryEntity.Status status1=HistoryEntity.Status.valueOf(status);
+
+        HistoryEntity historyEntity=new HistoryEntity(startTime,status1,score,userEntity,testEntity);
+
+        userEntity.getHistoryList().add(historyEntity);
+        testEntity.getHistoryEntities().add(historyEntity);
+
+        historyRepository.saveAndFlush(historyEntity);
+        return true;
+
+
     }
     public List<HistoryEntity> getAll() throws SQLException {
         return historyRepository.findAll();
@@ -52,7 +70,7 @@ public class HistoryServiceImp implements HistoryService {
     }
 
     @Override
-    public HistoryEntity getByid(Long id) throws SQLException {
+    public HistoryEntity getById(Long id) throws SQLException {
         Optional<HistoryEntity> historyEntity = historyRepository.findById(id);
         if (!historyEntity.isPresent()) {
             throw new SQLException("Entity Not Found");

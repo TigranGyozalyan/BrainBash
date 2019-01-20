@@ -25,27 +25,36 @@ public class TestServiceImp implements TestService {
 
     @Override
     public boolean addTest(String testName, String description, LocalDateTime duration) throws SQLException {
-        return false;
+        TestEntity testEntity=new TestEntity(testName,duration,description);
+        testRepository.saveAndFlush(testEntity);
+        return true;
     }
 
     @Override
     public List<TestEntity> getAll() throws SQLException {
-        return null;
+        return testRepository.findAll();
     }
 
     @Override
     public boolean update(TestEntity test, Long id) throws SQLException {
+        TestEntity testEntity = testRepository.findById(id).get();
+        if (testEntity != null) {
+            test.setId(id);
+            testRepository.saveAndFlush(test);
+            return true;
+        }
         return false;
     }
 
 
     @Override
-    public boolean removeByid(Long id) throws SQLException {
-        return false;
+    public boolean removeById(Long id) throws SQLException {
+        testRepository.deleteById(id);
+        return true;
     }
 
     @Override
-    public TestEntity getByid(Long id) throws SQLException {
-        return null;
+    public TestEntity getById(Long id) throws SQLException {
+        return testRepository.findById(id).get();
     }
 }

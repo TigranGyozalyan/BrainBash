@@ -1,10 +1,8 @@
 package am.aca.quiz.software.service.implementations;
 
-import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.entity.UserEntity;
-import am.aca.quiz.software.service.dto.UserDto;
+import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.intefaces.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -14,8 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
-
 import java.util.Properties;
 
 
@@ -32,30 +28,40 @@ public class UserServiceImp implements UserService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public boolean addUser(String fName, String lName, String nickname, String email, String password, boolean isAdmin) throws SQLException {
-        return false;
+
+        UserEntity userEntity=new UserEntity(fName,lName,email,nickname,password,isAdmin);
+        userRepository.saveAndFlush(userEntity);
+
+        return true;
     }
 
     @Override
     public List<UserEntity> getAll() throws SQLException {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
     public boolean update(UserEntity user, Long id) throws SQLException {
+        UserEntity userEntity = userRepository.findById(id).get();
+        if (userEntity != null) {
+            user.setId(id);
+            userRepository.saveAndFlush(user);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        return false;
+        userRepository.deleteById(id);
+        return true;
     }
 
     @Override
     public UserEntity getById(Long id) throws SQLException {
-        return null;
+        return userRepository.findById(id).get();
     }
 
     @Override
@@ -90,6 +96,7 @@ public class UserServiceImp implements UserService {
         }
 
     }
+
 
 
 }

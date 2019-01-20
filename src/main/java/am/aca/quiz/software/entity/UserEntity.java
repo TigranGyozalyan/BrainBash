@@ -35,7 +35,7 @@ public class UserEntity {
     @Column(name = "is_admin",columnDefinition = "boolean default false")
     private boolean is_admin;
 
-    @Column(name = "avatar_image")
+    @Column(name = "avatar_image",columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
     private String image;
 
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
@@ -47,14 +47,13 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin, String image) {
+    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.is_admin = is_admin;
-        this.image = image;
     }
 
     public void setId(Long id) {

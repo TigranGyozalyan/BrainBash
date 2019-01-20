@@ -38,7 +38,7 @@ public class HistoryEntity {
     public HistoryEntity() {
     }
 
-    public HistoryEntity(LocalDateTime startTime, Status status, @Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
+    public HistoryEntity(LocalDateTime startTime, Status status,@Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
         this.startTime = startTime;
         this.status = status;
         this.score = score;

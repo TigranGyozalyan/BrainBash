@@ -24,9 +24,13 @@ public class QuestionServiceImp implements QuestionService {
 
 
     @Override
-    public boolean addQuestion(String question, Enum level, int correctAnswerCount, int points, Long topicCentityId) throws SQLException {
+    public boolean addQuestion(String question, String level, int correctAnswerCount, int points, Long topicCentityId) throws SQLException {
         TopicEntity topicEntity = topicServiceImp.getById(topicCentityId);
-        QuestionEntity questionEntity = new QuestionEntity(question, level, correctAnswerCount, points, topicEntity);
+        QuestionEntity.Level level1 = QuestionEntity.Level.valueOf(level);
+
+        QuestionEntity questionEntity = new QuestionEntity(question, level1, correctAnswerCount, points, topicEntity);
+
+        topicEntity.getQuestionEntities().add(questionEntity);
         questionRepository.saveAndFlush(questionEntity);
         return true;
 
