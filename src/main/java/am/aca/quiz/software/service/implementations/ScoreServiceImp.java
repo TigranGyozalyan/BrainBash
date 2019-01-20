@@ -5,14 +5,19 @@ import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.ScoreRepository;
 import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.intefaces.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.provider.HibernateUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.mail.Session;
 import java.sql.SQLException;
 import java.util.List;
 
 
 @Service
 public class ScoreServiceImp implements ScoreService {
+
 
 
     private final ScoreRepository scoreRepository;
@@ -27,14 +32,14 @@ public class ScoreServiceImp implements ScoreService {
 
 
     @Override
-    public boolean addScore(double scoreValue, int count, Long topicId, Long userId) throws SQLException {
+    public boolean addScore(Long topicId,Long userId) throws SQLException {
         TopicEntity topicEntity=topicServiceImp.getById(topicId);
         UserEntity userEntity=userServiceImp.getById(userId);
 
-        ScoreEntity scoreEntity=new ScoreEntity(scoreValue,count,topicEntity,userEntity);
+        ScoreEntity scoreEntity=new ScoreEntity();
+        scoreEntity.setTopic(topicEntity);
+        scoreEntity.setUserEntity(userEntity);
 
-        topicEntity.getScoreEntityList().add(scoreEntity);
-        userEntity.getScoreList().add(scoreEntity);
 
         scoreRepository.saveAndFlush(scoreEntity);
 
@@ -67,5 +72,10 @@ public class ScoreServiceImp implements ScoreService {
     public boolean removeById(Long id) throws SQLException {
         scoreRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public int getTestCountByTopic(Long user_id) {
+        return 0;
     }
 }

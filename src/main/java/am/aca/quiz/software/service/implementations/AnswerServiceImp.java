@@ -1,8 +1,8 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.AnswerEntity;
+import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.repository.AnswerRepository;
-import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.intefaces.AnswerService;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +15,25 @@ public class AnswerServiceImp implements AnswerService {
 
 
     private final AnswerRepository answerRepository;
+    private final QuestionServiceImp questionServiceImp;
 
-    public AnswerServiceImp(AnswerRepository answerRepository) {
+    public AnswerServiceImp(AnswerRepository answerRepository, QuestionServiceImp questionServiceImp) {
         this.answerRepository = answerRepository;
+        this.questionServiceImp = questionServiceImp;
     }
 
 
 
     @Override
     public boolean addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException {
-        return false;
+
+        QuestionEntity questionEntity=questionServiceImp.getById(questionId);
+        AnswerEntity answerEntity=new AnswerEntity(answer,description,isCorrect,questionEntity);
+        questionEntity.getAnswerEntities().add(answerEntity);
+
+        answerRepository.saveAndFlush(answerEntity);
+
+        return true;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface ScoreService {
     //create
-    boolean addScore(double scoreValue,int count,Long topicId,Long userId) throws SQLException;
+    boolean addScore(Long topicId,Long userId) throws SQLException;
 
     //read
     List<ScoreEntity> getAll() throws SQLException;
@@ -22,4 +22,6 @@ public interface ScoreService {
     ScoreEntity getById(Long id) throws SQLException;
 
     boolean removeById(Long id) throws SQLException;
+
+    int getTestCountByTopic(Long user_id);
 }
