@@ -10,23 +10,6 @@ public class SubCategoryDto {
     private Long id;
     private String typeName;
 
-    public static SubCategoryDto mapEntityToDto(SubCategoryEntity subCategory) {
-        SubCategoryDto subCategoryDto = new SubCategoryDto();
-        subCategoryDto.setId(subCategory.getId());
-        subCategoryDto.setTypeName(subCategory.getTypeName());
-
-        return subCategoryDto;
-    }
-
-    public static List<SubCategoryDto> mapEntityToDtos(List<SubCategoryEntity> subCategoryEntityList) {
-        List<SubCategoryDto> subCategoryDtoList = new ArrayList<>();
-        for (SubCategoryEntity subCategoryEntity : subCategoryEntityList) {
-            subCategoryDtoList.add(mapEntityToDto(subCategoryEntity));
-        }
-
-        return subCategoryDtoList;
-    }
-
     public Long getId() {
         return id;
     }

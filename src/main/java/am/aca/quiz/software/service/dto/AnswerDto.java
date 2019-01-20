@@ -12,33 +12,6 @@ public class AnswerDto {
     private String description;
     private boolean is_correct;
 
-    public static AnswerDto mapEntityToDto (AnswerEntity answerEntity) {
-        AnswerDto answerDto = new AnswerDto();
-
-        answerDto.setAnswer_text(answerEntity.getAnswer_text());
-        answerDto.setDescription(answerEntity.getDescription());
-        answerDto.setId(answerEntity.getId());
-        answerDto.setIs_correct(answerEntity.isIs_correct());
-
-        return answerDto;
-    }
-
-
-    public static List<AnswerDto> mapEntitiesToDto (List<AnswerEntity> answerEntities) {
-
-        List<AnswerDto> answerDtos = new ArrayList<>();
-
-        for (AnswerEntity answerEntity : answerEntities) {
-            answerDtos.add(mapEntityToDto(answerEntity));
-        }
-        /*
-        This will not work with stream as map method expects <? super AnswerEntity>
-        So for mapping two Lists, they should be the same type or mapper should be super type.
-         */
-       return answerDtos;
-    }
-
-
     public Long getId() {
         return id;
     }

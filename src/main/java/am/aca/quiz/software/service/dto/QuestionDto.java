@@ -14,29 +14,6 @@ public class QuestionDto {
     private QuestionEntity.Level level;
 
 
-    public static QuestionDto mapEntityToDto (QuestionEntity questionEntity) {
-
-        QuestionDto questionDto = new QuestionDto();
-        questionDto.setId(questionEntity.getId());
-        questionDto.setCorrect_amount(questionEntity.getCorrect_amount());
-        questionDto.setLevel(questionEntity.getLevel());
-        questionDto.setPoints(questionEntity.getPoints());
-        questionDto.setQuestion(questionEntity.getQuestion());
-
-        return questionDto;
-    }
-
-    public static List<QuestionDto> mapEntityToDtos (List<QuestionEntity> questionEntities) {
-        List<QuestionDto> questionDtos = new ArrayList<>();
-
-        for(QuestionEntity questionEntity : questionEntities) {
-            questionDtos.add(mapEntityToDto(questionEntity));
-        }
-
-        return questionDtos;
-    }
-
-
     public Long getId() {
         return id;
     }

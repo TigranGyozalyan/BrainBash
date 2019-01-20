@@ -16,28 +16,6 @@ public class UserDto {
     private boolean is_admin;
     private String image;
 
-    public static UserDto mapEntityToDto(UserEntity userEntity){
-        UserDto userDto=new UserDto();
-        userDto.setEmail(userEntity.getEmail());
-        userDto.setId(userEntity.getId());
-        userDto.setImage(userEntity.getImage());
-        userDto.setIs_admin(userEntity.getIs_admin());
-        userDto.setName(userEntity.getName());
-        userDto.setNickname(userEntity.getNickname());
-        userDto.setPassword(userEntity.getPassword());
-        userDto.setSurname(userEntity.getSurname());
-
-        return userDto;
-    }
-    public static List<UserDto> mapEntitiesToDto(List<UserEntity> userEntityList){
-
-        List<UserDto> userDtoList=new ArrayList<>();
-        for(UserEntity userEntity: userEntityList){
-            userDtoList.add(mapEntityToDto(userEntity));
-        }
-        return userDtoList;
-    }
-
     public Long getId() {
         return id;
     }

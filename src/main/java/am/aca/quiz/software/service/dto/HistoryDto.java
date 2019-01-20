@@ -13,24 +13,6 @@ public class HistoryDto {
     private HistoryEntity.Status status;
     private double score;
 
-    public static HistoryDto mapEntityToDto(HistoryEntity historyEntity){
-        HistoryDto historyDto=new HistoryDto();
-        historyDto.setEndTime(historyEntity.getEndTime());
-        historyDto.setId(historyEntity.getId());
-        historyDto.setScore(historyEntity.getScore());
-        historyDto.setStartTime(historyEntity.getStartTime());
-        historyDto.setStatus(historyEntity.getStatus());
-        return historyDto;
-    }
-
-    public static List<HistoryDto> mapEntitesToDto(List<HistoryEntity> historyEntityList){
-        List<HistoryDto> historyDtoList=new ArrayList<>();
-        for(HistoryEntity historyEntity : historyEntityList){
-            historyDtoList.add(mapEntityToDto(historyEntity));
-        }
-        return historyDtoList;
-
-    }
 
     public Long getId() {
         return id;
