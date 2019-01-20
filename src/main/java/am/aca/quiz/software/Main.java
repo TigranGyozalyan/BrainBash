@@ -2,49 +2,31 @@ package am.aca.quiz.software;
 
 
 import am.aca.quiz.software.config.DataBaseConfig;
-<<<<<<< HEAD
-=======
-import am.aca.quiz.software.service.implementations.UserServiceImp;
-import am.aca.quiz.software.service.intefaces.UserService;
->>>>>>> 29cf76e29bd6d5e9ecab6cd3e1b15f64590c2d37
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.applet.AppletContext;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-//        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-//        sessionFactory.openSession();
-<<<<<<< HEAD
 
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(DataBaseConfig.class);
-        menu();
-=======
         ApplicationContext ctx=new AnnotationConfigApplicationContext(DataBaseConfig.class);
 
-        UserServiceImp userServiceImp=new UserServiceImp();
-        userServiceImp.sendEmail();
-
       //  menu();
->>>>>>> 29cf76e29bd6d5e9ecab6cd3e1b15f64590c2d37
     }
 
-    private static void menu() {
+    private static void menu(){
 
-        Scanner in = new Scanner(System.in);
+        Scanner in=new Scanner(System.in);
         System.out.println("Choose User or Admin");
         String authentication;
-        boolean stayInLoop = true;
-        while (stayInLoop) {
-            stayInLoop = false;
-            authentication = in.nextLine();
-            switch (authentication.toLowerCase()) {
-                case "user":
+        boolean stayInLoop=true;
+        while (stayInLoop){
+            stayInLoop=false;
+             authentication=in.nextLine();
+            switch (authentication.toLowerCase()){
+                case "user" :
                     System.out.println("Opening Login Page Enter your Email and Password ");
                     System.out.println("stex authentication and authorisation  kgna @ ete sax lava ancnuma myus ej");
                     System.out.println("*************************************************************");
@@ -52,7 +34,7 @@ public class Main {
                             "\n For History Press h" +
                             "\n For Profile press p" +
                             "\n To LogOut press o");
-                    String button = in.nextLine();
+                    String button =in.nextLine();
                     switch (button) {
                         case "c":
                             System.out.println("Choose Category");
@@ -60,9 +42,9 @@ public class Main {
                             switch (tab.toLowerCase()) {
                                 case "programming":
                                     System.out.println("Choose Language");
-                                    boolean stayInSwitc = true;
+                                    boolean stayInSwitc=true;
                                     while (stayInLoop) {
-                                        stayInLoop = false;
+                                        stayInLoop=false;
                                         String language = in.nextLine();
                                         switch (language.toLowerCase()) {
                                             case "java":
@@ -75,7 +57,7 @@ public class Main {
                                                     case "test2":
                                                         break;
                                                     default:
-                                                        stayInLoop = true;
+                                                        stayInLoop=true;
                                                         System.out.println("No Such Test Found");
                                                         break;
                                                 }
@@ -89,8 +71,8 @@ public class Main {
                                     break;
                                 case "DataBases":
                                     break;
-                                default:
-                                    System.out.println("No Such Category Found");
+                                    default:
+                                        System.out.println("No Such Category Found");
                             }
                             break;
                         case "o":
@@ -103,12 +85,12 @@ public class Main {
                     }
 
                     break;
-                case "admin":
+                case "admin" :
                     break;
-                default:
-                    System.out.println("Try Again");
-                    stayInLoop = true;
-                    break;
+                    default:
+                        System.out.println("Try Again");
+                        stayInLoop=true;
+                        break ;
             }
 
         }

@@ -4,7 +4,6 @@ import am.aca.quiz.software.repository.SubCategoryRepository;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.intefaces.SubCategoryService;
 import am.aca.quiz.software.entity.SubCategoryEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -15,16 +14,22 @@ import java.util.Optional;
 @Service
 public class SubCategoryServiceImp implements SubCategoryService {
 
-    @Autowired
-    private SubCategoryRepository subCategoryRepository;
-    @Autowired
-    private TopicServiceImp topicServiceImp;
-    @Autowired
-    private CategoryServiceImp categoryServiceImp;
+
+    private final SubCategoryRepository subCategoryRepository;
+
+    public SubCategoryServiceImp(SubCategoryRepository subCategoryRepository) {
+        this.subCategoryRepository = subCategoryRepository;
+    }
+
 
     public boolean addSubCategory(SubCategoryEntity subCategory) throws SQLException {
         subCategoryRepository.saveAndFlush(subCategory);
         return true;
+    }
+
+    @Override
+    public boolean addSubCategory(String typeName, Long id) throws SQLException {
+        return false;
     }
 
     public List<SubCategoryDto> getAll() throws SQLException {

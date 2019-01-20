@@ -1,7 +1,9 @@
 package am.aca.quiz.software.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +20,21 @@ public class UserEntity {
     private String surname;
 
     @Column(name = "emails",nullable = false,unique = true)
-    @Pattern(regexp=".+@.+\\.[a-z]+", message="Invalid email address!")
+    @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
     private String email;
+
+    @Size(min = 3)
+    @Pattern(regexp = "^[\\\\p{L} .'-]+$",message = "Invalid Nickname")
     @Column(name = "nickname",nullable = false)
     private String nickname;
+
+    @Size(min = 6)
     @Column(name = "passwords",nullable = false)
     private String password;
-    @Column(name = "is_admin")
+
+    @Column(name = "is_admin",columnDefinition = "boolean default false")
     private boolean is_admin;
+
     @Column(name = "avatar_image")
     private String image;
 
@@ -141,10 +150,6 @@ public class UserEntity {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
-                ", is_admin=" + is_admin +
-                ", image='" + image + '\'' +
-                ", historyList=" + historyList +
-                ", scoreList=" + scoreList +
                 '}';
     }
 }

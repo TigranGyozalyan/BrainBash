@@ -4,7 +4,6 @@ import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.repository.AnswerRepository;
 import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.intefaces.AnswerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -14,10 +13,12 @@ import java.util.Optional;
 @Service
 public class AnswerServiceImp implements AnswerService {
 
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private QuestionServiceImp questionServiceImp;
+
+    private final AnswerRepository answerRepository;
+
+    public AnswerServiceImp(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
+    }
 
     public boolean addAnswer(AnswerEntity answer) throws SQLException {
         answerRepository.saveAndFlush(answer);

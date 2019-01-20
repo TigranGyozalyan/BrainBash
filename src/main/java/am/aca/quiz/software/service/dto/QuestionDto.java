@@ -11,7 +11,7 @@ public class QuestionDto {
     private String question;
     private int correct_amount;
     private int points;
-    private int level;
+    private QuestionEntity.Level level;
 
 
     public static QuestionDto mapEntityToDto (QuestionEntity questionEntity) {
@@ -69,11 +69,11 @@ public class QuestionDto {
         this.points = points;
     }
 
-    public int getLevel() {
+    public QuestionEntity.Level getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(QuestionEntity.Level level) {
         this.level = level;
     }
 }

@@ -4,7 +4,6 @@ import am.aca.quiz.software.repository.TopicRepository;
 import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.intefaces.TopicService;
 import am.aca.quiz.software.entity.TopicEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -15,14 +14,13 @@ import java.util.Optional;
 @Service
 public class TopicServiceImp implements TopicService {
 
-    @Autowired
-    private TopicRepository topicRepository;
-    @Autowired
-    private ScoreServiceImp scoreServiceImp;
-    @Autowired
-    private SubCategoryServiceImp subCategoryServiceImp;
-    @Autowired
-    private QuestionServiceImp questionServiceImp;
+
+    private final TopicRepository topicRepository;
+
+    public TopicServiceImp(TopicRepository topicRepository) {
+        this.topicRepository = topicRepository;
+    }
+
 
     public boolean addTopic(TopicEntity topic) throws SQLException {
         topicRepository.saveAndFlush(topic);

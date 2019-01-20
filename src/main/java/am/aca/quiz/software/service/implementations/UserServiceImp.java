@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -20,21 +19,18 @@ import java.util.Optional;
 import java.util.Properties;
 
 
-
-
 @Service
 public class UserServiceImp implements UserService {
 
-    private static final String to=;
-    private static final String from=;
-    private static final String password=;
+    private static final String to = "yeghiazaryan99@gmail.com";
+    private static final String from = "quizsoftware.noreply@gmail.com";
+    private static final String password = "quizsoftware1";
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ScoreServiceImp scoreServiceImp;
-    @Autowired
-    private HistoryServiceImp historyServiceImp;
+    private final UserRepository userRepository;
+
+    public UserServiceImp(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public boolean addUser(UserEntity user) throws SQLException {
         userRepository.saveAndFlush(user);
@@ -56,7 +52,6 @@ public class UserServiceImp implements UserService {
     }
 
 
-
     public UserDto remove(UserEntity user) throws SQLException {
         userRepository.delete(user);
         return UserDto.mapEntityToDto(user);
@@ -72,7 +67,7 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDto getById(Long id) throws SQLException {
         Optional<UserEntity> userEntity = userRepository.findById(id);
-        if(!userEntity.isPresent()) {
+        if (!userEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
         return UserDto.mapEntityToDto(userEntity.get());
@@ -81,18 +76,15 @@ public class UserServiceImp implements UserService {
     @Override
     public void sendEmail() {
 
-        Properties properties=new Properties();
+        Properties properties = new Properties();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mail.properties");
         try {
             properties.load(inputStream);
-            /*properties.put("mail.smtp.auth","true");
-            properties.put("mail.smtp.starttls.enable","true");
-            properties.put("mail.smtp.host","smtp.gmail.com");
-            properties.put("mail.smtp.port",587);*/
-            Session session=Session.getDefaultInstance(properties, new Authenticator() {
+
+            Session session = Session.getDefaultInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(from,password);
+                    return new PasswordAuthentication(from, password);
                 }
             });
 
@@ -103,10 +95,7 @@ public class UserServiceImp implements UserService {
             message.setSubject("This is the Subject Line!");
             message.setContent("<h1>This is actual message</h1>", "text/html");
 
-          /*  Transport transport=session.getTransport();
-            transport.connect(null,properties.getProperty("mail.smtps.password"));
-            transport.sendMessage(message,message.getAllRecipients());
-            transport.close();*/
+
             Transport.send(message);
 
             System.out.println("Sent message successfully....");

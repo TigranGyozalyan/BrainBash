@@ -2,15 +2,15 @@ package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryDto {
     private Long id;
-    private Date startTime;
-    private Date endTime;
-    private String status;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private HistoryEntity.Status status;
     private double score;
 
     public static HistoryDto mapEntityToDto(HistoryEntity historyEntity){
@@ -40,27 +40,27 @@ public class HistoryDto {
         this.id = id;
     }
 
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public String getStatus() {
+    public HistoryEntity.Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(HistoryEntity.Status status) {
         this.status = status;
     }
 

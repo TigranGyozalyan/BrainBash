@@ -1,38 +1,45 @@
 package am.aca.quiz.software.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.Min;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history")
 public class HistoryEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-    @Column(name = "start_time",nullable = false)
-    private Date startTime;
+
+    @Column(name = "start_time", nullable = false,columnDefinition = "timestamp default CURRENT_DATE")
+    private LocalDateTime startTime;
+
     @Column(name = "end_time")
-    private Date endTime;
-    @Column(name = "status",nullable = false)
-    private String status;
+    private LocalDateTime endTime;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
+
+    @Min(value = 0, message = "Invalid Score Value")
     @Column(name = "score")
     private double score;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserEntity userEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "test_id",insertable = false,updatable = false)
+    @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity testEntity;
 
     public HistoryEntity() {
     }
 
-    public HistoryEntity(Date startTime, Date endTime, String status, double score, UserEntity userEntity, TestEntity testEntity) {
+    public HistoryEntity(LocalDateTime startTime, Status status, @Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
         this.startTime = startTime;
-        this.endTime = endTime;
         this.status = status;
         this.score = score;
         this.userEntity = userEntity;
@@ -47,19 +54,27 @@ public class HistoryEntity {
         return id;
     }
 
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -71,13 +86,6 @@ public class HistoryEntity {
         this.score = score;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public UserEntity getUserEntity() {
         return userEntity;
@@ -106,5 +114,23 @@ public class HistoryEntity {
                 ", userEntity=" + userEntity +
                 ", testEntity=" + testEntity +
                 '}';
+    }
+
+    public enum Status {
+        INPROGRESS("in progress"),
+        UPCOMING("upcoming"),
+        COMPLETED("completed");
+
+        private final String stringValue;
+
+
+        Status(String stringValue) {
+            this.stringValue = stringValue;
+        }
+
+        @Override
+        public String toString() {
+            return stringValue;
+        }
     }
 }

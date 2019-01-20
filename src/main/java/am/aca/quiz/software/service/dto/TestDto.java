@@ -2,7 +2,7 @@ package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.TestEntity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class TestDto {
 
     private Long id;
 
-    private Date duration;
+    private LocalDateTime duration;
     private String test_name;
     private String description;
 
@@ -43,11 +43,11 @@ public class TestDto {
         this.id = id;
     }
 
-    public Date getDuration() {
+    public LocalDateTime getDuration() {
         return duration;
     }
 
-    public void setDuration(Date duration) {
+    public void setDuration(LocalDateTime duration) {
         this.duration = duration;
     }
 
