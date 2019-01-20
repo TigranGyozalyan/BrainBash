@@ -15,26 +15,6 @@ public class TestDto {
     private String test_name;
     private String description;
 
-    public static TestDto mapEntityToDto(TestEntity testEntity) {
-        TestDto testDto = new TestDto();
-        testDto.setId(testEntity.getId());
-        testDto.setDescription(testEntity.getDescription());
-        testDto.setTest_name(testEntity.getTest_name());
-        testDto.setDuration(testEntity.getDuration());
-        return testDto;
-    }
-
-    public static List<TestDto> mapEntityToDtos(List<TestEntity> testEntities) {
-
-        List<TestDto> testDtos = new ArrayList<>();
-
-        for (TestEntity testEntity : testEntities) {
-            testDtos.add(mapEntityToDto(testEntity));
-        }
-
-        return testDtos;
-    }
-
     public Long getId() {
         return id;
     }
