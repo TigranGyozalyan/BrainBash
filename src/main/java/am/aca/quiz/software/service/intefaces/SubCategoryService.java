@@ -1,7 +1,6 @@
 package am.aca.quiz.software.service.intefaces;
 
 import am.aca.quiz.software.entity.SubCategoryEntity;
-import am.aca.quiz.software.service.dto.SubCategoryDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -11,19 +10,15 @@ import java.util.List;
 public interface SubCategoryService {
 
     //create
-<<<<<<< HEAD
-    boolean addSubCategory(String typename,Long id) throws SQLException;
-=======
     boolean addSubCategory(String typeName,Long id) throws SQLException;
->>>>>>> 5c93e577157a65eda023a13a4e8620c8fa21f7c5
 
     //read
-    List<SubCategoryDto> getAll() throws SQLException;
+    List<SubCategoryEntity> getAll() throws SQLException;
 
     //update
     boolean update(SubCategoryEntity subCategory,Long id) throws SQLException;
 
-    SubCategoryDto getById(Long id) throws SQLException;
+    SubCategoryEntity getById(Long id) throws SQLException;
 
     boolean removeByid(Long id) throws SQLException;
 }

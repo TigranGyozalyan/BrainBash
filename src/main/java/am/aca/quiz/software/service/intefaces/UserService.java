@@ -11,21 +11,18 @@ import java.util.List;
 @Service
 public interface UserService {
     //create
-    boolean addUser(UserEntity user) throws SQLException;
+    boolean addUser(String fName,String lName,String nickname,String email,String password,boolean isAdmin) throws SQLException;
 
     //read
-    List<UserDto> getAll() throws SQLException;
+    List<UserEntity> getAll() throws SQLException;
 
     //update
     boolean update(UserEntity user, Long id) throws SQLException;
 
-    //delete
-    UserDto remove(UserEntity user) throws SQLException;
-
 
     boolean removeByid(Long id) throws SQLException;
 
-    UserDto getById(Long id) throws SQLException;
+    UserEntity getById(Long id) throws SQLException;
 
     void sendEmail();
 }

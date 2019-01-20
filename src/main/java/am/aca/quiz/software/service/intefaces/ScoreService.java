@@ -11,18 +11,15 @@ import java.util.List;
 @Service
 public interface ScoreService {
     //create
-    boolean addScore(ScoreEntity score) throws SQLException;
+    boolean addScore(double scoreValue,int count,Long topicId,Long userId) throws SQLException;
 
     //read
-    List<ScoreDto> getAll() throws SQLException;
+    List<ScoreEntity> getAll() throws SQLException;
 
     //update
     boolean update(ScoreEntity score, Long id) throws SQLException;
 
-    //delete
-    ScoreDto remove(ScoreEntity score) throws SQLException;
-
-    ScoreDto getByid(Long id) throws SQLException;
+    ScoreEntity getByid(Long id) throws SQLException;
 
     boolean removeByid(Long id) throws SQLException;
 }

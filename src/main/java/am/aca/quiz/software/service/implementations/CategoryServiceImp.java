@@ -14,10 +14,6 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImp implements CategoryService {
 
-<<<<<<< HEAD
-    @Autowired
-    private CategoryRepository categoryRepository;
-=======
 
     private final CategoryRepository categoryRepository;
 
@@ -25,22 +21,16 @@ public class CategoryServiceImp implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
->>>>>>> 5c93e577157a65eda023a13a4e8620c8fa21f7c5
 
     public boolean addCategory(String type) throws SQLException {
-        CategoryEntity category=new CategoryEntity(type);
-        categoryRepository.saveAndFlush(category);
-
+        CategoryEntity categoryEntity=new CategoryEntity(type);
+        categoryRepository.saveAndFlush(categoryEntity);
         return true;
     }
 
-    @Override
-    public boolean addCategory(String type) throws SQLException {
-        return false;
-    }
 
-    public List<CategoryDto> getAll() throws SQLException {
-        return CategoryDto.mapEntityToDtos(categoryRepository.findAll());
+    public List<CategoryEntity> getAll() throws SQLException {
+        return categoryRepository.findAll();
     }
 
     @Override
@@ -63,12 +53,12 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public CategoryDto getById(Long id) throws SQLException {
+    public CategoryEntity getById(Long id) throws SQLException {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
 
         if (!categoryEntity.isPresent()) {
             throw new SQLException("Entity Not Found");
         }
-        return CategoryDto.mapEntityToDto(categoryEntity.get());
+        return categoryEntity.get();
     }
 }

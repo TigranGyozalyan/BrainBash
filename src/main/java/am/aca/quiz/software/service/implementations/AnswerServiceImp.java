@@ -20,11 +20,14 @@ public class AnswerServiceImp implements AnswerService {
         this.answerRepository = answerRepository;
     }
 
-    public boolean addAnswer(AnswerEntity answer) throws SQLException {
-        answerRepository.saveAndFlush(answer);
-        return true;
+
+
+    @Override
+    public boolean addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException {
+        return false;
     }
 
+    @Override
     public List<AnswerEntity> getAll() throws SQLException {
         return answerRepository.findAll();
     }
@@ -35,26 +38,18 @@ public class AnswerServiceImp implements AnswerService {
         AnswerEntity updated_answer = answerRepository.findById(id).get();
         if (updated_answer != null) {
             answer.setId(id);
-            return addAnswer(answer);
+            return true;
         }
         return false;
     }
 
     @Override
-    public AnswerDto remove(AnswerEntity answer, Long id) throws SQLException {
-        answerRepository.delete(answer);
-        return AnswerDto.mapEntityToDto(answer);
-    }
-
-
-
-    @Override
-    public AnswerDto getById(Long id) throws SQLException {
+    public  AnswerEntity getById(Long id) throws SQLException {
         Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
         if (!answerEntity.isPresent()) {
             throw new SQLException("Entity Not Found");
         }
-        return AnswerDto.mapEntityToDto(answerEntity.get());
+        return answerEntity.get();
     }
 
     @Override

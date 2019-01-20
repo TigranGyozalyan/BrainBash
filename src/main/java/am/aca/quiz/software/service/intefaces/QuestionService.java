@@ -10,18 +10,15 @@ import java.util.List;
 @Service
 public interface QuestionService {
     //create
-    boolean addQuestion(QuestionEntity question) throws SQLException;
+    boolean addQuestion(String question,Enum level,int correctAnswerCount,double points,Long topicCentityId) throws SQLException;
 
     //read
-    List<QuestionDto> getAll() throws SQLException;
+    List<QuestionEntity> getAll() throws SQLException;
 
     //update
     boolean update(QuestionEntity question, Long id) throws SQLException;
 
-    //delete
-    QuestionDto remove(QuestionEntity question) throws SQLException;
-
-    QuestionDto getById(Long id) throws SQLException;
+    QuestionEntity getById(Long id) throws SQLException;
 
     boolean removeByid(Long id) throws SQLException;
 

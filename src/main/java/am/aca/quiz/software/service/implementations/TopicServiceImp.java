@@ -22,44 +22,30 @@ public class TopicServiceImp implements TopicService {
     }
 
 
-    public boolean addTopic(TopicEntity topic) throws SQLException {
-        topicRepository.saveAndFlush(topic);
-        return true;
-    }
-
-    public List<TopicDto> getAll() throws SQLException {
-        return TopicDto.mapEntityToDtos(topicRepository.findAll());
-    }
-
     @Override
-    public boolean update(TopicEntity topic, Long id) throws SQLException {
-        TopicEntity updated_topic = topicRepository.findById(id).get();
-        if (updated_topic != null) {
-            topic.setId(id);
-            return addTopic(topic);
-        }
+    public boolean addTopic(String topicName, Long subCategoryId) throws SQLException {
         return false;
     }
 
 
-    public TopicDto remove(TopicEntity topic) throws SQLException {
-        topicRepository.delete(topic);
-        return TopicDto.mapEntityToDto(topic);
+
+    @Override
+    public List<TopicEntity> getAll() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean update(TopicEntity topic, Long id) throws SQLException {
+        return false;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        TopicEntity deleted_topic = topicRepository.findById(id).get();
-        topicRepository.delete(deleted_topic);
-        return true;
+        return false;
     }
 
     @Override
-    public TopicDto getById(Long id) throws SQLException {
-        Optional<TopicEntity> topicEntity = topicRepository.findById(id);
-        if (!topicEntity.isPresent()) {
-            throw new SQLException("Entity not found");
-        }
-        return TopicDto.mapEntityToDto(topicEntity.get());
+    public TopicEntity getById(Long id) throws SQLException {
+        return null;
     }
 }
