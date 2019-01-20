@@ -11,7 +11,7 @@ import java.util.List;
 public interface SubCategoryService {
 
     //create
-    boolean addSubCategory(SubCategoryEntity subCategory) throws SQLException;
+    boolean addSubCategory(String typeName,Long id) throws SQLException;
 
     //read
     List<SubCategoryDto> getAll() throws SQLException;
