@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.repository.TopicRepository;
+import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.intefaces.TopicService;
 import am.aca.quiz.software.entity.TopicEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class TopicServiceImp implements TopicService {
         return true;
     }
 
-    public List<TopicEntity> getAll() throws SQLException {
-        return topicRepository.findAll();
+    public List<TopicDto> getAll() throws SQLException {
+        return TopicDto.mapEntityToDtos(topicRepository.findAll());
     }
 
     @Override
     public boolean update(TopicEntity topic, Long id) throws SQLException {
-        TopicEntity updated_topic = getById(id);
+        TopicEntity updated_topic = topicRepository.findById(id).get();
         if (updated_topic != null) {
             topic.setId(id);
             return addTopic(topic);
@@ -43,24 +44,24 @@ public class TopicServiceImp implements TopicService {
     }
 
 
-    public TopicEntity remove(TopicEntity topic) throws SQLException {
+    public TopicDto remove(TopicEntity topic) throws SQLException {
         topicRepository.delete(topic);
-        return topic;
+        return TopicDto.mapEntityToDto(topic);
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        TopicEntity deleted_topic = getById(id);
+        TopicEntity deleted_topic = topicRepository.findById(id).get();
         topicRepository.delete(deleted_topic);
         return true;
     }
 
     @Override
-    public TopicEntity getById(Long id) throws SQLException {
+    public TopicDto getById(Long id) throws SQLException {
         Optional<TopicEntity> topicEntity = topicRepository.findById(id);
         if (!topicEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
-        return topicEntity.get();
+        return TopicDto.mapEntityToDto(topicEntity.get());
     }
 }

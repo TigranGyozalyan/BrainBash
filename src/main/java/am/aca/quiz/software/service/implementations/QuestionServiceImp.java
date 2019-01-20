@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.repository.QuestionRepository;
+import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.intefaces.QuestionService;
 import am.aca.quiz.software.entity.QuestionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,14 @@ public class QuestionServiceImp implements QuestionService {
         return true;
     }
 
-    public List<QuestionEntity> getAll() throws SQLException {
-        return questionRepository.findAll();
+    public List<QuestionDto> getAll() throws SQLException {
+        return QuestionDto.mapEntityToDtos(questionRepository.findAll());
     }
 
     @Override
     public boolean update(QuestionEntity question, Long id) throws SQLException {
 
-        QuestionEntity updatedQuestion = getById(id);
+        QuestionEntity updatedQuestion = questionRepository.findById(id).get();
         if (updatedQuestion != null) {
             question.setId(id);
             return addQuestion(question);
@@ -43,23 +44,23 @@ public class QuestionServiceImp implements QuestionService {
         return false;
     }
 
-    public QuestionEntity remove(QuestionEntity question) throws SQLException {
+    public QuestionDto remove(QuestionEntity question) throws SQLException {
         questionRepository.delete(question);
-        return question;
+        return QuestionDto.mapEntityToDto(question);
     }
 
     @Override
-    public QuestionEntity getById(Long id) throws SQLException {
+    public QuestionDto getById(Long id) throws SQLException {
         Optional<QuestionEntity> questionEntity = questionRepository.findById(id);
         if (!questionEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
-        return questionEntity.get();
+        return QuestionDto.mapEntityToDto(questionEntity.get());
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        QuestionEntity deleted_question = getById(id);
+        QuestionEntity deleted_question = questionRepository.findById(id).get();
         questionRepository.delete(deleted_question);
         return true;
     }

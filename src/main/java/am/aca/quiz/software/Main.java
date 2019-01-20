@@ -2,11 +2,17 @@ package am.aca.quiz.software;
 
 
 import am.aca.quiz.software.config.DataBaseConfig;
+<<<<<<< HEAD
+=======
+import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.intefaces.UserService;
+>>>>>>> 29cf76e29bd6d5e9ecab6cd3e1b15f64590c2d37
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.applet.AppletContext;
 import java.util.Scanner;
 
 public class Main {
@@ -14,9 +20,18 @@ public class Main {
 
 //        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 //        sessionFactory.openSession();
+<<<<<<< HEAD
 
         ApplicationContext ctx = new AnnotationConfigApplicationContext(DataBaseConfig.class);
         menu();
+=======
+        ApplicationContext ctx=new AnnotationConfigApplicationContext(DataBaseConfig.class);
+
+        UserServiceImp userServiceImp=new UserServiceImp();
+        userServiceImp.sendEmail();
+
+      //  menu();
+>>>>>>> 29cf76e29bd6d5e9ecab6cd3e1b15f64590c2d37
     }
 
     private static void menu() {

@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.ScoreEntity;
+import am.aca.quiz.software.service.dto.ScoreDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -13,15 +14,15 @@ public interface ScoreService {
     boolean addScore(ScoreEntity score) throws SQLException;
 
     //read
-    List<ScoreEntity> getAll() throws SQLException;
+    List<ScoreDto> getAll() throws SQLException;
 
     //update
     boolean update(ScoreEntity score, Long id) throws SQLException;
 
     //delete
-    ScoreEntity remove(ScoreEntity score) throws SQLException;
+    ScoreDto remove(ScoreEntity score) throws SQLException;
 
-    ScoreEntity getByid(Long id) throws SQLException;
+    ScoreDto getByid(Long id) throws SQLException;
 
     boolean removeByid(Long id) throws SQLException;
 }

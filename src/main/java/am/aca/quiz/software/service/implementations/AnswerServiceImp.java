@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.repository.AnswerRepository;
+import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.intefaces.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,14 @@ public class AnswerServiceImp implements AnswerService {
         return true;
     }
 
-    public List<AnswerEntity> getAll() throws SQLException {
-        return answerRepository.findAll();
+    public List<AnswerDto> getAll() throws SQLException {
+        return AnswerDto.mapEntitiesToDto(answerRepository.findAll());
     }
+
 
     @Override
     public boolean update(AnswerEntity answer, Long id) throws SQLException {
-        AnswerEntity updated_answer = getById(id);
+        AnswerEntity updated_answer = answerRepository.findById(id).get();
         if (updated_answer != null) {
             answer.setId(id);
             return addAnswer(answer);
@@ -37,23 +39,26 @@ public class AnswerServiceImp implements AnswerService {
         return false;
     }
 
-    public AnswerEntity remove(AnswerEntity answer) throws SQLException {
+    @Override
+    public AnswerDto remove(AnswerEntity answer, Long id) throws SQLException {
         answerRepository.delete(answer);
-        return answer;
+        return AnswerDto.mapEntityToDto(answer);
     }
 
+
+
     @Override
-    public AnswerEntity getById(Long id) throws SQLException {
+    public AnswerDto getById(Long id) throws SQLException {
         Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
         if (!answerEntity.isPresent()) {
             throw new SQLException("Entity Not Found");
         }
-        return answerEntity.get();
+        return AnswerDto.mapEntityToDto(answerEntity.get());
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        AnswerEntity deleted_answer = getById(id);
+        AnswerEntity deleted_answer = answerRepository.findById(id).get();
         answerRepository.delete(deleted_answer);
         return true;
     }

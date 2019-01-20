@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.TopicEntity;
+import am.aca.quiz.software.service.dto.TopicDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -13,16 +14,16 @@ public interface TopicService {
     boolean addTopic(TopicEntity topic) throws SQLException;
 
     //read
-    List<TopicEntity> getAll() throws SQLException;
+    List<TopicDto> getAll() throws SQLException;
 
     //update
     boolean update(TopicEntity topic, Long id) throws SQLException;
 
     //delete
-    TopicEntity remove(TopicEntity topic) throws SQLException;
+    TopicDto remove(TopicEntity topic) throws SQLException;
 
 
     boolean removeByid(Long id) throws SQLException;
 
-    TopicEntity getById(Long id) throws SQLException;
+    TopicDto getById(Long id) throws SQLException;
 }
