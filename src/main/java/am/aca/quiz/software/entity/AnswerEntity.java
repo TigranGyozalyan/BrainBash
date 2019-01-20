@@ -26,7 +26,7 @@ public class AnswerEntity {
     public AnswerEntity() {
     }
 
-    public AnswerEntity(String description, boolean is_correct, String answer_text, QuestionEntity questionEntity) {
+    public AnswerEntity(String answer_text,String description, boolean is_correct, QuestionEntity questionEntity) {
         this.description = description;
         this.is_correct = is_correct;
         this.answer_text = answer_text;
