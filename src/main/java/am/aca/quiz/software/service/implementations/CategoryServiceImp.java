@@ -22,50 +22,34 @@ public class CategoryServiceImp implements CategoryService {
     }
 
 
-    public boolean addCategory(CategoryEntity category) throws SQLException {
-        categoryRepository.saveAndFlush(category);
-        return true;
-    }
 
     @Override
     public boolean addCategory(String type) throws SQLException {
         return false;
     }
 
-    public List<CategoryDto> getAll() throws SQLException {
-        return CategoryDto.mapEntityToDtos(categoryRepository.findAll());
+    @Override
+    public List<CategoryEntity> getAll() throws SQLException {
+        return null;
     }
 
     @Override
     public boolean update(CategoryEntity category, Long id) throws SQLException {
-
-        CategoryEntity updated_category = categoryRepository.findById(id).get();
-        if (updated_category != null) {
-            category.setId(id);
-            return addCategory(category);
-        }
         return false;
     }
 
-    public CategoryDto remove(CategoryEntity category) throws SQLException {
-        categoryRepository.delete(category);
-        return CategoryDto.mapEntityToDto(category);
+    @Override
+    public CategoryEntity remove(CategoryEntity category) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        CategoryEntity deleted_category = categoryRepository.findById(id).get();
-        categoryRepository.delete(deleted_category);
-        return true;
+        return false;
     }
 
     @Override
-    public CategoryDto getById(Long id) throws SQLException {
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
-
-        if (!categoryEntity.isPresent()) {
-            throw new SQLException("Entity Not Found");
-        }
-        return CategoryDto.mapEntityToDto(categoryEntity.get());
+    public CategoryEntity getById(Long id) throws SQLException {
+        return null;
     }
 }

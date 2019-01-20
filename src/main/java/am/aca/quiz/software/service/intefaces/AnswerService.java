@@ -11,19 +11,19 @@ import java.util.List;
 public interface AnswerService {
 
     //create
-    boolean addAnswer(AnswerEntity answer) throws SQLException;
+    boolean addAnswer(String answer,String description,boolean isCorrect,Long questionId) throws SQLException;
 
     //read
-    List<AnswerDto> getAll() throws SQLException;
+    List<AnswerEntity> getAll() throws SQLException;
 
     //update
     boolean update(AnswerEntity answer,Long id) throws SQLException;
 
     //delete
 
-    AnswerDto remove(AnswerEntity answer, Long id) throws SQLException;
+    AnswerEntity remove(AnswerEntity answer, Long id) throws SQLException;
 
-    AnswerDto getById(Long id) throws SQLException;
+    AnswerEntity getById(Long id) throws SQLException;
 
     boolean removeById(Long id) throws  SQLException;
 }

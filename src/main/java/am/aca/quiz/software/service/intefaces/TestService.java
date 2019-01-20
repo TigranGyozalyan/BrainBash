@@ -6,24 +6,25 @@ import am.aca.quiz.software.service.dto.TestDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public interface TestService {
     //create
-    boolean addTest(TestEntity test) throws SQLException;
+    boolean addTest(String testName, String description, LocalDateTime duration) throws SQLException;
 
     //read
-    List<TestDto> getAll() throws SQLException;
+    List<TestEntity> getAll() throws SQLException;
 
     //update
     boolean update(TestEntity test,Long id) throws SQLException;
 
     //delete
-    TestDto remove(TestEntity test) throws SQLException;
+    TestEntity remove(TestEntity test) throws SQLException;
 
 
     boolean removeByid(Long id) throws SQLException;
 
-    TestDto getByid(Long id) throws SQLException;
+    TestEntity getByid(Long id) throws SQLException;
 }

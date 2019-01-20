@@ -20,9 +20,9 @@ public interface SubCategoryService {
     boolean update(SubCategoryEntity subCategory,Long id) throws SQLException;
 
     //delete
-    SubCategoryDto remove(SubCategoryEntity subCategory) throws SQLException;
+    SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException;
 
-    SubCategoryDto getById(Long id) throws SQLException;
+    SubCategoryEntity getById(Long id) throws SQLException;
 
     boolean removeByid(Long id) throws SQLException;
 }

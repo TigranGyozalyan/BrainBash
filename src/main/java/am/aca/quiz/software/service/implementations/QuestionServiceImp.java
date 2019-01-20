@@ -22,44 +22,33 @@ public class QuestionServiceImp implements QuestionService {
     }
 
 
-    public boolean addQuestion(QuestionEntity question) throws SQLException {
-        questionRepository.saveAndFlush(question);
-        return true;
+    @Override
+    public boolean addQuestion(String question, Enum level, int correctAnswerCount, double points, Long topicCentityId) throws SQLException {
+        return false;
     }
 
-    public List<QuestionDto> getAll() throws SQLException {
-        return QuestionDto.mapEntityToDtos(questionRepository.findAll());
+    @Override
+    public List<QuestionEntity> getAll() throws SQLException {
+        return null;
     }
 
     @Override
     public boolean update(QuestionEntity question, Long id) throws SQLException {
-
-        QuestionEntity updatedQuestion = questionRepository.findById(id).get();
-        if (updatedQuestion != null) {
-            question.setId(id);
-            return addQuestion(question);
-        }
         return false;
     }
 
-    public QuestionDto remove(QuestionEntity question) throws SQLException {
-        questionRepository.delete(question);
-        return QuestionDto.mapEntityToDto(question);
+    @Override
+    public QuestionEntity remove(QuestionEntity question) throws SQLException {
+        return null;
     }
 
     @Override
-    public QuestionDto getById(Long id) throws SQLException {
-        Optional<QuestionEntity> questionEntity = questionRepository.findById(id);
-        if (!questionEntity.isPresent()) {
-            throw new SQLException("Entity not found");
-        }
-        return QuestionDto.mapEntityToDto(questionEntity.get());
+    public QuestionEntity getById(Long id) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        QuestionEntity deleted_question = questionRepository.findById(id).get();
-        questionRepository.delete(deleted_question);
-        return true;
+        return false;
     }
 }

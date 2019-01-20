@@ -32,45 +32,35 @@ public class UserServiceImp implements UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean addUser(UserEntity user) throws SQLException {
-        userRepository.saveAndFlush(user);
-        return true;
+
+    @Override
+    public boolean addUser(String fName, String lName, String nickname, String email, String password, boolean isAdmin) throws SQLException {
+        return false;
     }
 
-    public List<UserDto> getAll() throws SQLException {
-        return UserDto.mapEntitiesToDto(userRepository.findAll());
+    @Override
+    public List<UserEntity> getAll() throws SQLException {
+        return null;
     }
 
     @Override
     public boolean update(UserEntity user, Long id) throws SQLException {
-        UserEntity updated_user = userRepository.findById(id).get();
-        if (updated_user != null) {
-            user.setId(id);
-            return addUser(user);
-        }
         return false;
     }
 
-
-    public UserDto remove(UserEntity user) throws SQLException {
-        userRepository.delete(user);
-        return UserDto.mapEntityToDto(user);
+    @Override
+    public UserEntity remove(UserEntity user) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        UserEntity deleted_user = userRepository.findById(id).get();
-        userRepository.delete(deleted_user);
-        return true;
+        return false;
     }
 
     @Override
-    public UserDto getById(Long id) throws SQLException {
-        Optional<UserEntity> userEntity = userRepository.findById(id);
-        if (!userEntity.isPresent()) {
-            throw new SQLException("Entity not found");
-        }
-        return UserDto.mapEntityToDto(userEntity.get());
+    public UserEntity getById(Long id) throws SQLException {
+        return null;
     }
 
     @Override

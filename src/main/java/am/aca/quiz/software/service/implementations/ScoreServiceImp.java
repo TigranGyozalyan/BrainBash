@@ -22,43 +22,33 @@ public class ScoreServiceImp implements ScoreService {
     }
 
 
-    public boolean addScore(ScoreEntity score) throws SQLException {
-        scoreRepository.saveAndFlush(score);
-        return true;
+    @Override
+    public boolean addScore(double scoreValue, int count, Long topicId, Long userId) throws SQLException {
+        return false;
     }
 
-    public List<ScoreDto> getAll() throws SQLException {
-        return ScoreDto.mapEntityToDtos(scoreRepository.findAll());
+    @Override
+    public List<ScoreEntity> getAll() throws SQLException {
+        return null;
     }
 
     @Override
     public boolean update(ScoreEntity score, Long id) throws SQLException {
-        ScoreEntity updated_score =scoreRepository.findById(id).get();
-        if (updated_score != null) {
-            score.setId(id);
-            return addScore(score);
-        }
         return false;
     }
 
-    public ScoreDto remove(ScoreEntity score) throws SQLException {
-        scoreRepository.delete(score);
-        return ScoreDto.mapEntityToDto(score);
+    @Override
+    public ScoreEntity remove(ScoreEntity score) throws SQLException {
+        return null;
     }
 
     @Override
-    public ScoreDto getByid(Long id) throws SQLException {
-        Optional<ScoreEntity> scoreEntity = scoreRepository.findById(id);
-        if (!scoreEntity.isPresent()) {
-            throw new SQLException("Entity not found");
-        }
-        return ScoreDto.mapEntityToDto(scoreEntity.get());
+    public ScoreEntity getByid(Long id) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        ScoreEntity deleted_score =scoreRepository.findById(id).get();
-        scoreRepository.delete(deleted_score);
-        return true;
+        return false;
     }
 }

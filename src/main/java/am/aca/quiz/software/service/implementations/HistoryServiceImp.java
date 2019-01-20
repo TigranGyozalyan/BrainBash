@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,44 +23,35 @@ public class HistoryServiceImp implements HistoryService {
     }
 
 
-    public boolean addHistory(HistoryEntity history) throws SQLException {
-        historyRepository.saveAndFlush(history);
-        return true;
+    @Override
+    public boolean addHistory(Long userId, Long testId, double score, Enum status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
+        return false;
     }
 
-    public List<HistoryDto> getAll() throws SQLException {
-        return HistoryDto.mapEntitesToDto(historyRepository.findAll());
+    @Override
+    public List<HistoryEntity> getAll() throws SQLException {
+        return null;
     }
 
     @Override
     public boolean update(HistoryEntity history, Long id) throws SQLException {
-        HistoryEntity updated_history = historyRepository.findById(id).get();
-        if (updated_history != null) {
-            history.setId(id);
-            return addHistory(history);
-        }
         return false;
     }
 
-
-    public HistoryDto remove(HistoryEntity history) throws SQLException {
-        historyRepository.delete(history);
-        return HistoryDto.mapEntityToDto(history);
+    @Override
+    public HistoryEntity remove(HistoryEntity history) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        HistoryEntity deleted_history = historyRepository.findById(id).get();
-        historyRepository.delete(deleted_history);
-        return true;
+        return false;
     }
 
     @Override
-    public HistoryDto getByid(Long id) throws SQLException {
-        Optional<HistoryEntity> historyEntity = historyRepository.findById(id);
-        if (!historyEntity.isPresent()) {
-            throw new SQLException("Entity Not Found");
-        }
-        return HistoryDto.mapEntityToDto(historyEntity.get());
+    public HistoryEntity getByid(Long id) throws SQLException {
+        return null;
     }
+
+
 }

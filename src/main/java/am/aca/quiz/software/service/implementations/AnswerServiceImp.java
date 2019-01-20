@@ -20,48 +20,35 @@ public class AnswerServiceImp implements AnswerService {
         this.answerRepository = answerRepository;
     }
 
-    public boolean addAnswer(AnswerEntity answer) throws SQLException {
-        answerRepository.saveAndFlush(answer);
-        return true;
-    }
-
-    public List<AnswerDto> getAll() throws SQLException {
-        return AnswerDto.mapEntitiesToDto(answerRepository.findAll());
-    }
-
 
     @Override
-    public boolean update(AnswerEntity answer, Long id) throws SQLException {
-        AnswerEntity updated_answer = answerRepository.findById(id).get();
-        if (updated_answer != null) {
-            answer.setId(id);
-            return addAnswer(answer);
-        }
+    public boolean addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException {
         return false;
     }
 
     @Override
-    public AnswerDto remove(AnswerEntity answer, Long id) throws SQLException {
-        answerRepository.delete(answer);
-        return AnswerDto.mapEntityToDto(answer);
+    public List<AnswerEntity> getAll() throws SQLException {
+        return null;
     }
 
-
+    @Override
+    public boolean update(AnswerEntity answer, Long id) throws SQLException {
+        return false;
+    }
 
     @Override
-    public AnswerDto getById(Long id) throws SQLException {
-        Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
-        if (!answerEntity.isPresent()) {
-            throw new SQLException("Entity Not Found");
-        }
-        return AnswerDto.mapEntityToDto(answerEntity.get());
+    public AnswerEntity remove(AnswerEntity answer, Long id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public AnswerEntity getById(Long id) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeById(Long id) throws SQLException {
-        AnswerEntity deleted_answer = answerRepository.findById(id).get();
-        answerRepository.delete(deleted_answer);
-        return true;
+        return false;
     }
 
 

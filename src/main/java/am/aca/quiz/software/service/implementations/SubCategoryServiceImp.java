@@ -22,47 +22,33 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
 
-    public boolean addSubCategory(SubCategoryEntity subCategory) throws SQLException {
-        subCategoryRepository.saveAndFlush(subCategory);
-        return true;
-    }
-
     @Override
     public boolean addSubCategory(String typeName, Long id) throws SQLException {
         return false;
     }
 
+    @Override
     public List<SubCategoryDto> getAll() throws SQLException {
-        return SubCategoryDto.mapEntityToDtos(subCategoryRepository.findAll());
-    }
-
-    public boolean update(SubCategoryEntity subCategory, Long id) throws SQLException {
-        SubCategoryEntity updated_subCategory = subCategoryRepository.findById(id).get();
-        if (updated_subCategory != null) {
-            subCategory.setId(id);
-            return addSubCategory(subCategory);
-        }
-        return false;
-    }
-
-    public SubCategoryDto remove(SubCategoryEntity subCategory) throws SQLException {
-        subCategoryRepository.delete(subCategory);
-        return SubCategoryDto.mapEntityToDto(subCategory);
+        return null;
     }
 
     @Override
-    public SubCategoryDto getById(Long id) throws SQLException {
-        Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
-        if (!subCategoryEntity.isPresent()) {
-            throw new SQLException("Entity not found");
-        }
-        return SubCategoryDto.mapEntityToDto(subCategoryEntity.get());
+    public boolean update(SubCategoryEntity subCategory, Long id) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public SubCategoryEntity remove(SubCategoryEntity subCategory) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public SubCategoryEntity getById(Long id) throws SQLException {
+        return null;
     }
 
     @Override
     public boolean removeByid(Long id) throws SQLException {
-        SubCategoryEntity deleted_subCategory = subCategoryRepository.findById(id).get();
-        subCategoryRepository.delete(deleted_subCategory);
-        return true;
+        return false;
     }
 }

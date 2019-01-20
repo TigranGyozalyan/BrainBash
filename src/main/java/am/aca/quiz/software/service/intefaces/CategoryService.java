@@ -13,16 +13,16 @@ public interface CategoryService {
     boolean addCategory(String type) throws SQLException;
 
     //read
-    List<CategoryDto> getAll() throws SQLException;
+    List<CategoryEntity> getAll() throws SQLException;
 
     //update
     boolean update(CategoryEntity category,Long id) throws SQLException;
 
     //delete
-    CategoryDto remove(CategoryEntity category) throws SQLException;
+    CategoryEntity remove(CategoryEntity category) throws SQLException;
 
     boolean removeById(Long id) throws SQLException;
 
-    CategoryDto getById(Long id) throws SQLException;
+    CategoryEntity getById(Long id) throws SQLException;
 }
 
