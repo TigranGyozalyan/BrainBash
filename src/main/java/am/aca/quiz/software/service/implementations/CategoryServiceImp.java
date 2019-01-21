@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.CategoryRepository;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.intefaces.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -14,17 +15,14 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImp implements CategoryService {
 
+    @Autowired
+    private  CategoryRepository categoryRepository;
 
-    private final CategoryRepository categoryRepository;
-
-    public CategoryServiceImp(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
 
     public boolean addCategory(String type) throws SQLException {
         CategoryEntity categoryEntity=new CategoryEntity(type);
-        categoryRepository.saveAndFlush(categoryEntity);
+        categoryRepository.save(categoryEntity);
         return true;
     }
 
