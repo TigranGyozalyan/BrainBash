@@ -1,6 +1,7 @@
 package am.aca.quiz.software.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ public class UserEntity {
     private String surname;
 
     @Column(name = "emails",nullable = false,unique = true)
-    @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
+   // @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
+    @Email(message = "Please provide a valid email address")
     private String email;
 
     @Size(min = 3)
