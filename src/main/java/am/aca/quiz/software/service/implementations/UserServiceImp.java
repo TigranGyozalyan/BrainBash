@@ -31,7 +31,7 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean addUser(String fName, String lName, String nickname, String email, String password, boolean isAdmin) throws SQLException {
 
-        UserEntity userEntity=new UserEntity(fName,lName,email,nickname,password,isAdmin);
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password, isAdmin);
         userRepository.saveAndFlush(userEntity);
 
         return true;
@@ -96,7 +96,6 @@ public class UserServiceImp implements UserService {
         }
 
     }
-
 
 
 }
