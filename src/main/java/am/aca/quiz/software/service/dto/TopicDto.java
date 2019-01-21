@@ -1,10 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.TopicEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class TopicDto {
     private Long id;
     private String topicName;

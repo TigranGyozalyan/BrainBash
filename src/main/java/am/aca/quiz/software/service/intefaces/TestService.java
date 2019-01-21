@@ -2,7 +2,6 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.TestEntity;
-import am.aca.quiz.software.service.dto.TestDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ public interface TestService {
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    boolean update(TestEntity test,Long id) throws SQLException;
+    boolean update(TestEntity test, Long id) throws SQLException;
 
 
     boolean removeById(Long id) throws SQLException;

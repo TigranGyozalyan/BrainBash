@@ -1,10 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.CategoryEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class CategoryDto {
 
     private Long id;

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CategoryMapper implements MapEntityToDto<CategoryEntity, CategoryDto> {
     @Override
-    public  CategoryDto mapEntityToDto(CategoryEntity categoryEntity) {
+    public CategoryDto mapEntityToDto(CategoryEntity categoryEntity) {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(categoryEntity.getId());
         categoryDto.setType(categoryEntity.getType());

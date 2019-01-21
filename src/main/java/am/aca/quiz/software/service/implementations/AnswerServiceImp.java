@@ -53,7 +53,7 @@ public class AnswerServiceImp implements AnswerService {
     }
 
     @Override
-    public  AnswerEntity getById(Long id) throws SQLException {
+    public AnswerEntity getById(Long id) throws SQLException {
         Optional<AnswerEntity> answerEntity = answerRepository.findById(id);
         if (!answerEntity.isPresent()) {
             throw new SQLException("Entity Not Found");

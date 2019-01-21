@@ -2,7 +2,6 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.CategoryRepository;
-import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.intefaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.Optional;
 public class CategoryServiceImp implements CategoryService {
 
     @Autowired
-    private  CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
 
 
@@ -37,7 +36,7 @@ public class CategoryServiceImp implements CategoryService {
         CategoryEntity updated_category = categoryRepository.findById(id).get();
         if (updated_category != null) {
             category.setId(id);
-            categoryRepository.saveAndFlush(category);
+            categoryRepository.save(category);
             return true;
         }
         return false;

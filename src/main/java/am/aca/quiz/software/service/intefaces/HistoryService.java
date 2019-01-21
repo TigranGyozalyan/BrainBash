@@ -2,7 +2,6 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.HistoryEntity;
-import am.aca.quiz.software.service.dto.HistoryDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import java.util.List;
 @Service
 public interface HistoryService {
     //create
-    boolean addHistory(Long userId, Long testId, double score, String status,LocalDateTime startTime,LocalDateTime endTime) throws SQLException;
+    boolean addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException;
 
     //read
     List<HistoryEntity> getAll() throws SQLException;

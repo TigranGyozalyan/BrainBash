@@ -1,27 +1,24 @@
 package am.aca.quiz.software;
 
 
-import am.aca.quiz.software.config.DataBaseConfig;
-import am.aca.quiz.software.service.implementations.CategoryServiceImp;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
-
-public class Main {
-
+@SpringBootApplication
+public class Main extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
 
+        SpringApplication.run(Main.class,args);
+    }
 
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(DataBaseConfig.class);
-
-        foo();
-
-
-        //  menu();
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Main.class);
     }
 
     private static void menu() {
@@ -174,16 +171,6 @@ public class Main {
             }
         }
 
-    }
-
-    private static void foo(){
-
-        CategoryServiceImp categoryServiceImp=new CategoryServiceImp();
-        try {
-            categoryServiceImp.addCategory("programming");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 

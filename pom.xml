@@ -6,85 +6,83 @@
 
     <groupId>am.aca</groupId>
     <artifactId>quiz-software</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
 
     <properties>
-        <maven.compile.source>1.8</maven.compile.source>
-        <maven.compile.target>1.8</maven.compile.target>
-
-        <hibernateVersion>5.4.0.Final</hibernateVersion>
+        <java.version>1.8</java.version>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <spring-data-jpa.version>2.1.4.RELEASE</spring-data-jpa.version>
-
-        <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+        <mail.version>1.4.7</mail.version>
+        <spring-boot-starter-data-jpa.version>2.1.2.RELEASE</spring-boot-starter-data-jpa.version>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
-
-        <!--WEB-->
-
+            <!--PostgresSQL Checkers-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
         </dependency>
-
+            <!--Mail-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.7</version>
+            <version>${mail.version}</version>
         </dependency>
 
-
-        <!--DATABASE-->
-
+        <!-- Web -->
         <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId >org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernateVersion}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring-boot-starter-data-jpa.version}</version>
         </dependency>
 
+        <!-- Tomcat Embed -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring-data-jpa.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
+        <!-- To compile JSP files -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>${commons-dbcp2.version}</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
         </dependency>
-
+        <!--DB-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgreSQLVersion}</version>
         </dependency>
-
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
+    <!--&lt;!&ndash; JSTL &ndash;&gt;-->
+    <!--<dependency>-->
+    <!--<groupId>javax.servlet</groupId>-->
+    <!--<artifactId>jstl</artifactId>-->
+    <!--</dependency>-->
 
 
 </project>
