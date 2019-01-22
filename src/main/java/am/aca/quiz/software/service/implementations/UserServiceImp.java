@@ -5,22 +5,12 @@ import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.intefaces.UserService;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 
 @Service
 public class UserServiceImp implements UserService {
-
-    private static final String to = "yeghiazaryan99@gmail.com";
-    private static final String from = "quizsoftware.noreply@gmail.com";
-    private static final String password = "quizsoftware1";
 
     private final UserRepository userRepository;
 
