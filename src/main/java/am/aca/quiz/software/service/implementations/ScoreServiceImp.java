@@ -1,16 +1,12 @@
 package am.aca.quiz.software.service.implementations;
 
+import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.ScoreRepository;
-import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.intefaces.ScoreService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.provider.HibernateUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Session;
 import java.sql.SQLException;
 import java.util.List;
 

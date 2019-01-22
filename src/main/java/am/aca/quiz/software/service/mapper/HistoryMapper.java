@@ -10,7 +10,7 @@ import java.util.List;
 public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> {
 
     @Override
-    public  HistoryDto mapEntityToDto(HistoryEntity historyEntity){
+    public HistoryDto mapEntityToDto(HistoryEntity historyEntity){
         HistoryDto historyDto=new HistoryDto();
         historyDto.setEndTime(historyEntity.getEndTime());
         historyDto.setId(historyEntity.getId());

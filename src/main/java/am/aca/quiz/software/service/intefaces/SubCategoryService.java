@@ -10,13 +10,13 @@ import java.util.List;
 public interface SubCategoryService {
 
     //create
-    boolean addSubCategory(String typeName,Long id) throws SQLException;
+    boolean addSubCategory(String typeName, Long id) throws SQLException;
 
     //read
     List<SubCategoryEntity> getAll() throws SQLException;
 
     //update
-    boolean update(SubCategoryEntity subCategory,Long id) throws SQLException;
+    boolean update(SubCategoryEntity subCategory, Long id) throws SQLException;
 
     SubCategoryEntity getById(Long id) throws SQLException;
 

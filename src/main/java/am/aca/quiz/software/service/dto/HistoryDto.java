@@ -3,8 +3,6 @@ package am.aca.quiz.software.service.dto;
 import am.aca.quiz.software.entity.HistoryEntity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HistoryDto {
     private Long id;

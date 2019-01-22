@@ -1,10 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.ScoreEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ScoreDto {
     private Long id;
     private double value;

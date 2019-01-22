@@ -1,9 +1,6 @@
 package am.aca.quiz.software.entity;
 
 
-import org.hibernate.annotations.Check;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.util.ArrayList;

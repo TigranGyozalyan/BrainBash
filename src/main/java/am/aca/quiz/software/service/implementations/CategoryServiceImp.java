@@ -2,11 +2,12 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.CategoryRepository;
-import am.aca.quiz.software.service.dto.CategoryDto;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.intefaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jws.Oneway;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +17,12 @@ import java.util.Optional;
 public class CategoryServiceImp implements CategoryService {
 
     @Autowired
-    private  CategoryRepository categoryRepository;
-
-
+    private CategoryRepository categoryRepository;
 
     public boolean addCategory(String type) throws SQLException {
-        CategoryEntity categoryEntity=new CategoryEntity(type);
+        CategoryEntity categoryEntity = new CategoryEntity(type);
         categoryRepository.save(categoryEntity);
+
         return true;
     }
 
@@ -37,7 +37,7 @@ public class CategoryServiceImp implements CategoryService {
         CategoryEntity updated_category = categoryRepository.findById(id).get();
         if (updated_category != null) {
             category.setId(id);
-            categoryRepository.saveAndFlush(category);
+            categoryRepository.save(category);
             return true;
         }
         return false;

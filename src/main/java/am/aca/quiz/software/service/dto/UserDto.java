@@ -1,10 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.UserEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserDto {
 
     private Long id;
