@@ -1,14 +1,13 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.CategoryEntity;
+import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.repository.SubCategoryRepository;
 import am.aca.quiz.software.service.intefaces.SubCategoryService;
-import am.aca.quiz.software.entity.SubCategoryEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

@@ -2,7 +2,6 @@ package am.aca.quiz.software.service.intefaces;
 
 
 import am.aca.quiz.software.entity.TopicEntity;
-import am.aca.quiz.software.service.dto.TopicDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

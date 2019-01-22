@@ -1,7 +1,6 @@
 package am.aca.quiz.software.service.intefaces;
 
 import am.aca.quiz.software.entity.CategoryEntity;
-import am.aca.quiz.software.service.dto.CategoryDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public interface CategoryService {
     List<CategoryEntity> getAll() throws SQLException;
 
     //update
-    boolean update(CategoryEntity category,Long id) throws SQLException;
+    boolean update(CategoryEntity category, Long id) throws SQLException;
 
     boolean removeById(Long id) throws SQLException;
 

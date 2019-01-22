@@ -1,15 +1,13 @@
 package am.aca.quiz.software.service.implementations;
 
-import am.aca.quiz.software.repository.TestRepository;
 import am.aca.quiz.software.entity.TestEntity;
-import am.aca.quiz.software.service.dto.TestDto;
+import am.aca.quiz.software.repository.TestRepository;
 import am.aca.quiz.software.service.intefaces.TestService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
