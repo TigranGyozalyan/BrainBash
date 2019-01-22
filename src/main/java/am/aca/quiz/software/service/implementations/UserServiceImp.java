@@ -64,39 +64,5 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(id).get();
     }
 
-    @Override
-    public void sendEmail() {
-
-        Properties properties = new Properties();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("mail.properties");
-        try {
-            properties.load(inputStream);
-
-            Session session = Session.getDefaultInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(from, password);
-                }
-            });
-
-
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("This is the Subject Line!");
-            message.setContent("<h1>This is actual message</h1>", "text/html");
-
-
-            Transport.send(message);
-
-            System.out.println("Sent message successfully....");
-
-        } catch (IOException | MessagingException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
 }
 

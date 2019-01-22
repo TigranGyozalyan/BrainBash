@@ -20,21 +20,24 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <mail.version>1.4.7</mail.version>
         <spring-boot-starter-data-jpa.version>2.1.2.RELEASE</spring-boot-starter-data-jpa.version>
+        <spring-boot-starter-mail.version>2.1.2.RELEASE</spring-boot-starter-mail.version>
     </properties>
 
     <dependencies>
-            <!--PostgresSQL Checkers-->
+        <!--PostgresSQL Checkers-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
         </dependency>
-            <!--Mail-->
+
+        <!--Mail-->
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>${spring-boot-starter-mail.version}</version>
         </dependency>
+
 
         <!-- Web -->
         <dependency>
@@ -76,21 +79,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
-    <!--&lt;!&ndash; JSTL &ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>javax.servlet</groupId>-->
-    <!--<artifactId>jstl</artifactId>-->
-    <!--</dependency>-->
-
 
 </project>

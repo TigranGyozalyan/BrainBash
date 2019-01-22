@@ -23,5 +23,4 @@ public interface UserService {
 
     UserEntity getById(Long id) throws SQLException;
 
-    void sendEmail();
 }
