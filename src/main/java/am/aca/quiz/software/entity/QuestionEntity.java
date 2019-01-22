@@ -121,7 +121,6 @@ public class QuestionEntity {
         INTERMEDIATE("intermediate"),
         ADVANCED("advanced");
 
-
         private final String stringValue;
 
         Level(String stringValue) {

@@ -18,13 +18,14 @@
         <java.version>1.8</java.version>
         <postgreSQLVersion>42.2.5</postgreSQLVersion>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <mail.version>1.4.7</mail.version>
         <spring-boot-starter-data-jpa.version>2.1.2.RELEASE</spring-boot-starter-data-jpa.version>
-        <spring-boot-starter-mail.version>2.1.2.RELEASE</spring-boot-starter-mail.version>
+        <spring-context-support.version>5.1.4.RELEASE</spring-context-support.version>
+        <mail.version>1.4</mail.version>
+        <tomcat-jasper.version>9.0.14</tomcat-jasper.version>
     </properties>
 
     <dependencies>
-        <!--PostgresSQL Checkers-->
+            <!--PostgresSQL Checkers-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -36,15 +37,14 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>5.1.4.RELEASE</version>
+            <version>${spring-context-support.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4</version>
+            <version>${mail.version}</version>
         </dependency>
-
 
         <!-- Web -->
         <dependency>
@@ -65,28 +65,30 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- To compile JSP files -->
+
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>${tomcat-jasper.version}</version>
         </dependency>
+
+
         <!--DB-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgreSQLVersion}</version>
         </dependency>
-
-        <!--JSP files-->
-
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jasper</artifactId>
-            <version>9.0.14</version>
-        </dependency>
-
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

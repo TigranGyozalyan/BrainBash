@@ -3,7 +3,7 @@ package am.aca.quiz.software.service.implementations;
 import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.repository.AnswerRepository;
-import am.aca.quiz.software.service.intefaces.AnswerService;
+import am.aca.quiz.software.service.interfaces.AnswerService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

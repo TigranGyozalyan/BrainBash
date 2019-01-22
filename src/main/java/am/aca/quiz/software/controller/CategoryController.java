@@ -16,9 +16,9 @@ public class CategoryController {
     private CategoryServiceImp categoryServiceImp;
 
 
-    @RequestMapping(value = "/jsp",method = RequestMethod.GET)
-    public String jsp(){
-        return "post";
+    @RequestMapping(value = "/add")
+    public String addCategoryPage(){
+        return "CategoryAdd.jsp";
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -31,32 +31,32 @@ public class CategoryController {
         return null;
     }
     @RequestMapping(value = "/{c}",method = RequestMethod.POST)
-    public boolean postNewCategory(@PathVariable("c") String category){
+    public void postNewCategory(@PathVariable("c") String category){
         try {
 
-            return categoryServiceImp.addCategory(category);
+             categoryServiceImp.addCategory(category);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
     }
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public boolean updateCategory(@RequestBody CategoryEntity categoryEntity,@PathVariable("id") Long id){
+    @RequestMapping(value = "/{id}",method = RequestMethod.PATCH)
+    public void updateCategory(@RequestBody CategoryEntity categoryEntity,@PathVariable("id") Long id){
         try {
-            return categoryServiceImp.update(categoryEntity,id);
+             categoryServiceImp.update(categoryEntity,id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public boolean deleteCategory(@PathVariable("id")Long id){
+    public void deleteCategory(@PathVariable("id")Long id){
         try {
-            return categoryServiceImp.removeById(id);
+             categoryServiceImp.removeById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public CategoryEntity getCategoryById(@PathVariable("id") Long id){

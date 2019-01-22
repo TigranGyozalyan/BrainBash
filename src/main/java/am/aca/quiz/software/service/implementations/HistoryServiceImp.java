@@ -4,9 +4,9 @@ import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.HistoryRepository;
-import am.aca.quiz.software.service.intefaces.HistoryService;
-import am.aca.quiz.software.service.intefaces.TestService;
-import am.aca.quiz.software.service.intefaces.UserService;
+import am.aca.quiz.software.service.interfaces.HistoryService;
+import am.aca.quiz.software.service.interfaces.TestService;
+import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
