@@ -2,7 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.UserRepository;
-import am.aca.quiz.software.service.intefaces.UserService;
+import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

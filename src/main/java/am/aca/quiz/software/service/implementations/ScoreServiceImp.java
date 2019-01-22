@@ -4,7 +4,7 @@ import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.ScoreRepository;
-import am.aca.quiz.software.service.intefaces.ScoreService;
+import am.aca.quiz.software.service.interfaces.ScoreService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

@@ -21,7 +21,6 @@ public class CategoryEntity {
 
 
     public CategoryEntity(){
-
     }
 
     public CategoryEntity(String type) {
