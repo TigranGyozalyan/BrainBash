@@ -3,11 +3,12 @@ package am.aca.quiz.software.service.implementations;
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.repository.SubCategoryRepository;
-import am.aca.quiz.software.service.intefaces.SubCategoryService;
+import am.aca.quiz.software.service.interfaces.SubCategoryService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -23,43 +24,45 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
 
-    public boolean addSubCategory(String typename, Long id) throws SQLException {
-        CategoryEntity categoryEntity = categoryServiceImp.getById(id);
-        SubCategoryEntity subCategory = new SubCategoryEntity(typename, categoryEntity);
-
-        categoryEntity.getSubCategoryEntityLists().add(subCategory);
-        subCategoryRepository.saveAndFlush(subCategory);
-        return true;
+    public void addSubCategory(String typename, Long categoryId) throws SQLException {
+        CategoryEntity categoryEntity = categoryServiceImp.getById(categoryId);
+        if (categoryEntity != null) {
+            SubCategoryEntity subCategoryEntity = new SubCategoryEntity(typename, categoryEntity);
+            categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
+            subCategoryRepository.saveAndFlush(subCategoryEntity);
+        }
     }
-
 
     public List<SubCategoryEntity> getAll() throws SQLException {
         return subCategoryRepository.findAll();
     }
 
-    public boolean update(SubCategoryEntity subCategory, Long id) throws SQLException {
-        SubCategoryEntity updated_subCategory = subCategoryRepository.findById(id).get();
-        if (updated_subCategory != null) {
-            subCategory.setId(id);
+    public void update(SubCategoryEntity subCategory, Long targetId) throws SQLException {
+        if (subCategory != null) {
+            subCategory.setId(targetId);
             subCategoryRepository.saveAndFlush(subCategory);
-            return true;
         }
-        return false;
     }
 
     @Override
     public SubCategoryEntity getById(Long id) throws SQLException {
-        SubCategoryEntity subCategoryEntity = subCategoryRepository.findById(id).get();
-        if (subCategoryEntity == null) {
+        Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
+        if (!subCategoryEntity.isPresent()) {
             throw new SQLException("Entity not found");
         }
-        return subCategoryEntity;
+        return subCategoryEntity.get();
+    }
+
+    public void removeById(Long id) throws SQLException {
+        SubCategoryEntity deleted_subCategory = getById(id);
+        remove(deleted_subCategory);
     }
 
     @Override
-    public boolean removeByid(Long id) throws SQLException {
-        SubCategoryEntity deleted_subCategory = subCategoryRepository.findById(id).get();
-        subCategoryRepository.delete(deleted_subCategory);
-        return true;
+    public void remove(SubCategoryEntity subCategoryEntity) throws SQLException {
+        if (subCategoryEntity != null) {
+            subCategoryRepository.delete(subCategoryEntity);
+        }
     }
+
 }

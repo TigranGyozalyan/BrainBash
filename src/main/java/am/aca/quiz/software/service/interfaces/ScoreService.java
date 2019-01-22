@@ -1,4 +1,4 @@
-package am.aca.quiz.software.service.intefaces;
+package am.aca.quiz.software.service.interfaces;
 
 
 import am.aca.quiz.software.entity.ScoreEntity;

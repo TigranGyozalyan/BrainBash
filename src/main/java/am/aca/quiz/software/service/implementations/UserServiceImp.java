@@ -2,17 +2,11 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.UserRepository;
-import am.aca.quiz.software.service.intefaces.UserService;
+import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 
 @Service

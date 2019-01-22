@@ -2,7 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
-import am.aca.quiz.software.service.intefaces.TestService;
+import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
