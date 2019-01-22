@@ -67,6 +67,14 @@
             <artifactId>postgresql</artifactId>
             <version>${postgreSQLVersion}</version>
         </dependency>
+
+        <!--JSP files-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>9.0.14</version>
+        </dependency>
+
     </dependencies>
 
     <build>

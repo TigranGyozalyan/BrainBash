@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -15,6 +14,12 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryServiceImp categoryServiceImp;
+
+
+    @RequestMapping(value = "/jsp")
+    public String jsp(){
+        return "post";
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CategoryEntity> getTest(Model model){
