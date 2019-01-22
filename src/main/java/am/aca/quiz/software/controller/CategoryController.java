@@ -16,7 +16,7 @@ public class CategoryController {
     private CategoryServiceImp categoryServiceImp;
 
 
-    @RequestMapping(value = "/jsp")
+    @RequestMapping(value = "/jsp",method = RequestMethod.GET)
     public String jsp(){
         return "post";
     }

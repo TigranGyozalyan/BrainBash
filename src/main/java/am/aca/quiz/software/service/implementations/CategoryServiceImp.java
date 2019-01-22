@@ -18,10 +18,13 @@ public class CategoryServiceImp implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    MailService mailService;
 
     public boolean addCategory(String type) throws SQLException {
         CategoryEntity categoryEntity = new CategoryEntity(type);
         categoryRepository.save(categoryEntity);
+        mailService.send("yeghiazaryan99@gmail.com","Test","message");
 
         return true;
     }
