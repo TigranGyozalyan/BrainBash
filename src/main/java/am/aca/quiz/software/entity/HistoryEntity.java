@@ -27,11 +27,11 @@ public class HistoryEntity {
     @Column(name = "score")
     private double score;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserEntity userEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity testEntity;
 

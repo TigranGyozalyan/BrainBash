@@ -2,7 +2,6 @@ package am.aca.quiz.software.entity;
 
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class TestEntity {
     private String test_name;
 
     @Column(name = "duration",nullable = false)
-    private LocalDateTime duration;
+    private long duration;
 
     @Column(name = "description",nullable = false,columnDefinition = "text")
     private String description;
@@ -34,7 +33,7 @@ public class TestEntity {
     private List<HistoryEntity> historyEntities=new ArrayList<>();
 
 
-    public TestEntity(String test_name, LocalDateTime duration, String description) {
+    public TestEntity(String test_name, long duration, String description) {
         this.test_name = test_name;
         this.duration = duration;
         this.description = description;
@@ -55,7 +54,7 @@ public class TestEntity {
         return this.test_name;
     }
 
-    public LocalDateTime getDuration() {
+    public long getDuration() {
         return this.duration;
     }
 
@@ -67,7 +66,7 @@ public class TestEntity {
         this.test_name = test_name;
     }
 
-    public void setDuration(LocalDateTime duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

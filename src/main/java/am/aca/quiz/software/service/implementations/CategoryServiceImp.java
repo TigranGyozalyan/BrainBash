@@ -58,5 +58,6 @@ public class CategoryServiceImp implements CategoryService {
             throw new SQLException("Entity Not Found");
         }
         return categoryEntity.get();
+        
     }
 }
