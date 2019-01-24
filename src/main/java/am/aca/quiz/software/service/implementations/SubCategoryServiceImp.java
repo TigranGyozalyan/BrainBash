@@ -24,10 +24,16 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
 
+    public CategoryServiceImp getCategoryServiceImp() {
+        return categoryServiceImp;
+    }
+
     public void addSubCategory(String typename, Long categoryId) throws SQLException {
         CategoryEntity categoryEntity = categoryServiceImp.getById(categoryId);
         if (categoryEntity != null) {
-            SubCategoryEntity subCategoryEntity = new SubCategoryEntity(typename, categoryEntity);
+            SubCategoryEntity subCategoryEntity = new SubCategoryEntity();
+            subCategoryEntity.setTypeName(typename);
+            subCategoryEntity.setCategory(categoryEntity);
             categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
             subCategoryRepository.saveAndFlush(subCategoryEntity);
         }

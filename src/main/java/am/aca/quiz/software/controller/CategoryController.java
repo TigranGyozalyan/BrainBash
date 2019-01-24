@@ -3,23 +3,25 @@ package am.aca.quiz.software.controller;
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
+
+
 
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
 
+    private final CategoryServiceImp categoryServiceImp;
+
     @Autowired
-    private CategoryServiceImp categoryServiceImp;
+    public CategoryController(CategoryServiceImp categoryServiceImp) {
+        this.categoryServiceImp = categoryServiceImp;
+    }
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -27,11 +29,11 @@ public class CategoryController {
         return "category";
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String postNewCategory(@RequestBody MultiValueMap<String, String> formData) {
-        String type = formData.get("type").get(0);
+        List<String> type = formData.get("type");
         try {
-            categoryServiceImp.addCategory(type);
+            categoryServiceImp.addCategory(type.get(0));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,3 +82,4 @@ public class CategoryController {
 
 
 }
+

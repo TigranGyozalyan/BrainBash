@@ -12,17 +12,17 @@ public class SubCategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type_name", unique = true,nullable = false)
+    @Column(name = "type_name", unique = true, nullable = false)
     private String typeName;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id",insertable = false,updatable = false)
+    @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    @OneToMany(mappedBy = "subCategory",cascade = CascadeType.ALL)
-    private List<TopicEntity> topicEntityList=new ArrayList<>();
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
+    private List<TopicEntity> topicEntityList = new ArrayList<>();
 
-    public SubCategoryEntity(){
+    public SubCategoryEntity() {
 
     }
 
@@ -53,10 +53,6 @@ public class SubCategoryEntity {
 
     public void setCategory(CategoryEntity category) {
         this.category = category;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public List<TopicEntity> getTopicEntityList() {
