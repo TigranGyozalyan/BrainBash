@@ -3,10 +3,11 @@ package am.aca.quiz.software.service.mapper;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
     @Override
     public UserDto mapEntityToDto(UserEntity userEntity) {

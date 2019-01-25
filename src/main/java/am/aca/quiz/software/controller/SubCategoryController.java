@@ -2,7 +2,9 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.entity.SubCategoryEntity;
+import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
+import am.aca.quiz.software.service.mapper.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
@@ -23,10 +25,12 @@ public class SubCategoryController {
 
 
     private final SubCategoryServiceImp subCategoryServiceImp;
+    private final CategoryMapper categoryMapper;
 
     @Autowired
-    public SubCategoryController(SubCategoryServiceImp subCategoryServiceImp) {
+    public SubCategoryController(SubCategoryServiceImp subCategoryServiceImp, CategoryMapper categoryMapper) {
         this.subCategoryServiceImp = subCategoryServiceImp;
+        this.categoryMapper = categoryMapper;
     }
 
 
@@ -34,12 +38,9 @@ public class SubCategoryController {
     public ModelAndView addSubCategory() throws SQLException {
         ModelAndView modelAndView = new ModelAndView("subCategory");
 
-        //emulate dto mapping
+        List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
 
-        List<String> categoryStrings = dtoEmulator(subCategoryServiceImp.getCategoryServiceImp().getAll());
-
-        //
-        modelAndView.addObject("categories", categoryStrings);
+        modelAndView.addObject("categories", categoryDtos);
         return modelAndView;
     }
 
@@ -54,10 +55,9 @@ public class SubCategoryController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
 
-        List<String> categoryStrings = dtoEmulator(subCategoryServiceImp.getCategoryServiceImp().getAll());
-
-        modelAndView.addObject("categories",categoryStrings);
+        modelAndView.addObject("categories",categoryDtos);
 
         return modelAndView;
     }
@@ -89,15 +89,4 @@ public class SubCategoryController {
             e.printStackTrace();
         }
     }
-
-    //toDo fix mappers so that they are recognized as beans
-
-    private List<String> dtoEmulator (List<CategoryEntity> categoryEntities) {
-        List<String> categoryStrings = new ArrayList<>();
-        for (CategoryEntity categoryEntity : categoryEntities) {
-            categoryStrings.add(categoryEntity.getType());
-        }
-        return categoryStrings;
-    }
-
 }

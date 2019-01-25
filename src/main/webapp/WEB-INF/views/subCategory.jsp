@@ -11,7 +11,7 @@
     <label>
        Category : <select name="categoryList">
             <c:forEach  var="category" items= "${categories}">
-                <option value="${category}">${category}</option>
+                <option value="${category.type}">${category.type}</option>
             </c:forEach>
     </select>
     </label>

@@ -3,10 +3,11 @@ package am.aca.quiz.software.service.mapper;
 import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.dto.ScoreDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
     @Override
     public ScoreDto mapEntityToDto(ScoreEntity scoreEntity) {
