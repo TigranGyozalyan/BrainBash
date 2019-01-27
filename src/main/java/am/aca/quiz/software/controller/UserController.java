@@ -23,7 +23,7 @@ public class UserController {
     }
     @GetMapping(value = "/register")
     public ModelAndView registrationPage(){
-        ModelAndView modelAndView=new ModelAndView("view/userRegistration");
+        ModelAndView modelAndView=new ModelAndView("userRegistration");
         return modelAndView;
     }
     @PostMapping(value = "/register",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
