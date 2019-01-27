@@ -1,30 +1,50 @@
 package am.aca.quiz.software.service.implementations;
 
+import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
+import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 public class TestServiceImp implements TestService {
 
     private final TestRepository testRepository;
+    private final QuestionServiceImp questionServiceImp;
 
-    public TestServiceImp(TestRepository testRepository) {
+    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp) {
         this.testRepository = testRepository;
+        this.questionServiceImp = questionServiceImp;
     }
 
 
     @Override
-    public boolean addTest(String testName, String description, long duration) throws SQLException {
+    public void addTest(String testName, String description, long duration, List<QuestionDto> questionDtos) throws SQLException {
+
+        List<QuestionEntity> questionEntities= questionDtos
+                .stream()
+                .map(i-> {
+                    try {
+                        return questionServiceImp.getById(i.getId());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    return null; //TODO Ask Vahe
+                })
+                .collect(Collectors.toList());
+
         TestEntity testEntity=new TestEntity(testName,duration,description);
+
+        testEntity.setQuestionEntities(questionEntities);
+
         testRepository.saveAndFlush(testEntity);
-        return true;
+
     }
 
     @Override
@@ -33,21 +53,19 @@ public class TestServiceImp implements TestService {
     }
 
     @Override
-    public boolean update(TestEntity test, Long id) throws SQLException {
+    public void update(TestEntity test, Long id) throws SQLException {
         TestEntity testEntity = testRepository.findById(id).get();
         if (testEntity != null) {
             test.setId(id);
             testRepository.saveAndFlush(test);
-            return true;
         }
-        return false;
+
     }
 
 
     @Override
-    public boolean removeById(Long id) throws SQLException {
+    public void removeById(Long id) throws SQLException {
         testRepository.deleteById(id);
-        return true;
     }
 
     @Override

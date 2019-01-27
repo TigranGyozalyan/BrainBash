@@ -35,6 +35,14 @@ public class UserEntity {
     @Column(name = "passwords", nullable = false)
     private String password;
 
+    private String passwordchecker;
+
+
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -141,6 +149,14 @@ public class UserEntity {
 
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
+    }
+
+    public String getPasswordchecker() {
+        return passwordchecker;
+    }
+
+    public void setPasswordchecker(String passwordchecker) {
+        this.passwordchecker = passwordchecker;
     }
 
     @Override
