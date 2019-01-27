@@ -6,12 +6,14 @@ import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
+import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -40,14 +42,15 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView postNewCategory(@RequestBody MultiValueMap<String, String> formData) throws SQLException {
+    @RequestMapping(value = "/add", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseBody
+    public ModelAndView postNewCategory(@RequestParam Map<String, String> formData) throws SQLException {
         ModelAndView modelAndView = new ModelAndView("subCategory");
 
         try {
-            String category = formData.get("categoryList").get(0);
+            String category = formData.get("categoryList");
             Long categoryId = subCategoryServiceImp.getCategoryServiceImp().getByType(category).getId();
-            String subCategory = formData.get("typename").get(0);
+            String subCategory = formData.get("typename");
             subCategoryServiceImp.addSubCategory(subCategory, categoryId);
         } catch (SQLException e) {
             e.printStackTrace();
