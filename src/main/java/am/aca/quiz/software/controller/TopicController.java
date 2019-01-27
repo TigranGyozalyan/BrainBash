@@ -34,7 +34,7 @@ public class TopicController {
 
         List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
 
-        modelAndView.addObject("subCategories", subCategoryDtos);
+        modelAndView.addObject("subcategories", subCategoryDtos);
 
         return modelAndView;
     }
