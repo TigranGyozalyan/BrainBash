@@ -61,7 +61,7 @@ public class TestController {
 
     @PostMapping("/add")
     public ModelAndView postTest(@RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("duretion") String duretion) {
-        ModelAndView modelAndView = new ModelAndView("test");
+        ModelAndView modelAndView = new ModelAndView("view/test");
 //
 //        Map<TopicDto, List<QuestionDto>> testMap = new HashMap<>();
 //

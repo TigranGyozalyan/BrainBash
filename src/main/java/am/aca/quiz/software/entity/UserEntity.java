@@ -22,12 +22,11 @@ public class UserEntity {
     private String surname;
 
     @Column(name = "emails", nullable = false, unique = true)
-
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    @Size(min = 3)
-    @Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
+    // @Size(min = 3)
+    //@Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
@@ -35,13 +34,8 @@ public class UserEntity {
     @Column(name = "passwords", nullable = false)
     private String password;
 
-    private String passwordchecker;
+    //  private String passwordchecker;
 
-
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -66,7 +60,8 @@ public class UserEntity {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.role = Role.valueOf(role);
+        this.role = Role.getRole(role);
+        //   this.passwordchecker=passwordchecker;
 
     }
 
@@ -150,14 +145,14 @@ public class UserEntity {
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
     }
-
-    public String getPasswordchecker() {
-        return passwordchecker;
-    }
-
-    public void setPasswordchecker(String passwordchecker) {
-        this.passwordchecker = passwordchecker;
-    }
+//
+//    public String getPasswordchecker() {
+//        return passwordchecker;
+//    }
+//
+//    public void setPasswordchecker(String passwordchecker) {
+//        this.passwordchecker = passwordchecker;
+//    }
 
     @Override
     public String toString() {

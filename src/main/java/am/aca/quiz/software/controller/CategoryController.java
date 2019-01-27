@@ -27,12 +27,12 @@ public class CategoryController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addCategoryPage() {
-        return new ModelAndView("category");
+        return new ModelAndView("view/category");
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView postNewCategory(@RequestParam("type") String type) {
-        ModelAndView modelAndView = new ModelAndView("category");
+        ModelAndView modelAndView = new ModelAndView("view/category");
         try {
             categoryServiceImp.addCategory(type);
         } catch (SQLException e) {

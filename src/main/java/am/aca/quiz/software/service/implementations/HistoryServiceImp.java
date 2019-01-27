@@ -32,11 +32,11 @@ public class HistoryServiceImp implements HistoryService {
 
     @Override
     public boolean addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
-        UserEntity userEntity=userService.getById(userId);
-        TestEntity testEntity=testService.getById(testId);
+        UserEntity userEntity = userService.getById(userId);
+        TestEntity testEntity = testService.getById(testId);
 
 
-        HistoryEntity historyEntity=new HistoryEntity(startTime, Status.valueOf(status),score,userEntity,testEntity);
+        HistoryEntity historyEntity = new HistoryEntity(startTime, status, score, userEntity, testEntity);
 
         userEntity.getHistoryList().add(historyEntity);
         testEntity.getHistoryEntities().add(historyEntity);
@@ -46,6 +46,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     }
+
     public List<HistoryEntity> getAll() throws SQLException {
         return historyRepository.findAll();
     }

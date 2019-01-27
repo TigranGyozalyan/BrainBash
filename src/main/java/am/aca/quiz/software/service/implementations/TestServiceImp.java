@@ -8,6 +8,7 @@ import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,11 +36,19 @@ public class TestServiceImp implements TestService {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    return null; //TODO Ask Vahe
+                    return null;
                 })
                 .collect(Collectors.toList());
+//        List<QuestionEntity> questionEntities = new ArrayList<>();
+//        questionDtos.forEach(i-> {
+//            try {
+//                questionEntities.add(questionServiceImp.getById(i.getId()));
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        });
 
-        TestEntity testEntity=new TestEntity(testName,duration,description);
+        TestEntity testEntity = new TestEntity(testName, duration, description);
 
         testEntity.setQuestionEntities(questionEntities);
 

@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,7 +32,7 @@ public class SubCategoryController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addSubCategory() throws SQLException {
-        ModelAndView modelAndView = new ModelAndView("subCategory");
+        ModelAndView modelAndView = new ModelAndView("view/subCategory");
 
         List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll()); //Shell we do this by @Query
 
@@ -45,7 +44,7 @@ public class SubCategoryController {
     @RequestMapping(value = "/add", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseBody
     public ModelAndView postNewCategory(@RequestParam Map<String, String> formData) throws SQLException {
-        ModelAndView modelAndView = new ModelAndView("subCategory");
+        ModelAndView modelAndView = new ModelAndView("view/subCategory");
 
         try {
             String category = formData.get("categoryList");
