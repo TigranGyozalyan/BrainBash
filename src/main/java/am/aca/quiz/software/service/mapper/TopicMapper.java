@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class TopicMapper implements MapEntityToDto<TopicEntity, TopicDto> {
 
@@ -22,11 +24,16 @@ public class TopicMapper implements MapEntityToDto<TopicEntity, TopicDto> {
 
     @Override
     public List<TopicDto> mapEntitiesToDto(List<TopicEntity> topicEntityList) {
-        List<TopicDto> topicDtoList = new ArrayList<>();
-        for (TopicEntity topicEntity : topicEntityList) {
-            topicDtoList.add(mapEntityToDto(topicEntity));
-        }
+//        List<TopicDto> topicDtoList = new ArrayList<>();
+//        for (TopicEntity topicEntity : topicEntityList) {
+//            topicDtoList.add(mapEntityToDto(topicEntity));
+//        }
+//        return topicDtoList;
 
-        return topicDtoList;
+        return topicEntityList
+                .stream()
+                .map(this::mapEntityToDto)
+                .collect(Collectors.toList());
+
     }
 }

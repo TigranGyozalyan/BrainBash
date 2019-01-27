@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
     @Override
@@ -26,10 +28,16 @@ public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
 
     @Override
     public List<UserDto> mapEntitiesToDto(List<UserEntity> userEntityList) {
-        List<UserDto> userDtoList=new ArrayList<>();
-        for(UserEntity userEntity: userEntityList){
-            userDtoList.add(mapEntityToDto(userEntity));
-        }
-        return userDtoList;
+//        List<UserDto> userDtoList=new ArrayList<>();
+//        for(UserEntity userEntity: userEntityList){
+//            userDtoList.add(mapEntityToDto(userEntity));
+//        }
+//        return userDtoList;
+
+        return userEntityList
+                .stream()
+                .map(this::mapEntityToDto)
+                .collect(Collectors.toList());
+
     }
 }

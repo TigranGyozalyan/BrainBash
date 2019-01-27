@@ -14,8 +14,6 @@ import java.util.List;
 @Service
 public class ScoreServiceImp implements ScoreService {
 
-
-
     private final ScoreRepository scoreRepository;
     private final TopicServiceImp topicServiceImp;
     private final UserServiceImp userServiceImp;

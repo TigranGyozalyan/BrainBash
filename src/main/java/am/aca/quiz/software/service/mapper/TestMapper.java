@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
     @Override
@@ -21,13 +23,16 @@ public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
 
     @Override
     public List<TestDto> mapEntitiesToDto(List<TestEntity> testEntities) {
+//        List<TestDto> testDtos = new ArrayList<>();
+//        for (TestEntity testEntity : testEntities) {
+//            testDtos.add(mapEntityToDto(testEntity));
+//        }
+//        return testDtos;
 
-        List<TestDto> testDtos = new ArrayList<>();
+        return testEntities
+                .stream()
+                .map(this::mapEntityToDto)
+                .collect(Collectors.toList());
 
-        for (TestEntity testEntity : testEntities) {
-            testDtos.add(mapEntityToDto(testEntity));
-        }
-
-        return testDtos;
     }
 }

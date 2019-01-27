@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class SubCategoryServiceImp implements SubCategoryService {
 
-
     private final SubCategoryRepository subCategoryRepository;
     private final CategoryServiceImp categoryServiceImp;
 

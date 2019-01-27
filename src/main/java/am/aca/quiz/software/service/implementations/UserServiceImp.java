@@ -12,10 +12,6 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService {
 
-    private static final String to = "yeghiazaryan99@gmail.com";
-    private static final String from = "quizsoftware.noreply@gmail.com";
-    private static final String password = "quizsoftware1";
-
     private final UserRepository userRepository;
 
     public UserServiceImp(UserRepository userRepository) {

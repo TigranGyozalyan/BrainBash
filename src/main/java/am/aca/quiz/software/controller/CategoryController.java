@@ -1,26 +1,28 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.CategoryEntity;
+import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
+import am.aca.quiz.software.service.mapper.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
 
 
-
-@Controller
+@Controller  //if we change to @RestControllers jsp will not to work
 @RequestMapping("/category")
 public class CategoryController {
 
     private final CategoryServiceImp categoryServiceImp;
+    private final CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryController(CategoryServiceImp categoryServiceImp) {
+    public CategoryController(CategoryServiceImp categoryServiceImp, CategoryMapper categoryMapper) {
         this.categoryServiceImp = categoryServiceImp;
+        this.categoryMapper = categoryMapper;
     }
 
 
@@ -30,10 +32,15 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String postNewCategory(@RequestBody MultiValueMap<String, String> formData) {
-        List<String> type = formData.get("type");
+    public String postNewCategory(/*@RequestBody MultiValueMap<String, String> formData*/ @RequestParam("type") String type) {
+//        List<String> type = formData.get("type");
+//        try {
+//            categoryServiceImp.addCategory(type.get(0));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         try {
-            categoryServiceImp.addCategory(type.get(0));
+            categoryServiceImp.addCategory(type);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,9 +48,10 @@ public class CategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<CategoryEntity> getTest() {
+    public List<CategoryDto> getTest() {
+
         try {
-            return categoryServiceImp.getAll();
+            return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }

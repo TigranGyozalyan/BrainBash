@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class TopicServiceImp implements TopicService {
 
-
     private final TopicRepository topicRepository;
     private final SubCategoryServiceImp subCategoryServiceImpl;
 
