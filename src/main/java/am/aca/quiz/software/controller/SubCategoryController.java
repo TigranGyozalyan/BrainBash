@@ -35,7 +35,7 @@ public class SubCategoryController {
 
         List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll()); //Shell we do this by @Query
 
-        modelAndView.addObject("categories", categoryDtos); // Why do you pass Dto ?
+        modelAndView.addObject("categories", categoryDtos);
 
         return modelAndView;
     }
@@ -53,7 +53,6 @@ public class SubCategoryController {
             e.printStackTrace();
         }
 
-        //?????????????
         List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
         modelAndView.addObject("categories", categoryDtos);
 

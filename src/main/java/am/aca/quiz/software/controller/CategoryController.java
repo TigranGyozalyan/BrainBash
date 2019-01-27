@@ -4,22 +4,21 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
 import java.util.List;
 
 
-@Controller  //if we change to @RestControllers jsp will not to work
+@RestController
 @RequestMapping("/category")
 public class CategoryController {
 
     private final CategoryServiceImp categoryServiceImp;
     private final CategoryMapper categoryMapper;
 
-    @Autowired
+
     public CategoryController(CategoryServiceImp categoryServiceImp, CategoryMapper categoryMapper) {
         this.categoryServiceImp = categoryServiceImp;
         this.categoryMapper = categoryMapper;
@@ -27,24 +26,21 @@ public class CategoryController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String addCategoryPage() {
-        return "category";
+    public ModelAndView addCategoryPage() {
+        ModelAndView modelAndView=new ModelAndView("category");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String postNewCategory(/*@RequestBody MultiValueMap<String, String> formData*/ @RequestParam("type") String type) {
-//        List<String> type = formData.get("type");
-//        try {
-//            categoryServiceImp.addCategory(type.get(0));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+    public ModelAndView postNewCategory(@RequestParam("type") String type) {
+        ModelAndView modelAndView=new ModelAndView("category");
+
         try {
             categoryServiceImp.addCategory(type);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "category";
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.GET)
