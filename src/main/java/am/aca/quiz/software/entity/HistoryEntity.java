@@ -30,11 +30,11 @@ public class HistoryEntity {
     private double score;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id",updatable = false)
     private UserEntity userEntity;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "test_id", insertable = false, updatable = false)
+    @JoinColumn(name = "test_id", updatable = false)
     private TestEntity testEntity;
 
     public HistoryEntity() {
@@ -68,8 +68,8 @@ public class HistoryEntity {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status.toLowerCase());
     }
 
     public LocalDateTime getEndTime() {
@@ -113,8 +113,6 @@ public class HistoryEntity {
                 ", endTime=" + endTime +
                 ", status='" + status + '\'' +
                 ", score=" + score +
-                ", userEntity=" + userEntity +
-                ", testEntity=" + testEntity +
                 '}';
     }
 

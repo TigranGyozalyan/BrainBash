@@ -10,16 +10,16 @@ import java.util.List;
 @Service
 public interface TopicService {
     //create
-    boolean addTopic(String topicName, Long subCategoryId) throws SQLException;
+    void addTopic(String topicName, Long subCategoryId) throws SQLException;
 
     //read
     List<TopicEntity> getAll() throws SQLException;
 
     //update
-    boolean update(TopicEntity topic, Long id) throws SQLException;
+    void update(TopicEntity topic, Long id) throws SQLException;
 
 
-    boolean removeByid(Long id) throws SQLException;
+    void removeByid(Long id) throws SQLException;
 
     TopicEntity getById(Long id) throws SQLException;
 }

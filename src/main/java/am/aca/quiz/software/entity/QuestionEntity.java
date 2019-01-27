@@ -36,8 +36,8 @@ public class QuestionEntity {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
-            joinColumns = {@JoinColumn(name = "question_id", insertable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "test_id", insertable = false, updatable = false)})
+            joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
     private List<TestEntity> testEntities = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -84,8 +84,8 @@ public class QuestionEntity {
         return level;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
+    public void setLevel(String level) {
+        this.level = Level.valueOf(level);
     }
 
     public int getCorrect_amount() {
@@ -120,7 +120,16 @@ public class QuestionEntity {
         this.topicEntity = topicEntity;
     }
 
-
+    @Override
+    public String toString() {
+        return "QuestionEntity{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", points=" + points +
+                ", level=" + level +
+                ", correct_amount=" + correct_amount +
+                '}';
+    }
 }
 
 

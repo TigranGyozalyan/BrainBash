@@ -22,7 +22,7 @@ public class UserEntity {
     private String surname;
 
     @Column(name = "emails", nullable = false, unique = true)
-    // @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
+
     @Email(message = "Please provide a valid email address")
     private String email;
 
@@ -34,6 +34,14 @@ public class UserEntity {
     @Size(min = 6)
     @Column(name = "passwords", nullable = false)
     private String password;
+
+    private String passwordchecker;
+
+
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -115,8 +123,8 @@ public class UserEntity {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role = Role.valueOf(role);
     }
 
     public String getImage() {
@@ -141,6 +149,14 @@ public class UserEntity {
 
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
+    }
+
+    public String getPasswordchecker() {
+        return passwordchecker;
+    }
+
+    public void setPasswordchecker(String passwordchecker) {
+        this.passwordchecker = passwordchecker;
     }
 
     @Override

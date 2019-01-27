@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.interfaces;
 
 
 import am.aca.quiz.software.entity.TestEntity;
+import am.aca.quiz.software.service.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -11,16 +12,16 @@ import java.util.List;
 @Service
 public interface TestService {
     //create
-    boolean addTest(String testName, String description, long duration) throws SQLException;
+    void addTest(String testName, String description, long duration, List<QuestionDto> questionDtos) throws SQLException;
 
     //read
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    boolean update(TestEntity test, Long id) throws SQLException;
+    void update(TestEntity test, Long id) throws SQLException;
 
 
-    boolean removeById(Long id) throws SQLException;
+    void removeById(Long id) throws SQLException;
 
     TestEntity getById(Long id) throws SQLException;
 }

@@ -16,7 +16,7 @@ public class TopicEntity {
     private String topicName;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subcategory_id", insertable = false, updatable = false)
+    @JoinColumn(name = "subcategory_id", updatable = false)
     private SubCategoryEntity subCategory;
 
     @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL)
@@ -58,15 +58,6 @@ public class TopicEntity {
         this.subCategory = subCategory;
     }
 
-    @Override
-    public String toString() {
-        return "TopicEntity{" +
-                "id=" + id +
-                ", topicName='" + topicName + '\'' +
-                ", subCategory=" + subCategory +
-                '}';
-    }
-
     public List<QuestionEntity> getQuestionEntities() {
         return questionEntities;
     }
@@ -81,5 +72,14 @@ public class TopicEntity {
 
     public void setScoreEntityList(List<ScoreEntity> scoreEntityList) {
         this.scoreEntityList = scoreEntityList;
+    }
+
+    @Override
+    public String toString() {
+        return "TopicEntity{" +
+                "id=" + id +
+                ", topicName='" + topicName + '\'' +
+                ", subCategory=" + subCategory +
+                '}';
     }
 }

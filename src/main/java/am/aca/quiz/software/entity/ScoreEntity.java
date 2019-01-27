@@ -16,11 +16,11 @@ public class ScoreEntity {
     private int count;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "topic_id", insertable = false, updatable = false)
+    @JoinColumn(name = "topic_id", updatable = false)
     private TopicEntity topic;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id",updatable = false)
     private UserEntity userEntity;
 
     public ScoreEntity() {
@@ -79,7 +79,6 @@ public class ScoreEntity {
                 "id=" + id +
                 ", value=" + value +
                 ", topic=" + topic +
-                ", userEntity=" + userEntity +
                 '}';
     }
 }

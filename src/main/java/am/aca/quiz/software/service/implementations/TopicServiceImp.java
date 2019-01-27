@@ -16,21 +16,26 @@ public class TopicServiceImp implements TopicService {
     private final TopicRepository topicRepository;
     private final SubCategoryServiceImp subCategoryServiceImpl;
 
+
     public TopicServiceImp(TopicRepository topicRepository, SubCategoryServiceImp subCategoryServiceImpl) {
         this.topicRepository = topicRepository;
         this.subCategoryServiceImpl = subCategoryServiceImpl;
     }
 
+    public SubCategoryServiceImp getSubCategoryServiceImpl() {
+        return subCategoryServiceImpl;
+    }
+
 
     @Override
-    public boolean addTopic(String topicName, Long subCategoryId) throws SQLException {
+    public void addTopic(String topicName, Long subCategoryId) throws SQLException {
         SubCategoryEntity subCategoryEntity = subCategoryServiceImpl.getById(subCategoryId);
         TopicEntity topicEntity = new TopicEntity(topicName, subCategoryEntity);
 
         subCategoryEntity.getTopicEntityList().add(topicEntity);
 
         topicRepository.saveAndFlush(topicEntity);
-        return true;
+
     }
 
 
@@ -40,23 +45,20 @@ public class TopicServiceImp implements TopicService {
     }
 
     @Override
-    public boolean update(TopicEntity topic, Long id) throws SQLException {
+    public void update(TopicEntity topic, Long id) throws SQLException {
         TopicEntity updatedTopic = topicRepository.findById(id).get();
 
         if (updatedTopic != null) {
             topic.setId(id);
             topicRepository.saveAndFlush(topic);
-            return true;
         }
 
-        return false;
     }
 
     @Override
-    public boolean removeByid(Long id) throws SQLException {
+    public void removeByid(Long id) throws SQLException {
         TopicEntity deletedTopic = topicRepository.findById(id).get();
         topicRepository.delete(deletedTopic);
-        return true;
     }
 
     @Override
