@@ -79,7 +79,6 @@ public class ScoreEntity {
                 "id=" + id +
                 ", value=" + value +
                 ", topic=" + topic +
-                ", userEntity=" + userEntity +
                 '}';
     }
 }

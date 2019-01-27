@@ -58,15 +58,6 @@ public class TopicEntity {
         this.subCategory = subCategory;
     }
 
-    @Override
-    public String toString() {
-        return "TopicEntity{" +
-                "id=" + id +
-                ", topicName='" + topicName + '\'' +
-                ", subCategory=" + subCategory +
-                '}';
-    }
-
     public List<QuestionEntity> getQuestionEntities() {
         return questionEntities;
     }
@@ -81,5 +72,14 @@ public class TopicEntity {
 
     public void setScoreEntityList(List<ScoreEntity> scoreEntityList) {
         this.scoreEntityList = scoreEntityList;
+    }
+
+    @Override
+    public String toString() {
+        return "TopicEntity{" +
+                "id=" + id +
+                ", topicName='" + topicName + '\'' +
+                ", subCategory=" + subCategory +
+                '}';
     }
 }

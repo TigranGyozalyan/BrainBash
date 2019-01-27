@@ -81,7 +81,6 @@ public class AnswerEntity {
                 ", description='" + description + '\'' +
                 ", is_correct=" + is_correct +
                 ", answer_text='" + answer_text + '\'' +
-                ", questionEntity=" + questionEntity +
                 '}';
     }
 }

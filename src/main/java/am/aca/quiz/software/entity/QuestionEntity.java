@@ -84,8 +84,8 @@ public class QuestionEntity {
         return level;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
+    public void setLevel(String level) {
+        this.level = Level.valueOf(level);
     }
 
     public int getCorrect_amount() {
@@ -120,7 +120,16 @@ public class QuestionEntity {
         this.topicEntity = topicEntity;
     }
 
-
+    @Override
+    public String toString() {
+        return "QuestionEntity{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", points=" + points +
+                ", level=" + level +
+                ", correct_amount=" + correct_amount +
+                '}';
+    }
 }
 
 

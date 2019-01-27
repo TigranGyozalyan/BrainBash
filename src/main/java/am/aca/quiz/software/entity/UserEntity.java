@@ -22,7 +22,7 @@ public class UserEntity {
     private String surname;
 
     @Column(name = "emails", nullable = false, unique = true)
-    // @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
+
     @Email(message = "Please provide a valid email address")
     private String email;
 
@@ -115,8 +115,8 @@ public class UserEntity {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role = Role.valueOf(role);
     }
 
     public String getImage() {

@@ -68,8 +68,8 @@ public class HistoryEntity {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status.toLowerCase());
     }
 
     public LocalDateTime getEndTime() {
@@ -113,8 +113,6 @@ public class HistoryEntity {
                 ", endTime=" + endTime +
                 ", status='" + status + '\'' +
                 ", score=" + score +
-                ", userEntity=" + userEntity +
-                ", testEntity=" + testEntity +
                 '}';
     }
 
