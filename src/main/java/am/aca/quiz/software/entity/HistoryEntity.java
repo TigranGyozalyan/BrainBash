@@ -1,5 +1,7 @@
 package am.aca.quiz.software.entity;
 
+import am.aca.quiz.software.entity.enums.Status;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
@@ -27,11 +29,11 @@ public class HistoryEntity {
     @Column(name = "score")
     private double score;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserEntity userEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "test_id", insertable = false, updatable = false)
     private TestEntity testEntity;
 
@@ -116,21 +118,5 @@ public class HistoryEntity {
                 '}';
     }
 
-    public enum Status {
-        INPROGRESS("in progress"),
-        UPCOMING("upcoming"),
-        COMPLETED("completed");
 
-        private final String stringValue;
-
-
-        Status(String stringValue) {
-            this.stringValue = stringValue;
-        }
-
-        @Override
-        public String toString() {
-            return stringValue;
-        }
-    }
 }

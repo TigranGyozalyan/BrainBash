@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface TestService {
     //create
-    boolean addTest(String testName, String description, LocalDateTime duration) throws SQLException;
+    boolean addTest(String testName, String description, long duration) throws SQLException;
 
     //read
     List<TestEntity> getAll() throws SQLException;

@@ -1,70 +1,71 @@
 package am.aca.quiz.software.entity;
 
+import am.aca.quiz.software.entity.enums.Role;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String name;
-    @Column(name="last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String surname;
 
-    @Column(name = "emails",nullable = false,unique = true)
-   // @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
+    @Column(name = "emails", nullable = false, unique = true)
+    // @Pattern(regexp="^[\\w-\\+]+(\\.[\\w]+)@[\\w-]+(\\.[\\w]+)(\\.[a-z]{2,})$", message="Invalid email address!")
     @Email(message = "Please provide a valid email address")
     private String email;
 
     @Size(min = 3)
-    @Pattern(regexp = "^[\\\\p{L} .'-]+$",message = "Invalid Nickname")
-    @Column(name = "nickname",nullable = false)
+    @Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @Size(min = 6)
-    @Column(name = "passwords",nullable = false)
+    @Column(name = "passwords", nullable = false)
     private String password;
 
-    @Column(name = "is_admin",columnDefinition = "boolean default false")
-    private boolean is_admin;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
-    @Column(name = "avatar_image",columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
+    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
     private String image;
 
-    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
-    private List<HistoryEntity> historyList=new ArrayList<>();
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private List<HistoryEntity> historyList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
-    private List<ScoreEntity> scoreList=new ArrayList<>();
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private List<ScoreEntity> scoreList = new ArrayList<>();
 
     public UserEntity() {
     }
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, boolean is_admin) {
+
+    public UserEntity(String name, String surname, String email, String nickname, String password, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.is_admin = is_admin;
+        this.role = role;
+
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public boolean isIs_admin() {
-        return is_admin;
-    }
 
     public Long getId() {
         return id;
@@ -110,12 +111,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public boolean getIs_admin() {
-        return is_admin;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIs_admin(boolean is_admin) {
-        this.is_admin = is_admin;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getImage() {

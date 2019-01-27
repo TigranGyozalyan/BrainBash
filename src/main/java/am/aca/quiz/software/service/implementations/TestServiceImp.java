@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class TestServiceImp implements TestService {
 
-
     private final TestRepository testRepository;
 
     public TestServiceImp(TestRepository testRepository) {
@@ -22,7 +21,7 @@ public class TestServiceImp implements TestService {
 
 
     @Override
-    public boolean addTest(String testName, String description, LocalDateTime duration) throws SQLException {
+    public boolean addTest(String testName, String description, long duration) throws SQLException {
         TestEntity testEntity=new TestEntity(testName,duration,description);
         testRepository.saveAndFlush(testEntity);
         return true;

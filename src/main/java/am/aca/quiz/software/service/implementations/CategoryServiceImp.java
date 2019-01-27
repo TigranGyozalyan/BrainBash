@@ -3,19 +3,20 @@ package am.aca.quiz.software.service.implementations;
 import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.CategoryRepository;
 import am.aca.quiz.software.service.interfaces.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 public class CategoryServiceImp implements CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryServiceImp(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
 
     public void addCategory(String type) throws SQLException {
@@ -41,8 +42,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void removeById(Long id) throws SQLException {
-        CategoryEntity deleted_category = getById(id);
-        remove(deleted_category);
+        categoryRepository.removeById(id);
     }
 
     @Override
@@ -53,10 +53,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
-        if (!categoryEntity.isPresent()) {
-            throw new SQLException("Entity Not Found");
-        }
-        return categoryEntity.get();
+       return categoryRepository.findCategoryEntityById(id);
     }
+
+    public CategoryEntity getByType(String type) throws  SQLException {
+        return categoryRepository.findCategoryEntityByType(type);
+    }
+
 }

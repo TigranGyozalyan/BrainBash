@@ -1,13 +1,11 @@
 package am.aca.quiz.software.service.dto;
 
-import java.time.LocalDateTime;
-
 public class TestDto {
 
 
     private Long id;
 
-    private LocalDateTime duration;
+    private long duration;
     private String test_name;
     private String description;
 
@@ -19,11 +17,11 @@ public class TestDto {
         this.id = id;
     }
 
-    public LocalDateTime getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalDateTime duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
