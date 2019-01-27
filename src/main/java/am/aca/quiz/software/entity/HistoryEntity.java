@@ -30,19 +30,19 @@ public class HistoryEntity {
     private double score;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id",updatable = false)
     private UserEntity userEntity;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name = "test_id", insertable = false, updatable = false)
+    @JoinColumn(name = "test_id", updatable = false)
     private TestEntity testEntity;
 
     public HistoryEntity() {
     }
 
-    public HistoryEntity(LocalDateTime startTime, Status status,@Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
+    public HistoryEntity(LocalDateTime startTime, String status,@Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
         this.startTime = startTime;
-        this.status = status;
+        this.status = Status.getStatus(status);
         this.score = score;
         this.userEntity = userEntity;
         this.testEntity = testEntity;

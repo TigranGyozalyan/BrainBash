@@ -36,8 +36,8 @@ public class QuestionEntity {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
-            joinColumns = {@JoinColumn(name = "question_id", insertable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "test_id", insertable = false, updatable = false)})
+            joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
     private List<TestEntity> testEntities = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -50,7 +50,7 @@ public class QuestionEntity {
     public QuestionEntity(String question, @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0") int points, String level, @Min(value = 1, message = "The question must have at least one correct answer") int correct_amount, TopicEntity topicEntity) {
         this.question = question;
         this.points = points;
-        this.level = Level.valueOf(level);
+        this.level = Level.getLevel(level);
         this.correct_amount = correct_amount;
         this.topicEntity = topicEntity;
     }

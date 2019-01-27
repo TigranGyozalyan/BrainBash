@@ -70,4 +70,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
+    public SubCategoryEntity getByTypeName(String type) throws  SQLException {
+        return subCategoryRepository.findSubCategoryEntitiesByTypeName(type);
+    }
+
 }
