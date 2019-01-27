@@ -4,7 +4,6 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -74,13 +73,15 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
+    public CategoryEntity getCategoryById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(categoryMapper.mapEntityToDto(categoryServiceImp.getById(id)));
+            return categoryServiceImp.getById(id);
         } catch (SQLException e) {
-            return ResponseEntity.notFound().build();
+            e.printStackTrace();
         }
-
+        return null;
     }
+
+
 }
 
