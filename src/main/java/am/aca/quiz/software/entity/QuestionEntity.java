@@ -16,43 +16,45 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "question",nullable = false,columnDefinition = "text")
+    @Column(name = "question", nullable = false, columnDefinition = "text")
     private String question;
 
-    @Min(value = 0,message = "Invalid Point Argument. Points must be >= 0")
-    @Column(name = "points",nullable = false)
+    @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0")
+    @Column(name = "points", nullable = false)
     private int points;
 
     @Enumerated(EnumType.STRING)
-    @Column (name = "level",nullable = false)
+    @Column(name = "level", nullable = false)
     private Level level;
 
-    @Min(value = 1,message = "The question must have at least one correct answer")
-    @Column (name = "correct_answer_count",nullable = false)
+    @Min(value = 1, message = "The question must have at least one correct answer")
+    @Column(name = "correct_answer_count", nullable = false)
     private int correct_amount;
 
-    @OneToMany(mappedBy = "questionEntity",cascade = CascadeType.ALL)
-    private List<AnswerEntity> answerEntities=new ArrayList<>();
+    @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.ALL)
+    private List<AnswerEntity> answerEntities = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
-            joinColumns = {@JoinColumn(name = "question_id",insertable = false,updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "test_id",insertable = false,updatable = false)})
-    private List<TestEntity> testEntities=new ArrayList<>();
+            joinColumns = {@JoinColumn(name = "question_id", insertable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "test_id", insertable = false, updatable = false)})
+    private List<TestEntity> testEntities = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private TopicEntity topicEntity;
 
-    public QuestionEntity(String question, Enum level, int correctAnswerCount, int points, TopicEntity topicEntity) {
+
+    public QuestionEntity() {
     }
 
-    public QuestionEntity(String question, @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0") int points, Level level, @Min(value = 1, message = "The question must have at least one correct answer") int correct_amount, TopicEntity topicEntity) {
+    public QuestionEntity(String question, @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0") int points, String level, @Min(value = 1, message = "The question must have at least one correct answer") int correct_amount, TopicEntity topicEntity) {
         this.question = question;
         this.points = points;
-        this.level = level;
+        this.level = Level.valueOf(level);
         this.correct_amount = correct_amount;
         this.topicEntity = topicEntity;
     }
+
 
     public Long getId() {
         return id;
@@ -117,7 +119,6 @@ public class QuestionEntity {
     public void setTopicEntity(TopicEntity topicEntity) {
         this.topicEntity = topicEntity;
     }
-
 
 
 }

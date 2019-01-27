@@ -3,6 +3,7 @@ package am.aca.quiz.software.service.implementations;
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.repository.HistoryRepository;
 import am.aca.quiz.software.service.interfaces.HistoryService;
 import am.aca.quiz.software.service.interfaces.TestService;
@@ -34,9 +35,8 @@ public class HistoryServiceImp implements HistoryService {
         UserEntity userEntity=userService.getById(userId);
         TestEntity testEntity=testService.getById(testId);
 
-        HistoryEntity.Status status1= HistoryEntity.Status.valueOf(status);
 
-        HistoryEntity historyEntity=new HistoryEntity(startTime,status1,score,userEntity,testEntity);
+        HistoryEntity historyEntity=new HistoryEntity(startTime, Status.valueOf(status),score,userEntity,testEntity);
 
         userEntity.getHistoryList().add(historyEntity);
         testEntity.getHistoryEntities().add(historyEntity);

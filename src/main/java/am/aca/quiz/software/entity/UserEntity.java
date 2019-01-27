@@ -52,13 +52,13 @@ public class UserEntity {
     }
 
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, Role role) {
+    public UserEntity(String name, String surname, String email, String nickname, String password, String role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.role = role;
+        this.role = Role.valueOf(role);
 
     }
 

@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
+import am.aca.quiz.software.entity.enums.Level;
 import am.aca.quiz.software.repository.QuestionRepository;
 import am.aca.quiz.software.service.interfaces.QuestionService;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,8 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public boolean addQuestion(String question, String level, int correctAnswerCount, int points, Long topicEntityId) throws SQLException {
         TopicEntity topicEntity = topicServiceImp.getById(topicEntityId);
-        QuestionEntity.Level level1 = QuestionEntity.Level.valueOf(level);
 
-        QuestionEntity questionEntity = new QuestionEntity(question, level1, correctAnswerCount, points, topicEntity);
+        QuestionEntity questionEntity = new QuestionEntity(question,points,level,correctAnswerCount,topicEntity);
 
         topicEntity.getQuestionEntities().add(questionEntity);
         questionRepository.saveAndFlush(questionEntity);

@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,15 @@ public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
 
+
     public UserServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public boolean addUser(String fName, String lName, String nickname, String email, String password, boolean isAdmin) throws SQLException {
+    public boolean addUser(String fName, String lName, String nickname, String email, String password, String role) throws SQLException {
 
-        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password, isAdmin);
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,role);
         userRepository.saveAndFlush(userEntity);
 
         return true;

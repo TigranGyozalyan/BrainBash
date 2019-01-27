@@ -1,6 +1,6 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.enums.Level;
 
 public class QuestionDto {
 
@@ -8,7 +8,7 @@ public class QuestionDto {
     private String question;
     private int correct_amount;
     private int points;
-    private QuestionEntity.Level level;
+    private Level level;
 
 
     public Long getId() {
@@ -43,11 +43,11 @@ public class QuestionDto {
         this.points = points;
     }
 
-    public QuestionEntity.Level getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(QuestionEntity.Level level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 }
