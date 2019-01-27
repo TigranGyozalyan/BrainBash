@@ -3,11 +3,12 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
-import org.hibernate.query.criteria.internal.predicate.MemberOfPredicate;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 
 @RestController
@@ -22,18 +23,19 @@ public class UserController {
     }
     @GetMapping(value = "/register")
     public ModelAndView registrationPage(){
-        ModelAndView modelAndView=new ModelAndView("userRegistration");
+        ModelAndView modelAndView=new ModelAndView("view/userRegistration");
         return modelAndView;
     }
-    @PostMapping(value = "/register")
-    public ModelAndView registerUser(@RequestParam("name") String name,
-                                     @RequestParam("name2") String lastName,
-                                     @RequestParam("email") String email,
-                                     @RequestParam("password") String password,
-                                     @RequestParam("password2")String password2,
-                                     @RequestParam("nickname") String nickname) {
+    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
 
-        ModelAndView modelAndView=new ModelAndView("userRegistration");
+        ModelAndView modelAndView=new ModelAndView("view/userRegistration");
+        String name=formData.get("name");
+        String lastName=formData.get("name2");
+        String nickname=formData.get("nickname");
+        String email=formData.get("email");
+        String password=formData.get("password");
+        String password2=formData.get("password2");
         try {
 
             userServiceImp.addUser(name,lastName,nickname,email,password,password2);
