@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     CategoryEntity findCategoryEntityByType(String type);
+    CategoryEntity findCategoryEntityById(Long id);
+    CategoryEntity removeById(Long id);
 }

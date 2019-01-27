@@ -3,10 +3,11 @@ package am.aca.quiz.software.service.mapper;
 import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubCategoryDto> {
     @Override
     public SubCategoryDto mapEntityToDto(SubCategoryEntity subCategory) {

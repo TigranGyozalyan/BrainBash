@@ -41,8 +41,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void removeById(Long id) throws SQLException {
-        CategoryEntity deleted_category = getById(id);
-        remove(deleted_category);
+        categoryRepository.removeById(id);
     }
 
     @Override
@@ -53,11 +52,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
-        if (!categoryEntity.isPresent()) {
-            throw new SQLException("Entity Not Found");
-        }
-        return categoryEntity.get();
-        
+       return categoryRepository.findCategoryEntityById(id);
     }
+
+    public CategoryEntity getByType(String type) throws  SQLException {
+        return categoryRepository.findCategoryEntityByType(type);
+    }
+
 }
