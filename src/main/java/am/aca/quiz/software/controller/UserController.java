@@ -27,9 +27,7 @@ public class UserController {
         return modelAndView;
     }
     @PostMapping(value = "/register",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
-
-        ModelAndView modelAndView=new ModelAndView("view/userRegistration");
+    public void registerUser(@RequestParam Map<String, String> formData) {
         String name=formData.get("name");
         String lastName=formData.get("name2");
         String nickname=formData.get("nickname");
@@ -43,8 +41,6 @@ public class UserController {
             e.printStackTrace();
         }
 
-
-        return modelAndView;
     }
 
 }
