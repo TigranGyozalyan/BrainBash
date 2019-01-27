@@ -1,8 +1,8 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
-import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +14,24 @@ import java.util.List;
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
+    private final MailService mailService;
 
 
-    public UserServiceImp(UserRepository userRepository) {
+    public UserServiceImp(UserRepository userRepository, MailService mailService) {
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
 
     @Override
-    public boolean addUser(String fName, String lName, String nickname, String email, String password, String role) throws SQLException {
+    public boolean addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException {
 
-        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,role);
+
+        if(!password.equals(password2)){
+            throw new SQLException();
+        }
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,"user");
+        mailService.send(email,"Confirmation","Confirm your mail");
+
         userRepository.saveAndFlush(userEntity);
 
         return true;

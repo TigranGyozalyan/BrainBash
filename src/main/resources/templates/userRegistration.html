@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <h2>Registration</h2>
+</head>
+<body>
+<form method="post">
+
+    <label>
+        <input th:type="text" name="name" placeholder="First Name" required />
+    </label>
+    <br/>
+    <label>
+        <input th:type="text" name="name2" placeholder="Last Name" required />
+    </label>
+    <br/>
+   <label>
+       <input th:type="email" name="email" placeholder="Email" required />
+   </label>
+    <br/>
+    <label>
+        <input id="password" name="password" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password_two.pattern = this.value;" placeholder="Password" required>
+    </label>
+    <br/>
+    <label>
+        <input id="password2" name="password2" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Verify Password" required>
+    </label>
+    <br/>
+    <label>
+        <input th:type="text" name="nickname" placeholder="Nickname" required/>
+    </label>
+    <br/>
+
+    <input class="button" type="submit" value="Register" />
+</form>
+</body>
+</html>

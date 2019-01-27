@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 

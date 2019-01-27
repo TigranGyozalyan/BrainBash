@@ -7,6 +7,15 @@ public enum Level {
 
     private final String stringValue;
 
+    public static Level getLevel(String level) {
+        for (Level l : values()) {
+            if (l.stringValue.equals(level)) {
+                return l;
+            }
+        }
+        return null;
+    }
+
     Level(String stringValue) {
         this.stringValue = stringValue;
     }
