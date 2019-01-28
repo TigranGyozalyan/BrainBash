@@ -70,4 +70,8 @@ public class TopicServiceImp implements TopicService {
         }
         return topicEntity;
     }
+
+    public TopicEntity getByTopicName(String topicName) {
+        return topicRepository.findByTopicName(topicName);
+    }
 }
