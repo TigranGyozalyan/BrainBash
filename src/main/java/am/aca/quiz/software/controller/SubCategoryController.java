@@ -44,7 +44,7 @@ public class SubCategoryController {
     @RequestMapping(value = "/add", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseBody
     public ModelAndView postNewCategory(@RequestParam Map<String, String> formData) throws SQLException {
-        ModelAndView modelAndView = new ModelAndView("view/subCategory");
+        ModelAndView modelAndView = new ModelAndView("subCategory");
 
         try {
             String category = formData.get("categoryList");

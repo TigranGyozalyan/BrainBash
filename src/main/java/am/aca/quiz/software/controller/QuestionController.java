@@ -46,7 +46,7 @@ public class QuestionController {
     }
     @PostMapping(value = "/add")
     public ModelAndView postQuestion(@RequestBody MultiValueMap<String, String> formData){
-        ModelAndView modelAndView = new ModelAndView("view/question");
+        ModelAndView modelAndView = new ModelAndView("question");
 
 
         return modelAndView;
