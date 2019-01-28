@@ -70,4 +70,8 @@ public class QuestionServiceImp implements QuestionService {
 
         return true;
     }
+
+    public QuestionEntity getQuestionEntityByQuestion(String question){
+        return questionRepository.findQuestionEntitiesByQuestion(question);
+    }
 }

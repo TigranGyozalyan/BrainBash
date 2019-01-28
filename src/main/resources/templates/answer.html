@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a Question</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Answer</title>
+</head>
+<form method="post">
+
+    <label>
+        Question : <select name="question">
+        <option
+             th:each="question : ${questions}"
+              th:value="${question.question}"
+            th:text="${question.question}">
+        </option>
+    </select>
+    </label>
+    <br/>
+    <label>
+        Answer text <input name="answer" type="text" placeholder="Input Answer Text">
+    </label>
+    <label>
+        Description  <input name="description" type="text" placeholder="Input Description">
+    </label>
+    <br/>
+    <label>
+        Is Correct <input type="checkbox" name="isCorrect"  value="true">
+    </label>
+    <br/>
+    <input type="submit" value="Add Answer">
+    <br/>
+</form>
+</body>
+</html>
