@@ -25,16 +25,14 @@ public class UserEntity {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    // @Size(min = 3)
-    //@Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
+     @Size(min = 3)
+    @Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @Size(min = 6)
     @Column(name = "passwords", nullable = false)
     private String password;
-
-    //  private String passwordchecker;
 
 
     @Enumerated(EnumType.STRING)
@@ -61,8 +59,6 @@ public class UserEntity {
         this.nickname = nickname;
         this.password = password;
         this.role = Role.getRole(role);
-        //   this.passwordchecker=passwordchecker;
-
     }
 
     public void setId(Long id) {
@@ -145,14 +141,6 @@ public class UserEntity {
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
     }
-//
-//    public String getPasswordchecker() {
-//        return passwordchecker;
-//    }
-//
-//    public void setPasswordchecker(String passwordchecker) {
-//        this.passwordchecker = passwordchecker;
-//    }
 
     @Override
     public String toString() {
