@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Answer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form method="post">
+    <label>
+        Category :
+        <select name="categoryList">
+            <option th:each="answer : ${answers}"
+                    th:value="${answer.type}"
+                    th:text="${answer.type}"></option>
+        </select>
+    </label>
+    <br/>
+    <label>
+        Answer  : <input name="typename" type="text" placeholder="Enter Answer ">
+    </label>
+    <label>
+        Description  : <input name="typename" type="text" placeholder="Enter Description ">
+    </label>
+    <label>
+        Answer  : <input name="checkbox" type="" placeholder="Enter Answer Text">
+    </label>
+    <br/>
+    <input type="submit" value="Add Answer">
+</form>
+</body>
+</html>
