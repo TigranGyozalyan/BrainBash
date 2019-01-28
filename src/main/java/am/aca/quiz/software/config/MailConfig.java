@@ -44,6 +44,7 @@ public class MailConfig {
 
     }
 
+
     public String getHost() {
         return host;
     }
