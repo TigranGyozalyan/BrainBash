@@ -26,7 +26,7 @@ public class ScoreServiceImp implements ScoreService {
 
 
     @Override
-    public boolean addScore(Long topicId,Long userId) throws SQLException {
+    public void addScore(Long topicId,Long userId) throws SQLException {
         TopicEntity topicEntity=topicServiceImp.getById(topicId);
         UserEntity userEntity=userServiceImp.getById(userId);
 
@@ -37,7 +37,6 @@ public class ScoreServiceImp implements ScoreService {
 
         scoreRepository.saveAndFlush(scoreEntity);
 
-        return true;
     }
 
     @Override
@@ -46,14 +45,12 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     @Override
-    public boolean update(ScoreEntity score, Long id) throws SQLException {
+    public void update(ScoreEntity score, Long id) throws SQLException {
         ScoreEntity scoreEntity = scoreRepository.findById(id).get();
         if (scoreEntity != null) {
             score.setId(id);
             scoreRepository.saveAndFlush(score);
-            return true;
         }
-        return false;
     }
 
 
@@ -63,9 +60,8 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     @Override
-    public boolean removeById(Long id) throws SQLException {
+    public void removeById(Long id) throws SQLException {
         scoreRepository.deleteById(id);
-        return true;
     }
 
     @Override

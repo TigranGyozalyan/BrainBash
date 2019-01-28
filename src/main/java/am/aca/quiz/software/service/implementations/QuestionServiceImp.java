@@ -25,15 +25,13 @@ public class QuestionServiceImp implements QuestionService {
 
 
     @Override
-    public boolean addQuestion(String question, String level, int correctAnswerCount, int points, Long topicEntityId) throws SQLException {
+    public void addQuestion(String question, String level, int correctAnswerCount, int points, Long topicEntityId) throws SQLException {
         TopicEntity topicEntity = topicServiceImp.getById(topicEntityId);
 
         QuestionEntity questionEntity = new QuestionEntity(question,points,level,correctAnswerCount,topicEntity);
 
         topicEntity.getQuestionEntities().add(questionEntity);
         questionRepository.saveAndFlush(questionEntity);
-        return true;
-
     }
 
     @Override
@@ -42,14 +40,12 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public boolean update(QuestionEntity question, Long id) throws SQLException {
+    public void update(QuestionEntity question, Long id) throws SQLException {
         QuestionEntity updatedQuestion = questionRepository.findById(id).get();
         if (updatedQuestion != null) {
             question.setId(id);
             questionRepository.saveAndFlush(question);
-            return true;
         }
-        return false;
     }
 
 
@@ -64,10 +60,9 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public boolean removeByid(Long id) throws SQLException {
+    public void removeByid(Long id) throws SQLException {
         QuestionEntity deletedQuestion = questionRepository.findById(id).get();
         questionRepository.delete(deletedQuestion);
 
-        return true;
     }
 }
