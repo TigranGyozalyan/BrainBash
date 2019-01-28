@@ -30,22 +30,37 @@ public class SubCategoryServiceImp implements SubCategoryService {
     public void addSubCategory(String typename, Long categoryId) throws SQLException {
         CategoryEntity categoryEntity = categoryServiceImp.getById(categoryId);
         if (categoryEntity != null) {
-            SubCategoryEntity subCategoryEntity = new SubCategoryEntity();
-            subCategoryEntity.setTypeName(typename);
-            subCategoryEntity.setCategory(categoryEntity);
-            categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
-            subCategoryRepository.saveAndFlush(subCategoryEntity);
+            SubCategoryEntity subCategoryEntity = subCategoryRepository.findSubCategoryEntitiesByTypeName(typename);
+            if (subCategoryEntity == null) {
+                subCategoryEntity.setTypeName(typename);
+                subCategoryEntity.setCategory(categoryEntity);
+                categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
+                subCategoryRepository.saveAndFlush(subCategoryEntity);
+            } else {
+                throw new SQLException("subCategory is exist");
+            }
+
+
         }
     }
 
     public List<SubCategoryEntity> getAll() throws SQLException {
-        return subCategoryRepository.findAll();
+        List<SubCategoryEntity> subCategoryList = subCategoryRepository.findAll();
+
+        if (subCategoryList != null) {
+            return subCategoryList;
+        } else {
+            throw new SQLException("SubCategory table is empty");
+        }
     }
 
     public void update(SubCategoryEntity subCategory, Long targetId) throws SQLException {
         if (subCategory != null) {
             subCategory.setId(targetId);
             subCategoryRepository.saveAndFlush(subCategory);
+
+            //???????????????????????????
+            //?????????????????????????
         }
     }
 
@@ -59,8 +74,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     public void removeById(Long id) throws SQLException {
-        SubCategoryEntity deleted_subCategory = getById(id);
-        remove(deleted_subCategory);
+        SubCategoryEntity targetEntity = getById(id);
+        remove(targetEntity);
     }
 
     @Override
@@ -70,8 +85,13 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
-    public SubCategoryEntity getByTypeName(String type) throws  SQLException {
-        return subCategoryRepository.findSubCategoryEntitiesByTypeName(type);
+    public SubCategoryEntity getByTypeName(String type) throws SQLException {
+        SubCategoryEntity targetEntity = subCategoryRepository.findSubCategoryEntitiesByTypeName(type);
+        if (targetEntity != null) {
+            return targetEntity;
+        } else {
+            throw new SQLException("entity not found");
+        }
     }
 
 }
