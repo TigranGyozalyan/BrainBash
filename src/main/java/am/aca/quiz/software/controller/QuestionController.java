@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/question")
 public class QuestionController {
 
     private final QuestionServiceImp questionServiceImp;
@@ -55,15 +55,15 @@ public class QuestionController {
     public ModelAndView addQuestion() {
         ModelAndView modelAndView = new ModelAndView("question");
 
-        List<TopicDto> topicDtos = null;
         try {
-            topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            modelAndView.addObject("topics", topicDtos);
+            return modelAndView;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        modelAndView.addObject("topics", topicDtos);
-        return modelAndView;
+        return null;
     }
 
     @PostMapping(value = "/add")
@@ -72,6 +72,7 @@ public class QuestionController {
 
         String text = formData.get("questionText");
         String level = formData.get("level");
+
         int points = Integer.parseInt(formData.get("points"));
         int corr_answer = Integer.parseInt(formData.get("correct_answer_count"));
         String topicName = formData.get("topic");

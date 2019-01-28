@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add a Question</title>
@@ -10,25 +10,37 @@
 
 <form method="post">
 
-
-    <select name="topic">
-        <option th:each="topic : ${topics}"
-                th:value="${topic.topicName}"
-                th:text="${topic.topicName}">
-        </option>
-    </select>
-
-    <input name="questionText" type="text">
+    <label>
+        Topic : <select name="topic">
+            <option th:each="topic : ${topics}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+        </select>
+    </label>
     <br/>
-    <select name="level">
-        <option name="BEGINNER">Beginner</option>
-        <option name="INTERMEDIATE">Intermediate</option>
-        <option name="ADVANCED">Advanced</option>
-    </select>
+    <label>
+        Question body <input name="questionText" type="text">
+    </label>
     <br/>
-    <input name="points" type="text">
-    <input name="correct_answer_count" type="text">
-
+    <label>
+        Level : <select name="level">
+        <option name="beginner">beginner</option>
+        <option name="intermediate">intermediate</option>
+        <option name="advanced">advanced</option>
+    </select>
+    </label>
+    <br/>
+    <label>
+        Points <input name="points" type="text">
+    </label>
+    <br/>
+    <label>
+        Correct answer count <input name="correct_answer_count" type="text">
+    </label>
+    <br/>
+    <input type="submit" value="Submit">
+    <br/>
 </form>
 
 </body>
