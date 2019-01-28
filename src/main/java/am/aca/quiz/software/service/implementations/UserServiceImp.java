@@ -30,7 +30,8 @@ public class UserServiceImp implements UserService {
             throw new SQLException();
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,"user");
-        mailService.send(email,"Confirmation","Confirm your mail");
+        mailService.sendHtml(email,"Confirmation","mailConfirmation");
+
 
         userRepository.saveAndFlush(userEntity);
 

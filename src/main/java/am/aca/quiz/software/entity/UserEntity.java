@@ -32,9 +32,6 @@ public class UserEntity {
     @Column(name = "passwords", nullable = false)
     private String password;
 
-    //  private String passwordchecker;
-
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
