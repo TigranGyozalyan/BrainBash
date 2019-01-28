@@ -21,22 +21,24 @@ public class UserController {
         this.userServiceImp = userServiceImp;
         this.userMapper = userMapper;
     }
+
     @GetMapping(value = "/register")
-    public ModelAndView registrationPage(){
-        ModelAndView modelAndView=new ModelAndView("userRegistration");
+    public ModelAndView registrationPage() {
+        ModelAndView modelAndView = new ModelAndView("userRegistration");
         return modelAndView;
     }
-    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void registerUser(@RequestParam Map<String, String> formData) {
-        String name=formData.get("name");
-        String lastName=formData.get("name2");
-        String nickname=formData.get("nickname");
-        String email=formData.get("email");
-        String password=formData.get("password");
-        String password2=formData.get("password2");
+        String name = formData.get("name");
+        String lastName = formData.get("name2");
+        String nickname = formData.get("nickname");
+        String email = formData.get("email");
+        String password = formData.get("password");
+        String password2 = formData.get("password2");
         try {
 
-            userServiceImp.addUser(name,lastName,nickname,email,password,password2);
+            userServiceImp.addUser(name, lastName, nickname, email, password, password2);
         } catch (SQLException e) {
             e.printStackTrace();
         }
