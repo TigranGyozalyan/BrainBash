@@ -1,17 +1,21 @@
 package am.aca.quiz.software.entity;
 
 import am.aca.quiz.software.entity.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public  class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,16 +29,14 @@ public class UserEntity {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    // @Size(min = 3)
-    //@Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
+     @Size(min = 3)
+    @Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @Size(min = 6)
     @Column(name = "passwords", nullable = false)
     private String password;
-
-    //  private String passwordchecker;
 
 
     @Enumerated(EnumType.STRING)
@@ -60,9 +62,7 @@ public class UserEntity {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.role = Role.getRole(role);
-        //   this.passwordchecker=passwordchecker;
-
+        this.role =Role.valueOf(role.toUpperCase());
     }
 
     public void setId(Long id) {
@@ -106,13 +106,6 @@ public class UserEntity {
         this.nickname = nickname;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Role getRole() {
         return role;
@@ -145,14 +138,6 @@ public class UserEntity {
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
     }
-//
-//    public String getPasswordchecker() {
-//        return passwordchecker;
-//    }
-//
-//    public void setPasswordchecker(String passwordchecker) {
-//        this.passwordchecker = passwordchecker;
-//    }
 
     @Override
     public String toString() {
@@ -164,5 +149,42 @@ public class UserEntity {
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantedAuthorities=new ArrayList<>();
+        grantedAuthorities.add(this.role);
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

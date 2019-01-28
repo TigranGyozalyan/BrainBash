@@ -35,7 +35,6 @@ public class UserController {
         String password=formData.get("password");
         String password2=formData.get("password2");
         try {
-
             userServiceImp.addUser(name,lastName,nickname,email,password,password2);
         } catch (SQLException e) {
             e.printStackTrace();
