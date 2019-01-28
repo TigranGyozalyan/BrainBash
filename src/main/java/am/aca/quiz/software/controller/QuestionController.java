@@ -76,7 +76,12 @@ public class QuestionController {
         int points = Integer.parseInt(formData.get("points"));
         int corr_answer = Integer.parseInt(formData.get("correct_answer_count"));
         String topicName = formData.get("topic");
-        TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
+        TopicEntity topicEntity = null;
+        try {
+            topicEntity = topicServiceImp.getByTopicName(topicName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Long id = topicEntity.getId();
         try {
             questionServiceImp.addQuestion(text, level, corr_answer, points, id);

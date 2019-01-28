@@ -30,18 +30,27 @@ public class TopicServiceImp implements TopicService {
     @Override
     public void addTopic(String topicName, Long subCategoryId) throws SQLException {
         SubCategoryEntity subCategoryEntity = subCategoryServiceImpl.getById(subCategoryId);
-        TopicEntity topicEntity = new TopicEntity(topicName, subCategoryEntity);
-
-        subCategoryEntity.getTopicEntityList().add(topicEntity);
-
-        topicRepository.saveAndFlush(topicEntity);
-
+        if (subCategoryEntity != null) {
+            if (topicRepository.findByTopicName(topicName) == null) {
+                TopicEntity topicEntity = new TopicEntity(topicName, subCategoryEntity);
+                subCategoryEntity.getTopicEntityList().add(topicEntity);
+                topicRepository.saveAndFlush(topicEntity);
+            } else {
+                throw new SQLException("topic is exist");
+            }
+        }
     }
 
 
     @Override
     public List<TopicEntity> getAll() throws SQLException {
-        return topicRepository.findAll();
+        List<TopicEntity> topicList = topicRepository.findAll();
+
+        if (topicList != null) {
+            return topicList;
+        } else {
+            throw new SQLException("SubCategory table is empty");
+        }
     }
 
     @Override
@@ -53,25 +62,38 @@ public class TopicServiceImp implements TopicService {
             topicRepository.saveAndFlush(topic);
         }
 
+        //????????????????????????????????
+        //????????????????????????????
+
     }
 
     @Override
     public void removeByid(Long id) throws SQLException {
         TopicEntity deletedTopic = topicRepository.findById(id).get();
-        topicRepository.delete(deletedTopic);
+        if (deletedTopic != null) {
+            topicRepository.delete(deletedTopic);
+        } else {
+            throw new SQLException("entity not found");
+        }
+
     }
 
     @Override
     public TopicEntity getById(Long id) throws SQLException {
         TopicEntity topicEntity = topicRepository.findById(id).get();
-
         if (topicEntity == null) {
             throw new SQLException("Entity not found");
         }
         return topicEntity;
     }
 
-    public TopicEntity getByTopicName(String topicName) {
-        return topicRepository.findByTopicName(topicName);
+    public TopicEntity getByTopicName(String topicName) throws SQLException {
+        TopicEntity targetEntity = topicRepository.findByTopicName(topicName);
+        if (targetEntity != null) {
+            return targetEntity;
+        } else {
+            throw new SQLException("entity not found");
+        }
+
     }
 }
