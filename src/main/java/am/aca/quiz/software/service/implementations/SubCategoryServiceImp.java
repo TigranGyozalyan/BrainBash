@@ -30,8 +30,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
     public void addSubCategory(String typename, Long categoryId) throws SQLException {
         CategoryEntity categoryEntity = categoryServiceImp.getById(categoryId);
         if (categoryEntity != null) {
-            SubCategoryEntity subCategoryEntity = subCategoryRepository.findSubCategoryEntitiesByTypeName(typename);
-            if (subCategoryEntity == null) {
+            if (subCategoryRepository.findSubCategoryEntitiesByTypeName(typename) == null) {
+                SubCategoryEntity subCategoryEntity = new SubCategoryEntity();
                 subCategoryEntity.setTypeName(typename);
                 subCategoryEntity.setCategory(categoryEntity);
                 categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
@@ -39,8 +39,6 @@ public class SubCategoryServiceImp implements SubCategoryService {
             } else {
                 throw new SQLException("subCategory is exist");
             }
-
-
         }
     }
 
