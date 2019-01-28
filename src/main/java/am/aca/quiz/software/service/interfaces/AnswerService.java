@@ -10,15 +10,15 @@ import java.util.List;
 public interface AnswerService {
 
     //create
-    boolean addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException;
+    void addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException;
 
     //read
     List<AnswerEntity> getAll() throws SQLException;
 
     //update
-    boolean update(AnswerEntity answer, Long id) throws SQLException;
+    void update(AnswerEntity answer, Long id) throws SQLException;
 
     AnswerEntity getById(Long id) throws SQLException;
 
-    boolean removeById(Long id) throws  SQLException;
+    void removeById(Long id) throws  SQLException;
 }

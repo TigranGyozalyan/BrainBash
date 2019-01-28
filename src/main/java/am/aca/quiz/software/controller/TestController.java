@@ -1,24 +1,21 @@
 package am.aca.quiz.software.controller;
 
-import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TestDto;
-import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/test")

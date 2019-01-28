@@ -31,7 +31,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     @Override
-    public boolean addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
+    public void addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
         UserEntity userEntity = userService.getById(userId);
         TestEntity testEntity = testService.getById(testId);
 
@@ -42,8 +42,6 @@ public class HistoryServiceImp implements HistoryService {
         testEntity.getHistoryEntities().add(historyEntity);
 
         historyRepository.saveAndFlush(historyEntity);
-        return true;
-
 
     }
 
@@ -52,22 +50,19 @@ public class HistoryServiceImp implements HistoryService {
     }
 
     @Override
-    public boolean update(HistoryEntity history, Long id) throws SQLException {
+    public void update(HistoryEntity history, Long id) throws SQLException {
         HistoryEntity updated_history = historyRepository.findById(id).get();
         if (updated_history != null) {
             history.setId(id);
             historyRepository.saveAndFlush(history);
-            return true;
         }
-        return false;
     }
 
 
     @Override
-    public boolean removeById(Long id) throws SQLException {
+    public void removeById(Long id) throws SQLException {
         HistoryEntity deleted_history = historyRepository.findById(id).get();
         historyRepository.delete(deleted_history);
-        return true;
     }
 
     @Override

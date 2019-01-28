@@ -4,7 +4,6 @@ import am.aca.quiz.software.entity.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,7 @@ public class UserEntity {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    // @Size(min = 3)
-    //@Pattern(regexp = "^[\\\\p{L} .'-]+$", message = "Invalid Nickname")
+    @Size(min = 3)
     @Column(name = "nickname", nullable = false)
     private String nickname;
 

@@ -20,29 +20,47 @@ public class CategoryServiceImp implements CategoryService {
 
 
     public void addCategory(String type) throws SQLException {
-        CategoryEntity categoryEntity = new CategoryEntity(type);
-        addCategory(categoryEntity);
+        if (categoryRepository.findCategoryEntityByType(type) == null) {
+            CategoryEntity categoryEntity = new CategoryEntity(type);
+            addCategory(categoryEntity);
+        } else {
+            throw new SQLException("Category is exist");
+        }
+
     }
 
     @Override
     public void addCategory(CategoryEntity categoryEntity) throws SQLException {
-        if (categoryEntity != null)
-            categoryRepository.saveAndFlush(categoryEntity);
+        categoryRepository.saveAndFlush(categoryEntity);
     }
 
     public List<CategoryEntity> getAll() throws SQLException {
-        return categoryRepository.findAll();
+        List<CategoryEntity> categoryList = categoryRepository.findAll();
+        if (categoryList != null) {
+            return categoryList;
+        } else {
+            throw new SQLException("Category table is empty");
+        }
     }
 
     @Override
     public void update(CategoryEntity updatedCategory, Long targetId) throws SQLException {
+        //????????????????????????????????????????
+        //???????????????????????????????????????
         updatedCategory.setId(targetId);
         addCategory(updatedCategory);
     }
 
     @Override
     public void removeById(Long id) throws SQLException {
-        categoryRepository.removeById(id);
+        CategoryEntity targetEntity = categoryRepository.findById(id).get();
+
+        if (targetEntity != null) {
+            categoryRepository.removeById(id);
+        } else {
+            throw new SQLException("category not found");
+        }
+
     }
 
     @Override
@@ -53,11 +71,23 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-       return categoryRepository.findCategoryEntityById(id);
+        CategoryEntity targetEntity = categoryRepository.findCategoryEntityById(id);
+
+        if (targetEntity != null) {
+            return targetEntity;
+        } else {
+            throw new SQLException("category not found");
+        }
+
     }
 
-    public CategoryEntity getByType(String type) throws  SQLException {
-        return categoryRepository.findCategoryEntityByType(type);
+    public CategoryEntity getByType(String type) throws SQLException {
+        CategoryEntity targetEntity = categoryRepository.findCategoryEntityByType(type);
+        if (targetEntity != null) {
+            return targetEntity;
+        } else {
+            throw new SQLException("category not found");
+        }
     }
 
 }

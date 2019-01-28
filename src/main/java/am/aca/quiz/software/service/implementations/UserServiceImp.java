@@ -23,7 +23,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException {
+    public void addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException {
 
 
         if(!password.equals(password2)){
@@ -34,7 +34,6 @@ public class UserServiceImp implements UserService {
 
         userRepository.saveAndFlush(userEntity);
 
-        return true;
     }
 
     @Override
@@ -43,20 +42,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean update(UserEntity user, Long id) throws SQLException {
+    public void update(UserEntity user, Long id) throws SQLException {
         UserEntity userEntity = userRepository.findById(id).get();
         if (userEntity != null) {
             user.setId(id);
             userRepository.saveAndFlush(user);
-            return true;
         }
-        return false;
+
     }
 
     @Override
-    public boolean removeByid(Long id) throws SQLException {
+    public void removeByid(Long id) throws SQLException {
         userRepository.deleteById(id);
-        return true;
     }
 
     @Override
@@ -65,4 +62,3 @@ public class UserServiceImp implements UserService {
     }
 
 }
-
