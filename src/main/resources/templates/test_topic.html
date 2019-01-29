@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Add a test</title>
+
+    <form method="post">
+
+        <label>
+            Test title: <input name="test_name" type="text" placeholder="Enter the title">
+        </label>
+        <br/>
+        <label>
+            Description: <input name="description" type="text" placeholder="Enter the test description">
+        </label>
+        <br/>
+        <label>
+            Duration: <input name="duration" type="text" placeholder="Enter the duration">
+        </label>
+        <br/>
+        <label>
+            Topic #1 : <select name="topicList1">
+            <option th:each="topic : ${topicList}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+            <option value="empty" selected="selected">empty</option>
+        </select>
+        </label>
+        <br/>
+        <label>
+            Topic #2 : <select name="topicList2">
+            <option th:each="topic : ${topicList}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+            <option value="empty" selected="selected">empty</option>
+        </select>
+        </label>
+        <br/>
+        <label>
+            Topic #3 : <select name="topicList3">
+            <option th:each="topic : ${topicList}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+            <option value="empty" selected="selected">empty</option>
+        </select>
+        </label>
+        <br/>
+        <label>
+            Topic #4 : <select name="topicList4">
+            <option th:each="topic : ${topicList}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+            <option value="empty" selected="selected">empty</option>
+        </select>
+        </label>
+        <br/>
+        <label>
+            Topic #5 : <select name="topicList5">
+            <option th:each="topic : ${topicList}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}">
+            </option>
+            <option value="empty" selected="selected">empty</option>
+        </select>
+        </label>
+        <br/>
+        <input type="submit" value="Submit" >
+
+
+        <input type="button"  onclick="location.href='add/question'" value="Add Question"  >
+
+    </form>
+    <br/>
+
+</head>
+<body>
+
+</body>
+</html>

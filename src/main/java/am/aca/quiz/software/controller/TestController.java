@@ -1,6 +1,10 @@
 package am.aca.quiz.software.controller;
 
+import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.TopicEntity;
+import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TestDto;
+import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
@@ -8,14 +12,14 @@ import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
@@ -27,6 +31,9 @@ public class TestController {
     private final TopicMapper topicMapper;
     private final QuestionServiceImp questionServiceImp;
     private final QuestionMapper questionMapper;
+    private static final String EMPTY = "empty";
+    private List<QuestionDto> filteredQuestions=null;
+    private String description,duration,test_name,question;
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper) {
@@ -38,11 +45,7 @@ public class TestController {
         this.questionMapper = questionMapper;
     }
 
-    @GetMapping
-    @RequestMapping("/add")
-    public ModelAndView addTest() {
-        return new ModelAndView("test");
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
@@ -62,25 +65,67 @@ public class TestController {
         }
     }
 
-//    @PostMapping("/add")
-//    public ModelAndView postTest(@RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("duretion") String duretion) {
-////        ModelAndView modelAndView = new ModelAndView("view/test");
-////
-////        Map<TopicDto, List<QuestionDto>> testMap = new HashMap<>();
-////
-////        List<TopicDto> topicDtos = new ArrayList<>();
-////        List<QuestionDto> questionsDtos = new ArrayList<>();
-////        try {
-////            topicDtos.add()
-////            questionsDtos =
-////        } catch (SQLException e) {
-////            e.printStackTrace();
-////        }
-//
-//
-//        modelAndView.addObject("topics", topicDtos);
-//
-//        modelAndView.addObject("questions", questionsDtos);
-//        return modelAndView;
-//    }
+    @GetMapping
+    @RequestMapping("/add")
+    public ModelAndView addTest() {
+
+        ModelAndView modelAndView = new ModelAndView("test_topic");
+        try {
+            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            modelAndView.addObject("topicList", topicDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/add")
+    @ResponseBody
+    public ModelAndView postTest(@RequestParam Map<String, String> formData) {
+
+        List<TopicEntity> topics = new ArrayList<>();
+         description=formData.get("description");
+         duration=formData.get("duration");
+         test_name=formData.get("test_name");
+
+        for (int i = 0; i < 5; i++) {
+            String topicNameValue = formData.get("topicList" + (i + 1));
+            if (!topicNameValue.equals(EMPTY)) {
+                try {
+                    topics.add(topicServiceImp.getByTopicName(topicNameValue));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        List<QuestionEntity> allQuestions=new ArrayList<>();
+
+        for(int i=0;i<topics.size();i++){
+            List<QuestionEntity> questionEntities=questionServiceImp.getQuestionEntityByTopic(topics.get(i));
+
+            questionEntities.forEach(question->allQuestions.add(question));
+        }
+
+       filteredQuestions=questionMapper.mapEntitiesToDto(allQuestions);
+
+
+
+        return addTest();
+    }
+
+    @GetMapping("/add/question")
+    public ModelAndView postTestQuestions(@RequestParam Map<String, String> formData) {
+
+        ModelAndView modelAndView=new ModelAndView("test_questions");
+        modelAndView.addObject("questionList",filteredQuestions);
+        question=formData.get("questionList");
+
+        return modelAndView;
+    }
+
+
+
+
+
+
 }
