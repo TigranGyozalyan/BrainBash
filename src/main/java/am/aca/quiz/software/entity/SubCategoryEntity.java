@@ -15,7 +15,7 @@ public class SubCategoryEntity {
     @Column(name = "type_name", unique = true, nullable = false)
     private String typeName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 

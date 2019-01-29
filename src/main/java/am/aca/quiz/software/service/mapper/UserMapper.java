@@ -16,7 +16,7 @@ public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
         UserDto userDto=new UserDto();
         userDto.setEmail(userEntity.getEmail());
         userDto.setId(userEntity.getId());
-        userDto.setImage(userEntity.getImage());
+       // userDto.setImage(userEntity.getImage());
         userDto.setRole(userEntity.getRole());
         userDto.setName(userEntity.getName());
         userDto.setNickname(userEntity.getNickname());

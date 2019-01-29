@@ -15,11 +15,11 @@ public class ScoreEntity {
     @Column(name = "count", nullable = false,columnDefinition = "bigint default '0'")
     private int count;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "topic_id", updatable = false)
     private TopicEntity topic;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id",updatable = false)
     private UserEntity userEntity;
 

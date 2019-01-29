@@ -7,8 +7,10 @@ import am.aca.quiz.software.service.mapper.CategoryMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -42,7 +44,7 @@ public class CategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<CategoryDto> getTest() {
+    public List<CategoryDto> getCategory() {
 
         try {
             return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
@@ -51,15 +53,44 @@ public class CategoryController {
         }
         return null;
     }
-
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
-    public void updateCategory(@RequestBody CategoryEntity categoryEntity, @PathVariable("id") Long id) {
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public ModelAndView update(){
+        ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
+        List<CategoryDto> categoryDtos=null;
         try {
-            categoryServiceImp.update(categoryEntity, id);
+            categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+            modelAndVi.addObject("categories",categoryDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return modelAndVi;
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ModelAndView updateCategory(@RequestParam  Map<String,String> formData) {
+        ModelAndView modelAndView=new ModelAndView("categoryUpdate");
+
+            String type = formData.get("type");
+            String category = formData.get("categoryList");
+
+            if(type!=null){
+                try {
+                    CategoryEntity updatedCategoryEntit=new CategoryEntity(type);
+                    CategoryEntity categoryEntity=categoryServiceImp.getByType(category);
+                    categoryServiceImp.update(updatedCategoryEntit,categoryEntity);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        try {
+            List<CategoryDto> categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+            modelAndView.addObject("categories",categoryDtos);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return modelAndView;
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
@@ -73,9 +104,9 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CategoryEntity getCategoryById(@PathVariable("id") Long id) {
+    public CategoryDto getCategoryById(@PathVariable("id") Long id) {
         try {
-            return categoryServiceImp.getById(id);
+            return categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
         } catch (SQLException e) {
             e.printStackTrace();
         }

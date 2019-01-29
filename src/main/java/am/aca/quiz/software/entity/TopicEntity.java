@@ -15,7 +15,7 @@ public class TopicEntity {
     @Column(name = "topic_name", nullable = false)
     private String topicName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "subcategory_id", updatable = false)
     private SubCategoryEntity subCategory;
 

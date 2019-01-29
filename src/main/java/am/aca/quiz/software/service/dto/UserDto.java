@@ -11,7 +11,7 @@ public class UserDto {
     private String nickname;
     private String password;
     private Role role;
-    private String image;
+   // private String image;
 
     public Long getId() {
         return id;
@@ -68,12 +68,12 @@ public class UserDto {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
 }

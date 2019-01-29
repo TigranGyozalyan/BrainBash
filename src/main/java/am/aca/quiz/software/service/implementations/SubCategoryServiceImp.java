@@ -53,12 +53,11 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
     public void update(SubCategoryEntity subCategory, Long targetId) throws SQLException {
+       // SubCategoryEntity subCategoryEntity=subCategoryRepository.findById(targetId).get();
         if (subCategory != null) {
             subCategory.setId(targetId);
-            subCategoryRepository.saveAndFlush(subCategory);
 
-            //???????????????????????????
-            //?????????????????????????
+            subCategoryRepository.saveAndFlush(subCategory);
         }
     }
 

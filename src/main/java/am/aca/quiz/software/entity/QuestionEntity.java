@@ -34,13 +34,13 @@ public class QuestionEntity {
     @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.ALL)
     private List<AnswerEntity> answerEntities = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
     private List<TestEntity> testEntities = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     private TopicEntity topicEntity;
 
 

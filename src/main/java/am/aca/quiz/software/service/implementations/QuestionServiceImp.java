@@ -44,6 +44,9 @@ public class QuestionServiceImp implements QuestionService {
         QuestionEntity updatedQuestion = questionRepository.findById(id).get();
         if (updatedQuestion != null) {
             question.setId(id);
+            question.setAnswerEntities(updatedQuestion.getAnswerEntities());
+            question.setTopicEntity(updatedQuestion.getTopicEntity());
+            question.setTestEntities(updatedQuestion.getTestEntities());
             questionRepository.saveAndFlush(question);
         }
     }

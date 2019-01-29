@@ -1,6 +1,7 @@
 package am.aca.quiz.software.controller;
 
 
+import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.entity.enums.Level;
 import am.aca.quiz.software.service.dto.QuestionDto;
@@ -99,4 +100,14 @@ public class QuestionController {
         modelAndView.addObject("topics", topicDtos);
         return modelAndView;
     }
+
+    @PatchMapping(value = "/update/{id}")
+    public void update(@PathVariable("id")Long id,@RequestBody QuestionEntity questionEntity){
+        try {
+            questionServiceImp.update(questionEntity,id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -23,7 +23,7 @@ public class TestEntity {
     @Column(name = "description",nullable = false,columnDefinition = "text")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id")})

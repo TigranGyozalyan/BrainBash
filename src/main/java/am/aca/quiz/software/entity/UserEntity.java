@@ -36,8 +36,8 @@ public class UserEntity {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
-    private String image;
+//    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
+//    private String image;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList = new ArrayList<>();
@@ -116,14 +116,14 @@ public class UserEntity {
     public void setRole(String role) {
         this.role = Role.valueOf(role);
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
 
     public List<HistoryEntity> getHistoryList() {
         return historyList;
