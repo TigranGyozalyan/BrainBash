@@ -52,13 +52,10 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
-    public void update(SubCategoryEntity subCategory, Long targetId) throws SQLException {
-       // SubCategoryEntity subCategoryEntity=subCategoryRepository.findById(targetId).get();
-        if (subCategory != null) {
-            subCategory.setId(targetId);
-
-            subCategoryRepository.saveAndFlush(subCategory);
-        }
+    public void update(SubCategoryEntity updatedSubCategory, SubCategoryEntity subCategory) throws SQLException {
+        updatedSubCategory.setId(subCategory.getId());
+        updatedSubCategory.setCategory(subCategory.getCategory());
+        subCategoryRepository.saveAndFlush(updatedSubCategory);
     }
 
     @Override
@@ -90,5 +87,10 @@ public class SubCategoryServiceImp implements SubCategoryService {
             throw new SQLException("entity not found");
         }
     }
+
+    public Long getCategoryIdBySubCategoryTypeName(String typeName) {
+        return subCategoryRepository.findCategoryIdBySubCategoryTypeName(typeName);
+    }
+
 
 }

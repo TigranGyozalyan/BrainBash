@@ -18,7 +18,7 @@ public interface SubCategoryService {
     SubCategoryEntity getById(Long id) throws SQLException;
 
     //update
-    void update(SubCategoryEntity subCategory, Long id) throws SQLException;
+    void update(SubCategoryEntity updatedSubCategory, SubCategoryEntity subCategoryEntity) throws SQLException;
 
     //delete
     void removeById(Long id) throws SQLException;
