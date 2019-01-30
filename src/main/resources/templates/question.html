@@ -1,22 +1,46 @@
 <!DOCTYPE html>
+
+
+<style>
+    .txtAnswer {
+        position: relative;
+        width: 90px;
+        overflow: hidden;
+        left: 0;
+    }
+
+    .txtAnswer label {
+        position: absolute;
+        left: 5px;
+    }
+
+</style>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add a Question</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
 </head>
 <body>
+
+
+
 
 
 <form method="post">
 
     <label>
         Topic : <select name="topic">
-            <option th:each="topic : ${topics}"
-                    th:value="${topic.topicName}"
-                    th:text="${topic.topicName}">
-            </option>
-        </select>
+        <option th:each="topic : ${topics}"
+                th:value="${topic.topicName}"
+                th:text="${topic.topicName}">
+        </option>
+    </select>
     </label>
     <br/>
     <label>
@@ -39,99 +63,47 @@
         Correct answer count <input name="correct_answer_count" type="text">
     </label>
     <br/>
-    <br/>
 
-    <label>Answer #1</label>
-        <br/>
-        <label>
-            Answer text <input name="answer1" type="text" placeholder="Input Answer Text">
-        </label>
-        <label>
-            Description  <input name="description1" type="text" placeholder="Input Description">
-        </label>
-        <label>
-            Is Correct <input name="isCorrect1" type="checkbox"  value="true">
-        </label>
-        <br/>
+    <div id="questionBlock">
+        <button type="button" id="btnAddAnswer" class="txtAnswer" onclick="addAnswer()">Add answer</button>
+    </div>
 
-            <br/>
-                <label>Answer #2</label>
-            <br/>
-            <label>
-                Answer text <input name="answer2" type="text" placeholder="Input Answer Text">
-            </label>
-            <label>
-                Description  <input name="description2" type="text" placeholder="Input Description">
-            </label>
-            <label>
-                Is Correct <input name="isCorrect2" type="checkbox"  value="true">
-            </label>
-            <br/>
-
-                <br/>
-                    <label>Answer #3</label>
-                <br/>
-                <label>
-                    Answer text <input name="answer3" type="text" placeholder="Input Answer Text">
-                </label>
-                <label>
-                    Description  <input name="description3" type="text" placeholder="Input Description">
-                </label>
-                <label>
-                    Is Correct <input name="isCorrect3" type="checkbox"  value="true">
-                </label>
-                <br/>
-
-
-                    <br/>
-                        <label>Answer #4</label>
-                    <br/>
-                    <label>
-                        Answer text <input name="answer4" type="text" placeholder="Input Answer Text">
-                    </label>
-                    <label>
-                        Description  <input name="description4" type="text" placeholder="Input Description">
-                    </label>
-                    <label>
-                        Is Correct <input name="isCorrect4" type="checkbox"  value="true">
-                    </label>
-                    <br/>
-
-<br/>
-                     <label>Answer #5</label>
-                    <br/>
-                    <label>
-                        Answer text <input name="answer5" type="text" placeholder="Input Answer Text">
-                    </label>
-                    <label>
-                        Description  <input name="description5" type="text" placeholder="Input Description">
-                    </label>
-                    <label>
-                        Is Correct <input name="isCorrect5" type="checkbox"  value="true">
-                    </label>
-                    <br/>
-
-<br/>
-                        <label>Answer #6</label>
-                    <br/>
-                    <label>
-                        Answer text <input name="answer6" type="text" placeholder="Input Answer Text" >
-                    </label>
-                    <label>
-                        Description  <input name="description6" type="text" placeholder="Input Description">
-                    </label>
-                    <label>
-                        Is Correct <input name="isCorrect6" type="checkbox"  value="true">
-                    </label>
-                    <br/>
-
-
-
-    <br/>
     <input type="submit" value="Submit">
     <br/>
-
 </form>
-
 </body>
+
+<script>
+    var answerCount = 1;
+    function addAnswer() {
+
+        var questionBlock = $('#questionBlock');
+
+        questionBlock.append($('<br/>'));
+        var answerField = $('<input>').attr('type','text').attr('class','txtAnswer').attr('name','answer');
+
+        var labelHTML = '<label> Answer #' + answerCount + ': ';
+
+        //adding the answer body
+        questionBlock.append(labelHTML,answerField);
+        questionBlock.append('</label>');
+
+        //adding the answer description body
+
+        var desriptionField = $('<input>').attr('type','text').attr('class','txtAnswer').attr('name','description');
+        labelHTML = '<label> Description: ';
+        questionBlock.append(labelHTML,desriptionField);
+        questionBlock.append('</label>');
+
+        //adding the checkbox for whether the answer is correct or not
+        var answerCheckBox = $('<input>').attr('type','checkbox').attr('name','isTrue');
+        labelHTML = '<label> Is correct: ';
+        questionBlock.append(labelHTML,answerCheckBox);
+        questionBlock.append('</label>');
+        answerCount++;
+
+
+    }
+</script>
+
 </html>

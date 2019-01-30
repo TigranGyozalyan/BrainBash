@@ -11,7 +11,6 @@ import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

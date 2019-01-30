@@ -11,6 +11,7 @@ import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +28,7 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final TopicMapper topicMapper;
     private final AnswerServiceImp answerServiceImp;
-    private final int ANSWER_COUNT = 6;
+
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp) {
         this.questionServiceImp = questionServiceImp;
@@ -70,43 +71,45 @@ public class QuestionController {
         return null;
     }
 
-    @PostMapping(value = "/add")
-    @ResponseBody
-    public ModelAndView postQuestion(@RequestParam Map<String, String> formData) {
-
-        String text = formData.get("questionText");
-        String level = formData.get("level");
-
-        int points = Integer.parseInt(formData.get("points"));
-        int corr_answer = Integer.parseInt(formData.get("correct_answer_count"));
-        String topicName = formData.get("topic");
-        try {
-            TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
-            Long topicId = topicEntity.getId();
-            questionServiceImp.addQuestion(text, level, corr_answer, points, topicId);
-            QuestionEntity newQuestion = questionServiceImp.getQuestionEntityByQuestion(text);
-            Long questionId = newQuestion.getId();
-
-            for (int i = 1; i <= ANSWER_COUNT; i++) {
-                String answerText = formData.get("answer" + i);
-                if (!answerText.isEmpty()) {
-                    String description = formData.get("description" + i);
-                    boolean isTrue = Boolean.parseBoolean(formData.get("isCorrect" + i));
-                    answerServiceImp.addAnswer(answerText, description, isTrue, questionId);
-                }
-            }
-
-            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            ModelAndView modelAndView = new ModelAndView("question");
-            modelAndView.addObject("topics", topicDtos);
-            return modelAndView;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-    }
+    //toDO
+//    @PostMapping(value = "/add")
+//    @ResponseBody
+//    public ModelAndView postQuestion(@RequestParam Map<String, String> formData) {
+//        System.out.println("Add button was pressed");
+//        String text = formData.get("questionText").;
+//        String level = formData.get("level");
+//
+//        int points = Integer.parseInt(formData.get("points"));
+//        int corr_answer = Integer.parseInt(formData.get("correct_answer_count"));
+//        String topicName = formData.get("topic");
+//        try {
+//            TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
+//            Long topicId = topicEntity.getId();
+//            questionServiceImp.addQuestion(text, level, corr_answer, points, topicId);
+//            QuestionEntity newQuestion = questionServiceImp.getQuestionEntityByQuestion(text);
+//            Long questionId = newQuestion.getId();
+//
+//            List<String> answerTextList = formData.get("answer");
+//            List<String> descriptionList = formData.get("description");
+//            List<String> isTrueList = formData.get("isTrue");
+//            for (int i = 0; i < answerTextList.size(); i++) {
+//                String answerText = answerTextList.get(i);
+//                String description = ((char)(97 + i)) + ")" + descriptionList.get(i);
+//                boolean isTrue = Boolean.parseBoolean(isTrueList.get(i));
+//                answerServiceImp.addAnswer(answerText, description, isTrue, questionId);
+//            }
+//            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+//            ModelAndView modelAndView = new ModelAndView("question");
+//            modelAndView.addObject("topics", topicDtos);
+//            return modelAndView;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        return null;
+//
+//    }
 
     @PatchMapping(value = "/update/{id}")
     public void update(@PathVariable("id") Long id, @RequestBody QuestionEntity questionEntity) {
