@@ -36,8 +36,8 @@ public class UserEntity {
     @Column(name = "role", nullable = false)
     private Role role;
 
-//    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
-//    private String image;
+    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
+    private String image;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList = new ArrayList<>();
