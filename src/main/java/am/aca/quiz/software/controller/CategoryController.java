@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.mapper.CategoryMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;

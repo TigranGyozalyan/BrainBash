@@ -70,7 +70,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-        CategoryEntity targetEntity = categoryRepository.findCategoryEntityById(id);
+        CategoryEntity targetEntity = categoryRepository.findById(id).get();
 
         if (targetEntity != null) {
             return targetEntity;
@@ -88,5 +88,6 @@ public class CategoryServiceImp implements CategoryService {
             throw new SQLException("category not found");
         }
     }
+
 
 }

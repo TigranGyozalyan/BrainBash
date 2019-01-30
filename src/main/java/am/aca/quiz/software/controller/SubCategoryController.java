@@ -1,5 +1,6 @@
 package am.aca.quiz.software.controller;
 
+import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
@@ -22,6 +23,7 @@ public class SubCategoryController {
     private final SubCategoryServiceImp subCategoryServiceImp;
     private final CategoryMapper categoryMapper;
     private final SubCategoryMapper subCategoryMapper;
+    private final String EMPTY = "empty";
 
     public SubCategoryController(SubCategoryServiceImp subCategoryServiceImp, CategoryMapper categoryMapper, SubCategoryMapper subCategoryMapper) {
         this.subCategoryServiceImp = subCategoryServiceImp;
@@ -41,7 +43,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseBody
     public ModelAndView postNewCategory(@RequestParam Map<String, String> formData) throws SQLException {
         ModelAndView modelAndView = new ModelAndView("subCategory");
@@ -80,12 +82,64 @@ public class SubCategoryController {
         }
     }
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
-    public void updateCategory(@RequestBody SubCategoryEntity subCategoryEntity, @PathVariable("id") Long id) {
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    public ModelAndView updateSubCategory() {
+        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
+        List<CategoryDto> categoryDtos = null;
+        List<SubCategoryDto> subCategoryDtos = null;
+
         try {
-            subCategoryServiceImp.update(subCategoryEntity, id);
+            categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
+            subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("categories", categoryDtos);
+            modelAndView.addObject("subCategories", subCategoryDtos);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return modelAndView;
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ModelAndView updateSubCategory(@RequestParam Map<String, String> formData) {
+        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
+        String typeName = formData.get("typename");
+        String category = formData.get("categoryList");
+        String subCategory = formData.get("subCategoryList");
+
+        if (typeName != null) {
+            CategoryEntity categoryEntity = null;
+            try {
+                if (!category.equals(EMPTY)) {
+                    categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getByType(category);
+                } else {
+                    categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategory));
+                }
+                SubCategoryEntity updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
+
+                SubCategoryEntity subCategoryEntity = subCategoryServiceImp.getByTypeName(subCategory);
+                subCategoryServiceImp.update(updatedSubCategoryEntity, subCategoryEntity);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        try {
+            List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
+            List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("categories", categoryDtos);
+            modelAndView.addObject("subCategories", subCategoryDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+
+    }
+
+
 }
