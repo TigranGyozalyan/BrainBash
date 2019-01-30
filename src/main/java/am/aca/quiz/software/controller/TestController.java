@@ -11,6 +11,7 @@ import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -107,21 +108,26 @@ public class TestController {
         }
 
        filteredQuestions=questionMapper.mapEntitiesToDto(allQuestions);
-
-
-
         return addTest();
     }
 
     @GetMapping("/add/question")
-    public ModelAndView postTestQuestions(@RequestParam Map<String, String> formData) {
+    public ModelAndView addTestQuestions(@RequestParam Map<String, String> formData) {
 
         ModelAndView modelAndView=new ModelAndView("test_questions");
         modelAndView.addObject("questionList",filteredQuestions);
-        question=formData.get("questionList");
 
         return modelAndView;
     }
+    @PostMapping(value = "/add/question")
+    public ModelAndView postTestQuestions(@RequestParam Map<String, String> formData){
+
+        ModelAndView modelAndView=new ModelAndView("test_questions");
+
+
+        return modelAndView;
+    }
+
 
 
 

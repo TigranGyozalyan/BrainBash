@@ -14,4 +14,5 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity,Long> {
     QuestionEntity findQuestionEntitiesByQuestion(String question);
 
 
+
 }

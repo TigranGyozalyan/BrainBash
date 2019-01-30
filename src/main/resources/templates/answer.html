@@ -21,20 +21,74 @@
         </option>
     </select>
     </label>
+
+
+
+
+    <br/>
+        <label>Answer #1</label>
     <br/>
     <label>
-        Answer text <input name="answer" type="text" placeholder="Input Answer Text">
+        Answer text <input name="answer1" type="text" placeholder="Input Answer Text">
     </label>
     <label>
-        Description  <input name="description" type="text" placeholder="Input Description">
+        Description  <input name="description1" type="text" placeholder="Input Description">
     </label>
-    <br/>
     <label>
-        Is Correct <input type="checkbox" name="isCorrect"  value="true">
+        Is Correct <input name="isCorrect1" type="checkbox"  value="true">
     </label>
     <br/>
-    <input type="submit" value="Add Answer">
-    <br/>
+
+        <br/>
+            <label>Answer #2</label>
+        <br/>
+        <label>
+            Answer text <input name="answer2" type="text" placeholder="Input Answer Text">
+        </label>
+        <label>
+            Description  <input name="description2" type="text" placeholder="Input Description">
+        </label>
+        <label>
+            Is Correct <input name="isCorrect2" type="checkbox"  value="true">
+        </label>
+        <br/>
+
+            <br/>
+                <label>Answer #3</label>
+            <br/>
+            <label>
+                Answer text <input name="answer3" type="text" placeholder="Input Answer Text">
+            </label>
+            <label>
+                Description  <input name="description3" type="text" placeholder="Input Description">
+            </label>
+            <label>
+                Is Correct <input name="isCorrect3" type="checkbox"  value="true">
+            </label>
+            <br/>
+
+
+                <br/>
+                    <label>Answer #4</label>
+                <br/>
+                <label>
+                    Answer text <input name="answer4" type="text" placeholder="Input Answer Text">
+                </label>
+                <label>
+                    Description  <input name="description4" type="text" placeholder="Input Description">
+                </label>
+                <label>
+                    Is Correct <input name="isCorrect4" type="checkbox"  value="true">
+                </label>
+                <br/>
+
+
+
+
+
+
+    <input type="submit" value="Submit">
+    <input type="button"  onclick="location.href='http://localhost:8080/question/add'" value="Go To Answer"  >
 </form>
 </body>
 </html>

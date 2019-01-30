@@ -3,9 +3,9 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
-import am.aca.quiz.software.entity.enums.Level;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TopicDto;
+import am.aca.quiz.software.service.implementations.AnswerServiceImp;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
@@ -26,12 +26,15 @@ public class QuestionController {
     private final TopicServiceImp topicServiceImp;
     private final QuestionMapper questionMapper;
     private final TopicMapper topicMapper;
+    private final AnswerServiceImp answerServiceImp;
+    private final int ANSWER_COUNT = 6;
 
-    public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper) {
+    public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp) {
         this.questionServiceImp = questionServiceImp;
         this.topicServiceImp = topicServiceImp;
         this.questionMapper = questionMapper;
         this.topicMapper = topicMapper;
+        this.answerServiceImp = answerServiceImp;
     }
 
     @GetMapping(value = "/{id}")
@@ -77,34 +80,38 @@ public class QuestionController {
         int points = Integer.parseInt(formData.get("points"));
         int corr_answer = Integer.parseInt(formData.get("correct_answer_count"));
         String topicName = formData.get("topic");
-        TopicEntity topicEntity = null;
         try {
-            topicEntity = topicServiceImp.getByTopicName(topicName);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Long id = topicEntity.getId();
-        try {
-            questionServiceImp.addQuestion(text, level, corr_answer, points, id);
+            TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
+            Long topicId = topicEntity.getId();
+            questionServiceImp.addQuestion(text, level, corr_answer, points, topicId);
+            QuestionEntity newQuestion = questionServiceImp.getQuestionEntityByQuestion(text);
+            Long questionId = newQuestion.getId();
+
+            for (int i = 1; i <= ANSWER_COUNT; i++) {
+                String answerText = formData.get("answer" + i);
+                if (!answerText.isEmpty()) {
+                    String description = formData.get("description" + i);
+                    boolean isTrue = Boolean.parseBoolean(formData.get("isCorrect" + i));
+                    answerServiceImp.addAnswer(answerText, description, isTrue, questionId);
+                }
+            }
+
+            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            ModelAndView modelAndView = new ModelAndView("question");
+            modelAndView.addObject("topics", topicDtos);
+            return modelAndView;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        List<TopicDto> topicDtos = null;
-        try {
-            topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ModelAndView modelAndView = new ModelAndView("question");
-        modelAndView.addObject("topics", topicDtos);
-        return modelAndView;
+        return null;
+
     }
 
     @PatchMapping(value = "/update/{id}")
-    public void update(@PathVariable("id")Long id,@RequestBody QuestionEntity questionEntity){
+    public void update(@PathVariable("id") Long id, @RequestBody QuestionEntity questionEntity) {
         try {
-            questionServiceImp.update(questionEntity,id);
+            questionServiceImp.update(questionEntity, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
