@@ -1,6 +1,6 @@
 package am.aca.quiz.software.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
