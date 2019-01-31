@@ -45,4 +45,18 @@ public class UserController {
         return registrationPage();
     }
 
+    @PostMapping(value = "")
+    public ModelAndView deleteUser(@RequestParam Map<String, String> formDate) {
+        ModelAndView modelAndView = new ModelAndView("");
+        String email = formDate.get("email");
+
+        try {
+            userServiceImp.removeByUserEntity(userServiceImp.findByEmail(email));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
 }

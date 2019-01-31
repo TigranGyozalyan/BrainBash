@@ -24,17 +24,17 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException {
+    public void addUser(String fName, String lName, String nickname, String email, String password, String password2) throws SQLException {
 
 
-        if(!password.equals(password2)){
+        if (!password.equals(password2)) {
             throw new SQLException();
         }
-        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,"user");
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password, "user");
         try {
-            mailService.sendHtml(email,"Confirmation","mailConfirmation");
-        }catch (MailException e){
-           throw new RuntimeException("Invalid Mail");
+            mailService.sendHtml(email, "Confirmation", "mailConfirmation");
+        } catch (MailException e) {
+            throw new RuntimeException("Invalid Mail");
         }
         userRepository.saveAndFlush(userEntity);
 
@@ -63,6 +63,20 @@ public class UserServiceImp implements UserService {
     @Override
     public UserEntity getById(Long id) throws SQLException {
         return userRepository.findById(id).get();
+    }
+
+    @Override
+    public void removeByUserEntity(UserEntity userEntity) throws SQLException {
+        userRepository.delete(userEntity);
+    }
+
+    public UserEntity findByEmail(String email) throws SQLException {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (userEntity != null) {
+            return userEntity;
+        } else {
+            throw new SQLException("User not found");
+        }
     }
 
 }
