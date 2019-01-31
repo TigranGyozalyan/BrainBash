@@ -3,7 +3,7 @@ package am.aca.quiz.software.service.dto;
 public class AnswerDto {
 
     private Long id;
-    private String answer_text;
+    private String answer;
     private String description;
     private boolean is_correct;
 
@@ -15,12 +15,12 @@ public class AnswerDto {
         this.id = id;
     }
 
-    public String getAnswer_text() {
-        return answer_text;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setAnswer_text(String answer_dto) {
-        this.answer_text = answer_dto;
+    public void setAnswer(String answer_dto) {
+        this.answer = answer_dto;
     }
 
     public String getDescription() {

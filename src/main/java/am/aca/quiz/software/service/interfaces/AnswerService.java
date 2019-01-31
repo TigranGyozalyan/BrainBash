@@ -16,7 +16,7 @@ public interface AnswerService {
     List<AnswerEntity> getAll() throws SQLException;
 
     //update
-    void update(AnswerEntity answer, Long id) throws SQLException;
+    void update(AnswerEntity updateAnswer, AnswerEntity answerEntity) throws SQLException;
 
     AnswerEntity getById(Long id) throws SQLException;
 

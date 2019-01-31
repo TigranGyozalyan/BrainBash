@@ -42,11 +42,10 @@ public class AnswerServiceImp implements AnswerService {
 
 
     @Override
-    public void update(AnswerEntity answer, Long id) throws SQLException {
-        AnswerEntity updated_answer = answerRepository.findById(id).get();
-        if (updated_answer != null) {
-            answer.setId(id);
-        }
+    public void update(AnswerEntity updateAnswer, AnswerEntity answerEntity) throws SQLException {
+        updateAnswer.setId(answerEntity.getId());
+        updateAnswer.setQuestionEntity(answerEntity.getQuestionEntity());
+        answerRepository.saveAndFlush(updateAnswer);
     }
 
     @Override
@@ -64,5 +63,12 @@ public class AnswerServiceImp implements AnswerService {
         answerRepository.delete(deleted_answer);
     }
 
+    public Long getQuestionIdByAnswer(String answer){
+        return answerRepository.findQuestionIdByAnswer(answer);
+    }
+
+    public AnswerEntity getAnswerByAnswerText(String text){
+        return answerRepository.findAnswerEntitiesByAnswer(text);
+    }
 
 }

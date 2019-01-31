@@ -17,7 +17,7 @@ public class AnswerEntity {
     private boolean is_correct;
 
     @Column(name = "answer",nullable = false,columnDefinition = "text")
-    private String answer_text;
+    private String answer;
 
     @ManyToOne
     @JoinColumn(name = "question_id",updatable = false)
@@ -29,7 +29,7 @@ public class AnswerEntity {
     public AnswerEntity(String answer_text,String description, boolean is_correct, QuestionEntity questionEntity) {
         this.description = description;
         this.is_correct = is_correct;
-        this.answer_text = answer_text;
+        this.answer = answer_text;
         this.questionEntity = questionEntity;
     }
 
@@ -59,11 +59,11 @@ public class AnswerEntity {
     }
 
     public String getAnswer_text() {
-        return answer_text;
+        return answer;
     }
 
     public void setAnswer_text(String answer_text) {
-        this.answer_text = answer_text;
+        this.answer = answer_text;
     }
 
     public QuestionEntity getQuestionEntity() {
@@ -80,7 +80,7 @@ public class AnswerEntity {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", is_correct=" + is_correct +
-                ", answer_text='" + answer_text + '\'' +
+                ", answer_text='" + answer + '\'' +
                 '}';
     }
 }

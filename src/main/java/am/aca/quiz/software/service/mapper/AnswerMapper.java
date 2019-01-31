@@ -16,7 +16,7 @@ public class AnswerMapper implements MapEntityToDto<AnswerEntity, AnswerDto> {
     public AnswerDto mapEntityToDto (AnswerEntity answerEntity) {
         AnswerDto answerDto = new AnswerDto();
 
-        answerDto.setAnswer_text(answerEntity.getAnswer_text());
+        answerDto.setAnswer(answerEntity.getAnswer_text());
         answerDto.setDescription(answerEntity.getDescription());
         answerDto.setId(answerEntity.getId());
         answerDto.setIs_correct(answerEntity.isIs_correct());
