@@ -15,7 +15,7 @@ public class TestEntity {
     private Long id;
 
     @Column(name = "test_name",nullable = false)
-    private String test_name;
+    private String test;
 
     @Column(name = "duration",nullable = false)
     private long duration;
@@ -34,7 +34,7 @@ public class TestEntity {
 
 
     public TestEntity(String test_name, long duration, String description) {
-        this.test_name = test_name;
+        this.test = test_name;
         this.duration = duration;
         this.description = description;
     }
@@ -51,7 +51,7 @@ public class TestEntity {
     }
 
     public String getTest_name() {
-        return this.test_name;
+        return this.test;
     }
 
     public long getDuration() {
@@ -63,7 +63,7 @@ public class TestEntity {
     }
 
     public void setTest_name(String test_name) {
-        this.test_name = test_name;
+        this.test = test_name;
     }
 
     public void setDuration(long duration) {
@@ -98,7 +98,7 @@ public class TestEntity {
     public String toString() {
         return "TestEntity{" +
                 "id=" + id +
-                ", test_name='" + test_name + '\'' +
+                ", test_name='" + test + '\'' +
                 ", duration=" + duration +
                 ", description='" + description + '\'' +
                 '}';

@@ -2,6 +2,8 @@ package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.enums.Level;
 
+import java.util.Objects;
+
 public class QuestionDto {
 
     private Long id;
@@ -49,5 +51,22 @@ public class QuestionDto {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionDto that = (QuestionDto) o;
+        return correct_amount == that.correct_amount &&
+                points == that.points &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(question, that.question) &&
+                level == that.level;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, question, correct_amount, points, level);
     }
 }

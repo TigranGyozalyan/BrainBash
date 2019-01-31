@@ -33,7 +33,8 @@ public class TestController {
     private final QuestionMapper questionMapper;
     private static final String EMPTY = "empty";
     private List<QuestionDto> filteredQuestions=null;
-   private String description,duration,test_name,question;
+    private String description,duration,test_name,question;
+    private List<QuestionDto> questionDtos=new ArrayList<>();
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper) {
@@ -83,7 +84,9 @@ public class TestController {
     @ResponseBody
     public ModelAndView postTest(@RequestParam Map<String, String> formData) {
 
-        List<TopicEntity> topics = new ArrayList<>();
+        questionDtos.clear();
+
+         List<TopicEntity> topics = new ArrayList<>();
          description=formData.get("description");
          duration=formData.get("duration");
          test_name=formData.get("test_name");
@@ -122,7 +125,24 @@ public class TestController {
     public ModelAndView postTestQuestions(@RequestParam Map<String, String> formData){
 
         ModelAndView modelAndView=new ModelAndView("test_questions");
+        question=formData.get("Questions");
 
+            QuestionDto questionDto=questionMapper
+                    .mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(question));
+
+        questionDtos.add(questionDto);
+        try {
+            testServiceImp.addTest(test_name,description,Long.parseLong(duration),questionDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        filteredQuestions.remove(questionMapper.mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(question)));
+
+
+
+        modelAndView.addObject("questionList",filteredQuestions);
 
         return modelAndView;
     }

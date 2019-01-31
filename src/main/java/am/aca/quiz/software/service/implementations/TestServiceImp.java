@@ -6,6 +6,7 @@ import am.aca.quiz.software.repository.TestRepository;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,21 +40,19 @@ public class TestServiceImp implements TestService {
                     return null;
                 })
                 .collect(Collectors.toList());
-//        List<QuestionEntity> questionEntities = new ArrayList<>();
-//        questionDtos.forEach(i-> {
-//            try {
-//                questionEntities.add(questionServiceImp.getById(i.getId()));
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        });
 
-        TestEntity testEntity = new TestEntity(testName, duration, description);
 
-        testEntity.setQuestionEntities(questionEntities);
+        TestEntity testEntity=testRepository.findTestEntitiesByTest(testName);
 
-        testRepository.saveAndFlush(testEntity);
+        if(testEntity==null) {
+            testEntity = new TestEntity(testName, duration, description);
+            testEntity.setQuestionEntities(questionEntities);
 
+        }else {
+            testRepository.findTestEntitiesByTest(testName);
+            testEntity.setQuestionEntities(questionEntities);
+        }
+        testRepository.save(testEntity);
     }
 
     @Override
@@ -61,6 +60,7 @@ public class TestServiceImp implements TestService {
         return testRepository.findAll();
     }
 
+    //TODO
     @Override
     public void update(TestEntity test, Long id) throws SQLException {
         TestEntity testEntity = testRepository.findById(id).get();
@@ -81,4 +81,5 @@ public class TestServiceImp implements TestService {
     public TestEntity getById(Long id) throws SQLException {
         return testRepository.findById(id).get();
     }
+
 }
