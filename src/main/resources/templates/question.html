@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-
 <style>
     .txtAnswer {
         position: relative;
@@ -18,7 +17,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+        <meta charset="UTF-8">
     <title>Add a Question</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script
@@ -27,9 +26,6 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
-
-
 
 
 <form method="post">
@@ -75,33 +71,33 @@
 
 <script>
     var answerCount = 1;
+
     function addAnswer() {
 
         var questionBlock = $('#questionBlock');
 
         questionBlock.append($('<br/>'));
-        var answerField = $('<input>').attr('type','text').attr('class','txtAnswer').attr('name','answer');
+        var answerField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'answer');
 
         var labelHTML = '<label> Answer #' + answerCount + ': ';
 
         //adding the answer body
-        questionBlock.append(labelHTML,answerField);
+        questionBlock.append(labelHTML, answerField);
         questionBlock.append('</label>');
 
         //adding the answer description body
 
-        var desriptionField = $('<input>').attr('type','text').attr('class','txtAnswer').attr('name','description');
+        var desriptionField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'description');
         labelHTML = '<label> Description: ';
-        questionBlock.append(labelHTML,desriptionField);
+        questionBlock.append(labelHTML, desriptionField);
         questionBlock.append('</label>');
 
         //adding the checkbox for whether the answer is correct or not
-        var answerCheckBox = $('<input>').attr('type','checkbox').attr('name','isTrue');
+        var answerCheckBox = $('<input>').attr('type', 'checkbox').attr('name', 'isTrue');
         labelHTML = '<label> Is correct: ';
-        questionBlock.append(labelHTML,answerCheckBox);
+        questionBlock.append(labelHTML, answerCheckBox);
         questionBlock.append('</label>');
         answerCount++;
-
 
     }
 </script>

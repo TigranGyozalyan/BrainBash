@@ -1,5 +1,6 @@
 package am.aca.quiz.software.controller;
 
+import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.dto.TopicDto;
@@ -20,6 +21,7 @@ public class TopicController {
     private final TopicServiceImp topicServiceImp;
     private final TopicMapper topicMapper;
     private final SubCategoryMapper subCategoryMapper;
+    private final String EMPTY = "empty";
 
     public TopicController(TopicServiceImp topicServiceImp, TopicMapper topicMapper, SubCategoryMapper subCategoryMapper) {
         this.topicServiceImp = topicServiceImp;
@@ -78,12 +80,64 @@ public class TopicController {
 
     }
 
-    @PatchMapping("/update/{id}")
-    public void updateTopic(@RequestBody TopicEntity topicEntity,@PathVariable("id") Long id){
+    @GetMapping(value = "/update")
+    public ModelAndView updateTopic() {
+        ModelAndView modelAndView = new ModelAndView("topicUpdate");
+
+        List<SubCategoryDto> subCategoryDtos = null;
+        List<TopicDto> topicDtos = null;
+
         try {
-            topicServiceImp.update(topicEntity,id);
+            subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
+            topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("subCategories", subCategoryDtos);
+            modelAndView.addObject("topics", topicDtos);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/update")
+    public ModelAndView updateTopic(@RequestParam Map<String, String> formDate) {
+        ModelAndView modelAndView = new ModelAndView("topicUpdate");
+
+        String topicName = formDate.get("topicName");
+        String subCategory = formDate.get("subCategoryList");
+        String topic = formDate.get("topicList");
+
+        if (!topicName.isEmpty()) {
+            SubCategoryEntity subCategoryEntity = null;
+            try {
+                if (!subCategory.equals(EMPTY)) {
+                    subCategoryEntity = topicServiceImp.getSubCategoryServiceImpl().getByTypeName(subCategory);
+                } else {
+                    subCategoryEntity = topicServiceImp.getSubCategoryServiceImpl().getById(topicServiceImp.getSubCategoryIdByTopicName(topic));
+                }
+                TopicEntity updatedTopicEntity = new TopicEntity(topicName, subCategoryEntity);
+                TopicEntity topicEntity = topicServiceImp.getByTopicName(topic);
+
+                topicServiceImp.update(updatedTopicEntity, topicEntity);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        try {
+
+            List<SubCategoryDto> subCategoryDtos = subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
+            List<TopicDto> topicDtos = topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("subCategories", subCategoryDtos);
+            modelAndView.addObject("topics", topicDtos);
+            ;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
     }
 }

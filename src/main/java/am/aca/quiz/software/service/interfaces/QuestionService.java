@@ -15,7 +15,7 @@ public interface QuestionService {
     List<QuestionEntity> getAll() throws SQLException;
 
     //update
-    void update(QuestionEntity question, Long id) throws SQLException;
+    void update(QuestionEntity updatedQuestion,QuestionEntity questionEntity) throws SQLException;
 
     QuestionEntity getById(Long id) throws SQLException;
 

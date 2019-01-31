@@ -23,12 +23,15 @@ public class QuestionServiceImp implements QuestionService {
         this.topicServiceImp = topicServiceImp;
     }
 
+    public TopicServiceImp getTopicServiceImp() {
+        return topicServiceImp;
+    }
 
     @Override
     public void addQuestion(String question, String level, int correctAnswerCount, int points, Long topicEntityId) throws SQLException {
         TopicEntity topicEntity = topicServiceImp.getById(topicEntityId);
 
-        QuestionEntity questionEntity = new QuestionEntity(question,points,level,correctAnswerCount,topicEntity);
+        QuestionEntity questionEntity = new QuestionEntity(question, points, level, correctAnswerCount, topicEntity);
 
         topicEntity.getQuestionEntities().add(questionEntity);
         questionRepository.saveAndFlush(questionEntity);
@@ -40,15 +43,10 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public void update(QuestionEntity question, Long id) throws SQLException {
-        QuestionEntity updatedQuestion = questionRepository.findById(id).get();
-        if (updatedQuestion != null) {
-            question.setId(id);
-            question.setAnswerEntities(updatedQuestion.getAnswerEntities());
-            question.setTopicEntity(updatedQuestion.getTopicEntity());
-            question.setTestEntities(updatedQuestion.getTestEntities());
-            questionRepository.saveAndFlush(question);
-        }
+    public void update(QuestionEntity updatedQuestion, QuestionEntity question) throws SQLException {
+        updatedQuestion.setId(question.getId());
+        updatedQuestion.setTopicEntity(question.getTopicEntity());
+        questionRepository.saveAndFlush(updatedQuestion);
     }
 
 
@@ -69,11 +67,11 @@ public class QuestionServiceImp implements QuestionService {
 
     }
 
-    public QuestionEntity getQuestionEntityByQuestion(String question){
+    public QuestionEntity getQuestionEntityByQuestion(String question) {
         return questionRepository.findQuestionEntitiesByQuestion(question);
     }
 
-    public List<QuestionEntity> getQuestionEntityByTopic(TopicEntity topic){
+    public List<QuestionEntity> getQuestionEntityByTopic(TopicEntity topic) {
         return questionRepository.findQuestionEntitiesByTopicEntity(topic);
     }
 }
