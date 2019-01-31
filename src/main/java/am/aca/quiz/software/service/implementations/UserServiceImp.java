@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -30,9 +31,11 @@ public class UserServiceImp implements UserService {
             throw new SQLException();
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,"user");
-        mailService.sendHtml(email,"Confirmation","mailConfirmation");
-
-
+        try {
+            mailService.sendHtml(email,"Confirmation","mailConfirmation");
+        }catch (MailException e){
+           throw new RuntimeException("Invalid Mail");
+        }
         userRepository.saveAndFlush(userEntity);
 
     }

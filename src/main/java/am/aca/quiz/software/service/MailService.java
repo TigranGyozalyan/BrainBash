@@ -1,6 +1,8 @@
 package am.aca.quiz.software.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,7 +39,10 @@ public class MailService {
         mailMessage.setSubject(subject);
         mailMessage.setText(text);
 
-        mailSender.send(mailMessage);
+        try {
+            mailSender.send(mailMessage);
+        }catch (MailException e){
+        }
     }
 
     private void send(String emailTo, String subject,String htmlMsg) {

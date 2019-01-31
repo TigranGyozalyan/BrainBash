@@ -1,47 +1,180 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-   <link rel="stylesheet" type="text/css" th:href="@{/css/profileStyle.css}">
+<meta charset="UTF-8">
+<title>Title</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/profileStyle.css}">
+<script
+src="https://code.jquery.com/jquery-3.3.1.js"
+integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+crossorigin="anonymous"></script>
 
 </head>
 <body>
-<div class="page">
-  <div class="page__container">
-    <article class="profile">
-      <header class="profile__header">
-        <img src="http://www.4usky.com/data/out/85/164763554-smiley-wallpapers.jpg" class="profile__avatar" alt="avatar of Stas Melnikov">
-        <h3 class="profile__name">User Name</h3>
-        <span class="profile__post">Programing Geek</span>
-      </header>
-      <div class="profile__stats">
-        <div class="profile__group">
-          <span class="profile__value">85%</span>
-          <span class="profile__param">HTML</span>
-        </div>
-        <div class="profile__group">
-          <span class="profile__value">90%</span>
-          <span class="profile__param">CSS</span>
-        </div>
-        <div class="profile__group">
-          <span class="profile__value">85%</span>
-          <span class="profile__param">Web-Design</span>
-        </div>
-        <div class="profile__group">
-          <span class="profile__value">98%</span>
-          <span class="profile__param">Animation</span>
-        </div>
-        <div class="profile__group">
-          <span class="profile__value">52%</span>
-          <span class="profile__param">Javascript</span>
-        </div>
-        <div class="profile__group">
-          <span class="profile__value">10%</span>
-          <span class="profile__param">PHP</span>
-        </div>
-      </div>
-    </article>
-  </div>
-</div>
+<nav class='animated bounceInDown'>
+<ul>
+<li class='sub-menu'>
+<a href='#profile'>
+<div class='fa fa-gear'></div>
+Profile
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+
+<li class='sub-menu'>
+<a href='#usernameSettings'>
+<div class='fa fa-gear'></div>
+Name:
+<label class='badge right'  th:name="name" type="text" th:text="Valodik" />
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#usernameSettings'>
+<input type="text" value=""/>
+<input type="submit" value="Update"/>
+</a>
+</li>
+</ul>
+</li>
+
+<li class='sub-menu'>
+<a href='#surnameSettings'>
+<div class='fa fa-gear'></div>
+Surname:
+<label class='badge right'  th:name="name" type="text" th:text="Valodikyan" />
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#surnameSettings'>
+<input type="text" value=""/>
+<input type="submit" value="Update"/>
+</a>
+</li>
+</ul>
+</li>
+<li class='sub-menu'>
+<a href='#nicknameSettings'>
+<div class='fa fa-gear'></div>
+Nickname:
+<label class='badge right'  th:name="name" type="text" th:text="Dax" />
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#nicknameSettings'>
+<input type="text" value=""/>
+<input type="submit" value="Update"/>
+</a>
+</li>
+</ul>
+</li>
+<li class='sub-menu'>
+<a href='#passwordSettings'>
+<div class='fa fa-gear'></div>
+Password:
+<label class='badge right'  th:name="name" type="text" th:text="qwerty" />
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#passwordSettings'>
+<input type="text" value=""/>
+<input type="submit" value="Update"/>
+</a>
+</li>
+</ul>
+</li>
+
+<li class='sub-menu'>
+<a href='#emailSettings'>
+<div class='fa fa-gear'></div>
+Email
+<label class='badge right'  th:name="name" type="text" th:text="mailru" />
+<div class='fa fa-caret-down right'></div>
+</a>
+</li>
+<li class='sub-menu'>
+<a href='#roleSettings'>
+<div class='fa fa-gear'></div>
+Role :
+<label class='badge right'  th:name="name" type="text" th:text="role" />
+<div class='fa fa-caret-down right'></div>
+</a>
+</li>
+<li class='sub-menu'>
+<a href='#deleteSettings'>
+<div class='fa fa-gear'></div>
+Delete Account:
+<label   th:name="deleteAccount"  />
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#deleteSettings'>
+Re-enter
+<input type="text"  value="" placeholder="example$mail.com"/>
+<input type="submit" value="Delete"/>
+</a>
+</li>
+</ul>
+</li>
+
+</ul>
+</li>
+<li class='sub-menu'>
+<a href='#history'>
+<div class='fa fa-question-circle'></div>
+History
+<div class='fa fa-caret-down right'></div>
+</a>
+<ul>
+<li>
+<a href='#finishedTestHistory'>
+Finished Tests
+</a>
+</li>
+<li>
+<a href='#upcomingTestHistory'>
+Upcoming Tests
+</a>
+</li>
+<li>
+<a href='#allHistory'>
+All History
+</a>
+</li>
+</ul>
+</li>
+
+<li>
+<a href='#test'> <!-- REDIRECT TO Test -->
+<div class='fa fa-envelope'></div>
+Test
+</a>
+</li>
+<li>
+<a href='#score'> <!-- REDIRECT TO AVG SCore -->
+<div class='fa fa-envelope'></div>
+Score
+</a>
+</li>
+
+<li>
+<a href='/'>
+<div class='fa fa-sign-out'></div>
+Logout
+</a>
+</li>
+</ul>
+</nav>
+<script>
+$('.sub-menu ul').hide();
+$(".sub-menu a").click(function () {
+$(this).parent(".sub-menu").children("ul").slideToggle("100");
+$(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+});
+</script>
+
 </body>
 </html>
