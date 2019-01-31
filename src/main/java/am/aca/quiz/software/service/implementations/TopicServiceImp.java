@@ -27,6 +27,7 @@ public class TopicServiceImp implements TopicService {
     }
 
 
+
     @Override
     public void addTopic(String topicName, Long subCategoryId) throws SQLException {
         SubCategoryEntity subCategoryEntity = subCategoryServiceImpl.getById(subCategoryId);
@@ -54,17 +55,10 @@ public class TopicServiceImp implements TopicService {
     }
 
     @Override
-    public void update(TopicEntity topic, Long id) throws SQLException {
-        TopicEntity updatedTopic = topicRepository.findById(id).get();
-
-        if (updatedTopic != null) {
-            topic.setId(id);
-            topicRepository.saveAndFlush(topic);
-        }
-
-        //????????????????????????????????
-        //????????????????????????????
-
+    public void update(TopicEntity updatedTopic, TopicEntity topic) throws SQLException {
+        updatedTopic.setId(topic.getId());
+        updatedTopic.setSubCategory(topic.getSubCategory());
+        topicRepository.saveAndFlush(updatedTopic);
     }
 
     @Override
@@ -95,5 +89,9 @@ public class TopicServiceImp implements TopicService {
             throw new SQLException("entity not found");
         }
 
+    }
+
+    public Long getSubCategoryIdByTopicName(String name){
+        return topicRepository.findSubCategoryIdByTopicName(name);
     }
 }

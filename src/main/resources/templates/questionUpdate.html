@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Question</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form method="post">
+
+    <label>
+        Select Topic :
+        <select name="topicList">
+            <option name="empty" selected="selected">empty</option>
+            <option th:each="topic : ${topics}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}"></option>
+        </select>
+    </label>
+    <br/>
+    <label>
+        Question : <input name="questionText" type="text" th:value="${question.question}">
+    </label>
+    <br/>
+    <label>
+        Level : <select name="level">
+        <option name="beginner">beginner</option>
+        <option name="intermediate">intermediate</option>
+        <option name="advanced">advanced</option>
+<!--        <option name="level" th:selected="${question.level}">-->
+    </select>
+    </label>
+    <br/>
+    <label>
+        Points <input name="points" type="text" th:value="${question.points}">
+    </label>
+    <br/>
+    <label>
+        Correct answer count <input name="corr_answer_count" type="text" th:value="${question.correct_amount}">
+    </label>
+    <br/>
+    <input type="submit" value="Update Question">
+</form>
+</body>
+</html>

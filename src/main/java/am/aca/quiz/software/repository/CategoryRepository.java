@@ -2,6 +2,7 @@ package am.aca.quiz.software.repository;
 
 import am.aca.quiz.software.entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
@@ -14,5 +15,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
     CategoryEntity findCategoryEntityById(Long id);
     CategoryEntity removeById(Long id);
 
-
+//    @Query(value = "select SubCategoryEntity.category FROM SubCategoryEntity where SubCategoryEntity .typeName = ?1")
+//    Long findCategoryIdBySubCategoryTypeName(String typename);
 }

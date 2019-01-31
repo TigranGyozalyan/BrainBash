@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Topic</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form method="post">
+
+    <label>
+        Select SubCategory :
+        <select name="subCategoryList">
+            <option name="empty" selected="selected">empty</option>
+            <option th:each="subCategory : ${subCategories}"
+                    th:value="${subCategory.typeName}"
+                    th:text="${subCategory.typeName}"></option>
+        </select>
+    </label>
+    <br/>
+    <label>
+        Select Topic :
+        <select name="topicList">
+            <option th:each="topic : ${topics}"
+                    th:value="${topic.topicName}"
+                    th:text="${topic.topicName}"></option>
+        </select>
+    </label>
+
+
+    <br/>
+    <label>
+        Topic : <input name="topicName" type="text" placeholder="Enter topic name">
+    </label>
+    <br/>
+    <input type="submit" value="Update Topic">
+</form>
+</body>
+</html>

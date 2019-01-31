@@ -3,6 +3,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
+import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.AnswerServiceImp;
@@ -10,8 +11,8 @@ import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +30,8 @@ public class QuestionController {
     private final TopicMapper topicMapper;
     private final AnswerServiceImp answerServiceImp;
 
+    private final int ANSWER_COUNT = 6;
+    private final String EMPTY = "empty";
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp) {
         this.questionServiceImp = questionServiceImp;
@@ -71,6 +74,38 @@ public class QuestionController {
         return null;
     }
 
+    @PostMapping(value = "/add")
+    public ModelAndView postQuestion(@RequestParam Map<String, String> formData) {
+        ModelAndView modelAndView = new ModelAndView("question");
+        String questionBody = formData.get("questionText");
+        String level = formData.get("level");
+        int points = Integer.parseInt(formData.get("points"));
+        int corr_answer_count = Integer.parseInt(formData.get("correct_answer_count"));
+        String topicName = formData.get("topic");
+
+        try {
+            TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
+            Long topicId = topicEntity.getId();
+
+            questionServiceImp.addQuestion(questionBody, level, corr_answer_count, points, topicId);
+
+            QuestionDto newQuestionDto = questionMapper.mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(questionBody));
+
+            Long questionId = newQuestionDto.getId();
+
+            //todo
+
+
+            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            modelAndView.addObject("topics", topicDtos);
+            return modelAndView;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
     //toDO
 //    @PostMapping(value = "/add")
 //    @ResponseBody
@@ -111,13 +146,41 @@ public class QuestionController {
 //
 //    }
 
-    @PatchMapping(value = "/update/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody QuestionEntity questionEntity) {
+    @GetMapping(value = "/update")
+    public ModelAndView updateQuestion() {
+        ModelAndView modelAndView = new ModelAndView("questionUpdate");
+        List<TopicDto> topicDtos = null;
+        List<QuestionDto> questionDtos = null;
+
         try {
-            questionServiceImp.update(questionEntity, id);
+            topicDtos = topicMapper.mapEntitiesToDto(questionServiceImp.getTopicServiceImp().getAll());
+            questionDtos = questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
+
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("topics", topicDtos);
+            modelAndView.addObject("question", questionDtos.get(0));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+        return modelAndView;
     }
+
+    @PostMapping(value = "/update")
+    public ModelAndView updateQuestion(@RequestParam Map<String, String> formDate) {
+        ModelAndView modelAndView = new ModelAndView("questionUpdate");
+        String topicName = formDate.get("topicList");
+        String questionBody = formDate.get("questionText");
+        String level = formDate.get("level");
+
+        int points = Integer.parseInt(formDate.get("points"));
+        int corr_answer_count = Integer.parseInt(formDate.get("corr_answer_count"));
+
+
+        return modelAndView;
+    }
+
 
 }

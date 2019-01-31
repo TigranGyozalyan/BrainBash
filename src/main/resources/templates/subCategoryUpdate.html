@@ -11,10 +11,10 @@
     <label>
         Select Category :
         <select name="categoryList">
+            <option name="empty" selected="selected">empty</option>
             <option th:each="category : ${categories}"
                     th:value="${category.type}"
                     th:text="${category.type}"></option>
-            <option name="empty" selected="selected">empty</option>
         </select>
     </label>
     <br/>
