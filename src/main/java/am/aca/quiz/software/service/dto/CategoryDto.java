@@ -1,5 +1,7 @@
 package am.aca.quiz.software.service.dto;
 
+import java.util.List;
+
 public class CategoryDto {
 
     private Long id;
