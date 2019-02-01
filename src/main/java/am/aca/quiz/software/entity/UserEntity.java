@@ -6,7 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -32,10 +34,10 @@ public class UserEntity {
     @Column(name = "passwords", nullable = false)
     private String password;
 
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
+    private Set<Role> roles=new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList = new ArrayList<>();
@@ -47,14 +49,12 @@ public class UserEntity {
     }
 
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, String role) {
+    public UserEntity(String name, String surname, String email, String nickname, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.role = Role.getRole(role);
-
     }
 
     public void setId(Long id) {
@@ -106,14 +106,13 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-
 
     public List<HistoryEntity> getHistoryList() {
         return historyList;

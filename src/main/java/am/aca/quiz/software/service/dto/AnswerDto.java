@@ -7,6 +7,16 @@ public class AnswerDto {
     private String description;
     private boolean is_correct;
 
+    private QuestionDto questionDto;
+
+    public QuestionDto getQuestionDto() {
+        return questionDto;
+    }
+
+    public void setQuestionDto(QuestionDto questionDto) {
+        this.questionDto = questionDto;
+    }
+
     public Long getId() {
         return id;
     }

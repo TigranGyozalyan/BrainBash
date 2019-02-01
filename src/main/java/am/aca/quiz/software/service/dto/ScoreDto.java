@@ -5,6 +5,26 @@ public class ScoreDto {
     private double value;
     private int count;
 
+    private TopicDto topicDto;
+
+    private UserDto userDto;
+
+    public TopicDto getTopicDto() {
+        return topicDto;
+    }
+
+    public void setTopicDto(TopicDto topicDto) {
+        this.topicDto = topicDto;
+    }
+
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
+    }
+
     public Long getId() {
         return id;
     }

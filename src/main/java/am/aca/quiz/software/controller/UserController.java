@@ -1,6 +1,7 @@
 package am.aca.quiz.software.controller;
 
 
+import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
 import org.springframework.http.MediaType;
@@ -22,27 +23,39 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping(value = "/register")
-    public ModelAndView registrationPage() {
-        ModelAndView modelAndView = new ModelAndView("userRegistration");
-        return modelAndView;
-    }
+
 
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
+        ModelAndView modelAndView = new ModelAndView("userRegistration");
+
+
+
         String name = formData.get("name");
         String lastName = formData.get("name2");
         String nickname = formData.get("nickname");
         String email = formData.get("email");
         String password = formData.get("password");
         String password2 = formData.get("password2");
-        try {
 
-            userServiceImp.addUser(name, lastName, nickname, email, password, password2);
+
+        try {
+            UserEntity dbUser=userServiceImp.findByEmail(email);
+            if(dbUser==null){
+                try {
+                    userServiceImp.addUser(name, lastName, nickname, email, password, password2);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                modelAndView.addObject("message","User exists");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return registrationPage();
+
+        return modelAndView;
     }
     @GetMapping(value = "/profile")
     public ModelAndView profilePage(){

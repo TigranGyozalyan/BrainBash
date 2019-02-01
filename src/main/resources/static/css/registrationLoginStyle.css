@@ -29,7 +29,7 @@ input {
     font-size: 1rem;
     padding: 0.5em 0.4em;
     transition: all 0.4s;
-    color: #BDBDBD;;
+    color: #BDBDBD;
     margin: 0.7rem 0;
 }
 input:focus {
