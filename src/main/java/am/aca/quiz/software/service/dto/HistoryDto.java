@@ -12,6 +12,15 @@ public class HistoryDto {
     private double score;
 
     private TestDto testDto;
+    private UserDto userDto;
+
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
+    }
 
     public TestDto getTestDto() {
         return testDto;
