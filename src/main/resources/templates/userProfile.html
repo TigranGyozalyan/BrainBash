@@ -1,5 +1,42 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+ <style>
+  input[type="text"], textarea {
+    background-color : #E1E0E0;
+  }
+  input[type=submit] {
+      border-radius: 5px;
+      border: 0;
+      width: 80px;
+      height:25px;
+      font-family: Tahoma;
+      background: #f4f4f4;
+      /* Old browsers */
+      background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+      /* IE10+ */
+      background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
+      /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
+      /* IE6-9 */
+
+  }
+
+  .update {
+    padding-right: 2cm;
+  }
+
+
+</style>
+
 <head>
 <meta charset="UTF-8">
 <title>Title</title>
@@ -25,7 +62,7 @@ Profile
 <a href='#usernameSettings'>
 <div class='fa fa-gear'></div>
 Name:
-<label class='badge right'  th:name="name" type="text" th:text="Valodik" />
+<label class='badge right'  th:name="name" type="text" th:text="${user.name}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -42,7 +79,7 @@ Name:
 <a href='#surnameSettings'>
 <div class='fa fa-gear'></div>
 Surname:
-<label class='badge right'  th:name="name" type="text" th:text="Valodikyan" />
+<label class='badge right'  th:name="surname" type="text" th:text="${user.surname}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -58,14 +95,16 @@ Surname:
 <a href='#nicknameSettings'>
 <div class='fa fa-gear'></div>
 Nickname:
-<label class='badge right'  th:name="name" type="text" th:text="Dax" />
+<label class='badge right'  th:name="nickname" type="text" th:text="${user.nickname}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
 <li>
 <a href='#nicknameSettings'>
+<div class="update">
 <input type="text" value=""/>
 <input type="submit" value="Update"/>
+</div>
 </a>
 </li>
 </ul>
@@ -74,7 +113,7 @@ Nickname:
 <a href='#passwordSettings'>
 <div class='fa fa-gear'></div>
 Password:
-<label class='badge right'  th:name="name" type="text" th:text="qwerty" />
+<label class='badge right'  th:name="password" type="text" th:text="${user.password}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -86,23 +125,15 @@ Password:
 </li>
 </ul>
 </li>
-
 <li class='sub-menu'>
 <a href='#emailSettings'>
 <div class='fa fa-gear'></div>
 Email
-<label class='badge right'  th:name="name" type="text" th:text="mailru" />
+<label class='badge right'  th:name="email" type="text" th:text="${user.email}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 </li>
-<li class='sub-menu'>
-<a href='#roleSettings'>
-<div class='fa fa-gear'></div>
-Role :
-<label class='badge right'  th:name="name" type="text" th:text="role" />
-<div class='fa fa-caret-down right'></div>
-</a>
-</li>
+
 <li class='sub-menu'>
 <a href='#deleteSettings'>
 <div class='fa fa-gear'></div>
@@ -112,7 +143,7 @@ Delete Account:
 </a>
 <ul>
 <li>
-<a href='#deleteSettings'>
+<a href=''>
 Re-enter
 <input type="text"  value="" placeholder="example$mail.com"/>
 <input type="submit" value="Delete"/>
@@ -180,6 +211,6 @@ $(this).parent(".sub-menu").children("ul").slideToggle("100");
 $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
 });
 </script>
-
+ <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 </body>
 </html>

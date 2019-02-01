@@ -1,6 +1,8 @@
 package am.aca.quiz.software.entity.enums;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     ADMIN("admin"),
     USER("user");
 
@@ -23,5 +25,10 @@ public enum Role {
     @Override
     public String toString() {
         return stringValue;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name();
     }
 }

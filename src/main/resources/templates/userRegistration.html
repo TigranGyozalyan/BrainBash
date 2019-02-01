@@ -16,19 +16,22 @@ color: #BDBDBD;
     <meta charset="UTF-8">
     <title>User Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-     <h1>Register</h1>
-
 
      <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
 </head>
 <body>
 <form method="post" action="/user/register">
 
+        <div class="login-page">
+         <h1>Register</h1>
+            <div class="form">
 
     <div class="message">
      <span th:if="${message != null }">Email Already Exists</span>
     </div>
-
+     <div class="message">
+         <span th:if="${message2 != null }">Check Your Email</span>
+        </div>
 
     <label>
         <input th:type="text" name="name" placeholder="First Name" required />
@@ -55,7 +58,7 @@ color: #BDBDBD;
     </label>
     <br/>
     <button type="submit">Save</button>
-    <button onclick="location.href='http://localhost:8080/redirect'">Next Step</button>
+
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
 </form>

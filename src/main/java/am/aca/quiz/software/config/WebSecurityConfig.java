@@ -38,39 +38,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/user/profile", true)
-                    .failureUrl("/login?error=true")
+                    .failureUrl("/login?error")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .permitAll()
-
                 .and()
                     .logout()
-                    .logoutSuccessUrl("/login")
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID")
                     .permitAll();
     }
 
-//    @Override
-////    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-////        auth.userDetailsService(userSevice)
-////                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-////    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userSevice)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                .dataSource(dataSource)
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-//                .usersByUsernameQuery("select email as username, password, active from users where username=?")
-//                .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
-//    }
+
 
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
-                        .username("admin")
-                        .password("admin")
+                        .username("a")
+                        .password("a")
                         .roles("ADMIN")
                         .build();
 

@@ -29,10 +29,21 @@ th:action="{/user/profile}"
 </html> -->
 
 <html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+.message{
+color: #ffb7eb;
+}
+.message a {
+color: lightgrey;
+}
+</style>
+
 <head>
     <title>Sign in</title>
     <link rel="stylesheet" th:href="@{/css/registrationLoginStyle.css}"/>
 </head>
+
 <body>
 <div th:if="${param.error}">
             Invalid username and password.
@@ -42,14 +53,15 @@ th:action="{/user/profile}"
         </div>
 
 <div class="login-page">
- <h1>Login</h1>
+
     <div class="form">
 
         <form class="login-form" method="post">
+            <h1>Login</h1>
             <input type="text" placeholder="username" name="username"/>
             <input type="password" placeholder="password" name="password"/>
             <button>Sign in</button>
-            <p class="message">Not registered? <a th:href="@{/register}">Create an account</a></p>
+            <p class="message">Not registered? <a th:href="@{/registration}">Create an account</a></p>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         </form>
 
