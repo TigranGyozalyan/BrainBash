@@ -1,9 +1,7 @@
 package am.aca.quiz.software.controller;
 
 
-import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
-import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.AnswerServiceImp;
@@ -11,7 +9,6 @@ import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

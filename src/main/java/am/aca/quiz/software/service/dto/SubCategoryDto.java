@@ -4,6 +4,16 @@ public class SubCategoryDto {
     private Long id;
     private String typeName;
 
+    private CategoryDto categoryDto;
+
+    public CategoryDto getCategoryDto() {
+        return categoryDto;
+    }
+
+    public void setCategoryDto(CategoryDto categoryDto) {
+        this.categoryDto = categoryDto;
+    }
+
     public Long getId() {
         return id;
     }
