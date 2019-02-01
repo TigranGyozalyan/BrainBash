@@ -64,7 +64,7 @@ public class SubCategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<SubCategoryDto> getTest() {
+    public List<SubCategoryDto> getAll() {
         try {
             return subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
         } catch (SQLException e) {
