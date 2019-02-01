@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubCategoryDto> {
-    CategoryMapper categoryMapper;
+    private CategoryMapper categoryMapper;
 
     public SubCategoryMapper(CategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
@@ -20,6 +20,7 @@ public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubC
     @Override
     public SubCategoryDto mapEntityToDto(SubCategoryEntity subCategory) {
         SubCategoryDto subCategoryDto = new SubCategoryDto();
+
         subCategoryDto.setId(subCategory.getId());
         subCategoryDto.setTypeName(subCategory.getTypeName());
         subCategoryDto.setCategoryDto(categoryMapper.mapEntityToDto(subCategory.getCategory()));
