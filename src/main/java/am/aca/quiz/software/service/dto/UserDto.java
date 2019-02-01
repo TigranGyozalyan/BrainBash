@@ -2,6 +2,8 @@ package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.enums.Role;
 
+import java.util.Set;
+
 public class UserDto {
 
     private Long id;
@@ -10,7 +12,7 @@ public class UserDto {
     private String email;
     private String nickname;
     private String password;
-    private Role role;
+    private Set<Role> role;
 
     public Long getId() {
         return id;
@@ -60,12 +62,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public Role getRole() {
+    public Set<Role> getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Set<Role> role) {
         this.role = role;
     }
-
 }

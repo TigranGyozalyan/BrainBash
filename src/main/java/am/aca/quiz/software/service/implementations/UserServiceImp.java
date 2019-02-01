@@ -36,7 +36,7 @@ public class UserServiceImp implements UserService {
         if(!password.equals(password2)){
             throw new SQLException();
         }
-        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password,"user");
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password);
         try {
             mailService.sendHtml(email,"Confirmation","mailConfirmation");
         }catch (MailException e){
@@ -81,4 +81,18 @@ public class UserServiceImp implements UserService {
 //                ))
 //                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 //    }
+    @Override
+    public void removeByUserEntity(UserEntity userEntity) throws SQLException {
+        userRepository.delete(userEntity);
+    }
+
+    public UserEntity findByEmail(String email) throws SQLException {
+        UserEntity userEntity = userRepository.findByEmail(email).get();
+        if (userEntity != null) {
+            return userEntity;
+        } else {
+            throw new SQLException("User not found");
+        }
+    }
+
 }
