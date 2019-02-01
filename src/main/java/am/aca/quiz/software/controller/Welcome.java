@@ -20,16 +20,7 @@ public class Welcome {
         ModelAndView modelAndView=new ModelAndView("welcome");
         return modelAndView;
     }
-//
-//    @PostMapping
-//    public ModelAndView redirectWelcomePage(){
-//        return welcomePage();
-//    }
 
-    @GetMapping(value = "redirect")
-    public ModelAndView transferPage(){
-        return new ModelAndView("transferPage");
-    }
 
     @GetMapping("logout")
     public ModelAndView logout(){

@@ -1,18 +1,17 @@
 package am.aca.quiz.software.entity;
 
 import am.aca.quiz.software.entity.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +24,9 @@ public class UserEntity {
     @Column(name = "emails", nullable = false, unique = true)
     @Email(message = "Please provide a valid email address")
     private String email;
+
+    @Column(name = "active",nullable = false)
+    private boolean active;
 
     @Size(min = 3)
     @Column(name = "nickname", nullable = false)
@@ -49,12 +51,14 @@ public class UserEntity {
     }
 
 
-    public UserEntity(String name, String surname, String email, String nickname, String password) {
+    public UserEntity(String name, String surname, String email, boolean active, String nickname, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.active = active;
         this.nickname = nickname;
         this.password = password;
+        this.active=active;
     }
 
     public void setId(Long id) {
@@ -102,6 +106,8 @@ public class UserEntity {
         return password;
     }
 
+
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -142,4 +148,46 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
+    }
+
+    public void setUsername(String username) {
+        this.email = username;
+    }
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
 }
