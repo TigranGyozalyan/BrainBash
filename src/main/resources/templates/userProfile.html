@@ -1,4 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <meta charset="UTF-8">
 <title>Title</title>
@@ -161,11 +162,15 @@ Score
 </li>
 
 <li>
-<a href='/'>
+<a href="/logout"/>
 <div class='fa fa-sign-out'></div>
 Logout
 </a>
+</form>
 </li>
+
+
+
 </ul>
 </nav>
 <script>

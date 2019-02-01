@@ -44,5 +44,9 @@ public class UserController {
         }
         return registrationPage();
     }
+    @GetMapping(value = "/profile")
+    public ModelAndView profilePage(){
+        return new ModelAndView("userProfile");
+    }
 
 }

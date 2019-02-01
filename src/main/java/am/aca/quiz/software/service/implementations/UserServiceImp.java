@@ -5,9 +5,15 @@ import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -65,4 +71,14 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(id).get();
     }
 
+//    @Override
+//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//        return userRepository.findByEmail(s)
+//                .map(userEntity -> new User(
+//                        userEntity.getEmail(),
+//                        userEntity.getPassword(),
+//                        Collections.singleton(new SimpleGrantedAuthority(userEntity.getRole().toString()))
+//                ))
+//                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+//    }
 }

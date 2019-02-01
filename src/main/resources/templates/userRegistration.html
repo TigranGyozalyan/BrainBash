@@ -37,6 +37,8 @@
     <br/>
     <button type="submit">Save</button>
     <button onclick="location.href='http://localhost:8080/redirect'">Next Step</button>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
 </form>
 </body>
 </html>
