@@ -62,7 +62,7 @@ Profile
 <a href='#usernameSettings'>
 <div class='fa fa-gear'></div>
 Name:
-<label class='badge right'  th:name="name" type="text" th:value="${user.name}" />
+<label class='badge right'  th:name="name" type="text" th:text="${user.name}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -79,7 +79,7 @@ Name:
 <a href='#surnameSettings'>
 <div class='fa fa-gear'></div>
 Surname:
-<label class='badge right'  th:name="surname" type="text" th:value="${user.surname}" />
+<label class='badge right'  th:name="surname" type="text" th:text="${user.surname}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -95,7 +95,7 @@ Surname:
 <a href='#nicknameSettings'>
 <div class='fa fa-gear'></div>
 Nickname:
-<label class='badge right'  th:name="nickname" type="text" th:value="${user.nickname}" />
+<label class='badge right'  th:name="nickname" type="text" th:text="${user.nickname}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -113,7 +113,7 @@ Nickname:
 <a href='#passwordSettings'>
 <div class='fa fa-gear'></div>
 Password:
-<label class='badge right'  th:name="password" type="text" th:value="${user.password}" />
+<label class='badge right'  th:name="password" type="text" th:text="${user.password}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 <ul>
@@ -129,7 +129,7 @@ Password:
 <a href='#emailSettings'>
 <div class='fa fa-gear'></div>
 Email
-<label class='badge right'  th:name="email" type="text" th:value="${user.email}" />
+<label class='badge right'  th:name="email" type="text" th:text="${user.email}" />
 <div class='fa fa-caret-down right'></div>
 </a>
 </li>
