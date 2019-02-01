@@ -7,13 +7,16 @@ import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/topic")
@@ -59,10 +62,15 @@ public class TopicController {
     }
 
     @GetMapping
-    public List<TopicDto> getAllTopics() {
+    public ResponseEntity<List<TopicDto>> getAllTopics(@RequestParam("subCategoryId") int subCategoryId) {
 
         try {
-            return topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+            List<TopicEntity> topicEntities =
+                    topicServiceImp.getAll()
+                    .stream()
+                    .filter(i -> i.getSubCategory().getId() == subCategoryId)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(topicMapper.mapEntitiesToDto(topicEntities), HttpStatus.OK);
         } catch (SQLException e) {
             e.printStackTrace();
         }

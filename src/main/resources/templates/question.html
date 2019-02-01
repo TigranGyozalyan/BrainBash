@@ -3,7 +3,6 @@
 <style>
     .txtAnswer {
         position: relative;
-        width: 90px;
         overflow: hidden;
         left: 0;
     }
@@ -27,24 +26,21 @@
 </head>
 <body>
 
-
-<form method="post">
-
     <label>
-        Topic : <select name="topic">
+        Topic : <select name="topic" id="topic">
         <option th:each="topic : ${topics}"
-                th:value="${topic.topicName}"
+                th:value="${topic.getId()}"
                 th:text="${topic.topicName}">
         </option>
     </select>
     </label>
     <br/>
     <label>
-        Question body <input name="questionText" type="text">
+        Question body <input name="questionText" id="questionText" type="text">
     </label>
     <br/>
     <label>
-        Level : <select name="level">
+        Level : <select name="level" id="level">
         <option name="beginner">beginner</option>
         <option name="intermediate">intermediate</option>
         <option name="advanced">advanced</option>
@@ -52,53 +48,100 @@
     </label>
     <br/>
     <label>
-        Points <input name="points" type="text">
+        Points <input name="points" type="text" id="points">
     </label>
     <br/>
     <label>
-        Correct answer count <input name="correct_answer_count" type="text">
+        Correct answer count <input name="correct_answer_count" type="text" id="correct_answer_count">
     </label>
     <br/>
 
-    <div id="questionBlock">
+    <div id="answerBlock">
         <button type="button" id="btnAddAnswer" class="txtAnswer" onclick="addAnswer()">Add answer</button>
+        <button type="button" id="btnRemoveAnswer" class="txtAnswer" onclick="removeAnswer()">Remove answer</button>
     </div>
 
-    <input type="submit" value="Submit">
+    <input type="button" value="button" onclick="createQuestion()">
+
     <br/>
-</form>
 </body>
 
 <script>
-    var answerCount = 1;
+    let answerCount = 0;
 
     function addAnswer() {
 
-        var questionBlock = $('#questionBlock');
-
-        questionBlock.append($('<br/>'));
-        var answerField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'answer');
-
-        var labelHTML = '<label> Answer #' + answerCount + ': ';
-
-        //adding the answer body
-        questionBlock.append(labelHTML, answerField);
-        questionBlock.append('</label>');
-
-        //adding the answer description body
-
-        var desriptionField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'description');
-        labelHTML = '<label> Description: ';
-        questionBlock.append(labelHTML, desriptionField);
-        questionBlock.append('</label>');
-
-        //adding the checkbox for whether the answer is correct or not
-        var answerCheckBox = $('<input>').attr('type', 'checkbox').attr('name', 'isTrue');
-        labelHTML = '<label> Is correct: ';
-        questionBlock.append(labelHTML, answerCheckBox);
-        questionBlock.append('</label>');
         answerCount++;
 
+        let $answerBlock = $('#answerBlock');
+        let $answerSet = $('<div/>').attr('class','answerClass');
+        let answerText = $('<input/>').attr('type','text').attr('id','answerText');
+        let answerDescription = $('<input/>').attr('type','text').attr('id','answerDescription');
+        let isCorrect = $('<input/>').attr('type','checkbox').attr('id','isCorrect');
+        let label = $('<label/>').html('Answer #' + answerCount + ': ');
+        let descriptionLabel = $('<label/>').html(' Description: ');
+        let isCorrectLabel = $('<label/>').html(' Is Correct ');
+
+        $answerBlock.append($answerSet);
+        $answerSet.append(answerText).append(descriptionLabel).append(answerDescription).append(isCorrect).append(label);
+        $answerSet.prepend(label);
+        $answerSet.append(isCorrectLabel);
+
+
+    }
+    function removeAnswer() {
+        if (answerCount >= 1) {
+            let divToRemove = $('.answerClass').last();
+            divToRemove.remove();
+            answerCount--;
+        }
+    }
+    
+    
+    function createQuestion() {
+        let topicId = parseInt($('#topic').val());
+        let questionText = $('#questionText').val();
+        let level = $('#level').val();
+        let points  = parseInt($('#points').val());
+        let correctAmount = parseInt($('#correct_answer_count').val());
+
+
+
+
+        let answerData = $('#answerBlock').find('.answerClass').map(function () {
+
+            let answerText = $(this).find('#answerText').val();
+            let answerDescription = $(this).find('#answerDescription').val();
+            let isCorrect = $(this).find('#isCorrect').is(":checked");
+
+            return {
+                answer : answerText,
+                description : answerDescription,
+                correct : isCorrect
+            }
+        }).toArray();
+        console.log(answerData);
+
+        let question = JSON.stringify({
+            topicId : topicId,
+            question : questionText,
+            correct_amount : correctAmount,
+            level : level,
+            points : points,
+            answerDtoList : answerData
+        });
+        console.log(question);
+
+        $.ajax({
+            type : "POST",
+            data : question,
+            url : "/question/add",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success : (function () {
+                alert('Question was successfully created');
+            })
+        });
     }
 </script>
 

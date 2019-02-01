@@ -2,15 +2,36 @@ package am.aca.quiz.software.service.dto;
 
 import am.aca.quiz.software.entity.enums.Level;
 
+import java.util.List;
 import java.util.Objects;
 
 public class QuestionDto {
-
     private Long id;
+    private Long topicId;
     private String question;
     private int correct_amount;
     private int points;
-    private Level level;
+    private String level;
+    private List<AnswerDto> answerDtoList;
+
+
+    public Long getTopicId() {
+        return topicId;
+    }
+
+
+    public void setTopicId(Long topicId) {
+        this.topicId = topicId;
+    }
+
+    public List<AnswerDto> getAnswerDtoList() {
+        return answerDtoList;
+    }
+
+    public void setAnswerDtoList(List<AnswerDto> answerDtoList) {
+        this.answerDtoList = answerDtoList;
+    }
+
 
 
     public Long getId() {
@@ -45,11 +66,11 @@ public class QuestionDto {
         this.points = points;
     }
 
-    public Level getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 
@@ -62,7 +83,7 @@ public class QuestionDto {
                 points == that.points &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(question, that.question) &&
-                level == that.level;
+                level.equals(that.level);
     }
 
     @Override

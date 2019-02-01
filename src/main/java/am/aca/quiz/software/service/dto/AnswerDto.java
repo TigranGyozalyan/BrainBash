@@ -5,7 +5,16 @@ public class AnswerDto {
     private Long id;
     private String answer;
     private String description;
-    private boolean is_correct;
+    private boolean correct;
+    private Long questionId;
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
 
     public Long getId() {
         return id;
@@ -31,11 +40,11 @@ public class AnswerDto {
         this.description = description;
     }
 
-    public boolean isIs_correct() {
-        return is_correct;
+    public boolean isCorrect() {
+        return correct;
     }
 
-    public void setIs_correct(boolean is_correct) {
-        this.is_correct = is_correct;
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 }
