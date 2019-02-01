@@ -56,8 +56,8 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/add")
-    public String addQuestion() {
-//        ModelAndView modelAndView = new ModelAndView("question");
+    public ModelAndView addQuestion() {
+//        ModelAndView modelAndView = ;
 //
 //        try {
 //            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
@@ -67,7 +67,7 @@ public class QuestionController {
 //            e.printStackTrace();
 //        }
 
-            return "test";
+            return new ModelAndView("question");
     }
 
     @PostMapping(value = "/add",consumes = MediaType.APPLICATION_JSON_VALUE)
