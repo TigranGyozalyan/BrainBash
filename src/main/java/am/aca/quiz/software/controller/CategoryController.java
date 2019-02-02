@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,12 +26,13 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addCategoryPage() {
         return new ModelAndView("category");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView postNewCategory(@RequestParam("type") String type) {
         ModelAndView modelAndView = new ModelAndView("category");
@@ -52,6 +54,8 @@ public class CategoryController {
         }
         return null;
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     public ModelAndView update(){
         ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
@@ -65,6 +69,7 @@ public class CategoryController {
         return modelAndVi;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView updateCategory(@RequestParam  Map<String,String> formData) {
         ModelAndView modelAndView=new ModelAndView("categoryUpdate");
@@ -92,6 +97,7 @@ public class CategoryController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void deleteCategory(@PathVariable("id") Long id) {
         try {
