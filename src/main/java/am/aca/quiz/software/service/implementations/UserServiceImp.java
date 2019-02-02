@@ -36,7 +36,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
             throw new SQLException();
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, true, nickname, password);
-        userEntity.setRoles(Collections.singleton(Role.USER));
+      userEntity.getRoles().add(Role.USER);
+      userEntity.getRoles().add(Role.ADMIN);
+
         try {
             mailService.sendHtml(email,"Confirmation","mailConfirmation");
         }catch (MailException e){

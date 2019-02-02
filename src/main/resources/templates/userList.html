@@ -1,0 +1,33 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User List</title>
+</head>
+<body>
+       <form method="post">
+           <table>
+               <thead>
+               <tr>
+                   <th>Email</th>
+                   <th>Name</th>
+                   <th>Surname</th>
+                   <th>Role</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="user : ${userList}">
+                   <td><span th:text="${user.email}">Email</span> </td>
+                   <td><span th:text="${user.name}">Name</span> </td>
+                   <td><span th:text="${user.surname}">Surname</span> </td>
+                    <td><span th:text="${user.role}">Role</span></td>
+
+<!--                       <tr th:each="role : ${user.role}">-->
+<!--                        <td><span th:text="${role}">Role</span></td>-->
+<!--                        </tr>-->
+
+               </tr>
+               </tbody>
+           </table>
+
+       </form>
+</body>
+</html>

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,7 +33,6 @@ public class UserController {
     }
 
 
-
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
         ModelAndView modelAndView = new ModelAndView("userRegistration");
@@ -45,18 +45,17 @@ public class UserController {
         String password2 = formData.get("password2");
 
         try {
-            UserEntity dbUser=userServiceImp.findByEmail(email);
-            if(dbUser==null){
+            UserEntity dbUser = userServiceImp.findByEmail(email);
+            if (dbUser == null) {
                 try {
 
                     userServiceImp.addUser(name, lastName, nickname, email, password, password2);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                modelAndView.addObject("message2","Check Your Email");
-            }
-            else{
-                modelAndView.addObject("message","User exists");
+                modelAndView.addObject("message2", "Check Your Email");
+            } else {
+                modelAndView.addObject("message", "User exists");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,13 +63,14 @@ public class UserController {
 
         return modelAndView;
     }
+
     @GetMapping(value = "/profile")
-    public ModelAndView profilePage(Principal principal){
-        ModelAndView modelAndView=new ModelAndView("userProfile");
-        String email= principal.getName();
+    public ModelAndView profilePage(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("userProfile");
+        String email = principal.getName();
         try {
-            UserEntity user=userServiceImp.findByEmail(email);
-            UserDto userDto=userMapper.mapEntityToDto(user);
+            UserEntity user = userServiceImp.findByEmail(email);
+            UserDto userDto = userMapper.mapEntityToDto(user);
             modelAndView.addObject("user", userDto);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,25 +92,43 @@ public class UserController {
 
         return modelAndView;
     }
+
     @GetMapping("/delete")
-    public ModelAndView deleteAccount(@RequestParam Map<String, String> formData){
-        ModelAndView modelAndView=new ModelAndView("redirect:/");
-        String email=formData.get("email");
+    public ModelAndView deleteAccount(@RequestParam Map<String, String> formData) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/");
+        String email = formData.get("email");
         try {
-            UserEntity userEntity=userServiceImp.findByEmail(email);
+            UserEntity userEntity = userServiceImp.findByEmail(email);
             userServiceImp.removeByUserEntity(userEntity);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       return modelAndView;
+        return modelAndView;
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public ModelAndView logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return new ModelAndView("redirect:/login?logout");
+    }
+
+    @GetMapping("/userList")
+    public ModelAndView getAllUsers() {
+        ModelAndView modelAndView = new ModelAndView("userList");
+        try {
+            List<UserDto> userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
+
+
+            modelAndView.addObject("userList", userDtos);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
     }
 }
