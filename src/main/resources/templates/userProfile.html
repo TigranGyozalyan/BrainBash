@@ -146,7 +146,7 @@ Delete Account:
 <li>
 <a href='#delete'>
 Re-enter
-<form action="/user/delete" method="post">
+<form th:action="@{/user/delete}" method="post">
 <input type="text"  name="delete" th:value="${user.email}" placeholder="example$mail.com"/>
 <input type="submit" class="button_active" value="Delete"/>
 </form>

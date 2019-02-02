@@ -75,6 +75,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public void removeByUserEntity(UserEntity userEntity) throws SQLException {
         userEntity.setActive(false);
+        userRepository.save(userEntity);
     }
 
     public UserEntity findByEmail(String email) throws SQLException {
