@@ -62,7 +62,6 @@ color: lightgrey;
             <input type="password" placeholder="password" name="password"/>
             <button>Sign in</button>
             <p class="message">Not registered? <a th:href="@{/registration}">Create an account</a></p>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         </form>
 
     </div>

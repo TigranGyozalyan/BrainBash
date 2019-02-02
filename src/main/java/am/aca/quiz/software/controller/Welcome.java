@@ -17,9 +17,5 @@ public class Welcome {
     }
 
 
-    @GetMapping(value = "/logout")
-    public ModelAndView logout(){
-        return new ModelAndView("logout");
-    }
 
 }
