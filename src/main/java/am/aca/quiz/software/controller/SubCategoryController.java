@@ -7,13 +7,16 @@ import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -64,9 +67,16 @@ public class SubCategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<SubCategoryDto> getTest() {
+    public ResponseEntity<List<SubCategoryDto>> getSubCategories(@RequestParam("categoryId") int categoryId) {
         try {
-            return subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll()
+                    .stream()
+                    .filter(it -> it.getCategory().getId() == categoryId)
+                    .collect(Collectors.toList());
+            List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryEntities);
+
+            return new ResponseEntity<>(subCategoryDtos, HttpStatus.OK);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

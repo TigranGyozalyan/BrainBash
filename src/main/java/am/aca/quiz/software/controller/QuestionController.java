@@ -1,8 +1,5 @@
 package am.aca.quiz.software.controller;
 
-
-import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TopicDto;
@@ -11,6 +8,7 @@ import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +28,6 @@ public class QuestionController {
     private final TopicMapper topicMapper;
     private final AnswerServiceImp answerServiceImp;
 
-    private final int ANSWER_COUNT = 6;
-    private final String EMPTY = "empty";
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp) {
         this.questionServiceImp = questionServiceImp;
@@ -61,49 +57,50 @@ public class QuestionController {
 
     @GetMapping(value = "/add")
     public ModelAndView addQuestion() {
-        ModelAndView modelAndView = new ModelAndView("question");
+//        ModelAndView modelAndView = ;
+//
+//        try {
+//            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
+//            modelAndView.addObject("topics", topicDtos);
+//            return modelAndView;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            modelAndView.addObject("topics", topicDtos);
-            return modelAndView;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+            return new ModelAndView("question");
     }
 
-    @PostMapping(value = "/add")
-    public ModelAndView postQuestion(@RequestParam Map<String, String> formData) {
-        ModelAndView modelAndView = new ModelAndView("question");
-        String questionBody = formData.get("questionText");
-        String level = formData.get("level");
-        int points = Integer.parseInt(formData.get("points"));
-        int corr_answer_count = Integer.parseInt(formData.get("correct_answer_count"));
-        String topicName = formData.get("topic");
-
+    @PostMapping(value = "/add",consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ModelAndView postQuestion(@RequestParam Map<String, String> formData) {
+    public String postQuestion(@RequestBody QuestionDto question) {
         try {
-            TopicEntity topicEntity = topicServiceImp.getByTopicName(topicName);
-            Long topicId = topicEntity.getId();
+        String questionBody = question.getQuestion();
+        String level = question.getLevel();
+        int points = question.getPoints();
+        int corr_answer_count = question.getCorrect_amount();
+
+
+            Long topicId = question.getTopicId();
 
             questionServiceImp.addQuestion(questionBody, level, corr_answer_count, points, topicId);
+            Long questionId =  questionServiceImp.getQuestionEntityByQuestion(questionBody).getId();
+            List<AnswerDto> answerList = question.getAnswerDtoList();
 
-            QuestionDto newQuestionDto = questionMapper.mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(questionBody));
-
-            Long questionId = newQuestionDto.getId();
-
-            //todo
-
+            for(AnswerDto answer : answerList) {
+                String answerText = answer.getAnswer();
+                String description = answer.getDescription();
+                boolean isCorrect = answer.isCorrect();
+                answerServiceImp.addAnswer(answerText,description,isCorrect,questionId);
+            }
 
             List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            modelAndView.addObject("topics", topicDtos);
-            return modelAndView;
+            //modelAndView.addObject("topics", topicDtos);
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return modelAndView;
+        return "redirect?/add";
     }
 
     //toDO
@@ -156,7 +153,7 @@ public class QuestionController {
             topicDtos = topicMapper.mapEntitiesToDto(questionServiceImp.getTopicServiceImp().getAll());
             questionDtos = questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
 
-            modelAndView.addObject("empty", EMPTY);
+//            modelAndView.addObject("empty", EMPTY);
             modelAndView.addObject("topics", topicDtos);
             modelAndView.addObject("question", questionDtos.get(0));
 
@@ -184,3 +181,4 @@ public class QuestionController {
 
 
 }
+
