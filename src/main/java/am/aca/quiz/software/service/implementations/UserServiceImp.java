@@ -33,7 +33,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if(!password.equals(password2)){
             throw new SQLException();
         }
-        UserEntity userEntity = new UserEntity(fName, lName, email, true, nickname, password);
+        UserEntity userEntity = new UserEntity(fName, lName, email, true, nickname, password,"user");
         try {
             mailService.sendHtml(email,"Confirmation","mailConfirmation");
         }catch (MailException e){
