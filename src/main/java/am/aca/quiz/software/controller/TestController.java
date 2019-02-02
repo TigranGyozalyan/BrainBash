@@ -70,7 +70,7 @@ public class TestController {
     @RequestMapping("/add")
     public ModelAndView addTest() {
 
-        ModelAndView modelAndView = new ModelAndView("test_topic");
+        ModelAndView modelAndView = new ModelAndView("test");
         try {
             List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
             modelAndView.addObject("topicList", topicDtos);

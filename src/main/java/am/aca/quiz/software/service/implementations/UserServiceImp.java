@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -34,6 +36,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
             throw new SQLException();
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, true, nickname, password);
+        userEntity.setRoles(Collections.singleton(Role.USER));
         try {
             mailService.sendHtml(email,"Confirmation","mailConfirmation");
         }catch (MailException e){

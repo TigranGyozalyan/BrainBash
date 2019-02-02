@@ -3,7 +3,6 @@
 <style>
     .txtAnswer {
         position: relative;
-        width: 90px;
         overflow: hidden;
         left: 0;
     }
@@ -17,7 +16,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Add a Question</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script
@@ -26,81 +25,191 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
-
-<form method="post">
-
+<div class="navigation">
     <label>
-        Topic : <select name="topic">
-        <option th:each="topic : ${topics}"
-                th:value="${topic.topicName}"
-                th:text="${topic.topicName}">
-        </option>
-    </select>
+        Category : <select id="categories" onchange="loadSubCategoriesDropDown()"></select>
     </label>
-    <br/>
-    <label>
-        Question body <input name="questionText" type="text">
-    </label>
-    <br/>
-    <label>
-        Level : <select name="level">
-        <option name="beginner">beginner</option>
-        <option name="intermediate">intermediate</option>
-        <option name="advanced">advanced</option>
-    </select>
-    </label>
-    <br/>
-    <label>
-        Points <input name="points" type="text">
-    </label>
-    <br/>
-    <label>
-        Correct answer count <input name="correct_answer_count" type="text">
-    </label>
-    <br/>
+</div>
 
-    <div id="questionBlock">
-        <button type="button" id="btnAddAnswer" class="txtAnswer" onclick="addAnswer()">Add answer</button>
-    </div>
+<br/>
+<label>
+    Question body <input id="questionText" type="text">
+</label>
+<br/>
+<label>
+    Level : <select id="level">
+    <option name="beginner">beginner</option>
+    <option name="intermediate">intermediate</option>
+    <option name="advanced">advanced</option>
+</select>
+</label>
+<br/>
+<label>
+    Points <input name="points" type="text" id="points">
+</label>
+<br/>
+<label>
+    Correct answer count <input name="correct_answer_count" type="text" id="correct_answer_count">
+</label>
+<br/>
 
-    <input type="submit" value="Submit">
-    <br/>
-</form>
+<div id="answerBlock">
+    <button type="button" id="btnAddAnswer" class="txtAnswer" onclick="addAnswer()">Add answer</button>
+    <button type="button" id="btnRemoveAnswer" class="txtAnswer" onclick="removeAnswer()">Remove answer</button>
+</div>
+
+<button type="button" value="button" onclick="createQuestion()">Create</button>
+
+<br/>
 </body>
 
 <script>
-    var answerCount = 1;
+    let answerCount = 0;
 
     function addAnswer() {
 
-        var questionBlock = $('#questionBlock');
-
-        questionBlock.append($('<br/>'));
-        var answerField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'answer');
-
-        var labelHTML = '<label> Answer #' + answerCount + ': ';
-
-        //adding the answer body
-        questionBlock.append(labelHTML, answerField);
-        questionBlock.append('</label>');
-
-        //adding the answer description body
-
-        var desriptionField = $('<input>').attr('type', 'text').attr('class', 'txtAnswer').attr('name', 'description');
-        labelHTML = '<label> Description: ';
-        questionBlock.append(labelHTML, desriptionField);
-        questionBlock.append('</label>');
-
-        //adding the checkbox for whether the answer is correct or not
-        var answerCheckBox = $('<input>').attr('type', 'checkbox').attr('name', 'isTrue');
-        labelHTML = '<label> Is correct: ';
-        questionBlock.append(labelHTML, answerCheckBox);
-        questionBlock.append('</label>');
         answerCount++;
+
+        let $answerBlock = $('#answerBlock');
+        let $answerSet = $('<div/>').attr('class', 'answerClass');
+        let answerText = $('<input/>').attr('type', 'text').attr('id', 'answerText');
+        let answerDescription = $('<input/>').attr('type', 'text').attr('id', 'answerDescription');
+        let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect');
+        let label = $('<label/>').html('Answer #' + answerCount + ': ');
+        let descriptionLabel = $('<label/>').html(' Description: ');
+        let isCorrectLabel = $('<label/>').html(' Is Correct ');
+
+        $answerBlock.append($answerSet);
+        $answerSet.append(answerText).append(descriptionLabel).append(answerDescription).append(isCorrect).append(label);
+        $answerSet.prepend(label);
+        $answerSet.append(isCorrectLabel);
 
 
     }
+
+    function removeAnswer() {
+        if (answerCount >= 1) {
+            let divToRemove = $('.answerClass').last();
+            divToRemove.remove();
+            answerCount--;
+        }
+    }
+
+
+    function createQuestion() {
+        let topicId = parseInt($('#topics').val());
+        let questionText = $('#questionText').val();
+        let level = $('#level').val();
+        let points = parseInt($('#points').val());
+        let correctAmount = parseInt($('#correct_answer_count').val());
+
+
+        let answerData = $('#answerBlock').find('.answerClass').map(function () {
+
+            let answerText = $(this).find('#answerText').val();
+            let answerDescription = $(this).find('#answerDescription').val();
+            let isCorrect = $(this).find('#isCorrect').is(":checked");
+
+            return {
+                answer: answerText,
+                description: answerDescription,
+                correct: isCorrect
+            }
+        }).toArray();
+        console.log(answerData);
+
+        let question = JSON.stringify({
+            topicId: topicId,
+            question: questionText,
+            correct_amount: correctAmount,
+            level: level,
+            points: points,
+            answerDtoList: answerData
+        });
+        console.log(question);
+
+        $.ajax({
+            type: "POST",
+            data: question,
+            url: "/question/add",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (function () {
+                alert('Question was successfully created');
+            })
+        });
+    }
+
+
+    let $selectDropDown = $('#categories');
+
+    $.get('/category', function (categories) {
+        loadCategories(categories);
+    });
+
+    function loadCategories(categories) {
+        loadSelectOptionsCategories($selectDropDown, categories);
+    }
+
+    function loadSelectOptionsCategories($select, categories) {
+        categories.forEach(function (category) {
+            let $option = $('<option/>', {
+                value: category.id,
+                text: category.type
+            });
+            $select.append($option);
+        });
+        $select.val([]);
+    }
+
+    function loadSubCategoriesDropDown() {
+        $('#subCategoryDiv').empty();
+        let categoryId = $('#categories').val();
+        $.get('/subcategory?categoryId=' + categoryId, function (subCategories) {
+
+            let $subCategoryDiv = $('<div/>').attr('id', 'subCategoryDiv');
+
+            let $subCategorySelector = $('<select/>').attr('id', 'subCategories');
+
+            subCategories.forEach(function (subCategory) {
+                let $option = $('<option/>', {
+                    value: subCategory.id,
+                    text: subCategory.typeName
+                });
+                $subCategorySelector.append($option);
+            });
+            let subLabel = $('<label/>').html(' SubCategory: ');
+            subLabel.append($subCategorySelector);
+            $('.navigation').append($subCategoryDiv);
+            $('#subCategoryDiv').append($('<br/>')).append(subLabel);
+            $subCategorySelector.val([]);
+            $subCategorySelector.attr('onchange','loadTopicsDropDown()');
+        });
+    }
+
+    function loadTopicsDropDown() {
+        $('#topicDiv').empty();
+        let subCategoryId = $('#subCategories').val();
+        $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
+            let $topicDiv = $('<div/>').attr('id', 'topicDiv');
+            let $topicSelector = $('<select/>').attr('id', 'topics');
+
+            topics.forEach(function (topic) {
+                let $option = $('<option/>', {
+                    value: topic.id,
+                    text: topic.topicName
+                });
+                $topicSelector.append($option);
+            });
+
+            let topicLabel = $('<label/>').html(' Topic: ');
+            topicLabel.append($topicSelector);
+            $('#subCategoryDiv').append($topicDiv);
+            $('#topicDiv').append($('<br/>')).append(topicLabel);
+        });
+    }
+
+
 </script>
 
 </html>

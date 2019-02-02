@@ -48,6 +48,7 @@ public class UserController {
             UserEntity dbUser=userServiceImp.findByEmail(email);
             if(dbUser==null){
                 try {
+
                     userServiceImp.addUser(name, lastName, nickname, email, password, password2);
                 } catch (SQLException e) {
                     e.printStackTrace();
