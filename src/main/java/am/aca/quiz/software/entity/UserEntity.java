@@ -51,7 +51,7 @@ public class UserEntity implements UserDetails {
     }
 
 
-    public UserEntity(String name, String surname, String email, boolean active, String nickname, String password,String role) {
+    public UserEntity(String name, String surname, String email, boolean active, String nickname, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -59,7 +59,6 @@ public class UserEntity implements UserDetails {
         this.nickname = nickname;
         this.password = password;
         this.active=active;
-        this.roles.add(Role.getRole(role));
     }
 
     public void setId(Long id) {

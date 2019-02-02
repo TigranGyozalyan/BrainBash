@@ -5,6 +5,7 @@
   input[type="text"], textarea {
     background-color : #E1E0E0;
   }
+
   input[type=submit] {
       border-radius: 5px;
       border: 0;
@@ -143,10 +144,12 @@ Delete Account:
 </a>
 <ul>
 <li>
-<a href=''>
+<a href='#delete'>
 Re-enter
-<input type="text"  value="" placeholder="example$mail.com"/>
-<input type="submit" value="Delete"/>
+<form action="/user/delete" method="post">
+<input type="text"  name="delete" th:value="${user.email}" placeholder="example$mail.com"/>
+<input type="submit" class="button_active" value="Delete"/>
+</form>
 </a>
 </li>
 </ul>
@@ -211,6 +214,5 @@ $(this).parent(".sub-menu").children("ul").slideToggle("100");
 $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
 });
 </script>
- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 </body>
 </html>
