@@ -40,6 +40,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
       userEntity.getRoles().add(Role.ADMIN);
 
         try {
+            userEntity.setRoles(Collections.singleton(Role.USER));
             mailService.sendHtml(email,"Confirmation","mailConfirmation");
         }catch (MailException e){
            throw new RuntimeException("Invalid Mail");
@@ -77,6 +78,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public void removeByUserEntity(UserEntity userEntity) throws SQLException {
         userEntity.setActive(false);
+        userRepository.save(userEntity);
     }
 
     public UserEntity findByEmail(String email) throws SQLException {
@@ -99,5 +101,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
             e.printStackTrace();
         }
         return userEntity;
+    }
+    public void updateUser(UserEntity userEntity){
+        userRepository.save(userEntity);
     }
 }

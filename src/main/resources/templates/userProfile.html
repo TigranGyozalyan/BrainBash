@@ -1,215 +1,236 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
- <style>
-  input[type="text"], textarea {
-    background-color : #E1E0E0;
-  }
-  input[type=submit] {
-      border-radius: 5px;
-      border: 0;
-      width: 80px;
-      height:25px;
-      font-family: Tahoma;
-      background: #f4f4f4;
-      /* Old browsers */
-      background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-      /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
-      /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-      /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-      /* Opera 11.10+ */
-      background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-      /* IE10+ */
-      background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
-      /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
-      /* IE6-9 */
+<style>
+    input[type="text"], textarea {
+        background-color: #E1E0E0;
+    }
 
-  }
+    input[type=submit] {
+        border-radius: 5px;
+        border: 0;
+        width: 80px;
+        height: 25px;
+        font-family: Tahoma;
+        background: #f4f4f4;
+        /* Old browsers */
+        background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+        /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
+        /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+        /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+        /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
+        /* IE10+ */
+        background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
+        /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
+        /* IE6-9 */
 
-  .update {
-    padding-right: 2cm;
-  }
+    }
+
+    .update {
+        padding-right: 2cm;
+    }
 
 
 </style>
 
 <head>
-<meta charset="UTF-8">
-<title>Title</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/profileStyle.css}">
-<script
-src="https://code.jquery.com/jquery-3.3.1.js"
-integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profileStyle.css}">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
 
 </head>
 <body>
 <nav class='animated bounceInDown'>
-<ul>
-<li class='sub-menu'>
-<a href='#profile'>
-<div class='fa fa-gear'></div>
-Profile
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
+    <ul>
+        <li class='sub-menu'>
+            <a href='#profile'>
+                <div class='fa fa-gear'></div>
+                Profile
+                <div class='fa fa-caret-down right'></div>
+            </a>
+            <ul>
 
-<li class='sub-menu'>
-<a href='#usernameSettings'>
-<div class='fa fa-gear'></div>
-Name:
-<label class='badge right'  th:name="name" type="text" th:text="${user.name}" />
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href='#usernameSettings'>
-<input type="text" value=""/>
-<input type="submit" value="Update"/>
-</a>
-</li>
-</ul>
-</li>
+                <li class='sub-menu'>
+                    <a href='#usernameSettings'>
+                        <div class='fa fa-gear'></div>
+                        Name:
+                        <label class='badge right' th:name="name" type="text" th:text="${user.name}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href='#usernameSettings'>
+                                <form th:action="@{/user/update}" method="post">
+                                    <input type="text" name="name" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-<li class='sub-menu'>
-<a href='#surnameSettings'>
-<div class='fa fa-gear'></div>
-Surname:
-<label class='badge right'  th:name="surname" type="text" th:text="${user.surname}" />
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href='#surnameSettings'>
-<input type="text" value=""/>
-<input type="submit" value="Update"/>
-</a>
-</li>
-</ul>
-</li>
-<li class='sub-menu'>
-<a href='#nicknameSettings'>
-<div class='fa fa-gear'></div>
-Nickname:
-<label class='badge right'  th:name="nickname" type="text" th:text="${user.nickname}" />
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href='#nicknameSettings'>
-<div class="update">
-<input type="text" value=""/>
-<input type="submit" value="Update"/>
-</div>
-</a>
-</li>
-</ul>
-</li>
-<li class='sub-menu'>
-<a href='#passwordSettings'>
-<div class='fa fa-gear'></div>
-Password:
-<label class='badge right'  th:name="password" type="text" th:text="${user.password}" />
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href='#passwordSettings'>
-<input type="text" value=""/>
-<input type="submit" value="Update"/>
-</a>
-</li>
-</ul>
-</li>
-<li class='sub-menu'>
-<a href='#emailSettings'>
-<div class='fa fa-gear'></div>
-Email
-<label class='badge right'  th:name="email" type="text" th:text="${user.email}" />
-<div class='fa fa-caret-down right'></div>
-</a>
-</li>
+                <li class='sub-menu'>
+                    <a href='#surnameSettings'>
+                        <div class='fa fa-gear'></div>
+                        Surname:
+                        <label class='badge right' th:name="surname" type="text" th:text="${user.surname}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href='#surnameSettings'>
+                                <form th:action="@{/user/username}" method="post">
+                                    <input type="text" name="surname" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class='sub-menu'>
+                    <a href='#nicknameSettings'>
+                        <div class='fa fa-gear'></div>
+                        Nickname:
+                        <label class='badge right' th:name="nickname" type="text" th:text="${user.nickname}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href='#nicknameSettings'>
+                                    <form th:action="@{/user/nickname} " method="post">
+                                        <input type="text" name="nickname" value=""/>
+                                        <input type="submit" value="Update"/>
+                                    </form>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class='sub-menu'>
+                    <a href='#passwordSettings'>
+                        <div class='fa fa-gear'></div>
+                        Password:
+                        <label class='badge right' th:name="password" type="text" th:text="${user.password}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href='#passwordSettings'>
+                                <form th:action="@{/user/password}" method="post">
+                                    <input type="text" name="password" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class='sub-menu'>
+                    <a href='#emailSettings'>
+                        <div class='fa fa-gear'></div>
+                        Email
+                        <label class='badge right' th:name="email" type="text" th:text="${user.email}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
 
-<li class='sub-menu'>
-<a href='#deleteSettings'>
-<div class='fa fa-gear'></div>
-Delete Account:
-<label   th:name="deleteAccount"  />
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href=''>
-Re-enter
-<input type="text"  value="" placeholder="example$mail.com"/>
-<input type="submit" value="Delete"/>
-</a>
-</li>
-</ul>
-</li>
+                    <ul>
+                        <li>
+                            <a href='#email'>
+                                <form th:action="@{/user/email}" method="post">
+                                    <input type="text" name="email" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
 
-</ul>
-</li>
-<li class='sub-menu'>
-<a href='#history'>
-<div class='fa fa-question-circle'></div>
-History
-<div class='fa fa-caret-down right'></div>
-</a>
-<ul>
-<li>
-<a href='#finishedTestHistory'>
-Finished Tests
-</a>
-</li>
-<li>
-<a href='#upcomingTestHistory'>
-Upcoming Tests
-</a>
-</li>
-<li>
-<a href='#allHistory'>
-All History
-</a>
-</li>
-</ul>
-</li>
+                </li>
 
-<li>
-<a href='#test'> <!-- REDIRECT TO Test -->
-<div class='fa fa-envelope'></div>
-Test
-</a>
-</li>
-<li>
-<a href='#score'> <!-- REDIRECT TO AVG SCore -->
-<div class='fa fa-envelope'></div>
-Score
-</a>
-</li>
+                <li class='sub-menu'>
+                    <a href='#deleteSettings'>
+                        <div class='fa fa-gear'></div>
+                        Delete Account:
+                        <label th:name="deleteAccount"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href='#delete'>
+                                Re-enter
+                                <form th:action="@{/user/delete}" method="post">
+                                    <input type="text" name="delete" th:value="${user.email}"
+                                           placeholder="example$mail.com"/>
+                                    <input type="submit" class="button_active" value="Delete"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
-<li>
-<a href="/logout"/>
-<div class='fa fa-sign-out'></div>
-Logout
-</a>
-</form>
-</li>
+            </ul>
+        </li>
+        <li class='sub-menu'>
+            <a href='#history'>
+                <div class='fa fa-question-circle'></div>
+                History
+                <div class='fa fa-caret-down right'></div>
+            </a>
+            <ul>
+                <li>
+                    <a href='#finishedTestHistory'>
+                        Finished Tests
+                    </a>
+                </li>
+                <li>
+                    <a href='#upcomingTestHistory'>
+                        Upcoming Tests
+                    </a>
+                </li>
+                <li>
+                    <a href='#allHistory'>
+                        All History
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href='#test'> <!-- REDIRECT TO Test -->
+                <div class='fa fa-envelope'></div>
+                Test
+            </a>
+        </li>
+        <li>
+            <a href='#score'> <!-- REDIRECT TO AVG SCore -->
+                <div class='fa fa-envelope'></div>
+                Score
+            </a>
+        </li>
+
+        <li>
+            <a href="/logout"/>
+            <div class='fa fa-sign-out'></div>
+            Logout
+            </a>
+            </form>
+        </li>
 
 
-
-</ul>
+    </ul>
 </nav>
 <script>
-$('.sub-menu ul').hide();
-$(".sub-menu a").click(function () {
-$(this).parent(".sub-menu").children("ul").slideToggle("100");
-$(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-});
+    $('.sub-menu ul').hide();
+    $(".sub-menu a").click(function () {
+        $(this).parent(".sub-menu").children("ul").slideToggle("100");
+        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+    });
 </script>
 </body>
 </html>
