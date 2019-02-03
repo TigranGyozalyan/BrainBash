@@ -57,12 +57,11 @@ public class UserEntity implements UserDetails {
     }
 
 
-    public UserEntity(String name, String surname, String email,String nickname, String password) {
+    public UserEntity(String name, String surname, String email,String nickname) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
-        this.password = password;
 
     }
 

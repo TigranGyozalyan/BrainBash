@@ -9,10 +9,10 @@ import org.springframework.mail.MailException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -24,11 +24,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final MailService mailService;
+    private String pass;
+
+   private PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImp(UserRepository userRepository, MailService mailService) {
+    public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -38,9 +42,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if(!password.equals(password2)){
             throw new SQLException();
         }
-        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password);
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
       userEntity.getRoles().add(Role.USER);
       userEntity.getRoles().add(Role.ADMIN);
+      pass=password;
+      userEntity.setPassword(passwordEncoder.encode(password));
 
         try {
 
@@ -70,15 +76,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    @Override
-    public void update(UserEntity user, Long id) throws SQLException {
-        UserEntity userEntity = userRepository.findById(id).get();
-        if (userEntity != null) {
-            user.setId(id);
-            userRepository.saveAndFlush(user);
-        }
-
-    }
 
     @Override
     public void removeByid(Long id) throws SQLException {
@@ -119,6 +116,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userEntity;
     }
     public void updateUser(UserEntity userEntity){
+
+        userRepository.save(userEntity);
+    }
+    public void updateUserPassword(UserEntity userEntity){
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
     }
 

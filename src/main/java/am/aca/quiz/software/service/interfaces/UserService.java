@@ -16,7 +16,6 @@ public interface UserService {
     List<UserEntity> getAll() throws SQLException;
 
     //update
-    void update(UserEntity user, Long id) throws SQLException;
 
 
     void removeByid(Long id) throws SQLException;

@@ -261,7 +261,7 @@ public class UserController {
 
             userEntity.setPassword(password);
 
-            userServiceImp.updateUser(userEntity);
+            userServiceImp.updateUserPassword(userEntity);
         } catch (SQLException e) {
             e.printStackTrace();
         }
