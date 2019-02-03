@@ -127,10 +127,11 @@ public class TestController {
         ModelAndView modelAndView=new ModelAndView("test_questions");
         question=formData.get("Questions");
 
-            QuestionDto questionDto=questionMapper
+        QuestionDto questionDto=questionMapper
                     .mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(question));
 
         questionDtos.add(questionDto);
+
         try {
             testServiceImp.addTest(test_name,description,Long.parseLong(duration),questionDtos);
         } catch (SQLException e) {

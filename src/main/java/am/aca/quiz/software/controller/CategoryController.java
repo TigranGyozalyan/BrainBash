@@ -4,8 +4,7 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,12 +26,13 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addCategoryPage() {
         return new ModelAndView("category");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView postNewCategory(@RequestParam("type") String type) {
         ModelAndView modelAndView = new ModelAndView("category");
@@ -45,50 +45,51 @@ public class CategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<CategoryDto>> getCategory() {
+    public List<CategoryDto> getCategory() {
 
         try {
-            List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-            return new ResponseEntity<>(categoryDtos, HttpStatus.OK);
+            return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public ModelAndView update() {
-        ModelAndView modelAndVi = new ModelAndView("categoryUpdate");
-        List<CategoryDto> categoryDtos = null;
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public ModelAndView update(){
+        ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
+        List<CategoryDto> categoryDtos=null;
         try {
-            categoryDtos = categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-            modelAndVi.addObject("categories", categoryDtos);
+            categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+            modelAndVi.addObject("categories",categoryDtos);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return modelAndVi;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView updateCategory(@RequestParam Map<String, String> formData) {
-        ModelAndView modelAndView = new ModelAndView("categoryUpdate");
+    public ModelAndView updateCategory(@RequestParam  Map<String,String> formData) {
+        ModelAndView modelAndView=new ModelAndView("categoryUpdate");
 
-        String type = formData.get("type");
-        String category = formData.get("categoryList");
+            String type = formData.get("type");
+            String category = formData.get("categoryList");
 
-        if (type != null) {
-            try {
-                CategoryEntity updatedCategoryEntit = new CategoryEntity(type);
-                CategoryEntity categoryEntity = categoryServiceImp.getByType(category);
-                categoryServiceImp.update(updatedCategoryEntit, categoryEntity);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(type!=null){
+                try {
+                    CategoryEntity updatedCategoryEntit=new CategoryEntity(type);
+                    CategoryEntity categoryEntity=categoryServiceImp.getByType(category);
+                    categoryServiceImp.update(updatedCategoryEntit,categoryEntity);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
         try {
-            List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-            modelAndView.addObject("categories", categoryDtos);
+            List<CategoryDto> categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+            modelAndView.addObject("categories",categoryDtos);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,6 +97,7 @@ public class CategoryController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void deleteCategory(@PathVariable("id") Long id) {
         try {

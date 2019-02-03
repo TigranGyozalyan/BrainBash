@@ -12,14 +12,22 @@ import java.util.stream.Collectors;
 @Component
 public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDto> {
 
+    private TopicMapper topicMapper;
+
+    public QuestionMapper(TopicMapper topicMapper) {
+        this.topicMapper = topicMapper;
+    }
+
     @Override
     public QuestionDto mapEntityToDto(QuestionEntity questionEntity) {
         QuestionDto questionDto = new QuestionDto();
+
         questionDto.setId(questionEntity.getId());
         questionDto.setCorrect_amount(questionEntity.getCorrect_amount());
         questionDto.setLevel(questionEntity.getLevel().toString());
         questionDto.setPoints(questionEntity.getPoints());
         questionDto.setQuestion(questionEntity.getQuestion());
+        questionDto.setTopicDto(topicMapper.mapEntityToDto(questionEntity.getTopicEntity()));
 
         return questionDto;
     }

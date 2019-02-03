@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" type="text/css" href="css/welcomeStyle.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/welcomeStyle.css}" />
     <link
             rel="stylesheet"
             href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
@@ -27,10 +27,11 @@
             <a class="button" href="/login">Sign In</a>
         </div>
         <div class="buttonWrapper">
-            <a class="button" href="/user/register">Create Account</a>
+            <a class="button" href="/registration">Create Account</a>
         </div>
     </div>
 </div>
+
 
 
 <link

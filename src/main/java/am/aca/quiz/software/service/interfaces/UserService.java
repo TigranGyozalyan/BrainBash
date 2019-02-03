@@ -10,17 +10,18 @@ import java.util.List;
 @Service
 public interface UserService {
     //create
-    void addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException;
+    void addUser(String fName, String lName, String nickname, String email, String password, String password2) throws SQLException;
 
     //read
     List<UserEntity> getAll() throws SQLException;
 
     //update
-    void update(UserEntity user, Long id) throws SQLException;
 
 
     void removeByid(Long id) throws SQLException;
 
     UserEntity getById(Long id) throws SQLException;
+
+    void removeByUserEntity(UserEntity userEntity) throws SQLException;
 
 }

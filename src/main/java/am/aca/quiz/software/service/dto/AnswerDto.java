@@ -16,6 +16,16 @@ public class AnswerDto {
         this.questionId = questionId;
     }
 
+    private QuestionDto questionDto;
+
+    public QuestionDto getQuestionDto() {
+        return questionDto;
+    }
+
+    public void setQuestionDto(QuestionDto questionDto) {
+        this.questionDto = questionDto;
+    }
+
     public Long getId() {
         return id;
     }

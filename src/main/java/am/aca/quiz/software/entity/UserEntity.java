@@ -1,16 +1,17 @@
 package am.aca.quiz.software.entity;
 
 import am.aca.quiz.software.entity.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +25,9 @@ public class UserEntity {
     @Email(message = "Please provide a valid email address")
     private String email;
 
+    @Column(name = "active",nullable = false)
+    private boolean active;
+
     @Size(min = 3)
     @Column(name = "nickname", nullable = false)
     private String nickname;
@@ -32,12 +36,14 @@ public class UserEntity {
     @Column(name = "passwords", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
+    @Column(name="activationCode")
+    private String activationCode;
 
-    @Column(name = "avatar_image", columnDefinition = "text default 'C:\\Users\\User\\Desktop\\picture\\pic.jpg'")
-    private String image;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles=new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList = new ArrayList<>();
@@ -45,18 +51,17 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<ScoreEntity> scoreList = new ArrayList<>();
 
+
+
     public UserEntity() {
     }
 
 
-    public UserEntity(String name, String surname, String email, String nickname, String password, String role) {
+    public UserEntity(String name, String surname, String email,String nickname) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.nickname = nickname;
-        this.password = password;
-        this.role = Role.getRole(role);
-        //   this.passwordchecker=passwordchecker;
 
     }
 
@@ -105,25 +110,19 @@ public class UserEntity {
         return password;
     }
 
+
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-//
-//    public String getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(String image) {
-//        this.image = image;
-//    }
 
     public List<HistoryEntity> getHistoryList() {
         return historyList;
@@ -140,14 +139,7 @@ public class UserEntity {
     public void setScoreList(List<ScoreEntity> scoreList) {
         this.scoreList = scoreList;
     }
-//
-//    public String getPasswordchecker() {
-//        return passwordchecker;
-//    }
-//
-//    public void setPasswordchecker(String passwordchecker) {
-//        this.passwordchecker = passwordchecker;
-//    }
+
 
     @Override
     public String toString() {
@@ -159,5 +151,54 @@ public class UserEntity {
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
+    }
+
+    public void setUsername(String username) {
+        this.email = username;
+    }
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

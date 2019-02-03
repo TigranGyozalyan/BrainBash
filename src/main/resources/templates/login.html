@@ -1,23 +1,51 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+
+.message{
+color: #ffb7eb;
+}
+.message a {
+color: lightgrey;
+}
+.message2  {
+color: lightgrey;
+
+}
+.message3{
+color: lightgrey;
+}
+</style>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="css/registrationLoginStyle.css">
+    <title>Sign in</title>
+    <link rel="stylesheet" th:href="@{/css/registrationLoginStyle.css}"/>
 </head>
 
 <body>
-<form method="post">
 
-    <div class="login">
-        <h1>Login</h1>
-        <form method="post">
-            <input type="text" name="u" placeholder="Username" required="required" />
-            <input type="password" name="p" placeholder="Password" required="required" />
-            <button type="submit" class="btn btn-primary btn-block btn-large">Sign In</button>
+
+<div th:if="${param.error}" class="message2">
+            Invalid username and password.
+        </div>
+
+        <div th:if="${param.logout}" class="message3">
+            You have been logged out.
+        </div>
+
+<div class="login-page">
+
+    <div class="form">
+
+        <form class="login-form" method="post">
+            <h1>Login</h1>
+            <input type="email" placeholder="email" name="username"/>
+            <input type="password" placeholder="password" name="password"/>
+            <button>Sign in</button>
+            <p class="message">Not registered? <a th:href="@{/registration}">Create an account</a></p>
         </form>
-    </div>
-</form>
 
+    </div>
+</div>
 </body>
 </html>

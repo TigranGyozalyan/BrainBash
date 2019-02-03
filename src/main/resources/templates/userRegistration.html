@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+
+.message {
+padding-top: 20px;
+color: #BDBDBD;
+}
+
+</style>
+
+
 <head>
 
     <meta charset="UTF-8">
     <title>User Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-     <h1>Register</h1>
+
      <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
 </head>
 <body>
-<form method="post">
+<form method="post" action="/user/register">
+
+        <div class="login-page">
+         <h1>Register</h1>
+            <div class="form">
+
+    <div class="message">
+     <span th:if="${message != null }">Email Already Exists</span>
+    </div>
+     <div class="message">
+         <span th:if="${message2 != null }">Check Your Email</span>
+        </div>
 
     <label>
         <input th:type="text" name="name" placeholder="First Name" required />
@@ -36,7 +58,9 @@
     </label>
     <br/>
     <button type="submit">Save</button>
-    <button onclick="location.href='http://localhost:8080/redirect'">Next Step</button>
+
+
+
 </form>
 </body>
 </html>

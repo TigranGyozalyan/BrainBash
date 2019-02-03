@@ -16,8 +16,7 @@ public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
         UserDto userDto=new UserDto();
         userDto.setEmail(userEntity.getEmail());
         userDto.setId(userEntity.getId());
-       // userDto.setImage(userEntity.getImage());
-        userDto.setRole(userEntity.getRole());
+        userDto.setRole(userEntity.getRoles());
         userDto.setName(userEntity.getName());
         userDto.setNickname(userEntity.getNickname());
         userDto.setPassword(userEntity.getPassword());
@@ -28,11 +27,7 @@ public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
 
     @Override
     public List<UserDto> mapEntitiesToDto(List<UserEntity> userEntityList) {
-//        List<UserDto> userDtoList=new ArrayList<>();
-//        for(UserEntity userEntity: userEntityList){
-//            userDtoList.add(mapEntityToDto(userEntity));
-//        }
-//        return userDtoList;
+
 
         return userEntityList
                 .stream()

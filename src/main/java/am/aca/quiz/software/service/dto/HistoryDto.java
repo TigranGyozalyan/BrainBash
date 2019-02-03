@@ -1,6 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.enums.Status;
 
 import java.time.LocalDateTime;
@@ -12,6 +11,24 @@ public class HistoryDto {
     private Status status;
     private double score;
 
+    private TestDto testDto;
+    private UserDto userDto;
+
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
+    }
+
+    public TestDto getTestDto() {
+        return testDto;
+    }
+
+    public void setTestDto(TestDto testDto) {
+        this.testDto = testDto;
+    }
 
     public Long getId() {
         return id;

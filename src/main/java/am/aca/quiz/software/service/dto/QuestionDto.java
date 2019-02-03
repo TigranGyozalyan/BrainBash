@@ -33,6 +33,15 @@ public class QuestionDto {
     }
 
 
+    private TopicDto topicDto;
+
+    public TopicDto getTopicDto() {
+        return topicDto;
+    }
+
+    public void setTopicDto(TopicDto topicDto) {
+        this.topicDto = topicDto;
+    }
 
     public Long getId() {
         return id;

@@ -5,18 +5,28 @@ import am.aca.quiz.software.service.dto.ScoreDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
+    private TopicMapper topicMapper;
+    private UserMapper userMapper;
+
+    public ScoreMapper(TopicMapper topicMapper, UserMapper userMapper) {
+        this.topicMapper = topicMapper;
+        this.userMapper = userMapper;
+    }
+
     @Override
     public ScoreDto mapEntityToDto(ScoreEntity scoreEntity) {
         ScoreDto scoreDto = new ScoreDto();
+
         scoreDto.setId(scoreEntity.getId());
         scoreDto.setCount(scoreEntity.getCount());
         scoreDto.setValue(scoreEntity.getValue());
+        scoreDto.setTopicDto(topicMapper.mapEntityToDto(scoreEntity.getTopic()));
+        scoreDto.setUserDto(userMapper.mapEntityToDto(scoreEntity.getUserEntity()));
 
         return scoreDto;
     }
