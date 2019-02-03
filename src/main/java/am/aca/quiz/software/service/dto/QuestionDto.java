@@ -1,6 +1,5 @@
 package am.aca.quiz.software.service.dto;
 
-import am.aca.quiz.software.entity.enums.Level;
 
 import java.util.List;
 import java.util.Objects;

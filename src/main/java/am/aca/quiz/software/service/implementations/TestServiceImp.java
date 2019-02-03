@@ -27,32 +27,9 @@ public class TestServiceImp implements TestService {
 
 
     @Override
-    public void addTest(String testName, String description, long duration, List<QuestionDto> questionDtos) throws SQLException {
-
-        List<QuestionEntity> questionEntities= questionDtos
-                .stream()
-                .map(i-> {
-                    try {
-                        return questionServiceImp.getById(i.getId());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
-
-
-        TestEntity testEntity=testRepository.findTestEntitiesByTest(testName);
-
-        if(testEntity==null) {
-            testEntity = new TestEntity(testName, duration, description);
-            testEntity.setQuestionEntities(questionEntities);
-
-        }else {
-            testRepository.findTestEntitiesByTest(testName);
-            testEntity.setQuestionEntities(questionEntities);
-        }
-        testRepository.save(testEntity);
+    public void addTest(String testName, String description, long duration, List<QuestionEntity> questionEntities) throws SQLException{
+        TestEntity testEntity = new TestEntity(testName,description,duration,questionEntities);
+        testRepository.saveAndFlush(testEntity);
     }
 
     @Override

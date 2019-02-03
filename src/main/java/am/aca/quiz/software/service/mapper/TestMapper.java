@@ -1,5 +1,6 @@
 package am.aca.quiz.software.service.mapper;
 
+import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.service.dto.TestDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
@@ -18,6 +19,13 @@ public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
         testDto.setDescription(testEntity.getDescription());
         testDto.setTest_name(testEntity.getTest_name());
         testDto.setDuration(testEntity.getDuration());
+        List<QuestionEntity> questionEntities = testEntity.getQuestionEntities();
+        List<Long> questionIds = new ArrayList<>();
+
+        for(QuestionEntity question : questionEntities) {
+            questionIds.add(question.getId());
+        }
+        testDto.setQuestionIds(questionIds);
         return testDto;
     }
 

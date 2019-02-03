@@ -33,10 +33,11 @@ public class TestEntity {
     private List<HistoryEntity> historyEntities=new ArrayList<>();
 
 
-    public TestEntity(String test_name, long duration, String description) {
+    public TestEntity(String test_name,  String description, long duration , List<QuestionEntity> questionEntities) {
         this.test = test_name;
         this.duration = duration;
         this.description = description;
+        this.questionEntities = questionEntities;
     }
 
     public TestEntity() {

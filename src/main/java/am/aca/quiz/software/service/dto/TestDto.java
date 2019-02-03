@@ -1,5 +1,7 @@
 package am.aca.quiz.software.service.dto;
 
+import java.util.List;
+
 public class TestDto {
 
 
@@ -8,6 +10,15 @@ public class TestDto {
     private long duration;
     private String test_name;
     private String description;
+    private List<Long> questionIds;
+
+    public List<Long> getQuestionIds() {
+        return questionIds;
+    }
+
+    public void setQuestionIds(List<Long> questionIds) {
+        this.questionIds = questionIds;
+    }
 
     public Long getId() {
         return id;
