@@ -168,7 +168,7 @@ public class UserController {
     public ModelAndView postUserRole(@RequestParam("userId") String userId,
                                      @RequestParam Map<String, String> formData) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/userProfile");
+        ModelAndView modelAndView = new ModelAndView("redirect:/user/userList");
 
         try {
             UserEntity userEntity = userServiceImp.getById(Long.parseLong(userId));
@@ -279,7 +279,7 @@ public class UserController {
 
     @PostMapping("/email")
     public ModelAndView updateEmail(Principal principal, @RequestParam Map<String, String> formDate) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/login");
+        ModelAndView modelAndView = new ModelAndView("redirect:/logout");
 
         String email = formDate.get("email");
 
