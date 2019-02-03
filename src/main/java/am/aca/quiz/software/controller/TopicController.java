@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.dto.TopicDto;
+import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
@@ -24,12 +25,14 @@ public class TopicController {
     private final TopicServiceImp topicServiceImp;
     private final TopicMapper topicMapper;
     private final SubCategoryMapper subCategoryMapper;
+    private final SubCategoryServiceImp subCategoryServiceImp;
     private final String EMPTY = "empty";
 
-    public TopicController(TopicServiceImp topicServiceImp, TopicMapper topicMapper, SubCategoryMapper subCategoryMapper) {
+    public TopicController(TopicServiceImp topicServiceImp, TopicMapper topicMapper, SubCategoryMapper subCategoryMapper, SubCategoryServiceImp subCategoryServiceImp) {
         this.topicServiceImp = topicServiceImp;
         this.topicMapper = topicMapper;
         this.subCategoryMapper = subCategoryMapper;
+        this.subCategoryServiceImp = subCategoryServiceImp;
     }
 
 
@@ -68,7 +71,7 @@ public class TopicController {
             List<TopicEntity> topicEntities =
                     topicServiceImp.getAll()
                     .stream()
-                    .filter(i -> i.getSubCategory().getId() == subCategoryId)
+                    .filter(i -> i.getSubCategory().getId().equals(subCategoryId))
                     .collect(Collectors.toList());
             return new ResponseEntity<>(topicMapper.mapEntitiesToDto(topicEntities), HttpStatus.OK);
         } catch (SQLException e) {
@@ -77,75 +80,85 @@ public class TopicController {
 
         return null;
     }
-
-    @DeleteMapping("delete/{id}")
-    public void deleteTopic(@PathVariable("id") Long id) {
+    @GetMapping("/list")
+    public ModelAndView topicList(){
+        ModelAndView modelAndView=new ModelAndView("topicList");
         try {
-            topicServiceImp.removeByid(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @GetMapping(value = "/update")
-    public ModelAndView updateTopic() {
-        ModelAndView modelAndView = new ModelAndView("topicUpdate");
-
-        List<SubCategoryDto> subCategoryDtos = null;
-        List<TopicDto> topicDtos = null;
-
-        try {
-            subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
-            topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-
-            modelAndView.addObject("empty", EMPTY);
-            modelAndView.addObject("subCategories", subCategoryDtos);
-            modelAndView.addObject("topics", topicDtos);
+            modelAndView.addObject("topicList",topicMapper.mapEntitiesToDto(topicServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return modelAndView;
     }
 
-    @PostMapping(value = "/update")
-    public ModelAndView updateTopic(@RequestParam Map<String, String> formDate) {
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteTopic(@PathVariable("id") Long id) {
+        try {
+            topicServiceImp.removeById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topicList();
+    }
+
+    @GetMapping(value = "/update/{id}")
+    public ModelAndView updateTopic(@PathVariable("id") Long id ) {
         ModelAndView modelAndView = new ModelAndView("topicUpdate");
+
+        try {
+           List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
+
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("subCategories", subCategoryDtos);
+            modelAndView.addObject("topic",topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/update")
+    public ModelAndView updateTopic(@RequestParam("topicId") Long topicId, @RequestParam Map<String, String> formDate) {
 
         String topicName = formDate.get("topicName");
         String subCategory = formDate.get("subCategoryList");
-        String topic = formDate.get("topicList");
 
         if (!topicName.isEmpty()) {
-            SubCategoryEntity subCategoryEntity = null;
             try {
+                TopicEntity topicEntity = topicServiceImp.getById(topicId);
                 if (!subCategory.equals(EMPTY)) {
-                    subCategoryEntity = topicServiceImp.getSubCategoryServiceImpl().getByTypeName(subCategory);
-                } else {
-                    subCategoryEntity = topicServiceImp.getSubCategoryServiceImpl().getById(topicServiceImp.getSubCategoryIdByTopicName(topic));
+                    SubCategoryEntity subCategoryEntity=subCategoryServiceImp.getByTypeName(subCategory);
+                    topicEntity.setSubCategory(subCategoryEntity);
                 }
-                TopicEntity updatedTopicEntity = new TopicEntity(topicName, subCategoryEntity);
-                TopicEntity topicEntity = topicServiceImp.getByTopicName(topic);
-
-                topicServiceImp.update(updatedTopicEntity, topicEntity);
+                topicEntity.setTopicName(topicName);
+                topicServiceImp.update(topicEntity);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                TopicEntity topicEntity = topicServiceImp.getById(topicId);
+                if (!subCategory.equals(EMPTY)) {
+                    SubCategoryEntity subCategoryEntity=subCategoryServiceImp.getByTypeName(subCategory);
+                    topicEntity.setSubCategory(subCategoryEntity);
+                }
+                topicServiceImp.update(topicEntity);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
-
+        return topicList();
+    }
+    @GetMapping(value = "/{id}")
+    public TopicDto getById(@PathVariable("id") Long id){
         try {
-
-            List<SubCategoryDto> subCategoryDtos = subCategoryDtos = subCategoryMapper.mapEntitiesToDto(topicServiceImp.getSubCategoryServiceImpl().getAll());
-            List<TopicDto> topicDtos = topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            modelAndView.addObject("empty", EMPTY);
-            modelAndView.addObject("subCategories", subCategoryDtos);
-            modelAndView.addObject("topics", topicDtos);
-            ;
+            return topicMapper.mapEntityToDto(topicServiceImp.getById(id));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return modelAndView;
+        return null;
     }
 }

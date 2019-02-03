@@ -5,6 +5,7 @@ import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.repository.TopicRepository;
 import am.aca.quiz.software.service.interfaces.TopicService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -55,17 +56,17 @@ public class TopicServiceImp implements TopicService {
     }
 
     @Override
-    public void update(TopicEntity updatedTopic, TopicEntity topic) throws SQLException {
-        updatedTopic.setId(topic.getId());
-        updatedTopic.setSubCategory(topic.getSubCategory());
+    public void update(TopicEntity updatedTopic) throws SQLException {
+
         topicRepository.saveAndFlush(updatedTopic);
     }
 
+    @Transactional
     @Override
-    public void removeByid(Long id) throws SQLException {
+    public void removeById(Long id) throws SQLException {
         TopicEntity deletedTopic = topicRepository.findById(id).get();
         if (deletedTopic != null) {
-            topicRepository.delete(deletedTopic);
+            topicRepository.deleteById(id);
         } else {
             throw new SQLException("entity not found");
         }
