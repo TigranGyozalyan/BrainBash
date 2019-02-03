@@ -81,7 +81,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    //    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/update/{id}")
     public ModelAndView updateSubCategory(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
@@ -102,10 +102,9 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping(value = "/update/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/update")
     public ModelAndView updateSubCategory(@RequestParam("id") Long id, @RequestParam Map<String, String> formData) {
-//        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
         String typeName = formData.get("typename");
         String category = formData.get("categoryList");
 
@@ -130,7 +129,7 @@ public class SubCategoryController {
 
                 }
             }
-
+            updatedSubCategoryEntity.setId(id);
             subCategoryServiceImp.update(updatedSubCategoryEntity);
         } catch (SQLException e) {
             e.printStackTrace();
