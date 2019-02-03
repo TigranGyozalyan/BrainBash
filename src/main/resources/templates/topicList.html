@@ -1,0 +1,29 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Topic List</title>
+</head>
+<body>
+<form  method="post">
+           <table>
+               <thead>
+               <tr>
+                   <th>Name</th>
+
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="topic : ${topicList}">
+                   <td><span th:text="${topic.topicName}">Name</span> </td>
+
+
+
+                   <td><a th:href="@{'/topic/update/'+${topic.id}}">edit</a></td>
+                   <td><a th:href="@{'/topic/delete/'+${topic.id}}">delete</a></td>
+               </tr>
+               </tbody>
+           </table>
+ <input type="button"  onclick="location.href='http://localhost:8080/topic/add'" value="Add topic"  >
+
+</body>
+</html>

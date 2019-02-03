@@ -25,6 +25,17 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
+
+    @GetMapping
+    public List<CategoryDto> getAll(){
+        try {
+            return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addCategoryPage() {
@@ -43,7 +54,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ModelAndView categoryList(){
         ModelAndView modelAndView=new ModelAndView("categoryList");
 
