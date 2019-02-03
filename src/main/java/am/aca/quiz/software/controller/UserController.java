@@ -32,6 +32,7 @@ public class UserController {
     private final UserServiceImp userServiceImp;
     private final UserMapper userMapper;
     private String email;
+    private boolean message;
 
 
 
@@ -81,6 +82,9 @@ public class UserController {
             UserEntity user = userServiceImp.findByEmail(email);
             UserDto userDto = userMapper.mapEntityToDto(user);
             modelAndView.addObject("user", userDto);
+            if(message){
+                modelAndView.addObject("message","Email Invalid");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,9 +97,23 @@ public class UserController {
     }
 
     @PostMapping(value = "/question")
-    public ModelAndView modelAndView(@RequestParam Map<String, String> formData){
-        ModelAndView modelAndView=new ModelAndView("userDelete");
+    public ModelAndView modelAndView(Principal principal, @RequestParam Map<String, String> formData){
+        ModelAndView modelAndView=null;
         email=formData.get("delete");
+        String checker=principal.getName();
+        if(email.equals(checker)){
+            message=false;
+            modelAndView=  new ModelAndView("userDelete");
+
+        }
+        else {
+            message=true;
+           return profilePage(principal);
+
+        }
+
+
+
         return modelAndView;
     }
 

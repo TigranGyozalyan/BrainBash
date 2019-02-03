@@ -49,6 +49,11 @@
 
 </head>
 <body>
+
+ <div class="message">
+     <span th:if="${message != null }">Wrong Email Address</span>
+    </div>
+
 <nav class='animated bounceInDown'>
     <ul>
         <li class='sub-menu'>
@@ -165,8 +170,7 @@
                             <a href='#delete'>
                                 Re-enter
                                 <form th:action="@{/user/question}" method="post">
-                                    <input type="text" name="delete" th:value="${user.email}"
-                                           placeholder="example$mail.com"/>
+                                    <input type="text" name="delete" placeholder="example$mail.com"/>
                                     <input type="submit" class="button_active" value="Delete"/>
                                 </form>
                             </a>
