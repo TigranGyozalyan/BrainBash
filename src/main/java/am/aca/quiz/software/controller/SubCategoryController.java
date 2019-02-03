@@ -67,8 +67,8 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @GetMapping
-    public ModelAndView subCategoryLsit() {
+    @GetMapping("/list")
+    public ModelAndView subCategoryList() {
         ModelAndView modelAndView = new ModelAndView("subCategoryList");
 
         try {
@@ -81,7 +81,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    //    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/update/{id}")
     public ModelAndView updateSubCategory(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
@@ -102,9 +102,10 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping(value = "/update")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/update/{id}")
     public ModelAndView updateSubCategory(@RequestParam("id") Long id, @RequestParam Map<String, String> formData) {
+//        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
         String typeName = formData.get("typename");
         String category = formData.get("categoryList");
 
@@ -129,12 +130,12 @@ public class SubCategoryController {
 
                 }
             }
-            updatedSubCategoryEntity.setId(id);
+
             subCategoryServiceImp.update(updatedSubCategoryEntity);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return subCategoryLsit();
+        return subCategoryList();
 
     }
 
@@ -149,5 +150,24 @@ public class SubCategoryController {
         }
     }
 
+    @GetMapping
+    public List<SubCategoryDto> getAll(){
+        try {
+            return subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/{id}")
+    public SubCategoryDto getById(@PathVariable("id") Long id){
+        try {
+            return subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
