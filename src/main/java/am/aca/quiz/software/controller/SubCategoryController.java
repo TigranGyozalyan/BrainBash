@@ -10,6 +10,7 @@ import am.aca.quiz.software.service.mapper.SubCategoryMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,23 +67,80 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<SubCategoryDto>> getSubCategories(@RequestParam("categoryId") int categoryId) {
-        try {
-            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll()
-                    .stream()
-                    .filter(it -> it.getCategory().getId() == categoryId)
-                    .collect(Collectors.toList());
-            List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryEntities);
+    @GetMapping
+    public ModelAndView subCategoryLsit() {
+        ModelAndView modelAndView = new ModelAndView("subCategoryList");
 
-            return new ResponseEntity<>(subCategoryDtos, HttpStatus.OK);
+        try {
+            List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+            modelAndView.addObject("subCategoryList", subCategoryDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(value = "/update/{id}")
+    public ModelAndView updateSubCategory(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
+        List<CategoryDto> categoryDtos = null;
+        SubCategoryDto subCategoryDto = null;
+
+        try {
+            categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
+            subCategoryDto = subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id));
+            modelAndView.addObject("empty", EMPTY);
+            modelAndView.addObject("categories", categoryDtos);
+            modelAndView.addObject("subCategory", subCategoryDto);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return modelAndView;
     }
 
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/update/{id}")
+    public ModelAndView updateSubCategory(@RequestParam("id") Long id, @RequestParam Map<String, String> formData) {
+//        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
+        String typeName = formData.get("typename");
+        String category = formData.get("categoryList");
+
+        CategoryEntity categoryEntity = null;
+        SubCategoryEntity updatedSubCategoryEntity = null;
+
+        try {
+            if (!category.equals(EMPTY)) {
+                categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getByType(category);
+
+                if (typeName == null) {
+                    updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
+                } else {
+                    updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
+                }
+            } else {
+                categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategoryServiceImp.getById(id).getTypeName()));
+                if (typeName == null) {
+                    updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
+                } else {
+                    updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
+
+                }
+            }
+
+            subCategoryServiceImp.update(updatedSubCategoryEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subCategoryLsit();
+
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     public void deleteSubCategory(@PathVariable("id") Long id) {
         try {
@@ -90,65 +148,6 @@ public class SubCategoryController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public ModelAndView updateSubCategory() {
-        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
-        List<CategoryDto> categoryDtos = null;
-        List<SubCategoryDto> subCategoryDtos = null;
-
-        try {
-            categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
-            subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
-            modelAndView.addObject("empty", EMPTY);
-            modelAndView.addObject("categories", categoryDtos);
-            modelAndView.addObject("subCategories", subCategoryDtos);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView updateSubCategory(@RequestParam Map<String, String> formData) {
-        ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
-        String typeName = formData.get("typename");
-        String category = formData.get("categoryList");
-        String subCategory = formData.get("subCategoryList");
-
-        if (typeName != null) {
-            CategoryEntity categoryEntity = null;
-            try {
-                if (!category.equals(EMPTY)) {
-                    categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getByType(category);
-                } else {
-                    categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategory));
-                }
-                SubCategoryEntity updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
-
-                SubCategoryEntity subCategoryEntity = subCategoryServiceImp.getByTypeName(subCategory);
-                subCategoryServiceImp.update(updatedSubCategoryEntity, subCategoryEntity);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        try {
-            List<CategoryDto> categoryDtos = categoryMapper.mapEntitiesToDto(subCategoryServiceImp.getCategoryServiceImp().getAll());
-            List<SubCategoryDto> subCategoryDtos = subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
-            modelAndView.addObject("empty", EMPTY);
-            modelAndView.addObject("categories", categoryDtos);
-            modelAndView.addObject("subCategories", subCategoryDtos);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return modelAndView;
-
     }
 
 

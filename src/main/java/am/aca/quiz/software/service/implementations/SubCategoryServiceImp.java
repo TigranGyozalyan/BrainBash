@@ -93,4 +93,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
     }
 
 
+    public void update(SubCategoryEntity updatedSubCategoryEntity) {
+        subCategoryRepository.save(updatedSubCategoryEntity);
+    }
 }

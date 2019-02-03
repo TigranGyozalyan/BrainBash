@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<form method="post">
+<form th:action="@{/subcategory/update}" method="post">
 
     <label>
         Select Category :
@@ -18,22 +18,13 @@
         </select>
     </label>
     <br/>
-    <label>
-      Select SubCategory :
-        <select name="subCategoryList">
-            <option th:each="subCategory : ${subCategories}"
-                    th:value="${subCategory.typeName}"
-                    th:text="${subCategory.typeName}"></option>
-        </select>
-    </label>
 
-
-    <br/>
     <label>
         SubCategory : <input name="typename" type="text" placeholder="Enter SubCategory name">
+           <br/>
+        <input type="submit" value="Update SubCategory">
+        <input type="hidden" th:value="${subCategory.id}" name="id">
     </label>
-    <br/>
-    <input type="submit" value="Update SubCategory">
 </form>
 </body>
 </html>

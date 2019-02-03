@@ -1,0 +1,30 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SubCategory List</title>
+</head>
+<body>
+
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Type</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="subCategory : ${subCategoryList}">
+            <td><span th:text="${subCategory.typeName}">Type</span> </td>
+
+            <td><a th:href="@{'/subcategory/update/'+${subCategory.id}}">edit</a></td>
+            <td><a th:href="@{'/subcategory/delete/'+${subCategory.id}}">delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="button"  onclick="location.href='http://localhost:8080/subcategory/add'" value="Add SubCategory"  >
+</form>
+
+
+</body>
+</html>
