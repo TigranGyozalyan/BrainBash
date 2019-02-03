@@ -9,25 +9,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
-
 @RestController
 @RequestMapping("/")
 public class Welcome {
 
     @GetMapping
-    public ModelAndView welcomePage(){
+    public ModelAndView welcomePage() {
+        ModelAndView modelAndView = new ModelAndView("welcome");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ModelAndView modelAndView=new ModelAndView("welcome");
-        if(authentication instanceof AnonymousAuthenticationToken){
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return modelAndView;
         }
         return new ModelAndView("redirect:/notfound");
 
     }
 
+    @GetMapping("registration")
+    public ModelAndView registration() {
+        ModelAndView modelAndView = new ModelAndView("userRegistration");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return modelAndView;
+        }
+        return new ModelAndView("redirect:/notfound");
+    }
+
+    @GetMapping("login")
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return modelAndView;
+        }
+        return new ModelAndView("redirect:/notfound");
+    }
+
     @GetMapping(value = "notfound")
-    public ModelAndView notFound(){
+    public ModelAndView notFound() {
         return new ModelAndView("notFound");
     }
 

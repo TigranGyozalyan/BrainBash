@@ -67,7 +67,8 @@
         <li class='sub-menu'>
             <a href='#profile'>
                 <div class='fa fa-gear'></div>
-                Profile
+                        <label class='badge right' th:text="${user.surname}"/>
+                Profile <label class='badge right' th:text="${user.name}"/>
                 <div class='fa fa-caret-down right'></div>
             </a>
             <ul>
