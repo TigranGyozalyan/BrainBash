@@ -6,17 +6,9 @@ import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -296,6 +288,17 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/activate/{code}")
+    public ModelAndView activate(@PathVariable String code) {
+        ModelAndView modelAndView=new ModelAndView("redirect:/login");
+        boolean isActivated = userServiceImp.activateUser(code);
+
+        if (!isActivated) {
+            return new ModelAndView("redirect:/");
+        }
+
+        return modelAndView;
+    }
 
 }
 

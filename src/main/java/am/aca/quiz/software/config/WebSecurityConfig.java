@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration","/user/register", "/redirect", "/css/**", "/js/**").permitAll()
+                    .antMatchers("/", "/registration","/user/register", "/redirect","/user/activate/**", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -54,21 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userSevice)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
-    }
-
-
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("a")
-                        .password("a")
-                        .roles("ADMIN")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 
 }

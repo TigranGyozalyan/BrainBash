@@ -10,10 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -35,13 +38,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if(!password.equals(password2)){
             throw new SQLException();
         }
-        UserEntity userEntity = new UserEntity(fName, lName, email, true, nickname, password);
+        UserEntity userEntity = new UserEntity(fName, lName, email, nickname, password);
       userEntity.getRoles().add(Role.USER);
       userEntity.getRoles().add(Role.ADMIN);
 
         try {
+
+            userEntity.setActivationCode(UUID.randomUUID().toString());
+
             userEntity.setRoles(Collections.singleton(Role.USER));
-            mailService.sendHtml(email,"Confirmation","mailConfirmation");
+
+            if (!StringUtils.isEmpty(userEntity.getEmail())) {
+                String message =
+                        "Hello,"+ userEntity.getName()+"\n" +
+                                "Please, visit next link: http://localhost:8080/user/activate/"+
+                        userEntity.getActivationCode();
+
+                mailService.sendText(email,"Activation",message);
+            }
+
+
         }catch (MailException e){
            throw new RuntimeException("Invalid Mail");
         }
@@ -105,4 +121,21 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public void updateUser(UserEntity userEntity){
         userRepository.save(userEntity);
     }
+
+
+    public boolean activateUser(String code) {
+         UserEntity user = userRepository.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActivationCode(null);
+
+        user.setActive(true);
+        userRepository.save(user);
+
+        return true;
+    }
+
 }

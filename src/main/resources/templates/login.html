@@ -23,6 +23,8 @@ color: lightgrey;
 </head>
 
 <body>
+
+
 <div th:if="${param.error}" class="message2">
             Invalid username and password.
         </div>
@@ -37,7 +39,7 @@ color: lightgrey;
 
         <form class="login-form" method="post">
             <h1>Login</h1>
-            <input type="text" placeholder="username" name="username"/>
+            <input type="email" placeholder="email" name="username"/>
             <input type="password" placeholder="password" name="password"/>
             <button>Sign in</button>
             <p class="message">Not registered? <a th:href="@{/registration}">Create an account</a></p>

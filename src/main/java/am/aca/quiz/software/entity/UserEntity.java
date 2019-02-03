@@ -36,6 +36,10 @@ public class UserEntity implements UserDetails {
     @Column(name = "passwords", nullable = false)
     private String password;
 
+    @Column(name="activationCode")
+    private String activationCode;
+
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -47,18 +51,19 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<ScoreEntity> scoreList = new ArrayList<>();
 
+
+
     public UserEntity() {
     }
 
 
-    public UserEntity(String name, String surname, String email, boolean active, String nickname, String password) {
+    public UserEntity(String name, String surname, String email,String nickname, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.active = active;
         this.nickname = nickname;
         this.password = password;
-        this.active=active;
+
     }
 
     public void setId(Long id) {
@@ -190,4 +195,11 @@ public class UserEntity implements UserDetails {
         return getRoles();
     }
 
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }
