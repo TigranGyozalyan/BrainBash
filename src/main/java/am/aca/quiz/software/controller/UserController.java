@@ -31,6 +31,9 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImp userServiceImp;
     private final UserMapper userMapper;
+    private String email;
+
+
 
     public UserController(UserServiceImp userServiceImp, UserMapper userMapper) {
         this.userServiceImp = userServiceImp;
@@ -71,6 +74,7 @@ public class UserController {
 
     @GetMapping(value = "/profile")
     public ModelAndView profilePage(Principal principal) {
+
         ModelAndView modelAndView = new ModelAndView("userProfile");
         String email = principal.getName();
         try {
@@ -83,11 +87,22 @@ public class UserController {
 
          return modelAndView;
     }
+    @PostMapping(value = "/profile")
+    public ModelAndView redirectToProfile(){
+        return new ModelAndView("redirect:/user/profile");
+    }
+
+    @PostMapping(value = "/question")
+    public ModelAndView modelAndView(@RequestParam Map<String, String> formData){
+        ModelAndView modelAndView=new ModelAndView("userDelete");
+        email=formData.get("delete");
+        return modelAndView;
+    }
+
 
     @PostMapping("/delete")
     public ModelAndView deleteAccount(@RequestParam Map<String, String> formData) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/");
-        String email = formData.get("delete");
+        ModelAndView modelAndView = new ModelAndView("redirect:/logout");
         try {
             UserEntity userEntity = userServiceImp.findByEmail(email);
             userServiceImp.removeByUserEntity(userEntity);
