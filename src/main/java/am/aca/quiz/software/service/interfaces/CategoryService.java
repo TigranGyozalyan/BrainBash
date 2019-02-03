@@ -19,7 +19,7 @@ public interface CategoryService{
     CategoryEntity getById(Long id) throws SQLException;
 
     //update
-    void update(CategoryEntity category,CategoryEntity categoryEntity) throws SQLException;
+    void update(CategoryEntity category) throws SQLException;
 
     //delete
 

@@ -44,52 +44,12 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<CategoryDto> getCategory() {
+    @GetMapping
+    public ModelAndView categoryList(){
+        ModelAndView modelAndView=new ModelAndView("categoryList");
 
         try {
-            return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
-    public ModelAndView update(){
-        ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
-        List<CategoryDto> categoryDtos=null;
-        try {
-            categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-            modelAndVi.addObject("categories",categoryDtos);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return modelAndVi;
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView updateCategory(@RequestParam  Map<String,String> formData) {
-        ModelAndView modelAndView=new ModelAndView("categoryUpdate");
-
-            String type = formData.get("type");
-            String category = formData.get("categoryList");
-
-            if(type!=null){
-                try {
-                    CategoryEntity updatedCategoryEntit=new CategoryEntity(type);
-                    CategoryEntity categoryEntity=categoryServiceImp.getByType(category);
-                    categoryServiceImp.update(updatedCategoryEntit,categoryEntity);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        try {
-            List<CategoryDto> categoryDtos=categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
-            modelAndView.addObject("categories",categoryDtos);
+            modelAndView.addObject("categoryList",categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,26 +58,65 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public void deleteCategory(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.GET)
+    public ModelAndView update(@PathVariable Long id){
+        ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
+        try {
+            CategoryDto categoryDto=categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
+            modelAndVi.addObject("category",categoryDto);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndVi;
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ModelAndView updateCategory(@RequestParam("categoryId") Long categoryId,@RequestParam  Map<String,String> formData) {
+
+
+        String type = formData.get("type");
+        try {
+            CategoryEntity categoryEntity=categoryServiceImp.getById(categoryId);
+            categoryEntity.setType(type);
+            categoryServiceImp.update(categoryEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categoryList();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public ModelAndView deleteCategory(@PathVariable("id") Long id) {
         try {
             categoryServiceImp.removeById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return categoryList();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CategoryDto getCategoryById(@PathVariable("id") Long id) {
-        try {
-            return categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
+
+
+
+
+    /*
+                  meaningless
+     */
+//
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    public CategoryDto getCategoryById(@PathVariable("id") Long id) {
+//        try {
+//            return categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 }
 

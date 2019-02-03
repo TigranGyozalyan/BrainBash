@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.repository.CategoryRepository;
 import am.aca.quiz.software.service.interfaces.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -43,19 +44,14 @@ public class CategoryServiceImp implements CategoryService {
         }
     }
 
-    @Override
-    public void update(CategoryEntity updatedCategory, CategoryEntity categoryEntity) throws SQLException {
 
-        updatedCategory.setId(categoryEntity.getId());
-        addCategory(updatedCategory);
-    }
-
+    @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
         CategoryEntity targetEntity = categoryRepository.findById(id).get();
 
         if (targetEntity != null) {
-            categoryRepository.removeById(id);
+            categoryRepository.deleteById(id);
         } else {
             throw new SQLException("category not found");
         }
@@ -87,6 +83,10 @@ public class CategoryServiceImp implements CategoryService {
         } else {
             throw new SQLException("category not found");
         }
+    }
+
+    public void update(CategoryEntity categoryEntity){
+        categoryRepository.save(categoryEntity);
     }
 
 }

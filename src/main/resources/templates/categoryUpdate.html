@@ -7,21 +7,12 @@
 </head>
 <body>
 
-<form method="post">
-    <label>
-        Select Category :
-        <select name="categoryList">
-            <option th:each="category : ${categories}"
-                    th:value="${category.type}"
-                    th:text="${category.type}"></option>
-        </select>
-    </label>
-    <br/>
-    <label>
-        Type: <input name="type" type="text" placeholder="Enter Category Name">
-    </label>
+<form th:action="@{/category/update}" method="post">
+     Type: <input name="type" type="text" placeholder="Enter Category Name">
     <br/>
     <input type="submit" value="Update Category">
+    <input type="hidden" th:value="${category.id}" name="categoryId">
+
 </form>
 </body>
 </html>

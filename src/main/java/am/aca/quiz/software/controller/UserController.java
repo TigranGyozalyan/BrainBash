@@ -27,7 +27,6 @@ public class UserController {
     private boolean message;
 
 
-
     public UserController(UserServiceImp userServiceImp, UserMapper userMapper) {
         this.userServiceImp = userServiceImp;
         this.userMapper = userMapper;
@@ -74,36 +73,35 @@ public class UserController {
             UserEntity user = userServiceImp.findByEmail(email);
             UserDto userDto = userMapper.mapEntityToDto(user);
             modelAndView.addObject("user", userDto);
-            if(message){
-                modelAndView.addObject("message","Email Invalid");
+            if (message) {
+                modelAndView.addObject("message", "Email Invalid");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-         return modelAndView;
+        return modelAndView;
     }
+
     @PostMapping(value = "/profile")
-    public ModelAndView redirectToProfile(){
+    public ModelAndView redirectToProfile() {
         return new ModelAndView("redirect:/user/profile");
     }
 
     @PostMapping(value = "/question")
-    public ModelAndView modelAndView(Principal principal, @RequestParam Map<String, String> formData){
-        ModelAndView modelAndView=null;
-        email=formData.get("delete");
-        String checker=principal.getName();
-        if(email.equals(checker)){
-            message=false;
-            modelAndView=  new ModelAndView("userDelete");
+    public ModelAndView modelAndView(Principal principal, @RequestParam Map<String, String> formData) {
+        ModelAndView modelAndView = null;
+        email = formData.get("delete");
+        String checker = principal.getName();
+        if (email.equals(checker)) {
+            message = false;
+            modelAndView = new ModelAndView("userDelete");
+
+        } else {
+            message = true;
+            return profilePage(principal);
 
         }
-        else {
-            message=true;
-           return profilePage(principal);
-
-        }
-
 
 
         return modelAndView;
@@ -290,7 +288,7 @@ public class UserController {
 
     @GetMapping("/activate/{code}")
     public ModelAndView activate(@PathVariable String code) {
-        ModelAndView modelAndView=new ModelAndView("redirect:/login");
+        ModelAndView modelAndView = new ModelAndView("redirect:/login");
         boolean isActivated = userServiceImp.activateUser(code);
 
         if (!isActivated) {

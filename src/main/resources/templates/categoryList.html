@@ -1,0 +1,31 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Category List</title>
+</head>
+<body>
+
+ <form method="post">
+           <table>
+               <thead>
+               <tr>
+                   <th>Type</th>
+
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="category : ${categoryList}">
+                   <td><span th:text="${category.type}">Type</span> </td>
+
+                   <td><a th:href="@{'/category/update/'+${category.id}}">edit</a></td>
+                   <td><a th:href="@{'/category/delete/'+${category.id}}">delete</a></td>
+               </tr>
+               </tbody>
+           </table>
+ <input type="button"  onclick="location.href='http://localhost:8080/category/add'" value="Add Category"  >
+ </form>
+
+
+</body>
+</html>
