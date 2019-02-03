@@ -31,10 +31,6 @@ public class TestController {
     private final TopicMapper topicMapper;
     private final QuestionServiceImp questionServiceImp;
     private final QuestionMapper questionMapper;
-    private static final String EMPTY = "empty";
-    private List<QuestionDto> filteredQuestions=null;
-    private String description,duration,test_name,question;
-    private List<QuestionDto> questionDtos=new ArrayList<>();
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper) {
@@ -70,88 +66,34 @@ public class TestController {
     @RequestMapping("/add")
     public ModelAndView addTest() {
 
-        ModelAndView modelAndView = new ModelAndView("test");
-        try {
-            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            modelAndView.addObject("topicList", topicDtos);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return modelAndView;
+        return new ModelAndView("test");
     }
 
     @PostMapping("/add")
     @ResponseBody
-    public ModelAndView postTest(@RequestParam Map<String, String> formData) {
+    public ModelAndView postTest(@RequestBody TestDto test) {
 
-        questionDtos.clear();
 
-         List<TopicEntity> topics = new ArrayList<>();
-         description=formData.get("description");
-         duration=formData.get("duration");
-         test_name=formData.get("test_name");
 
-        for (int i = 0; i < 5; i++) {
-            String topicNameValue = formData.get("topicList" + (i + 1));
-            if (!topicNameValue.equals(EMPTY)) {
-                try {
-                    topics.add(topicServiceImp.getByTopicName(topicNameValue));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        List<QuestionEntity> allQuestions=new ArrayList<>();
+        String test_name = test.getTest_name();
+        String description = test.getTest_name();
+        long duration =  test.getDuration();
 
-        for(int i=0;i<topics.size();i++){
-            List<QuestionEntity> questionEntities=questionServiceImp.getQuestionEntityByTopic(topics.get(i));
+        List<Long> questionIds = test.getQuestionIds();
+        List<QuestionEntity> questions = new ArrayList<>();
 
-            questionEntities.forEach(question->allQuestions.add(question));
-        }
-
-       filteredQuestions=questionMapper.mapEntitiesToDto(allQuestions);
-        return addTest();
-    }
-
-    @GetMapping("/add/question")
-    public ModelAndView addTestQuestions(@RequestParam Map<String, String> formData) {
-
-        ModelAndView modelAndView=new ModelAndView("test_questions");
-        modelAndView.addObject("questionList",filteredQuestions);
-
-        return modelAndView;
-    }
-    @PostMapping(value = "/add/question")
-    public ModelAndView postTestQuestions(@RequestParam Map<String, String> formData){
-
-        ModelAndView modelAndView=new ModelAndView("test_questions");
-        question=formData.get("Questions");
-
-        QuestionDto questionDto=questionMapper
-                    .mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(question));
-
-        questionDtos.add(questionDto);
 
         try {
-            testServiceImp.addTest(test_name,description,Long.parseLong(duration),questionDtos);
-        } catch (SQLException e) {
+            for(Long questionId : questionIds) {
+                QuestionEntity questionEntity = questionServiceImp.getById(questionId);
+                questions.add(questionEntity);
+            }
+            testServiceImp.addTest(test_name,description,duration,questions);
+
+        }catch (SQLException e) {
             e.printStackTrace();
         }
+        return new ModelAndView("test");
 
-
-        filteredQuestions.remove(questionMapper.mapEntityToDto(questionServiceImp.getQuestionEntityByQuestion(question)));
-
-
-
-        modelAndView.addObject("questionList",filteredQuestions);
-
-        return modelAndView;
     }
-
-
-
-
-
-
-
 }

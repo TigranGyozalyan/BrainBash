@@ -1,34 +1,43 @@
 package am.aca.quiz.software.service.mapper;
 
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
+import am.aca.quiz.software.service.implementations.AnswerServiceImp;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDto> {
 
-    private TopicMapper topicMapper;
+    private AnswerServiceImp answerServiceImp;
 
-    public QuestionMapper(TopicMapper topicMapper) {
-        this.topicMapper = topicMapper;
+    private AnswerMapper answerMapper;
+
+    public QuestionMapper(AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
+        this.answerServiceImp = answerServiceImp;
+        this.answerMapper = answerMapper;
     }
+
 
     @Override
     public QuestionDto mapEntityToDto(QuestionEntity questionEntity) {
         QuestionDto questionDto = new QuestionDto();
-
         questionDto.setId(questionEntity.getId());
         questionDto.setCorrect_amount(questionEntity.getCorrect_amount());
         questionDto.setLevel(questionEntity.getLevel().toString());
         questionDto.setPoints(questionEntity.getPoints());
         questionDto.setQuestion(questionEntity.getQuestion());
-        questionDto.setTopicDto(topicMapper.mapEntityToDto(questionEntity.getTopicEntity()));
+        questionDto.setTopicId(questionEntity.getTopicEntity().getId());
 
+        List<AnswerDto> answerDtos = answerMapper
+                .mapEntitiesToDto(answerServiceImp
+                        .getAnswerEntitiesByQuestionId(questionEntity.getId()));
+
+        questionDto.setAnswerDtoList(answerDtos);
         return questionDto;
     }
 

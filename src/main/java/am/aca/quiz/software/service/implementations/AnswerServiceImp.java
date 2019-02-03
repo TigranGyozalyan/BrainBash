@@ -63,6 +63,12 @@ public class AnswerServiceImp implements AnswerService {
         answerRepository.delete(deleted_answer);
     }
 
+    @Override
+    public List<AnswerEntity> getAnswerEntitiesByQuestionId (Long questionId) {
+        return answerRepository.findAnswersByQuestionId(questionId);
+    }
+
+
     public Long getQuestionIdByAnswer(String answer){
         return answerRepository.findQuestionIdByAnswer(answer);
     }
