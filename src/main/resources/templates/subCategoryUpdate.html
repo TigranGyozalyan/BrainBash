@@ -20,7 +20,7 @@
     <br/>
 
     <label>
-        SubCategory : <input name="typename" type="text" placeholder="Enter SubCategory name">
+        SubCategory : <input name="typename" type="text" th:value="${subCategory.typeName}">
            <br/>
         <input type="submit" value="Update SubCategory">
         <input type="hidden" th:value="${subCategory.id}" name="id">

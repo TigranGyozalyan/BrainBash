@@ -36,9 +36,12 @@ public class SubCategoryController {
     }
 
     @GetMapping
-    public List<SubCategoryDto> getAll() {
+    public ResponseEntity<List<SubCategoryDto>> getAll() {
         try {
-            return subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll());
+            if(subCategoryServiceImp.getAll().isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,9 +49,12 @@ public class SubCategoryController {
     }
 
     @GetMapping("/{id}")
-    public SubCategoryDto getById(@PathVariable("id") Long id) {
+    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
         try {
-            return subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id));
+            if(subCategoryServiceImp.getById(id)==null){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -141,7 +147,6 @@ public class SubCategoryController {
                 }
             } else {
                 categoryEntity=subCategoryServiceImp.getById(id).getCategory();
-              //  categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategoryServiceImp.getById(id).getTypeName()));
                 if (typeName.isEmpty()) {
                     updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
                 } else {
@@ -159,7 +164,7 @@ public class SubCategoryController {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteSubCategory(@PathVariable("id") Long id) {
 

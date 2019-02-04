@@ -65,7 +65,7 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TopicDto>> getAllTopics(@RequestParam("subCategoryId") int subCategoryId) {
+    public ResponseEntity<List<TopicDto>> getAllTopics(@RequestParam("subCategoryId") Long subCategoryId) {
 
         try {
             List<TopicEntity> topicEntities =
@@ -156,9 +156,12 @@ public class TopicController {
     }
 
     @GetMapping(value = "/{id}")
-    public TopicDto getById(@PathVariable("id") Long id) {
+    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
         try {
-            return topicMapper.mapEntityToDto(topicServiceImp.getById(id));
+            if(topicServiceImp.getById(id)==null){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
         } catch (SQLException e) {
             e.printStackTrace();
         }

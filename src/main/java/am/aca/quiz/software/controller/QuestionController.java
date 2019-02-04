@@ -64,21 +64,11 @@ public class QuestionController {
 
     @GetMapping(value = "/add")
     public ModelAndView addQuestion() {
-//        ModelAndView modelAndView = ;
-//
-//        try {
-//            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-//            modelAndView.addObject("topics", topicDtos);
-//            return modelAndView;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
         return new ModelAndView("question");
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String postQuestion(@RequestBody QuestionDto question) {
+    public ModelAndView postQuestion(@RequestBody QuestionDto question) {
         try {
             String questionBody = question.getQuestion();
             String level = question.getLevel();
@@ -100,13 +90,12 @@ public class QuestionController {
             }
 
             List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-            //modelAndView.addObject("topics", topicDtos);
-            return null;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return "redirect?/add";
+        return addQuestion();
     }
 
     @GetMapping(value = "/update")

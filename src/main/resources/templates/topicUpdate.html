@@ -47,7 +47,8 @@
     </label>
     <br/>
         <label>
-            Topic : <input name="topicName" type="text" placeholder="Enter topic name">
+            Topic : <input name="topicName" type="text" th:value="${topic.topicName}">
+
         </label>
         <br/>
      <input type="submit" value="Update Topic">

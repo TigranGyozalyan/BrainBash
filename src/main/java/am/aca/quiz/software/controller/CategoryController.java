@@ -4,6 +4,7 @@ import am.aca.quiz.software.entity.CategoryEntity;
 import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.implementations.CategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,9 +29,12 @@ public class CategoryController {
 
 
     @GetMapping
-    public List<CategoryDto> getAll(){
+    public ResponseEntity<List<CategoryDto>> getAll(){
         try {
-            return categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll());
+            if(categoryServiceImp.getAll().isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,16 +122,20 @@ public class CategoryController {
     /*
                   meaningless
      */
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public CategoryDto getCategoryById(@PathVariable("id") Long id) {
-//        try {
-//            return categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
+
+        try {
+            if(categoryServiceImp.getById(id)==null){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(categoryMapper.mapEntityToDto(categoryServiceImp.getById(id)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
 

@@ -8,7 +8,7 @@
 <body>
 
 <form th:action="@{/category/update}" method="post">
-     Type: <input name="type" type="text" placeholder="Enter Category Name">
+     Type: <input name="type" type="text" th:value="${category.type}">
     <br/>
     <input type="submit" value="Update Category">
     <input type="hidden" th:value="${category.id}" name="categoryId">

@@ -47,11 +47,29 @@ public class TestController {
     @GetMapping("/{id}")
     public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
-        } catch (SQLException e) {
+            if(testServiceImp.getById(id)!=null){
+                return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
+            }
             return ResponseEntity.noContent().build();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return null;
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<TestDto>> getAll(){
+        try {
+            if(testServiceImp.getAll().isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(testMapper.mapEntitiesToDto(testServiceImp.getAll()));
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
 
     @GetMapping
     public ResponseEntity<List<TestDto>> getAllTests() {
@@ -91,6 +109,8 @@ public class TestController {
             e.printStackTrace();
         }
         return new ModelAndView("test");
-
     }
+
+
+
 }
