@@ -58,7 +58,7 @@ public class TopicServiceImp implements TopicService {
     @Override
     public void update(TopicEntity updatedTopic) throws SQLException {
 
-        topicRepository.saveAndFlush(updatedTopic);
+        topicRepository.save(updatedTopic);
     }
 
     @Transactional

@@ -73,15 +73,12 @@ public class TestController {
     @ResponseBody
     public ModelAndView postTest(@RequestBody TestDto test) {
 
-
-
         String test_name = test.getTest_name();
         String description = test.getTest_name();
         long duration =  test.getDuration();
 
         List<Long> questionIds = test.getQuestionIds();
         List<QuestionEntity> questions = new ArrayList<>();
-
 
         try {
             for(Long questionId : questionIds) {

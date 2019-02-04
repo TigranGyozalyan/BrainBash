@@ -24,9 +24,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final MailService mailService;
-    private String pass;
 
-   private PasswordEncoder passwordEncoder;
+
+    private PasswordEncoder passwordEncoder;
 
 
     public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
@@ -36,17 +36,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addUser(String fName, String lName, String nickname, String email, String password,String password2) throws SQLException {
+    public void addUser(String fName, String lName, String nickname, String email, String password, String password2) throws SQLException {
 
 
-        if(!password.equals(password2)){
+        if (!password.equals(password2)) {
             throw new SQLException();
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
-      userEntity.getRoles().add(Role.USER);
-      userEntity.getRoles().add(Role.ADMIN);
-      pass=password;
-      userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setPassword(passwordEncoder.encode(password));
 
         try {
 
@@ -56,16 +53,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
             if (!StringUtils.isEmpty(userEntity.getEmail())) {
                 String message =
-                        "Hello,"+ userEntity.getName()+"\n" +
-                                "Please, visit next link: http://localhost:8080/user/activate/"+
-                        userEntity.getActivationCode();
+                        "Hello," + userEntity.getName() + "\n" +
+                                "Please, visit next link: http://localhost:8080/user/activate/" +
+                                userEntity.getActivationCode();
 
-                mailService.sendText(email,"Activation",message);
+                mailService.sendText(email, "Activation", message);
             }
 
 
-        }catch (MailException e){
-           throw new RuntimeException("Invalid Mail");
+        } catch (MailException e) {
+            throw new RuntimeException("Invalid Mail");
         }
         userRepository.saveAndFlush(userEntity);
 
@@ -105,28 +102,30 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserEntity userEntity=null;
+        UserEntity userEntity = null;
 
         try {
-            userEntity=findByEmail(s);
-            return  userEntity;
+            userEntity = findByEmail(s);
+            return userEntity;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return userEntity;
     }
-    public void updateUser(UserEntity userEntity){
+
+    public void updateUser(UserEntity userEntity) {
 
         userRepository.save(userEntity);
     }
-    public void updateUserPassword(UserEntity userEntity){
+
+    public void updateUserPassword(UserEntity userEntity) {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
     }
 
 
     public boolean activateUser(String code) {
-         UserEntity user = userRepository.findByActivationCode(code);
+        UserEntity user = userRepository.findByActivationCode(code);
 
         if (user == null) {
             return false;
