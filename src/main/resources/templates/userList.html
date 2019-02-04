@@ -19,6 +19,7 @@
                    <td><span th:text="${user.name}">Name</span> </td>
                    <td><span th:text="${user.surname}">Surname</span> </td>
                     <td><span th:text="${user.role}">Role</span></td>
+
                     <td><a th:href="@{'/user/'+${user.id}}">edit</a></td>
 
                </tr>

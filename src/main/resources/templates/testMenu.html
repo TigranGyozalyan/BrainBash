@@ -49,7 +49,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/profileStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/testMenuStyle.css}">
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -58,40 +58,30 @@
 </head>
 <body>
 
- <div class="message">
-     <span th:if="${message != null }">Wrong Email Address</span>
-    </div>
 
 <nav class='animated bounceInDown'>
     <ul>
         <li class='sub-menu'>
-            <a href='#profile'>
+            <a href='#selectTest'>
                 <div class='fa fa-gear'></div>
-                        <label class='badge right' th:text="${user.surname}"/>
-                Profile <label class='badge right' th:text="${user.name}"/>
+                Select Test
                 <div class='fa fa-caret-down right'></div>
             </a>
-            <ul>
+            <ul >
 
-                <li class='sub-menu'>
-                    <a href='#usernameSettings'>
+                <li class="sub-menu" >
+                    <a href='#category'>
                         <div class='fa fa-gear'></div>
-                        Name:
-                        <label class='badge right' th:name="name" type="text" th:text="${user.name}"/>
-                        <div class='fa fa-caret-down right'></div>
+                        Category:
+                        <div class='fa fa-caret-down right' ></div>
                     </a>
-                    <ul>
-                        <li>
-                            <a href='#usernameSettings'>
-                                <form th:action="@{/user/username}" method="post">
-                                    <input type="text" name="name" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
+                    <ul  id='categoryMenu'>
+
+                </ul>
+
                 </li>
 
+<!--
                 <li class='sub-menu'>
                     <a href='#surnameSettings'>
                         <div class='fa fa-gear'></div>
@@ -189,64 +179,45 @@
                         </li>
                     </ul>
                 </li>
-
-            </ul>
-        </li>
-        <li class='sub-menu'>
-            <a href='#history'>
-                <div class='fa fa-question-circle'></div>
-                History
-                <div class='fa fa-caret-down right'></div>
-            </a>
-            <ul>
-                <li>
-                    <a href='#finishedTestHistory'>
-                        Finished Tests
-                    </a>
-                </li>
-                <li>
-                    <a href='#upcomingTestHistory'>
-                        Upcoming Tests
-                    </a>
-                </li>
-                <li>
-                    <a href='#allHistory'>
-                        All History
-                    </a>
-                </li>
+-->
             </ul>
         </li>
 
-        <li>
-            <a href='/test/menu'> <!-- REDIRECT TO Test -->
-                <div class='fa fa-envelope'></div>
-                Test
-            </a>
-        </li>
-        <li>
-            <a href='#score'> <!-- REDIRECT TO AVG SCore -->
-                <div class='fa fa-envelope'></div>
-                Score
-            </a>
-        </li>
 
         <li>
-            <a href="/logout"/>
+            <a href="/user/profile"/>
             <div class='fa fa-sign-out'></div>
-            Logout
+            Go To Profile
             </a>
             </form>
         </li>
 
-
     </ul>
 </nav>
 <script>
+
     $('.sub-menu ul').hide();
     $(".sub-menu a").click(function () {
         $(this).parent(".sub-menu").children("ul").slideToggle("100");
         $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
     });
+
+
+ $.get('/category', function (categories) {
+        loadCategories(categories);
+    });
+
+  function loadCategories(array) {
+       let main = $("#categoryMenu");
+      for(let i=0;i<array.length;i++) {
+        main.append($("<li>")
+        .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span></a>")
+        .append("</li>"));
+      }
+      main.append($('</ul>'))
+   }
+
+
 </script>
 </body>
 </html>

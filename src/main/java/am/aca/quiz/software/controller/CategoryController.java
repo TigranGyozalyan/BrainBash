@@ -41,6 +41,8 @@ public class CategoryController {
         return null;
     }
 
+
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addCategoryPage() {
