@@ -95,4 +95,5 @@ public class TopicServiceImp implements TopicService {
     public Long getSubCategoryIdByTopicName(String name){
         return topicRepository.findSubCategoryIdByTopicName(name);
     }
+
 }

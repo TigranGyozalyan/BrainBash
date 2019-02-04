@@ -61,4 +61,8 @@ public class TestServiceImp implements TestService {
         return testRepository.findById(id).get();
     }
 
+    public List<Long> findTestIdByTopicId(Long id){
+        return testRepository.findTestByTopicId(id);
+    }
+
 }

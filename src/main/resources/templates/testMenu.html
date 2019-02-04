@@ -70,116 +70,16 @@
             <ul >
 
                 <li class="sub-menu" >
-                    <a href='#category'>
+                    <a href='#topic'>
                         <div class='fa fa-gear'></div>
-                        Category:
+                        Topics:
                         <div class='fa fa-caret-down right' ></div>
                     </a>
-                    <ul  id='categoryMenu'>
 
-                </ul>
+                    <ul  id='topicMenu'>
+                   </ul>
 
                 </li>
-
-<!--
-                <li class='sub-menu'>
-                    <a href='#surnameSettings'>
-                        <div class='fa fa-gear'></div>
-                        Surname:
-                        <label class='badge right' th:name="surname" type="text" th:text="${user.surname}"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#surnameSettings'>
-                                <form th:action="@{/user/surname}" method="post">
-                                    <input type="text" name="surname" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class='sub-menu'>
-                    <a href='#nicknameSettings'>
-                        <div class='fa fa-gear'></div>
-                        Nickname:
-                        <label class='badge right' th:name="nickname" type="text" th:text="${user.nickname}"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#nicknameSettings'>
-                                    <form th:action="@{/user/nickname} " method="post">
-                                        <input type="text" name="nickname" value=""/>
-                                        <input type="submit" value="Update"/>
-                                    </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                  <li class='sub-menu'>
-                                    <a href='#emailSettings'>
-                                        <div class='fa fa-gear'></div>
-                                        Email
-                                        <label class='badge right' th:name="email" type="text" th:text="${user.email}"/>
-                                        <div class='fa fa-caret-down right'></div>
-                                    </a>
-
-                                    <ul>
-                                        <li>
-                                            <a href='#email'>
-                                                <form th:action="@{/user/email}" method="post">
-                                                    <input type="text" name="email" value=""/>
-                                                    <input type="submit" value="Update"/>
-                                                </form>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                </li>
-
-                <li class='sub-menu'>
-                    <a href='#passwordSettings'>
-                        <div class='fa fa-gear'></div>
-                        Change Password:
-                        <label th:name="password" type="text" />
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#passwordSettings'>
-                                <form th:action="@{/user/password}" method="post">
-                                    <input type="text" name="password" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class='sub-menu'>
-                    <a href='#deleteSettings'>
-                        <div class='fa fa-gear'></div>
-                        Delete Account:
-                        <label th:name="deleteAccount"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#delete'>
-                                Re-enter
-                                <form th:action="@{/user/question}" method="post">
-                                    <input type="email" name="delete"  placeholder="name$example.com"/>
-                                    <input type="submit" class="button_active" value="Delete"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
--->
             </ul>
         </li>
 
@@ -203,20 +103,20 @@
     });
 
 
- $.get('/category', function (categories) {
+ $.get('/topic/all', function (categories) {
         loadCategories(categories);
     });
 
+
   function loadCategories(array) {
-       let main = $("#categoryMenu");
+       let main = $("#topicMenu");
+
       for(let i=0;i<array.length;i++) {
         main.append($("<li>")
-        .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span></a>")
-        .append("</li>"));
-      }
-      main.append($('</ul>'))
-   }
+        .append("<a href='/test/menu/" + array[i].id + "'><span>" + array[i].topicName + "</span></a>"));
 
+        }
+   }
 
 </script>
 </body>

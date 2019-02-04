@@ -12,6 +12,7 @@ import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -132,14 +133,14 @@ public class TestController {
     public ModelAndView loadMenu(){
         ModelAndView modelAndView=new ModelAndView("testMenu");
 
-        try {
-            UserEntity userEntity=userServiceImp.getById(Long.valueOf(3));
-            UserDto userDto = userMapper.mapEntityToDto(userEntity);
-            modelAndView.addObject("user",userDto);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return modelAndView;
+    }
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTestById(@PathVariable("id") Long id){
+        ModelAndView modelAndView=new ModelAndView("testByTopic");
 
+        List<Long> testId=testServiceImp.findTestIdByTopicId(id);
+        System.out.println(testId);
 
         return modelAndView;
     }

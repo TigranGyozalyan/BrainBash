@@ -1,0 +1,31 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading Test By Topic</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/testMenuStyle.css}">
+</head>
+<body>
+ <form method="post">
+           <table>
+               <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Description</th>
+                   <th>Duration</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="test : ${testList}">
+                   <td><span th:text="${test.test_name}">Name</span> </td>
+                   <td><span th:text="${user.description}">Description</span> </td>
+                    <td><span th:text="${user.duration}">Duration</span></td>
+
+                    <td><a th:href="@{'/test/page'+${test.id}}">Solve</a></td>
+
+               </tr>
+               </tbody>
+           </table>
+
+       </form>
+</body>
+</html>

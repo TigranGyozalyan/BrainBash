@@ -21,7 +21,7 @@ public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubC
         SubCategoryDto subCategoryDto = new SubCategoryDto();
         subCategoryDto.setId(subCategory.getId());
         subCategoryDto.setTypeName(subCategory.getTypeName());
-        subCategoryDto.setCategoryDto(categoryMapper.mapEntityToDto(subCategory.getCategory()));
+        subCategoryDto.setCategoryDto(subCategory.getCategory().getId());
 
         return subCategoryDto;
     }
