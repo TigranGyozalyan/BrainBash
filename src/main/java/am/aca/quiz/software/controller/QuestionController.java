@@ -49,6 +49,19 @@ public class QuestionController {
         }
     }
 
+    @GetMapping(value = "/list")
+    public ModelAndView questionList() {
+        ModelAndView modelAndView = new ModelAndView("questionList");
+
+        try {
+            modelAndView.addObject("questionList", questionMapper.mapEntitiesToDto(questionServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
 
     @GetMapping
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") int topicId) {
@@ -134,6 +147,17 @@ public class QuestionController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/delete/{id}")
+    public ModelAndView deleteQuestion(@PathVariable("id") Long id) {
+        try {
+            questionServiceImp.removeByid(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questionList();
+
+    }
 
 }
 

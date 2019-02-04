@@ -47,7 +47,7 @@ public class TestController {
     @GetMapping("/{id}")
     public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
         try {
-            if(testServiceImp.getById(id)!=null){
+            if (testServiceImp.getById(id) != null) {
                 return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
             }
             return ResponseEntity.noContent().build();
@@ -59,9 +59,9 @@ public class TestController {
 
 
     @GetMapping
-    public ResponseEntity<List<TestDto>> getAll(){
+    public ResponseEntity<List<TestDto>> getAll() {
         try {
-            if(testServiceImp.getAll().isEmpty()){
+            if (testServiceImp.getAll().isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(testMapper.mapEntitiesToDto(testServiceImp.getAll()));
