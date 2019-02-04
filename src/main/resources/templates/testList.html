@@ -1,0 +1,28 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Test List</title>
+</head>
+<body>
+<form  method="post">
+           <table>
+               <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Description</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="test : ${testList}">
+                   <td><span th:text="${test.test_name}">Name</span> </td>
+                   <td><span th:text="${test.description}">Description</span> </td>
+
+                   <td><a th:href="@{'/test/update/'+${test.id}}">edit</a></td>
+                   <td><a th:href="@{'/test/delete/'+${test.id}}">delete</a></td>
+               </tr>
+               </tbody>
+           </table>
+ <input type="button"  onclick="location.href='http://localhost:8080/test/add'" value="Add test"  >
+</form>
+</body>
+</html>

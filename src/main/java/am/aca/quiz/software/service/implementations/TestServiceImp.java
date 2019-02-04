@@ -51,7 +51,9 @@ public class TestServiceImp implements TestService {
 
     @Override
     public void removeById(Long id) throws SQLException {
-        testRepository.deleteById(id);
+        if(testRepository.findById(id)!=null) {
+            testRepository.deleteById(id);
+        }
     }
 
     @Override

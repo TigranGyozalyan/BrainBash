@@ -72,15 +72,6 @@ public class TestController {
 
 
     @GetMapping
-    public ResponseEntity<List<TestDto>> getAllTests() {
-        try {
-            return ResponseEntity.ok(testMapper.mapEntitiesToDto(testServiceImp.getAll()));
-        } catch (SQLException e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
-
-    @GetMapping
     @RequestMapping("/add")
     public ModelAndView addTest() {
 
@@ -111,6 +102,26 @@ public class TestController {
         return new ModelAndView("test");
     }
 
+    @GetMapping("/list")
+    public ModelAndView testList(){
+        ModelAndView modelAndView=new ModelAndView("testList");
+        try {
+            modelAndView.addObject("testList",testMapper.mapEntitiesToDto(testServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteTest(@PathVariable("id") Long id){
 
+        try {
+            testServiceImp.removeById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return testList();
+    }
 
 }
