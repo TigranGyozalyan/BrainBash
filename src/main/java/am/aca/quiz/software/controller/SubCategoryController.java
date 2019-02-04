@@ -134,14 +134,15 @@ public class SubCategoryController {
             if (!category.equals(EMPTY)) {
                 categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getByType(category);
 
-                if (typeName == null) {
+                if (typeName.isEmpty()) {
                     updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
                 } else {
                     updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
                 }
             } else {
-                categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategoryServiceImp.getById(id).getTypeName()));
-                if (typeName == null) {
+                categoryEntity=subCategoryServiceImp.getById(id).getCategory();
+              //  categoryEntity = subCategoryServiceImp.getCategoryServiceImp().getById(subCategoryServiceImp.getCategoryIdBySubCategoryTypeName(subCategoryServiceImp.getById(id).getTypeName()));
+                if (typeName.isEmpty()) {
                     updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
                 } else {
                     updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);

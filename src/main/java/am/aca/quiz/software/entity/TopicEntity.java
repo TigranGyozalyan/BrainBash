@@ -16,7 +16,7 @@ public class TopicEntity {
     private String topicName;
 
     @ManyToOne
-    @JoinColumn(name = "subcategory_id", updatable = false)
+    @JoinColumn(name = "subcategory_id")
     private SubCategoryEntity subCategory;
 
     @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL)
