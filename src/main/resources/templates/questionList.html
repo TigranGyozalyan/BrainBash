@@ -1,0 +1,28 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Question List</title>
+</head>
+<body>
+
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Question</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question : ${questionList}">
+            <td><span th:text="${question.question}">Question</span></td>
+
+            <td><a th:href="@{'/question/update/'+${question.id}}">edit</a></td>
+            <td><a th:href="@{'/question/delete/'+${question.id}}">delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="button" onclick="location.href='http://localhost:8080/question/add'" value="Add Question">
+</form>
+
+</body>
+</html>

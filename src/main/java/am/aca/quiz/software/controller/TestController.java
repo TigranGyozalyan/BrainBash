@@ -43,11 +43,10 @@ public class TestController {
     }
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
         try {
-            if(testServiceImp.getById(id)!=null){
+            if (testServiceImp.getById(id) != null) {
                 return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
             }
             return ResponseEntity.noContent().build();
@@ -59,9 +58,9 @@ public class TestController {
 
 
     @GetMapping
-    public ResponseEntity<List<TestDto>> getAll(){
+    public ResponseEntity<List<TestDto>> getAll() {
         try {
-            if(testServiceImp.getAll().isEmpty()){
+            if (testServiceImp.getAll().isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(testMapper.mapEntitiesToDto(testServiceImp.getAll()));
@@ -70,15 +69,6 @@ public class TestController {
         return null;
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<TestDto>> getAllTests() {
-        try {
-            return ResponseEntity.ok(testMapper.mapEntitiesToDto(testServiceImp.getAll()));
-        } catch (SQLException e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
 
     @GetMapping
     @RequestMapping("/add")
@@ -93,24 +83,23 @@ public class TestController {
 
         String test_name = test.getTest_name();
         String description = test.getTest_name();
-        long duration =  test.getDuration();
+        long duration = test.getDuration();
 
         List<Long> questionIds = test.getQuestionIds();
         List<QuestionEntity> questions = new ArrayList<>();
 
         try {
-            for(Long questionId : questionIds) {
+            for (Long questionId : questionIds) {
                 QuestionEntity questionEntity = questionServiceImp.getById(questionId);
                 questions.add(questionEntity);
             }
-            testServiceImp.addTest(test_name,description,duration,questions);
+            testServiceImp.addTest(test_name, description, duration, questions);
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return new ModelAndView("test");
     }
-
 
 
 }
