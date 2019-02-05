@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Past History List</title>
+    <title>All History List</title>
 </head>
 <body>
 <form method="get">
@@ -12,6 +12,7 @@
             <th>Start-time</th>
             <th>End-time</th>
             <th>Score</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@
             <td><span th:text="${history.startTime}">Start-time</span></td>
             <td><span th:text="${history.endTime}">End-time</span></td>
             <td><span th:text="${history.score}">Score</span></td>
+            <td><span th:text="${history.score}">Status</span></td>
         </tr>
         </tbody>
     </table>
