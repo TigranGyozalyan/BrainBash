@@ -19,10 +19,12 @@ public interface TestService {
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    void update(TestEntity test, Long id) throws SQLException;
+    void update(TestEntity test) throws SQLException;
 
 
     void removeById(Long id) throws SQLException;
 
     TestEntity getById(Long id) throws SQLException;
+
+    List<Long> findTestIdByTopicId(Long id) throws SQLException;
 }

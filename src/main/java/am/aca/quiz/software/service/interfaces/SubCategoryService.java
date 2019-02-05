@@ -18,10 +18,11 @@ public interface SubCategoryService {
     SubCategoryEntity getById(Long id) throws SQLException;
 
     //update
-    void update(SubCategoryEntity updatedSubCategory, SubCategoryEntity subCategoryEntity) throws SQLException;
+    void update(SubCategoryEntity updatedSubCategory) throws SQLException;
 
     //delete
     void removeById(Long id) throws SQLException;
 
-    void remove(SubCategoryEntity subCategoryEntity) throws SQLException;
+
+    SubCategoryEntity getByTypeName(String type) throws SQLException;
 }

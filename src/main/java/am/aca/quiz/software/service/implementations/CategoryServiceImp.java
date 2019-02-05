@@ -19,7 +19,7 @@ public class CategoryServiceImp implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-
+    @Override
     public void addCategory(String type) throws SQLException {
         if (categoryRepository.findCategoryEntityByType(type) == null) {
             CategoryEntity categoryEntity = new CategoryEntity(type);
@@ -59,12 +59,6 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
-    public void remove(CategoryEntity categoryEntity) throws SQLException {
-        if (categoryEntity != null)
-            categoryRepository.delete(categoryEntity);
-    }
-
-    @Override
     public CategoryEntity getById(Long id) throws SQLException {
         CategoryEntity targetEntity = categoryRepository.findById(id).get();
 
@@ -85,6 +79,7 @@ public class CategoryServiceImp implements CategoryService {
         }
     }
 
+    @Override
     public void update(CategoryEntity categoryEntity){
         categoryRepository.save(categoryEntity);
     }

@@ -23,12 +23,11 @@ public class AnswerServiceImp implements AnswerService {
     }
 
 
-
     @Override
     public void addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException {
 
-        QuestionEntity questionEntity=questionServiceImp.getById(questionId);
-        AnswerEntity answerEntity=new AnswerEntity(answer,description,isCorrect,questionEntity);
+        QuestionEntity questionEntity = questionServiceImp.getById(questionId);
+        AnswerEntity answerEntity = new AnswerEntity(answer, description, isCorrect, questionEntity);
         questionEntity.getAnswerEntities().add(answerEntity);
 
         answerRepository.saveAndFlush(answerEntity);
@@ -42,10 +41,8 @@ public class AnswerServiceImp implements AnswerService {
 
 
     @Override
-    public void update(AnswerEntity updateAnswer, AnswerEntity answerEntity) throws SQLException {
-        updateAnswer.setId(answerEntity.getId());
-        updateAnswer.setQuestionEntity(answerEntity.getQuestionEntity());
-        answerRepository.saveAndFlush(updateAnswer);
+    public void update(AnswerEntity updateAnswer) throws SQLException {
+        answerRepository.save(updateAnswer);
     }
 
     @Override
@@ -64,17 +61,8 @@ public class AnswerServiceImp implements AnswerService {
     }
 
     @Override
-    public List<AnswerEntity> getAnswerEntitiesByQuestionId (Long questionId) {
+    public List<AnswerEntity> getAnswerEntitiesByQuestionId(Long questionId) {
         return answerRepository.findAnswersByQuestionId(questionId);
-    }
-
-
-    public Long getQuestionIdByAnswer(String answer){
-        return answerRepository.findQuestionIdByAnswer(answer);
-    }
-
-    public AnswerEntity getAnswerByAnswerText(String text){
-        return answerRepository.findAnswerEntitiesByAnswer(text);
     }
 
 }

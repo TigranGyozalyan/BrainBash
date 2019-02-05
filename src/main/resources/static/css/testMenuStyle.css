@@ -12,6 +12,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
+
 }
 
 .menu-toggle {
@@ -22,6 +23,8 @@ body {
     right: 25px;
     cursor: pointer;
 }
+
+
 .menu-toggle.on .one {
     -moz-transform: rotate(45deg) translate(7px, 7px);
     -ms-transform: rotate(45deg) translate(7px, 7px);
@@ -87,3 +90,4 @@ nav ul a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
 }
+
