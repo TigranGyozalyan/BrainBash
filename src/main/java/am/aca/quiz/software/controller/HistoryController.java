@@ -86,9 +86,6 @@ public class HistoryController {
 
         try {
             Long userId = userServiceImp.findByEmail(principal.getName()).getId();
-
-//            String testName = testServiceImp.getById().getTest_name();
-
             modelAndView.addObject("historyList", historyMapper.mapEntitiesToDto(historyServiceImp.findAllByUserId(userId)));
         } catch (SQLException e) {
             e.printStackTrace();
