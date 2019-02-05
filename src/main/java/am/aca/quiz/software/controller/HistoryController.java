@@ -56,18 +56,8 @@ public class HistoryController {
         List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyEntityList.stream()
                 .filter(i -> i.getStatus().equals(Status.UPCOMING))
                 .collect(Collectors.toList()));
+        ;
 
-        List<TestDto> testDtoList = new ArrayList<>();
-
-        historyDtos.stream()
-                .forEach(i -> {
-                    try {
-                        testDtoList.add(testMapper.mapEntityToDto(testServiceImp.getById(i.getTestId())));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-        modelAndView.addObject("testList", testDtoList);
         modelAndView.addObject("historyList", historyDtos);
 
         return modelAndView;

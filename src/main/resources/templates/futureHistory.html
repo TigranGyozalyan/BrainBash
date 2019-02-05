@@ -15,12 +15,11 @@
                </tr>
                </thead>
                <tbody>
-               <tr th:each="test : ${testList}">
-                   <td><span th:text="${test.test_name}">Test Name</span> </td>
-               </tr>
-                <tr th:each="history : ${historyList}">
-                    <td><span th:text="${history.startTime}"></span></td>
-                 </tr>
+                        <tr th:each="history : ${historyList}">
+                             <td> <span th:text="${history.testDto.getTest_name()}">Test Name</span></td>
+                             <td><span th:text="${history.startTime}">Start Time</span></td>
+                        </tr>
+
                </tbody>
            </table>
 
