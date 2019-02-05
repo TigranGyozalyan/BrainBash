@@ -9,8 +9,6 @@ import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +67,7 @@ public class QuestionController {
             List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
                     .filter(i -> i.getTopicEntity().getId() == topicId)
                     .collect(Collectors.toList());
-            return new ResponseEntity<>(questionMapper.mapEntitiesToDto(questionList), HttpStatus.OK);
+            return  ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
         } catch (SQLException e) {
             return ResponseEntity.noContent().build();
         }

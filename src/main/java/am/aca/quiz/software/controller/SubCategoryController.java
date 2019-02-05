@@ -37,11 +37,13 @@ public class SubCategoryController {
 
     @GetMapping
     public ResponseEntity<List<SubCategoryDto>> getAll() {
+
         try {
-            if(subCategoryServiceImp.getAll().isEmpty()){
+            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll();
+            if (subCategoryEntities.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
+            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,11 +52,13 @@ public class SubCategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
+
         try {
-            if(subCategoryServiceImp.getById(id)==null){
+            SubCategoryEntity subCategoryEntity = subCategoryServiceImp.getById(id);
+            if (subCategoryEntity == null) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
+            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryEntity));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,7 +150,7 @@ public class SubCategoryController {
                     updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
                 }
             } else {
-                categoryEntity=subCategoryServiceImp.getById(id).getCategory();
+                categoryEntity = subCategoryServiceImp.getById(id).getCategory();
                 if (typeName.isEmpty()) {
                     updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
                 } else {
@@ -164,7 +168,7 @@ public class SubCategoryController {
     }
 
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    //    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteSubCategory(@PathVariable("id") Long id) {
 
@@ -176,8 +180,5 @@ public class SubCategoryController {
 
         return subCategoryList();
     }
-
-
-
 
 }
