@@ -28,8 +28,8 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
         historyDto.setStartTime(historyEntity.getStartTime());
         historyDto.setStatus(historyEntity.getStatus());
 
-        Long testId = historyEntity.getTestEntity().getId();
-        Long userId = historyEntity.getUserEntity().getId();
+        historyDto.setUserId(historyEntity.getUserEntity().getId());
+        historyDto.setTestId(historyEntity.getTestEntity().getId());
 
 
         return historyDto;

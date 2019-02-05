@@ -31,7 +31,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     @Override
-    public void addHistory(Long userId, Long testId, double score, String status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
+    public void addHistory(Long userId, Long testId, double score,Status status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
         UserEntity userEntity = userService.getById(userId);
         TestEntity testEntity = testService.getById(testId);
 
