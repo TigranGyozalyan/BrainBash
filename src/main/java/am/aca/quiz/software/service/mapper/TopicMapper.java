@@ -24,7 +24,7 @@ public class TopicMapper implements MapEntityToDto<TopicEntity, TopicDto> {
 
         topicDto.setId(topicEntity.getId());
         topicDto.setTopicName(topicEntity.getTopicName());
-        topicDto.setSubCategoryDto(subCategoryMapper.mapEntityToDto(topicEntity.getSubCategory()));
+        topicDto.setSubCategoryDto(topicEntity.getSubCategory().getId());
         return topicDto;
     }
 

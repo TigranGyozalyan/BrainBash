@@ -1,5 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <style>
 
@@ -37,7 +37,7 @@
 
                                  <ul  id='categoryMenu'>
 
-                                  <button name="editOptions" id="editOptions">Edit </button>
+                                  <button name="editOptions" id="editOptions">Select </button>
                                  </ul>
 
 
@@ -83,19 +83,26 @@
         });
 
 
+ let topics;
+
  $.get('/topic/all', function (categories) {
-        loadTopics(categories);
+        topics=categories;
     });
 
  let subcategories;
+
     $.get('/category', function (categories) {
            loadCategories(categories);
        });
+
+
+
      $.get('/subcategory', function (categories) {
                subcategories=categories;
            });
 
      let categoryChecked=[];
+     let subcategoryChecked=[];
 
     function loadCategories(array) {
            let main = $("#categoryMenu");
@@ -117,40 +124,56 @@
 
                         categoryChecked.push($(this).attr("id"));
                    });
-                console.log(categoryChecked);
 
+                let main = $("#subcategoryMenu");
+                main.empty();
+                main.append($("<button name='edit' id='edit'>Select </button>"));
+                for(let i=0;i<subcategories.length;i++) {
+                    for(let j=0;j<categoryChecked.length;j++){
 
+                       // console.log(categoryChecked[j]+1);
 
-                                  let main = $("#subcategoryMenu");
+                        if(parseInt(categoryChecked[j])+1==subcategories[i].categoryDto){
+                           main
+                             .append($("<li>")
+                             .append("<a href='#" + subcategories[i].id + "'><span>" + subcategories[i].typeName + "</span> <input type='checkbox' name='sub' id='"+i+"' ></a>")
+                             .append()
+                             .append("</li>"));
 
-                                 for(let i=0;i<array.length;i++) {
-                                   main.
-                                   append($("<li>")
-                                   .append("<a href='#" + array[i].id + "'><span>" + array[i].typeName + "</span> <input type='checkbox' id='subcategory+"+i+"' ></a>")
+                    }
+                }
+              }
+
+                $('#edit').click(function() {
+                   subcategoryChecked.length=0;
+                   $.each($("input[name='sub']:checked"), function(){
+
+                     subcategoryChecked.push($(this).attr("id"));
+
+                   });
+
+                   let topic = $("#topicMenu");
+
+                   topic.empty();
+                         for(let i=0;i<topics.length;i++) {
+                             for(let j=0;j<subcategoryChecked.length;j++){
+                              if(parseInt(subcategoryChecked[j])+1==topics[i].subCategoryDto){
+                                 topic
+                                   .append($("<li>")
+                                   .append("<a href='/test/menu/" + topics[i].id + "'><span>" + topics[i].topicName + "</span></a>")
                                    .append()
                                    .append("</li>"));
 
-                                   }
-
-
+                               }
+                        }
+                   }
 
             });
         });
+});
 
 
 
-  function loadTopics(array) {
-       let main = $("#topicMenu");
-
-      for(let i=0;i<array.length;i++) {
-        main.
-        append($("<li>")
-        .append("<a href='/test/menu/" + array[i].id + "'><span>" + array[i].topicName + "</span> <input type='checkbox' id='topic+"+i+"' ></a>")
-        .append()
-        .append("</li>"));
-
-        }
-   }
 
 </script>
 </body>
