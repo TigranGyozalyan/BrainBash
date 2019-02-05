@@ -1,19 +1,35 @@
-body {
-    color: #fff;
-    background: #949c4e;
-    background: linear-gradient(
-            115deg,
-            rgba(86, 216, 228, 1) 10%,
-            rgba(159, 1, 234, 1) 90%
-    );
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
+/*body {*/
+    /*color: #fff;*/
+    /*background: #949c4e;*/
+    /*background: linear-gradient(*/
+            /*115deg,*/
+            /*rgba(86, 216, 228, 1) 10%,*/
+            /*rgba(159, 1, 234, 1) 90%*/
+    /*);*/
+    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,*/
+    /*Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,*/
+    /*sans-serif;*/
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-moz-osx-font-smoothing: grayscale;*/
+    /*overflow: hidden;*/
 
+/*}*/
+
+
+body{
+    background-color: #000000;
+    padding: 0px;
+    margin: 0px;
 }
+
+#gradient
+{
+    width: 100%;
+    height: 800px;
+    padding: 0px;
+    margin: 0px;
+}
+
 
 .menu-toggle {
     width: 40px;
@@ -87,6 +103,8 @@ nav ul a:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+
+/*Sliding Menu*/
 .menu-section.on {
     z-index: 10;
     width: 100%;
@@ -95,3 +113,5 @@ nav ul a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
 }
+
+

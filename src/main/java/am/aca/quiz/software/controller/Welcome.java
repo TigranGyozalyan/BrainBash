@@ -49,4 +49,9 @@ public class Welcome {
         return new ModelAndView("notFound");
     }
 
+    @GetMapping("animation")
+    public ModelAndView animation(){
+        return new ModelAndView("animation");
+    }
+
 }
