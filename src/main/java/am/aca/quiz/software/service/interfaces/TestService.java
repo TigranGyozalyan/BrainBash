@@ -6,6 +6,7 @@ import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.service.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,5 +27,5 @@ public interface TestService {
 
     TestEntity getById(Long id) throws SQLException;
 
-    List<Long> findTestIdByTopicId(Long id) throws SQLException;
+    List<BigInteger> findTestIdByTopicId(Long id) throws SQLException;
 }

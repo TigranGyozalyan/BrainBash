@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,8 +140,17 @@ public class TestController {
     public ModelAndView loadTestById(@PathVariable("id") Long id){
         ModelAndView modelAndView=new ModelAndView("testByTopic");
 
-        List<Long> testId=testServiceImp.findTestIdByTopicId(id);
-        System.out.println(testId);
+        List<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
+        List<TestDto> testDtos=new ArrayList<>();
+        testId.stream()
+                .forEach(i-> {
+                    try {
+                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+        modelAndView.addObject("testList",testDtos);
 
         return modelAndView;
     }

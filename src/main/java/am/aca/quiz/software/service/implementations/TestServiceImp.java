@@ -8,6 +8,7 @@ import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class TestServiceImp implements TestService {
     }
 
     @Override
-    public List<Long> findTestIdByTopicId(Long id){
+    public List<BigInteger> findTestIdByTopicId(Long id){
         return testRepository.findTestByTopicId(id);
     }
 
