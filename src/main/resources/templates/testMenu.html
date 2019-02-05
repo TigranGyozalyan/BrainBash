@@ -2,45 +2,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <style>
-    input[type="text"], textarea {
-        background-color: #E1E0E0;
-    }
-
-    input[type=submit] {
-        border-radius: 5px;
-        border: 0;
-        width: 80px;
-        height: 25px;
-        font-family: Tahoma;
-        background: #f4f4f4;
-        /* Old browsers */
-        background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
-        /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* IE10+ */
-        background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
-        /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
-        /* IE6-9 */
-
-    }
-
-    .update {
-        padding-right: 2cm;
-    }
-
-    .message {
-    padding-top: 20px;
-    color: cornsilk  ;
-    font-size: xx-large;
-    padding-right: 20cm;
-    }
 
 
 
@@ -59,61 +20,134 @@
 <body>
 
 
-<nav class='animated bounceInDown'>
-    <ul>
-        <li class='sub-menu'>
-            <a href='#selectTest'>
+<div class="menu-section">
+  <div class="menu-toggle">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+  </div>
+  <nav>
+		<ul role="navigation" class="hidden">
+			<li class="sub-menu" >
+                           <a href='#category'>
+                            <div class='fa fa-gear'></div>
+                              Category:
+                            <div class='fa fa-caret-down right' ></div>
+                            </a>
+
+                                 <ul  id='categoryMenu'>
+
+                                  <button name="editOptions" id="editOptions">Edit </button>
+                                 </ul>
+
+
+                       </li>
+			<li class="sub-menu" >
+                           <a href='#subcategory'>
+                            <div class='fa fa-gear'></div>
+                              SubCategory:
+                            <div class='fa fa-caret-down right' ></div>
+                            </a>
+
+                                 <ul  id='subcategoryMenu'>
+                                 </ul>
+
+                       </li>
+
+			<li class="sub-menu" >
+               <a href='#topic'>
                 <div class='fa fa-gear'></div>
-                Select Test
-                <div class='fa fa-caret-down right'></div>
-            </a>
-            <ul >
+                  Topics:
+                <div class='fa fa-caret-down right' ></div>
+                </a>
 
-                <li class="sub-menu" >
-                    <a href='#topic'>
-                        <div class='fa fa-gear'></div>
-                        Topics:
-                        <div class='fa fa-caret-down right' ></div>
-                    </a>
+                     <ul  id='topicMenu'>
+                     </ul>
 
-                    <ul  id='topicMenu'>
-                   </ul>
-
-                </li>
-            </ul>
-        </li>
-
-
-        <li>
-            <a href="/user/profile"/>
-            <div class='fa fa-sign-out'></div>
-            Go To Profile
-            </a>
-            </form>
-        </li>
-
-    </ul>
-</nav>
+           </li>
+		</ul>
+	</nav>
+</div>
 <script>
 
-    $('.sub-menu ul').hide();
-    $(".sub-menu a").click(function () {
-        $(this).parent(".sub-menu").children("ul").slideToggle("100");
-        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-    });
+   $(".menu-toggle").on('click', function() {
+     $(this).toggleClass("on");
+     $('.menu-section').toggleClass("on");
+     $("nav ul").toggleClass('hidden');
+   });
+
+      $('.sub-menu ul').hide();
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
 
 
  $.get('/topic/all', function (categories) {
-        loadCategories(categories);
+        loadTopics(categories);
     });
 
+ let subcategories;
+    $.get('/category', function (categories) {
+           loadCategories(categories);
+       });
+     $.get('/subcategory', function (categories) {
+               subcategories=categories;
+           });
 
-  function loadCategories(array) {
+     let categoryChecked=[];
+
+    function loadCategories(array) {
+           let main = $("#categoryMenu");
+
+
+          for(let i=0;i<array.length;i++) {
+            main.
+            append($("<li>")
+            .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span> <input type='checkbox' name='cat' id='"+i+"' ></a>")
+            .append()
+            .append("</li>"));
+            }
+       }
+
+        $().ready(function() {
+                $('#editOptions').click(function() {
+                    categoryChecked.length=0;
+                    $.each($("input[name='cat']:checked"), function(){
+
+                        categoryChecked.push($(this).attr("id"));
+                   });
+                console.log(categoryChecked);
+
+
+
+                                  let main = $("#subcategoryMenu");
+
+                                 for(let i=0;i<array.length;i++) {
+                                   main.
+                                   append($("<li>")
+                                   .append("<a href='#" + array[i].id + "'><span>" + array[i].typeName + "</span> <input type='checkbox' id='subcategory+"+i+"' ></a>")
+                                   .append()
+                                   .append("</li>"));
+
+                                   }
+
+
+
+            });
+        });
+
+
+
+  function loadTopics(array) {
        let main = $("#topicMenu");
 
       for(let i=0;i<array.length;i++) {
-        main.append($("<li>")
-        .append("<a href='/test/menu/" + array[i].id + "'><span>" + array[i].topicName + "</span></a>"));
+        main.
+        append($("<li>")
+        .append("<a href='/test/menu/" + array[i].id + "'><span>" + array[i].topicName + "</span> <input type='checkbox' id='topic+"+i+"' ></a>")
+        .append()
+        .append("</li>"));
 
         }
    }
