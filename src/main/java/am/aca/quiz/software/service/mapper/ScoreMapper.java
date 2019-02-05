@@ -10,13 +10,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
-    private TopicMapper topicMapper;
-    private UserMapper userMapper;
-
-    public ScoreMapper(TopicMapper topicMapper, UserMapper userMapper) {
-        this.topicMapper = topicMapper;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public ScoreDto mapEntityToDto(ScoreEntity scoreEntity) {
@@ -25,8 +18,13 @@ public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
         scoreDto.setId(scoreEntity.getId());
         scoreDto.setCount(scoreEntity.getCount());
         scoreDto.setValue(scoreEntity.getValue());
-        scoreDto.setTopicDto(topicMapper.mapEntityToDto(scoreEntity.getTopic()));
-        scoreDto.setUserDto(userMapper.mapEntityToDto(scoreEntity.getUserEntity()));
+
+        Long userId = scoreEntity.getUserEntity().getId();
+        Long topicId = scoreEntity.getTopic().getId();
+
+        scoreDto.setUserId(userId);
+        scoreDto.setTopicId(topicId);
+
 
         return scoreDto;
     }
