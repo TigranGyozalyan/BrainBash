@@ -68,4 +68,8 @@ public class HistoryServiceImp implements HistoryService {
         }
         return historyEntity.get();
     }
+
+    public List<HistoryEntity> findAllByStatus(String status) {
+        return historyRepository.findAllByStatus(status);
+    }
 }
