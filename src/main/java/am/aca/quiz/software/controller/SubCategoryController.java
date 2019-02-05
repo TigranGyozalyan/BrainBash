@@ -50,6 +50,19 @@ public class SubCategoryController {
         return null;
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<SubCategoryDto>> getsubCategoriesById(@RequestParam("categoryId") Long categoryId) {
+        try{
+            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
+                    .filter(i -> i.getId().equals(categoryId))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
 

@@ -76,15 +76,13 @@ public class TestController {
     }
 
 
-    @GetMapping
-    @RequestMapping("/add")
+    @GetMapping("/add")
     public ModelAndView addTest() {
 
         return new ModelAndView("test");
     }
 
     @PostMapping("/add")
-    @ResponseBody
     public ModelAndView postTest(@RequestBody TestDto test) {
 
         String test_name = test.getTest_name();
@@ -154,5 +152,11 @@ public class TestController {
 
         return modelAndView;
     }
+
+    @GetMapping("/solve/{id}")
+    public ModelAndView loadTest(@PathVariable("id") Long id) {
+        return new ModelAndView("testSolution");
+    }
+
 
 }

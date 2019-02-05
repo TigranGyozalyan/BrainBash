@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+    }
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1em;
+        font-weight: 400;
+        background-color: #2c3e50;
+    }
+
+    .wrapper {
+        max-width: 700px;
+        width: 100%;
+        margin: 50px auto;
+    }
+
+    .question {
+        background-color: #ecf0f1;
+        padding: 20px;
+        border-radius: 20px;
+        margin-bottom: 2em;
+    }
+    .question.error {
+        background-color: #e74c3c;
+    }
+    .question.success {
+        background-color: #2ecc71;
+    }
+    .question .question-headline {
+        font-weight: 700;
+        border-bottom: 2px solid #ddd;
+        font-size: 1.5em;
+        color: #000;
+    }
+    .question .question-answers {
+        margin-top: 1em;
+        color: #222;
+    }
+    .question .question-answers .answer + .answer {
+        margin-top: .5em;
+    }
+    .question .question-answers .answer input {
+        display: inline-block;
+        margin-right: 1em;
+    }
+    .question .question-answers .answer label {
+        cursor: pointer;
+    }
+
+    .result {
+        margin-bottom: 2em;
+        font-size: 1.2em;
+        background-color: #3498db;
+        border-radius: 10px;
+        padding: 10px 20px;
+        display: none;
+    }
+
+    .btn-check {
+        padding: 10px 20px;
+        background-color: #2ecc71;
+        color: #fff;
+        border-radius: 10px;
+        border: 0;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+    .btn-check:hover {
+        background-color: #1b7943;
+    }
+</style>
+
+
+
+<head>
+    <meta charset="UTF-8" >
+    <title>Solve a test</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <!--<link  type="text/css" th:href="@{css/testSolution.css}"/>-->
+</head>
+<body>
+
+
+<div id="wrapper" class="wrapper">
+
+</div>
+
+
+</body>
+
+
+<script>
+
+    let questionCount = 0;
+
+    let wrapperDiv = $('#wrapper');
+
+    wrapperDiv.ready(function () {
+        console.log('yaaaay');
+        let $wrapper = $('#wrapper');
+        let pathArray = window.location.pathname.split('/');
+        let id = parseInt(pathArray[pathArray.length - 1]);
+        console.log('Test id is : ' + id);
+
+
+        $.get('/question/test?testId=' + id, function (questions) {
+            console.log(questions);
+            questions.forEach(function (question) {
+                let $questionDiv = $('<div/>').attr('class', 'question');
+                questionCount++;
+                let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question);
+                console.log('added question #' + questionCount);
+                $questionDiv.append($questionHeadLine);
+                $wrapper.append($questionDiv);
+            })
+        })
+
+    });
+</script>
+
+
+</html>

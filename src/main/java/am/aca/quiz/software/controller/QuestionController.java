@@ -6,8 +6,10 @@ import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.AnswerServiceImp;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
+import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
+import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +30,18 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final TopicMapper topicMapper;
     private final AnswerServiceImp answerServiceImp;
+    private final TestServiceImp testServiceImp;
+    private final TestMapper testMapper;
 
 
-    public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp) {
+    public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp, TestServiceImp testServiceImp, TestMapper testMapper) {
         this.questionServiceImp = questionServiceImp;
         this.topicServiceImp = topicServiceImp;
         this.questionMapper = questionMapper;
         this.topicMapper = topicMapper;
         this.answerServiceImp = answerServiceImp;
+        this.testServiceImp = testServiceImp;
+        this.testMapper = testMapper;
     }
 
     @GetMapping(value = "/{id}")
@@ -60,18 +66,29 @@ public class QuestionController {
         return modelAndView;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") int topicId) {
+    public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
         try {
             List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
-                    .filter(i -> i.getTopicEntity().getId() == topicId)
+                    .filter(i -> i.getTopicEntity().getId().equals(topicId) )
                     .collect(Collectors.toList());
             return  ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
         } catch (SQLException e) {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<List<QuestionDto>> getAllQuestionsByTestId(@RequestParam("testId") long testId) {
+        try {
+            List<QuestionEntity> questionList = testServiceImp.getById(testId).getQuestionEntities();
+            return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
+        } catch (SQLException e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
 
     @GetMapping(value = "/add")
     public ModelAndView addQuestion() {
@@ -119,7 +136,6 @@ public class QuestionController {
             topicDtos = topicMapper.mapEntitiesToDto(questionServiceImp.getTopicServiceImp().getAll());
             questionDtos = questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
 
-//            modelAndView.addObject("empty", EMPTY);
             modelAndView.addObject("topics", topicDtos);
             modelAndView.addObject("question", questionDtos.get(0));
 
