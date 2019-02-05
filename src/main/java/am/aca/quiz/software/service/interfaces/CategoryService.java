@@ -22,9 +22,8 @@ public interface CategoryService{
     void update(CategoryEntity category) throws SQLException;
 
     //delete
-
     void removeById(Long id) throws SQLException;
 
-    void remove(CategoryEntity categoryEntity) throws SQLException;
+
 }
 

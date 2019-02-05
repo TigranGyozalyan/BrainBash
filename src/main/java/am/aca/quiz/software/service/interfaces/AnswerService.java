@@ -15,13 +15,13 @@ public interface AnswerService {
     //read
     List<AnswerEntity> getAll() throws SQLException;
 
-    List<AnswerEntity> getAnswerEntitiesByQuestionId (Long QuestionId);
+    List<AnswerEntity> getAnswerEntitiesByQuestionId(Long QuestionId);
 
     //update
-    void update(AnswerEntity updateAnswer, AnswerEntity answerEntity) throws SQLException;
+    void update(AnswerEntity updateAnswer) throws SQLException;
 
     AnswerEntity getById(Long id) throws SQLException;
 
     //delete
-    void removeById(Long id) throws  SQLException;
+    void removeById(Long id) throws SQLException;
 }

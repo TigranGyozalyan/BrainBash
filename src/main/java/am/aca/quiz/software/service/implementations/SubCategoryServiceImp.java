@@ -52,12 +52,6 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
-    public void update(SubCategoryEntity updatedSubCategory, SubCategoryEntity subCategory) throws SQLException {
-        updatedSubCategory.setId(subCategory.getId());
-        updatedSubCategory.setCategory(subCategory.getCategory());
-        subCategoryRepository.saveAndFlush(updatedSubCategory);
-    }
-
     @Override
     public SubCategoryEntity getById(Long id) throws SQLException {
         Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(id);
@@ -67,18 +61,19 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return subCategoryEntity.get();
     }
 
+    @Override
     public void removeById(Long id) throws SQLException {
         SubCategoryEntity targetEntity = getById(id);
         remove(targetEntity);
     }
 
-    @Override
     public void remove(SubCategoryEntity subCategoryEntity) throws SQLException {
         if (subCategoryEntity != null) {
             subCategoryRepository.delete(subCategoryEntity);
         }
     }
 
+    @Override
     public SubCategoryEntity getByTypeName(String type) throws SQLException {
         SubCategoryEntity targetEntity = subCategoryRepository.findSubCategoryEntitiesByTypeName(type);
         if (targetEntity != null) {
@@ -88,12 +83,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
-    public Long getCategoryIdBySubCategoryTypeName(String typeName) {
-        return subCategoryRepository.findCategoryIdBySubCategoryTypeName(typeName);
-    }
-
-
-    public void update(SubCategoryEntity updatedSubCategoryEntity) {
+    @Override
+    public void update(SubCategoryEntity updatedSubCategoryEntity) throws SQLException {
         subCategoryRepository.save(updatedSubCategoryEntity);
     }
 }

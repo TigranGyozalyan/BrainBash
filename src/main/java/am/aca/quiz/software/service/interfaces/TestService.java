@@ -3,12 +3,12 @@ package am.aca.quiz.software.service.interfaces;
 
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
-import am.aca.quiz.software.service.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public interface TestService {
@@ -19,10 +19,12 @@ public interface TestService {
     List<TestEntity> getAll() throws SQLException;
 
     //update
-    void update(TestEntity test, Long id) throws SQLException;
+    void update(TestEntity test) throws SQLException;
 
 
     void removeById(Long id) throws SQLException;
 
     TestEntity getById(Long id) throws SQLException;
+
+    Set<BigInteger> findTestIdByTopicId(Long id) throws SQLException;
 }

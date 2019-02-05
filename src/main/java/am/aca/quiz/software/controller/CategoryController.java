@@ -37,8 +37,9 @@ public class CategoryController {
             return ResponseEntity.ok(categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 
 
@@ -135,8 +136,8 @@ public class CategoryController {
             return ResponseEntity.ok(categoryMapper.mapEntityToDto(categoryServiceImp.getById(id)));
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 }

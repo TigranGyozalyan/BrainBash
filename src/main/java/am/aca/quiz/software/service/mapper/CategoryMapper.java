@@ -16,6 +16,7 @@ public class CategoryMapper implements MapEntityToDto<CategoryEntity, CategoryDt
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(categoryEntity.getId());
         categoryDto.setType(categoryEntity.getType());
+
         return categoryDto;
     }
 
@@ -27,7 +28,6 @@ public class CategoryMapper implements MapEntityToDto<CategoryEntity, CategoryDt
 //            categoryDtoList.add(mapEntityToDto(categoryEntity));
 //        }
 //        return categoryDtoList;
-
 
         return categoryEntityList
                 .stream()

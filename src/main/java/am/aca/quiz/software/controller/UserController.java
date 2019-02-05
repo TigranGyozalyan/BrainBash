@@ -125,10 +125,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("userList");
         try {
             List<UserDto> userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
-
-
             modelAndView.addObject("userList", userDtos);
-
 
         } catch (SQLException e) {
             e.printStackTrace();

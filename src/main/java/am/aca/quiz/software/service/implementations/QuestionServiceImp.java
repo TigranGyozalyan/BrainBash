@@ -43,12 +43,9 @@ public class QuestionServiceImp implements QuestionService {
     }
 
     @Override
-    public void update(QuestionEntity updatedQuestion, QuestionEntity question) throws SQLException {
-        updatedQuestion.setId(question.getId());
-        updatedQuestion.setTopicEntity(question.getTopicEntity());
-        questionRepository.saveAndFlush(updatedQuestion);
+    public void update(QuestionEntity questionEntity) throws SQLException {
+        questionRepository.save(questionEntity);
     }
-
 
     @Override
     public QuestionEntity getById(Long id) throws SQLException {
@@ -67,11 +64,9 @@ public class QuestionServiceImp implements QuestionService {
 
     }
 
-    public QuestionEntity getQuestionEntityByQuestion(String question) {
+    @Override
+    public QuestionEntity getQuestionEntityByQuestion(String question) throws SQLException {
         return questionRepository.findQuestionEntitiesByQuestion(question);
     }
 
-    public List<QuestionEntity> getQuestionEntityByTopic(TopicEntity topic) {
-        return questionRepository.findQuestionEntitiesByTopicEntity(topic);
-    }
 }

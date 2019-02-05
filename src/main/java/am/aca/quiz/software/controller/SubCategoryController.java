@@ -49,11 +49,26 @@ public class SubCategoryController {
 //    }
 
     @GetMapping
-    @ResponseBody
+    public ResponseEntity<List<SubCategoryDto>> getAll() {
+
+        try {
+            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll();
+            if (subCategoryEntities.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/filter")
     public ResponseEntity<List<SubCategoryDto>> getSubCategoriesById(@RequestParam("categoryId") long categoryId) {
         try{
+            System.out.println("Got here");
             List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
-                    .filter(i -> i.getId() == categoryId)
+                    .filter(i -> i.getId().equals(categoryId))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
         }catch (SQLException e) {
@@ -74,6 +89,20 @@ public class SubCategoryController {
 //        }
 //        return null;
 //    }
+    @GetMapping("/{id}")
+    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
+
+        try {
+            SubCategoryEntity subCategoryEntity = subCategoryServiceImp.getById(id);
+            if (subCategoryEntity == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryEntity));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addSubCategory() throws SQLException {
@@ -160,7 +189,7 @@ public class SubCategoryController {
                     updatedSubCategoryEntity = new SubCategoryEntity(typeName, categoryEntity);
                 }
             } else {
-                categoryEntity=subCategoryServiceImp.getById(id).getCategory();
+                categoryEntity = subCategoryServiceImp.getById(id).getCategory();
                 if (typeName.isEmpty()) {
                     updatedSubCategoryEntity = new SubCategoryEntity(subCategoryServiceImp.getById(id).getTypeName(), categoryEntity);
                 } else {
@@ -178,7 +207,7 @@ public class SubCategoryController {
     }
 
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    //    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteSubCategory(@PathVariable("id") Long id) {
 
@@ -190,6 +219,5 @@ public class SubCategoryController {
 
         return subCategoryList();
     }
-
 
 }

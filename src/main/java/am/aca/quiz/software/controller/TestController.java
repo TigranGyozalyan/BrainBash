@@ -1,9 +1,7 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.service.dto.TestDto;
-import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
@@ -16,9 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/test")
@@ -74,15 +75,13 @@ public class TestController {
     }
 
 
-    @GetMapping
-    @RequestMapping("/add")
+    @GetMapping("/add")
     public ModelAndView addTest() {
 
         return new ModelAndView("test");
     }
 
     @PostMapping("/add")
-    @ResponseBody
     public ModelAndView postTest(@RequestBody TestDto test) {
 
         String test_name = test.getTest_name();
@@ -132,19 +131,28 @@ public class TestController {
     public ModelAndView loadMenu(){
         ModelAndView modelAndView=new ModelAndView("testMenu");
 
-        try {
-            UserEntity userEntity=userServiceImp.getById(Long.valueOf(3));
-            UserDto userDto = userMapper.mapEntityToDto(userEntity);
-            modelAndView.addObject("user",userDto);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return modelAndView;
+    }
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTestById(@PathVariable("id") Long id){
+        ModelAndView modelAndView=new ModelAndView("testByTopic");
 
+        Set<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
+        Set<TestDto> testDtos=new HashSet<>();
+        testId.stream()
+                .forEach(i-> {
+                    try {
+                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+        modelAndView.addObject("testList",testDtos);
 
         return modelAndView;
     }
 
-    @GetMapping("/menu/{id}")
+    @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id) {
         return new ModelAndView("testSolution");
     }

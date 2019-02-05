@@ -4,9 +4,9 @@ public class SubCategoryDto {
     private Long id;
     private String typeName;
 
-    private long categoryId;
+    private Long categoryId;
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 

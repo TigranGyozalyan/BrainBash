@@ -8,9 +8,11 @@ import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -27,8 +29,8 @@ public class TestServiceImp implements TestService {
 
 
     @Override
-    public void addTest(String testName, String description, long duration, List<QuestionEntity> questionEntities) throws SQLException{
-        TestEntity testEntity = new TestEntity(testName,description,duration,questionEntities);
+    public void addTest(String testName, String description, long duration, List<QuestionEntity> questionEntities) throws SQLException {
+        TestEntity testEntity = new TestEntity(testName, description, duration, questionEntities);
         testRepository.saveAndFlush(testEntity);
     }
 
@@ -37,21 +39,15 @@ public class TestServiceImp implements TestService {
         return testRepository.findAll();
     }
 
-    //TODO
     @Override
-    public void update(TestEntity test, Long id) throws SQLException {
-        TestEntity testEntity = testRepository.findById(id).get();
-        if (testEntity != null) {
-            test.setId(id);
-            testRepository.saveAndFlush(test);
-        }
-
+    public void update(TestEntity test) throws SQLException {
+        testRepository.save(test);
     }
 
 
     @Override
     public void removeById(Long id) throws SQLException {
-        if(testRepository.findById(id)!=null) {
+        if (testRepository.findById(id) != null) {
             testRepository.deleteById(id);
         }
     }
@@ -59,6 +55,11 @@ public class TestServiceImp implements TestService {
     @Override
     public TestEntity getById(Long id) throws SQLException {
         return testRepository.findById(id).get();
+    }
+
+    @Override
+    public Set<BigInteger> findTestIdByTopicId(Long id){
+        return testRepository.findTestByTopicId(id);
     }
 
 }

@@ -1,48 +1,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <style>
-    input[type="text"], textarea {
-        background-color: #E1E0E0;
-    }
-
-    input[type=submit] {
-        border-radius: 5px;
-        border: 0;
-        width: 80px;
-        height: 25px;
-        font-family: Tahoma;
-        background: #f4f4f4;
-        /* Old browsers */
-        background: -moz-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #f4f4f4), color-stop(100%, #ededed));
-        /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #f4f4f4 1%, #ededed 100%);
-        /* IE10+ */
-        background: linear-gradient(to bottom, #f4f4f4 1%, #ededed 100%);
-        /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#ededed', GradientType=0);
-        /* IE6-9 */
-
-    }
-
-    .update {
-        padding-right: 2cm;
-    }
-
-    .message {
-    padding-top: 20px;
-    color: cornsilk  ;
-    font-size: xx-large;
-    padding-right: 20cm;
-    }
-
-
+.menu-section{
+float:left;
+width:1000px;
+overflow-y: auto;
+height: 100px;
+}
 
 </style>
 
@@ -59,163 +24,159 @@
 <body>
 
 
-<nav class='animated bounceInDown'>
-    <ul>
-        <li class='sub-menu'>
-            <a href='#selectTest'>
+<div class="menu-section">
+  <div class="menu-toggle">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+  </div>
+  <nav class="navig">
+		<ul role="navigation" class="hidden">
+			<li class="sub-menu" >
+                           <a href='#category'>
+                            <div class='fa fa-gear'></div>
+                              Category:
+                            <div class='fa fa-caret-down right' ></div>
+                            </a>
+
+                                 <ul  id='categoryMenu'>
+
+                                  <button name="editOptions" id="editOptions">Select </button>
+                                 </ul>
+
+
+                       </li>
+			            <li class="sub-menu" >
+                           <a href='#subcategory'>
+                            <div class='fa fa-gear'></div>
+                              SubCategory:
+                            <div class='fa fa-caret-down right' ></div>
+                            </a>
+
+                                 <ul  id='subcategoryMenu'>
+                                 </ul>
+
+                       </li>
+
+			<li class="sub-menu" >
+               <a href='#topic'>
                 <div class='fa fa-gear'></div>
-                Select Test
-                <div class='fa fa-caret-down right'></div>
-            </a>
-            <ul >
+                  Topics:
+                <div class='fa fa-caret-down right' ></div>
+                </a>
 
-                <li class="sub-menu" >
-                    <a href='#category'>
-                        <div class='fa fa-gear'></div>
-                        Category:
-                        <div class='fa fa-caret-down right' ></div>
-                    </a>
-                    <ul  id='categoryMenu'>
+                     <ul  id='topicMenu'>
+                     </ul>
 
-                </ul>
-
-                </li>
-
-<!--
-                <li class='sub-menu'>
-                    <a href='#surnameSettings'>
-                        <div class='fa fa-gear'></div>
-                        Surname:
-                        <label class='badge right' th:name="surname" type="text" th:text="${user.surname}"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#surnameSettings'>
-                                <form th:action="@{/user/surname}" method="post">
-                                    <input type="text" name="surname" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class='sub-menu'>
-                    <a href='#nicknameSettings'>
-                        <div class='fa fa-gear'></div>
-                        Nickname:
-                        <label class='badge right' th:name="nickname" type="text" th:text="${user.nickname}"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#nicknameSettings'>
-                                    <form th:action="@{/user/nickname} " method="post">
-                                        <input type="text" name="nickname" value=""/>
-                                        <input type="submit" value="Update"/>
-                                    </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                  <li class='sub-menu'>
-                                    <a href='#emailSettings'>
-                                        <div class='fa fa-gear'></div>
-                                        Email
-                                        <label class='badge right' th:name="email" type="text" th:text="${user.email}"/>
-                                        <div class='fa fa-caret-down right'></div>
-                                    </a>
-
-                                    <ul>
-                                        <li>
-                                            <a href='#email'>
-                                                <form th:action="@{/user/email}" method="post">
-                                                    <input type="text" name="email" value=""/>
-                                                    <input type="submit" value="Update"/>
-                                                </form>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                </li>
-
-                <li class='sub-menu'>
-                    <a href='#passwordSettings'>
-                        <div class='fa fa-gear'></div>
-                        Change Password:
-                        <label th:name="password" type="text" />
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#passwordSettings'>
-                                <form th:action="@{/user/password}" method="post">
-                                    <input type="text" name="password" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class='sub-menu'>
-                    <a href='#deleteSettings'>
-                        <div class='fa fa-gear'></div>
-                        Delete Account:
-                        <label th:name="deleteAccount"/>
-                        <div class='fa fa-caret-down right'></div>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href='#delete'>
-                                Re-enter
-                                <form th:action="@{/user/question}" method="post">
-                                    <input type="email" name="delete"  placeholder="name$example.com"/>
-                                    <input type="submit" class="button_active" value="Delete"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
--->
-            </ul>
-        </li>
-
-
-        <li>
-            <a href="/user/profile"/>
-            <div class='fa fa-sign-out'></div>
-            Go To Profile
-            </a>
-            </form>
-        </li>
-
-    </ul>
-</nav>
+           </li>
+		</ul>
+	</nav>
+</div>
 <script>
 
-    $('.sub-menu ul').hide();
-    $(".sub-menu a").click(function () {
-        $(this).parent(".sub-menu").children("ul").slideToggle("100");
-        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+   $(".menu-toggle").on('click', function() {
+     $(this).toggleClass("on");
+     $('.menu-section').toggleClass("on");
+     $("nav ul").toggleClass('hidden');
+   });
+
+      $('.sub-menu ul').hide();
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+
+
+ let topics;
+
+ $.get('/topic/all', function (categories) {
+        topics=categories;
     });
 
+ let subcategories;
 
- $.get('/category', function (categories) {
-        loadCategories(categories);
-    });
+    $.get('/category', function (categories) {
+           loadCategories(categories);
+       });
 
-  function loadCategories(array) {
-       let main = $("#categoryMenu");
-      for(let i=0;i<array.length;i++) {
-        main.append($("<li>")
-        .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span></a>")
-        .append("</li>"));
-      }
-      main.append($('</ul>'));
-   }
+
+
+     $.get('/subcategory', function (categories) {
+               subcategories=categories;
+           });
+
+     let categoryChecked=[];
+     let subcategoryChecked=[];
+
+    function loadCategories(array) {
+           let main = $("#categoryMenu");
+
+
+          for(let i=0;i<array.length;i++) {
+            main.
+            append($("<li>")
+            .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span> <input type='checkbox' name='cat' id='"+i+"' ></a>")
+            .append()
+            .append("</li>"));
+            }
+       }
+
+        $().ready(function() {
+                $('#editOptions').click(function() {
+                    categoryChecked.length=0;
+                    $.each($("input[name='cat']:checked"), function(){
+
+                        categoryChecked.push($(this).attr("id"));
+                   });
+
+                let main = $("#subcategoryMenu");
+                main.empty();
+                main.append($("<button name='edit' id='edit'>Select </button>"));
+                for(let i=0;i<subcategories.length;i++) {
+                    for(let j=0;j<categoryChecked.length;j++){
+
+                       // console.log(categoryChecked[j]+1);
+
+                        if(parseInt(categoryChecked[j])+1==subcategories[i].categoryId){
+                           main
+                             .append($("<li>")
+                             .append("<a href='#" + subcategories[i].id + "'><span>" + subcategories[i].typeName + "</span> <input type='checkbox' name='sub' id='"+i+"' ></a>")
+                             .append()
+                             .append("</li>"));
+
+                    }
+                }
+              }
+
+                $('#edit').click(function() {
+                   subcategoryChecked.length=0;
+                   $.each($("input[name='sub']:checked"), function(){
+
+                     subcategoryChecked.push($(this).attr("id"));
+
+                   });
+
+                   let topic = $("#topicMenu");
+
+                   topic.empty();
+                         for(let i=0;i<topics.length;i++) {
+                             for(let j=0;j<subcategoryChecked.length;j++){
+                              if(parseInt(subcategoryChecked[j])+1 === topics[i].subCategoryId){
+                                 topic
+                                   .append($("<li>")
+                                   .append("<a href='/test/menu/" + topics[i].id + "'><span>" + topics[i].topicName + "</span></a>")
+                                   .append()
+                                   .append("</li>"));
+
+                               }
+                        }
+                   }
+
+            });
+        });
+});
+
+
 
 
 </script>
