@@ -31,9 +31,11 @@ body {
     -webkit-transform: rotate(45deg) translate(7px, 7px);
     transform: rotate(45deg) translate(7px, 7px);
 }
+
 .menu-toggle.on .two {
     opacity: 0;
 }
+
 .menu-toggle.on .three {
     -moz-transform: rotate(-45deg) translate(8px, -10px);
     -ms-transform: rotate(-45deg) translate(8px, -10px);
@@ -63,9 +65,11 @@ nav ul {
     margin: 4em auto;
     text-align: center;
 }
+
 nav ul.hidden {
     display: none;
 }
+
 nav ul a {
     -moz-transition-duration: 0.5s;
     -o-transition-duration: 0.5s;
@@ -78,6 +82,7 @@ nav ul a {
     width: 100%;
     display: block;
 }
+
 nav ul a:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
@@ -90,4 +95,3 @@ nav ul a:hover {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
 }
-
