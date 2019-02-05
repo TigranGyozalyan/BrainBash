@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/test")
@@ -141,7 +143,7 @@ public class TestController {
         ModelAndView modelAndView=new ModelAndView("testByTopic");
 
         List<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
-        List<TestDto> testDtos=new ArrayList<>();
+        Set<TestDto> testDtos=new HashSet<>();
         testId.stream()
                 .forEach(i-> {
                     try {
