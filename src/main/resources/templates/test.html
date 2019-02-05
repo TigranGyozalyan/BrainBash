@@ -79,6 +79,7 @@
         let $subCategoryDiv = $('<Div/>').attr('id', 'subCategoryDiv').attr('class', 'subCategoryNavigation');
         $('.navigation').append($subCategoryDiv);
         $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
+            console.log(subCategories);
             $subCategoryDiv.empty();
             subCategories.forEach(function (subCategory) {
                 console.log(subCategory.typeName);

@@ -1,9 +1,7 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.service.dto.TestDto;
-import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
@@ -12,7 +10,6 @@ import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

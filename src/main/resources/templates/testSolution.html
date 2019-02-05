@@ -30,29 +30,36 @@
         border-radius: 20px;
         margin-bottom: 2em;
     }
+
     .question.error {
         background-color: #e74c3c;
     }
+
     .question.success {
         background-color: #2ecc71;
     }
+
     .question .question-headline {
         font-weight: 700;
         border-bottom: 2px solid #ddd;
         font-size: 1.5em;
         color: #000;
     }
+
     .question .question-answers {
         margin-top: 1em;
         color: #222;
     }
+
     .question .question-answers .answer + .answer {
         margin-top: .5em;
     }
+
     .question .question-answers .answer input {
         display: inline-block;
         margin-right: 1em;
     }
+
     .question .question-answers .answer label {
         cursor: pointer;
     }
@@ -75,15 +82,15 @@
         cursor: pointer;
         font-size: 1.5em;
     }
+
     .btn-check:hover {
         background-color: #1b7943;
     }
 </style>
 
 
-
 <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8">
     <title>Solve a test</title>
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -122,13 +129,54 @@
                 let $questionDiv = $('<div/>').attr('class', 'question');
                 questionCount++;
                 let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question);
-                console.log('added question #' + questionCount);
+                console.log('added question header #' + questionCount);
+
+                let answers = question.answerDtoList;
+                let correctAnswerCount = correct_answer_count(answers);
+                let $answerContainer = $('<div/>').attr('class', 'question-answers');
+                console.log('Correct answer count is' + correctAnswerCount);
+                answers.forEach(function (answer) {
+                    let $label = $('<label/>');
+                    let $answerDiv = $('<div/>').attr('class', 'answer');
+                    $label.html(answer.answer);
+                    console.log('created label with ' + $label.val());
+                    //maybe add an attribute here toDO
+                    if (correctAnswerCount === 1) {
+                        let $input = $('<input/>').attr('type', 'radio').attr('containerId',questionCount).on('click',function () {
+                            let select= document.('containerId');
+                            for (let i= select.length; i-->0;) {
+                                if (select[i].attr('containerId').val() === questionCount) {
+                                    select[i].prop('checked', true);
+                                }   }
+                            $(this).prop('checked', true);
+                        });
+                        $label.prepend($input);
+                    } else {
+                        let $input = $('<input/>').attr('type', 'checkbox');
+                        $label.prepend($input);
+                    }
+                    $answerDiv.append($label);
+                    $answerContainer.append($answerDiv);
+                });
                 $questionDiv.append($questionHeadLine);
+                $questionDiv.append($answerContainer);
                 $wrapper.append($questionDiv);
             })
         })
 
     });
+
+
+    function correct_answer_count(array) {
+        let count = 0;
+        array.forEach(function (element) {
+            if (element.correct)
+                count++;
+        });
+        return count;
+    }
+
+
 </script>
 
 

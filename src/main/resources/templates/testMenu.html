@@ -171,7 +171,7 @@ height: 100px;
                    topic.empty();
                          for(let i=0;i<topics.length;i++) {
                              for(let j=0;j<subcategoryChecked.length;j++){
-                              if(parseInt(subcategoryChecked[j])+1==topics[i].subCategoryId){
+                              if(parseInt(subcategoryChecked[j])+1 === topics[i].subCategoryId){
                                  topic
                                    .append($("<li>")
                                    .append("<a href='/test/menu/" + topics[i].id + "'><span>" + topics[i].topicName + "</span></a>")
