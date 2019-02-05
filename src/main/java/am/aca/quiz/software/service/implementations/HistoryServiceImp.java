@@ -69,7 +69,11 @@ public class HistoryServiceImp implements HistoryService {
         return historyEntity.get();
     }
 
-    public List<HistoryEntity> findAllByStatus(Long userId,String status) {
-        return historyRepository.findAllByUserEntityIdAndStatus(userId,status);
+    public List<HistoryEntity> findAllByStatus(Long userId, String status) {
+        return historyRepository.findAllByUserEntityIdAndStatus(userId, status);
+    }
+
+    public List<HistoryEntity> findAllByUserId(Long userId) {
+        return historyRepository.findAllByUserEntityId(userId);
     }
 }
