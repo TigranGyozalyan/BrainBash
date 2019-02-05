@@ -145,7 +145,7 @@ public class TestController {
     }
 
     @GetMapping("/menu/{id}")
-    public ModelAndView loadTest(@PathVariable("id") int id) {
+    public ModelAndView loadTest(@PathVariable("id") Long id) {
         return new ModelAndView("testSolution");
     }
 

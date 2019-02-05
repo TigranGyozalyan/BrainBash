@@ -48,7 +48,7 @@ public class SubCategoryController {
         return null;
     }
 
-    @GetMapping
+    @GetMapping("/filter")
     public ResponseEntity<List<SubCategoryDto>> getsubCategoriesById(@RequestParam("categoryId") Long categoryId) {
         try{
             List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
