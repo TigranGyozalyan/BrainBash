@@ -36,9 +36,7 @@
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous">
-
-</script>
+            crossorigin="anonymous"></script>
 </head>
 
 
@@ -69,23 +67,18 @@
 
 <script>
     let $selectDropDown = $('#categories');
-
     $.get('/category', function (categories) {
         loadCategories(categories);
     });
-
     function loadCategories(categories) {
         loadSelectOptionsCategories($selectDropDown, categories);
     }
-
     function loadSubCategories() {
         $('#subCategoryDiv').remove();
         let categoryId = $selectDropDown.val();
         let $subCategoryDiv = $('<Div/>').attr('id', 'subCategoryDiv').attr('class', 'subCategoryNavigation');
         $('.navigation').append($subCategoryDiv);
-
         $.get('/subcategory?categoryId=' + categoryId, function (subCategories) {
-
             $subCategoryDiv.empty();
             subCategories.forEach(function (subCategory) {
                 let subCategoryLabel = $('<label/>').html(subCategory.typeName);
@@ -95,18 +88,17 @@
                     .on('click', function () {
                         if ($(this).is(":checked")) {
                             let subCategoryId = subCategoryCheckBox.attr('subCategoryId');
-                            let $topicDiv = $('<div/>').attr('id', 'topicsDiv').attr('class', 'topicNavigation');
+                            let $topicDiv = $('<Div/>').attr('id', 'topicsDiv').attr('class', 'topicNavigation');
                             $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
+                                console.log(topics);
                                 if (!($.isEmptyObject(topics))) {
                                     topics.forEach(function (topic) {
                                         let topicLabel = $('<label/>').html(topic.topicName);
                                         let topicCheckBox = $('<input/>').attr({
                                             type: 'checkbox'
                                         }).attr('topicId', topic.id);
-
                                         $topicDiv.prepend('<br/>');
                                         $topicDiv.prepend(topicLabel.prepend(topicCheckBox));
-
                                         topicCheckBox.on('click', function () {
                                             if ($(this).is(':checked')) {
                                                 let topicId = $(this).attr('topicId');
@@ -126,7 +118,6 @@
                                                             $questionLabel.prepend($questionCheckBox);
                                                             $questionDiv.append($questionLabel);
                                                             $questionsDiv.append($questionDiv);
-
                                                         });
                                                         $topicDiv.append($questionsDiv);
                                                     } else {
@@ -140,9 +131,9 @@
                                                 $questionDivToRemove.remove();
                                             }
                                         })
-
                                     });
                                 } else {
+                                    alert('topic is empty');
                                     alert(subCategory.typeName + ' is empty');
                                     subCategoryCheckBox.prop('checked', false);
                                 }
@@ -153,13 +144,11 @@
                             $topicDiv.remove();
                         }
                     });
-
                 $subCategoryDiv.prepend($('<br/>'));
                 $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
             })
         })
     }
-
     function loadSelectOptionsCategories($select, categories) {
         // $select.children().remove();
         categories.forEach(function (category) {
@@ -171,17 +160,14 @@
         });
         $select.val([]);
     }
-
     function createTest() {
         let selector = $('input:checked');
-
         // let questionIdList = $("input[questionId]").find(selector)
         //#subCategoryDiv .topicNavigation .questionSpace
-            let questionIdList = ($('#subCategoryDiv').find('.topicNavigation').find('.questionSpace').find('.questionStyle').find('.questionInputClass')).map(function () {
-                let id = parseInt($(this).attr('questionId'));
-                return id;
-            }).toArray();
-
+        let questionIdList = ($('#subCategoryDiv').find('.topicNavigation').find('.questionSpace').find('.questionStyle').find('.questionInputClass')).map(function () {
+            let id = parseInt($(this).attr('questionId'));
+            return id;
+        }).toArray();
         let duration = parseInt($('#duration').val());
         let test_name = $('#test_name').val();
         let description = $('#test_description').val();
@@ -195,18 +181,15 @@
         console.log(test);
         $.ajax({
             type: "POST",
-                data: test,
-                url: "/test/add",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: (function () {
+            data: test,
+            url: "/test/add",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (function () {
                 alert('Question was successfully created');
             })
         })
-
-
     }
-
 </script>
 
 </body>
