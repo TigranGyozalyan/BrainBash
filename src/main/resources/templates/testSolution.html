@@ -84,7 +84,7 @@
     }
 
     .btn-check:hover {
-        background-color: #1b7943;
+        background-color: #0f6c36;
     }
 </style>
 
@@ -102,6 +102,7 @@
 
 
 <div id="wrapper" class="wrapper">
+    <div class='result'></div>
 
 </div>
 
@@ -116,7 +117,6 @@
     let wrapperDiv = $('#wrapper');
 
     wrapperDiv.ready(function () {
-        console.log('yaaaay');
         let $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
@@ -124,35 +124,22 @@
 
 
         $.get('/question/test?testId=' + id, function (questions) {
-            console.log(questions);
             questions.forEach(function (question) {
-                let $questionDiv = $('<div/>').attr('class', 'question');
+                let $questionDiv = $('<div/>').attr('class', 'question').attr('id', question.id);
                 questionCount++;
                 let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question);
-                console.log('added question header #' + questionCount);
-
                 let answers = question.answerDtoList;
                 let correctAnswerCount = correct_answer_count(answers);
                 let $answerContainer = $('<div/>').attr('class', 'question-answers');
-                console.log('Correct answer count is' + correctAnswerCount);
                 answers.forEach(function (answer) {
                     let $label = $('<label/>');
                     let $answerDiv = $('<div/>').attr('class', 'answer');
                     $label.html(answer.answer);
-                    console.log('created label with ' + $label.val());
-                    //maybe add an attribute here toDO
                     if (correctAnswerCount === 1) {
-                        let $input = $('<input/>').attr('type', 'radio').attr('containerId',questionCount).on('click',function () {
-                            let select= document.('containerId');
-                            for (let i= select.length; i-->0;) {
-                                if (select[i].attr('containerId').val() === questionCount) {
-                                    select[i].prop('checked', true);
-                                }   }
-                            $(this).prop('checked', true);
-                        });
+                        let $input = $('<input/>').attr('type', 'radio').attr('name', 'question' + questionCount).attr('answerId',answer.id);
                         $label.prepend($input);
                     } else {
-                        let $input = $('<input/>').attr('type', 'checkbox');
+                        let $input = $('<input/>').attr('type', 'checkbox').attr('answerId',answer.id);
                         $label.prepend($input);
                     }
                     $answerDiv.append($label);
@@ -160,9 +147,12 @@
                 });
                 $questionDiv.append($questionHeadLine);
                 $questionDiv.append($answerContainer);
-                $wrapper.append($questionDiv);
-            })
-        })
+                $wrapper.prepend($questionDiv);
+            });
+            let $submit = $('<button/>').attr('class','btn-check').attr('onclick', 'submitTest()').html('Submit');
+            $wrapper.append($submit);
+        });
+
 
     });
 
@@ -176,6 +166,27 @@
         return count;
     }
 
+    function submitTest() {
+        let rawData = $('.question').map(function () {
+            let questionId = $(this).attr('id');
+            console.log(questionId);
+
+
+            let answers = $(this).find('[answerId]').map(function () {
+                if ($(this).is(':checked')) {
+                    console.log('answerId is ' + $(this).attr('answerId'));
+                    return $(this).attr('answerId');
+                }
+            }).toArray();
+
+            return {
+                questionId : questionId,
+                chosenAnswerList : answers
+            }
+        }).toArray();
+        let data = JSON.stringify(rawData);
+        console.log(data);
+    }
 
 </script>
 
