@@ -1,12 +1,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+
+.test{
+float:left;
+width:1000px;
+overflow-y: auto;
+height: 100px;
+}
+
+</style>
+
+
 <head>
   <meta charset="UTF-8">
   <title>Loading Test By Topic</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/testMenuStyle.css}">
+
+   <script
+              src="https://code.jquery.com/jquery-3.3.1.js"
+              integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+              crossorigin="anonymous"></script>
+
 </head>
 <body>
- <form method="post">
+ <form>
+
            <table>
+           <div class="test">
                <thead>
                <tr>
                    <th>Name</th>
@@ -14,18 +35,29 @@
                    <th>Duration</th>
                </tr>
                </thead>
+
                <tbody>
                <tr th:each="test : ${testList}">
                    <td><span th:text="${test.test_name}">Name</span> </td>
-                   <td><span th:text="${user.description}">Description</span> </td>
-                    <td><span th:text="${user.duration}">Duration</span></td>
+                   <td><span th:text="${test.description}">Description</span> </td>
+                    <td><span th:text="${test.duration}">Duration</span></td>
 
-                    <td><a th:href="@{'/test/page'+${test.id}}">Solve</a></td>
+                    <td>
+
+                   <a th:href="@{'/test/solve/'+${test.id}}">Solve</a>
+                    </td>
 
                </tr>
                </tbody>
+               </div>
            </table>
 
+
        </form>
+
+       <script>
+
+</script>
+
 </body>
 </html>
