@@ -137,7 +137,7 @@ height: 100px;
 
                        // console.log(categoryChecked[j]+1);
 
-                        if(parseInt(categoryChecked[j])+1==subcategories[i].categoryDto){
+                        if(parseInt(categoryChecked[j])+1==subcategories[i].categoryId){
                            main
                              .append($("<li>")
                              .append("<a href='#" + subcategories[i].id + "'><span>" + subcategories[i].typeName + "</span> <input type='checkbox' name='sub' id='"+i+"' ></a>")
@@ -161,7 +161,7 @@ height: 100px;
                    topic.empty();
                          for(let i=0;i<topics.length;i++) {
                              for(let j=0;j<subcategoryChecked.length;j++){
-                              if(parseInt(subcategoryChecked[j])+1==topics[i].subCategoryDto){
+                              if(parseInt(subcategoryChecked[j])+1==topics[i].subCategoryId){
                                  topic
                                    .append($("<li>")
                                    .append("<a href='/test/menu/" + topics[i].id + "'><span>" + topics[i].topicName + "</span></a>")

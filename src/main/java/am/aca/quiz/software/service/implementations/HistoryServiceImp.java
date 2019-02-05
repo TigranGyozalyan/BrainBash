@@ -51,18 +51,13 @@ public class HistoryServiceImp implements HistoryService {
 
     @Override
     public void update(HistoryEntity history, Long id) throws SQLException {
-        HistoryEntity updated_history = historyRepository.findById(id).get();
-        if (updated_history != null) {
-            history.setId(id);
-            historyRepository.saveAndFlush(history);
-        }
+        historyRepository.save(history);
     }
 
 
     @Override
     public void removeById(Long id) throws SQLException {
-        HistoryEntity deleted_history = historyRepository.findById(id).get();
-        historyRepository.delete(deleted_history);
+        historyRepository.deleteById(id);
     }
 
     @Override

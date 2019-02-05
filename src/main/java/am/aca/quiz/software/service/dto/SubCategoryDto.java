@@ -4,14 +4,14 @@ public class SubCategoryDto {
     private Long id;
     private String typeName;
 
-    private Long categoryDtoId;
+    private Long categoryId;
 
-    public Long getCategoryDto() {
-        return categoryDtoId;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryDto(Long categoryDto) {
-        this.categoryDtoId = categoryDto;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Long getId() {

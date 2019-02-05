@@ -165,7 +165,7 @@
     function loadSubCategoriesDropDown() {
         $('#subCategoryDiv').empty();
         let categoryId = $('#categories').val();
-        $.get('/subcategory?categoryId=' + categoryId, function (subCategories) {
+        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
 
             let $subCategoryDiv = $('<div/>').attr('id', 'subCategoryDiv');
 

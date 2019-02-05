@@ -16,11 +16,11 @@ public interface ScoreService {
     List<ScoreEntity> getAll() throws SQLException;
 
     //update
-    void update(ScoreEntity score, Long id) throws SQLException;
+    void update(ScoreEntity score) throws SQLException;
 
     ScoreEntity getById(Long id) throws SQLException;
 
     void removeById(Long id) throws SQLException;
 
-    int getTestCountByTopic(Long user_id);
+
 }

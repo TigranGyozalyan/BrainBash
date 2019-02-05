@@ -5,14 +5,15 @@ public class TopicDto {
 
     private String topicName;
 
-    private Long subCategoryDtoId;
+    private Long subCategoryId;
 
-    public Long getSubCategoryDto() {
-        return subCategoryDtoId;
+
+    public Long getSubCategoryId() {
+        return subCategoryId;
     }
 
-    public void setSubCategoryDto(Long subCategoryDto) {
-        this.subCategoryDtoId = subCategoryDto;
+    public void setSubCategoryId(Long subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 
     public Long getId() {

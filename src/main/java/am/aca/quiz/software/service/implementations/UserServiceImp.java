@@ -114,7 +114,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     public void updateUser(UserEntity userEntity) {
-
         userRepository.save(userEntity);
     }
 

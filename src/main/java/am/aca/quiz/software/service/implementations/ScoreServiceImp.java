@@ -26,16 +26,16 @@ public class ScoreServiceImp implements ScoreService {
 
 
     @Override
-    public void addScore(Long topicId,Long userId) throws SQLException {
-        TopicEntity topicEntity=topicServiceImp.getById(topicId);
-        UserEntity userEntity=userServiceImp.getById(userId);
+    public void addScore(Long topicId, Long userId) throws SQLException {
+        TopicEntity topicEntity = topicServiceImp.getById(topicId);
+        UserEntity userEntity = userServiceImp.getById(userId);
 
-        ScoreEntity scoreEntity=new ScoreEntity();
+        ScoreEntity scoreEntity = new ScoreEntity();
         scoreEntity.setTopic(topicEntity);
         scoreEntity.setUserEntity(userEntity);
 
 
-        scoreRepository.saveAndFlush(scoreEntity);
+        scoreRepository.save(scoreEntity);
 
     }
 
@@ -45,12 +45,9 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     @Override
-    public void update(ScoreEntity score, Long id) throws SQLException {
-        ScoreEntity scoreEntity = scoreRepository.findById(id).get();
-        if (scoreEntity != null) {
-            score.setId(id);
-            scoreRepository.saveAndFlush(score);
-        }
+    public void update(ScoreEntity score) throws SQLException {
+        scoreRepository.save(score);
+
     }
 
 
@@ -64,8 +61,4 @@ public class ScoreServiceImp implements ScoreService {
         scoreRepository.deleteById(id);
     }
 
-    @Override
-    public int getTestCountByTopic(Long user_id) {
-        return 0;
-    }
 }

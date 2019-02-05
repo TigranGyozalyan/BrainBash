@@ -11,23 +11,23 @@ public class HistoryDto {
     private Status status;
     private double score;
 
-    private TestDto testDto;
-    private UserDto userDto;
+    private Long userId;
+    private Long testId;
 
-    public UserDto getUserDto() {
-        return userDto;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public TestDto getTestDto() {
-        return testDto;
+    public Long getTestId() {
+        return testId;
     }
 
-    public void setTestDto(TestDto testDto) {
-        this.testDto = testDto;
+    public void setTestId(Long testId) {
+        this.testId = testId;
     }
 
     public Long getId() {

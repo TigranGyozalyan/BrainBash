@@ -11,20 +11,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class TopicMapper implements MapEntityToDto<TopicEntity, TopicDto> {
-
-    private SubCategoryMapper subCategoryMapper;
-
-    public TopicMapper(SubCategoryMapper subCategoryMapper) {
-        this.subCategoryMapper = subCategoryMapper;
-    }
-
     @Override
     public TopicDto mapEntityToDto(TopicEntity topicEntity) {
         TopicDto topicDto = new TopicDto();
 
         topicDto.setId(topicEntity.getId());
         topicDto.setTopicName(topicEntity.getTopicName());
-        topicDto.setSubCategoryDto(topicEntity.getSubCategory().getId());
+
+        Long subCategoryId = topicEntity.getSubCategory().getId();
+        topicDto.setSubCategoryId(subCategoryId);
+
         return topicDto;
     }
 

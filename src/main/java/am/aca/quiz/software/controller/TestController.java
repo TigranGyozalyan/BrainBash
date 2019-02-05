@@ -78,15 +78,13 @@ public class TestController {
     }
 
 
-    @GetMapping
-    @RequestMapping("/add")
+    @GetMapping("/add")
     public ModelAndView addTest() {
 
         return new ModelAndView("test");
     }
 
     @PostMapping("/add")
-    @ResponseBody
     public ModelAndView postTest(@RequestBody TestDto test) {
 
         String test_name = test.getTest_name();
@@ -142,7 +140,7 @@ public class TestController {
     public ModelAndView loadTestById(@PathVariable("id") Long id){
         ModelAndView modelAndView=new ModelAndView("testByTopic");
 
-        List<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
+        Set<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
         Set<TestDto> testDtos=new HashSet<>();
         testId.stream()
                 .forEach(i-> {
@@ -156,5 +154,11 @@ public class TestController {
 
         return modelAndView;
     }
+
+    @GetMapping("/solve/{id}")
+    public ModelAndView loadTest(@PathVariable("id") Long id) {
+        return new ModelAndView("testSolution");
+    }
+
 
 }
