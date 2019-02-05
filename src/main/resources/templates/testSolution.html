@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solve a test</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<div id="wrapper">
+
+</div>
+
+
+
+
+
+
+</body>
+
+
+<script>
+
+let questionCount = 0;
+
+let wrapperDiv = $('#wrapper');
+
+wrapperDiv.ready(function () {
+    console.log('yaaaay');
+    let $questionDiv = $('<div/>');
+    let pathArray = window.location.pathname.split('/');
+    let id = parseInt(pathArray[pathArray.length-1]);
+    console.log('Test id is : ' + id);
+
+
+    $.get('/question/test?testId=' + id, function (questions) {
+        console.log(questions);
+    })
+
+});
+</script>
+
+
+
+</html>

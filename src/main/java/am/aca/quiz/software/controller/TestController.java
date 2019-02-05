@@ -144,4 +144,10 @@ public class TestController {
         return modelAndView;
     }
 
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTest(@PathVariable("id") int id) {
+        return new ModelAndView("testSolution");
+    }
+
+
 }
