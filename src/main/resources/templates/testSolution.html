@@ -122,13 +122,35 @@
                 let $questionDiv = $('<div/>').attr('class', 'question');
                 questionCount++;
                 let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question);
-                console.log('added question #' + questionCount);
+                console.log('added question header#' + questionCount);
+
+                let $question_answer_Div = $('<div/>').attr('class', 'question-headline');
+
+                let answers = question.answerDtoList;
+                let correctAnswerCount = correct_answer_count(answers);
+                console.log('Correct answer count is + ' + correctAnswerCount);
+                answers.forEach(function (answer) {
+
+                });
                 $questionDiv.append($questionHeadLine);
                 $wrapper.append($questionDiv);
             })
         })
 
     });
+
+
+    function correct_answer_count(array) {
+        let count = 0;
+        array.forEach(function (element) {
+           if(element.correct)
+               count++;
+        });
+        return count;
+    }
+
+
+
 </script>
 
 

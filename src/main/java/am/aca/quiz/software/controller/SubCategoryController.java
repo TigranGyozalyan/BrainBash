@@ -35,24 +35,25 @@ public class SubCategoryController {
         this.subCategoryMapper = subCategoryMapper;
     }
 
-    @GetMapping
-    public ResponseEntity<List<SubCategoryDto>> getAll() {
-        try {
-            if(subCategoryServiceImp.getAll().isEmpty()){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @GetMapping
+//    public ResponseEntity<List<SubCategoryDto>> getAll() {
+//        try {
+//            if(subCategoryServiceImp.getAll().isEmpty()){
+//                return ResponseEntity.noContent().build();
+//            }
+//            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<SubCategoryDto>> getsubCategoriesById(@RequestParam("categoryId") Long categoryId) {
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<List<SubCategoryDto>> getSubCategoriesById(@RequestParam("categoryId") long categoryId) {
         try{
             List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
-                    .filter(i -> i.getId().equals(categoryId))
+                    .filter(i -> i.getId() == categoryId)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
         }catch (SQLException e) {
@@ -61,18 +62,18 @@ public class SubCategoryController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
-        try {
-            if(subCategoryServiceImp.getById(id)==null){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
+//        try {
+//            if(subCategoryServiceImp.getById(id)==null){
+//                return ResponseEntity.noContent().build();
+//            }
+//            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addSubCategory() throws SQLException {

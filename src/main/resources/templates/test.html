@@ -78,7 +78,8 @@
         let categoryId = $selectDropDown.val();
         let $subCategoryDiv = $('<Div/>').attr('id', 'subCategoryDiv').attr('class', 'subCategoryNavigation');
         $('.navigation').append($subCategoryDiv);
-        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
+        $.get('/subcategory?categoryId=' + categoryId, function (subCategories) {
+            console.log(subCategories);
             $subCategoryDiv.empty();
             subCategories.forEach(function (subCategory) {
                 let subCategoryLabel = $('<label/>').html(subCategory.typeName);
