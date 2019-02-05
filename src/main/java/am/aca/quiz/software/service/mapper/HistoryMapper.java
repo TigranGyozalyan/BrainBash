@@ -2,6 +2,7 @@ package am.aca.quiz.software.service.mapper;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.service.dto.HistoryDto;
+import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +13,12 @@ import java.util.stream.Collectors;
 public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> {
     private UserMapper userMapper;
     private TestMapper testMapper;
+    private TestServiceImp testServiceImp;
 
-    public HistoryMapper(UserMapper userMapper, TestMapper testMapper) {
+    public HistoryMapper(UserMapper userMapper, TestMapper testMapper, TestServiceImp testServiceImp) {
         this.userMapper = userMapper;
         this.testMapper = testMapper;
+        this.testServiceImp = testServiceImp;
     }
 
     @Override
@@ -28,8 +31,9 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
         historyDto.setStartTime(historyEntity.getStartTime());
         historyDto.setStatus(historyEntity.getStatus());
 
-        Long testId = historyEntity.getTestEntity().getId();
-        Long userId = historyEntity.getUserEntity().getId();
+        historyDto.setUserId(historyEntity.getUserEntity().getId());
+        historyDto.setTestId(historyEntity.getTestEntity().getId());
+        historyDto.setTestDto(testMapper.mapEntityToDto(historyEntity.getTestEntity()));
 
 
         return historyDto;

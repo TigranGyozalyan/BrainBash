@@ -13,6 +13,15 @@ public class HistoryDto {
 
     private Long userId;
     private Long testId;
+    private TestDto testDto;
+
+    public TestDto getTestDto() {
+        return testDto;
+    }
+
+    public void setTestDto(TestDto testDto) {
+        this.testDto = testDto;
+    }
 
     public Long getUserId() {
         return userId;
