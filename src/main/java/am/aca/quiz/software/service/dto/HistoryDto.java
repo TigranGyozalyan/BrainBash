@@ -14,6 +14,16 @@ public class HistoryDto {
     private Long userId;
     private Long testId;
     private TestDto testDto;
+    private UserDto userDto;
+
+
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
+    }
 
     public TestDto getTestDto() {
         return testDto;

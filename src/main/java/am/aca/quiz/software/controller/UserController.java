@@ -295,6 +295,11 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/admin")
+    public ModelAndView adminPage() {
+        return new ModelAndView("adminProfile");
+    }
+
 }
 
 

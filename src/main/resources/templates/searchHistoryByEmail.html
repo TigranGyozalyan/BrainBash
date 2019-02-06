@@ -1,13 +1,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All History List</title>
+    <title>Past History List</title>
 </head>
 <body>
 <form method="get">
     <table>
         <thead>
         <tr>
+            <th>TestId</th>
+            <th>Username</th>
+            <th>Surname</th>
+            <th>email</th>
             <th>Test-name</th>
             <th>Start-time</th>
             <th>End-time</th>
@@ -17,7 +21,11 @@
         </thead>
         <tbody>
         <tr th:each="history : ${historyList}">
-            <td><span th:text="${history.testDto.getTest_name()}">Test-name</span></td>
+            <td><span th:text="${history.id}">TestId</span></td>
+            <td><span th:text="${history.userDto.name}">Test-name</span></td>
+            <td><span th:text="${history.userDto.surname}">Test-name</span></td>
+            <td><span th:text="${history.userDto.email}">Test-name</span></td>
+            <td><span th:text="${history.testDto.test_name}">Test-name</span></td>
             <td><span th:text="${history.startTime}">Start-time</span></td>
             <td><span th:text="${history.endTime}">End-time</span></td>
             <td><span th:text="${history.score}">Score</span></td>
@@ -25,7 +33,7 @@
         </tr>
         </tbody>
     </table>
-    <input type="button" onclick="location.href='http://localhost:8080/user/profile'" value="Back to profile">
+    <input type="button" onclick="location.href='http://localhost:8080/history/history/search'" value="Back search">
 </form>
 </body>
 </html>
