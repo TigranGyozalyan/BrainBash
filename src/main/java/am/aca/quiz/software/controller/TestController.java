@@ -131,9 +131,9 @@ public class TestController {
     @PostMapping("/process")
     public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
-        for(SubmitQuestionDto submitQuestionDto : submitQuestionDtos) {
-            System.out.println("Question Id is  : " +  submitQuestionDto.getQuestionId());
-        }
+//        for(SubmitQuestionDto submitQuestionDto : submitQuestionDtos) {
+//            System.out.println("Question Id is  : " +  submitQuestionDto.getQuestionId());
+//        }
         return new ModelAndView("testSolution");
     }
 
