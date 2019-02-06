@@ -70,9 +70,9 @@ public class QuestionController {
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
         try {
             List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
-                    .filter(i -> i.getTopicEntity().getId().equals(topicId) )
+                    .filter(i -> i.getTopicEntity().getId().equals(topicId))
                     .collect(Collectors.toList());
-            return  ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
+            return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
         } catch (SQLException e) {
             return ResponseEntity.noContent().build();
         }
@@ -89,7 +89,6 @@ public class QuestionController {
     }
 
 
-
     @GetMapping(value = "/add")
     public ModelAndView addQuestion() {
         return new ModelAndView("question");
@@ -98,17 +97,23 @@ public class QuestionController {
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView postQuestion(@RequestBody QuestionDto question) {
         try {
+
+
             String questionBody = question.getQuestion();
             String level = question.getLevel();
             int points = question.getPoints();
-            int corr_answer_count = question.getCorrect_amount();
+            int corr_answer_count = 0;
 
+            List<AnswerDto> answerList = question.getAnswerDtoList();
+
+            for (AnswerDto answer : answerList) {
+                corr_answer_count += answer.isCorrect() ? 1 : 0;
+            }
 
             Long topicId = question.getTopicId();
 
             questionServiceImp.addQuestion(questionBody, level, corr_answer_count, points, topicId);
             Long questionId = questionServiceImp.getQuestionEntityByQuestion(questionBody).getId();
-            List<AnswerDto> answerList = question.getAnswerDtoList();
 
             for (AnswerDto answer : answerList) {
                 String answerText = answer.getAnswer();

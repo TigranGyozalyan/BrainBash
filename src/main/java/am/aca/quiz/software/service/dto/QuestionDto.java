@@ -8,7 +8,6 @@ public class QuestionDto {
     private Long id;
     private Long topicId;
     private String question;
-    private int correct_amount;
     private int points;
     private String level;
     private List<AnswerDto> answerDtoList;
@@ -58,14 +57,6 @@ public class QuestionDto {
         this.question = question;
     }
 
-    public int getCorrect_amount() {
-        return correct_amount;
-    }
-
-    public void setCorrect_amount(int correct_amount) {
-        this.correct_amount = correct_amount;
-    }
-
     public int getPoints() {
         return points;
     }
@@ -87,8 +78,7 @@ public class QuestionDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         QuestionDto that = (QuestionDto) o;
-        return correct_amount == that.correct_amount &&
-                points == that.points &&
+        return points == that.points &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(question, that.question) &&
                 level.equals(that.level);
@@ -96,6 +86,6 @@ public class QuestionDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, question, correct_amount, points, level);
+        return Objects.hash(id, question, points, level);
     }
 }

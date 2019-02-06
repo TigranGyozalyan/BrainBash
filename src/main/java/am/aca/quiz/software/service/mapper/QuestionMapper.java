@@ -27,7 +27,6 @@ public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDt
     public QuestionDto mapEntityToDto(QuestionEntity questionEntity) {
         QuestionDto questionDto = new QuestionDto();
         questionDto.setId(questionEntity.getId());
-        questionDto.setCorrect_amount(questionEntity.getCorrect_amount());
         questionDto.setLevel(questionEntity.getLevel().toString());
         questionDto.setPoints(questionEntity.getPoints());
         questionDto.setQuestion(questionEntity.getQuestion());

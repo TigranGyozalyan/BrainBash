@@ -1,6 +1,7 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.service.dto.SubmitQuestionDto;
 import am.aca.quiz.software.service.dto.TestDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
@@ -43,7 +44,6 @@ public class TestController {
         this.questionServiceImp = questionServiceImp;
         this.questionMapper = questionMapper;
         this.userMapper = userMapper;
-
         this.userServiceImp = userServiceImp;
     }
 
@@ -125,6 +125,16 @@ public class TestController {
         }
 
         return testList();
+    }
+
+
+    @PostMapping("/process")
+    public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+
+        for(SubmitQuestionDto submitQuestionDto : submitQuestionDtos) {
+            System.out.println("Question Id is  : " +  submitQuestionDto.getQuestionId());
+        }
+        return new ModelAndView("testSolution");
     }
 
     @GetMapping("/menu")
