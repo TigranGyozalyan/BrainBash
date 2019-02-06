@@ -134,6 +134,9 @@ public class TestController {
 //        for(SubmitQuestionDto submitQuestionDto : submitQuestionDtos) {
 //            System.out.println("Question Id is  : " +  submitQuestionDto.getQuestionId());
 //        }
+
+        testServiceImp.checkTest(submitQuestionDtos);
+
         return new ModelAndView("testSolution");
     }
 
