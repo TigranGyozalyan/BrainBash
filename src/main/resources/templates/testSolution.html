@@ -96,7 +96,6 @@
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
-    <!--<link  type="text/css" th:href="@{css/testSolution.css}"/>-->
 </head>
 <body>
 
@@ -120,7 +119,7 @@
         let $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
-        console.log('Test id is : ' + id);
+       // console.log('Test id is : ' + id);
 
 
         $.get('/question/test?testId=' + id, function (questions) {
@@ -169,12 +168,12 @@
     function submitTest() {
         let rawData = $('.question').map(function () {
             let questionId = $(this).attr('id');
-            console.log(questionId);
+          //  console.log(questionId);
 
 
             let answers = $(this).find('[answerId]').map(function () {
                 if ($(this).is(':checked')) {
-                    console.log('answerId is ' + $(this).attr('answerId'));
+                  //  console.log('answerId is ' + $(this).attr('answerId'));
                     return $(this).attr('answerId');
                 }
             }).toArray();
