@@ -313,9 +313,9 @@
 
 </nav>
 
-<a href="/user/admin"class='container' id="togglee" >
-           <span class='pulse-button'>Admin</span>
-        </a>
+<div id="adminButton">
+
+</div>
 
 <script>
 
@@ -324,7 +324,6 @@
            });
 
     let hidden = true;
-
     function action(user) {
         console.log(user);
        for(let i=0;i<user.role.length;i++){
@@ -332,11 +331,20 @@
               hidden=false;
           }
        }
-        if(hidden) {
-            document.getElementById('togglee').style.visibility = 'hidden';
-        } else {
-            document.getElementById('togglee').style.visibility = 'visible';
-        }
+        if(!hidden) {
+                let main = $("#adminButton");
+                main.append($("<a href='/user/admin' class='container' id='togglee' >")
+                .append("<span class='pulse-button'>Admin</span>")
+                .append("</a>"));
+
+                //     let $input = $('<input/>')
+                //     .attr('type','button')
+                //     .attr('class','container')
+                //     .attr('id','togglee')
+                //     .attr('onclick','location.href=/user/admin')
+                //     .attr('value','Admin');
+                //     main.append($input);
+            }
     }
 
 </script>
