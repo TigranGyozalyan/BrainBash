@@ -119,7 +119,6 @@
         let $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
-       // console.log('Test id is : ' + id);
 
 
         $.get('/question/test?testId=' + id, function (questions) {
@@ -146,12 +145,11 @@
                 });
                 $questionDiv.append($questionHeadLine);
                 $questionDiv.append($answerContainer);
-                $wrapper.prepend($questionDiv);
+                $wrapper.append($questionDiv);
             });
             let $submit = $('<button/>').attr('class','btn-check').attr('onclick', 'submitTest()').html('Submit');
             $wrapper.append($submit);
         });
-
 
     });
 
@@ -167,14 +165,12 @@
 
     function submitTest() {
         let rawData = $('.question').map(function () {
-            let questionId = $(this).attr('id');
-          //  console.log(questionId);
+            let questionId = parseInt($(this).attr('id'));
 
 
             let answers = $(this).find('[answerId]').map(function () {
                 if ($(this).is(':checked')) {
-                  //  console.log('answerId is ' + $(this).attr('answerId'));
-                    return $(this).attr('answerId');
+                    return parseInt($(this).attr('answerId'));
                 }
             }).toArray();
 
@@ -185,6 +181,18 @@
         }).toArray();
         let data = JSON.stringify(rawData);
         console.log(data);
+
+        $.ajax({
+            type: "POST",
+            data: data,
+            url: "/test/process",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (function () {
+                location.href = "http://localhost:8080/user/profile";
+            })
+    });
+
     }
 
 </script>

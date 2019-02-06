@@ -48,9 +48,7 @@
     Points <input name="points" type="text" id="points">
 </label>
 <br/>
-<label>
-    Correct answer count <input name="correct_answer_count" type="text" id="correct_answer_count">
-</label>
+
 <br/>
 
 <div id="answerBlock">
@@ -101,7 +99,6 @@
         let questionText = $('#questionText').val();
         let level = $('#level').val();
         let points = parseInt($('#points').val());
-        let correctAmount = parseInt($('#correct_answer_count').val());
 
 
         let answerData = $('#answerBlock').find('.answerClass').map(function () {
@@ -121,7 +118,6 @@
         let question = JSON.stringify({
             topicId: topicId,
             question: questionText,
-            correct_amount: correctAmount,
             level: level,
             points: points,
             answerDtoList: answerData
@@ -135,7 +131,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function () {
-                alert('Question was successfully created');
+                // location.href = 'http://localhost:8080/question/add';
             })
         });
     }
