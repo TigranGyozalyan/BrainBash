@@ -115,7 +115,7 @@ public class HistoryController {
     public ModelAndView pastStory() {
         ModelAndView modelAndView = new ModelAndView("pastStory");
 
-        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.COMPLETED));
 
         modelAndView.addObject("historyList", historyDtos);
 
@@ -127,7 +127,7 @@ public class HistoryController {
     public ModelAndView futureStory() {
         ModelAndView modelAndView = new ModelAndView("futureStory");
 
-        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.COMPLETED));
+        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
 
         modelAndView.addObject("historyList", historyDtos);
 

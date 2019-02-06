@@ -44,6 +44,69 @@
 
 
 
+    .container {
+      width: 200px;
+      height: 100%;
+      margin: 0 auto 0;
+      -webkit-perspective: 1000;
+      -webkit-backface-visibility: hidden;
+      background: #fff;
+    }
+
+  .pulse-button {
+    position: relative;
+    top: 50%;
+    left: 85%;
+    margin-left: 0;
+    margin-top: 0;
+    display: block;
+    width: 100px;
+    height: 100px;
+    font-size: 1.3em;
+    font-weight: light;
+    font-family: 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 100px;
+    letter-spacing: -1px;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    background:  #3498db;
+    cursor: pointer;
+    box-shadow: 0 0 0 0 rgba(90, 153, 212, 0.5);
+    -webkit-animation: pulse 1.5s infinite;
+  }
+
+    .pulse-button:hover {
+      -webkit-animation: none;
+    }
+
+    @-webkit-keyframes pulse {
+      0% {
+        -moz-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+      }
+      70% {
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        box-shadow: 0 0 0 50px rgba(90, 153, 212, 0);
+      }
+      100% {
+        -moz-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
+        box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
+      }
+    }
+
+
+
 </style>
 
 <head>
@@ -231,14 +294,6 @@
         </li>
 
         <li>
-            <a href="/user/admin">
-                <div class='fa fa-sign-out'></div>
-                Admin
-            </a>
-        </li>
-
-
-        <li>
           <a href="/animation">
            <div class='fa fa-sign-out'></div>
               Visit Me !!!
@@ -252,8 +307,39 @@
             </a>
         </li>
     </ul>
+
+
+
+
 </nav>
 
+<a href="/user/admin"class='container' id="togglee" >
+           <span class='pulse-button'>Admin</span>
+        </a>
+
+<script>
+
+     $.post('/user/role', function (user) {
+               action(user)
+           });
+
+    let hidden = true;
+
+    function action(user) {
+        console.log(user);
+       for(let i=0;i<user.role.length;i++){
+          if(user.role[i]==="ADMIN"){
+              hidden=false;
+          }
+       }
+        if(hidden) {
+            document.getElementById('togglee').style.visibility = 'hidden';
+        } else {
+            document.getElementById('togglee').style.visibility = 'visible';
+        }
+    }
+
+</script>
 
 <script>
     $('.sub-menu ul').hide();

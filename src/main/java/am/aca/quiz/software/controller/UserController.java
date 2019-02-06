@@ -3,9 +3,12 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Role;
+import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -293,6 +296,18 @@ public class UserController {
         }
 
         return modelAndView;
+    }
+    @PostMapping("/role")
+    public ResponseEntity<UserDto> getUserRole(Principal principal){
+        try {
+            if(userServiceImp.findByEmail(principal.getName())==null){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping("/admin")

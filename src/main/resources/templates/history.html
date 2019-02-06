@@ -7,12 +7,13 @@
 </head>
 <body>
 
+<form class="divide">
 <form action="/history/history/past" method="get">
     <input type="submit" value="Past history">
 </form>
 
-<form action="/history/future" method="get">
-    <input type="submit" value="future history">
+<form action="/history/history/future" method="get">
+    <input type="submit" value="Future history">
 </form>
 
 <form action="/history/history/inprogress" method="get">
@@ -27,6 +28,8 @@
 <form action="/history/history/search" method="get">
     <input type="submit" value="Search">
 </form>
+</form>
 
+<input type="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
 </body>
 </html>
