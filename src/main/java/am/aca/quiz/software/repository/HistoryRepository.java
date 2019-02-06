@@ -12,4 +12,8 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
     List<HistoryEntity> findAllByUserEntityIdAndStatus(Long userId, Enum status);
 
     List<HistoryEntity> findAllByUserEntityId(Long userId);
+
+    List<HistoryEntity> findAllByStatus(Enum status);
+
+    List<HistoryEntity> findAllByUserEntityEmail(String email);
 }

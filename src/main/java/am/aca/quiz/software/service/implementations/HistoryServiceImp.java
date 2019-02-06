@@ -31,7 +31,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     @Override
-    public void addHistory(Long userId, Long testId, double score,Status status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
+    public void addHistory(Long userId, Long testId, double score, Status status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
         UserEntity userEntity = userService.getById(userId);
         TestEntity testEntity = testService.getById(testId);
 
@@ -75,5 +75,13 @@ public class HistoryServiceImp implements HistoryService {
 
     public List<HistoryEntity> findAllByUserId(Long userId) {
         return historyRepository.findAllByUserEntityId(userId);
+    }
+
+    public List<HistoryEntity> findAllByStatus(Enum status) {
+        return historyRepository.findAllByStatus(status);
+    }
+
+    public List<HistoryEntity> findByEmail(String email) {
+        return historyRepository.findAllByUserEntityEmail(email);
     }
 }

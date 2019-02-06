@@ -10,15 +10,14 @@ import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -92,5 +91,78 @@ public class HistoryController {
         }
 
         return modelAndView;
+    }
+
+    @GetMapping("/history")
+    public ModelAndView history() {
+        return new ModelAndView("history");
+    }
+
+    @GetMapping("/history/all")
+    public ModelAndView modelAndView() {
+        ModelAndView modelAndView = new ModelAndView("allStory");
+
+        try {
+            modelAndView.addObject("historyList", historyMapper.mapEntitiesToDto(historyServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history/past")
+    public ModelAndView pastStory() {
+        ModelAndView modelAndView = new ModelAndView("pastStory");
+
+        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+
+        modelAndView.addObject("historyList", historyDtos);
+
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history/future")
+    public ModelAndView futureStory() {
+        ModelAndView modelAndView = new ModelAndView("futureStory");
+
+        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.COMPLETED));
+
+        modelAndView.addObject("historyList", historyDtos);
+
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history/inprogress")
+    public ModelAndView inprogressStory() {
+        ModelAndView modelAndView = new ModelAndView("inprogressStory");
+
+        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.INPROGRESS));
+
+        modelAndView.addObject("historyList", historyDtos);
+
+
+        return modelAndView;
+    }
+
+    @PostMapping("/history/byemail")
+    public ModelAndView historyByEmail(@RequestParam Map<String, String> formDate) {
+        ModelAndView modelAndView = new ModelAndView("searchHistoryByEmail");
+
+        String email = formDate.get("email");
+
+        if (!email.isEmpty()) {
+            List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(email));
+            modelAndView.addObject("historyList", historyDtos);
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history/search")
+    public ModelAndView searchHistory() {
+        return new ModelAndView("searchHistory");
     }
 }

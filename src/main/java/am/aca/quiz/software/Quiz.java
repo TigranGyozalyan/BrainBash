@@ -17,6 +17,7 @@ public class Quiz {
         SpringApplication.run(Quiz.class, args);
 
     }
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(12);
