@@ -20,7 +20,7 @@ public class Welcome {
         if (authentication instanceof AnonymousAuthenticationToken) {
             return modelAndView;
         }
-        return new ModelAndView("redirect:/notfound");
+        return new ModelAndView("redirect:/user/profile");
 
     }
 
@@ -31,7 +31,7 @@ public class Welcome {
         if (authentication instanceof AnonymousAuthenticationToken) {
             return modelAndView;
         }
-        return new ModelAndView("redirect:/notfound");
+        return new ModelAndView("redirect:/user/profile");
     }
 
     @GetMapping("login")
@@ -41,13 +41,15 @@ public class Welcome {
         if (authentication instanceof AnonymousAuthenticationToken) {
             return modelAndView;
         }
-        return new ModelAndView("redirect:/notfound");
+        return new ModelAndView("redirect:/user/profile" +
+                "");
     }
 
-    @GetMapping(value = "notfound")
-    public ModelAndView notFound() {
-        return new ModelAndView("notFound");
-    }
+//
+//    @GetMapping(value = "notfound")
+//    public ModelAndView notFound() {
+//        return new ModelAndView("notFound");
+//    }
 
     @GetMapping("animation")
     public ModelAndView animation(){
