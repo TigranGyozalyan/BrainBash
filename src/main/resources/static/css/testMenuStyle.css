@@ -1,34 +1,210 @@
-/*body {*/
-    /*color: #fff;*/
-    /*background: #949c4e;*/
-    /*background: linear-gradient(*/
-            /*115deg,*/
-            /*rgba(86, 216, 228, 1) 10%,*/
-            /*rgba(159, 1, 234, 1) 90%*/
-    /*);*/
-    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,*/
-    /*Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,*/
-    /*sans-serif;*/
-    /*-webkit-font-smoothing: antialiased;*/
-    /*-moz-osx-font-smoothing: grayscale;*/
-    /*overflow: hidden;*/
-
-/*}*/
 
 
-body{
-    background-color: #000000;
-    padding: 0px;
-    margin: 0px;
+/*!*BackGround*!*/
+
+
+
+html {
+    font-size: 0.75vw;
 }
 
-#gradient
-{
+body {
+    margin: 0;
+    background: #89d0d7;
+    display: flex;
+    height: 100vh;
     width: 100%;
-    height: 800px;
-    padding: 0px;
-    margin: 0px;
+    justify-content: center;
+    align-items: center;
 }
+
+.laptop {
+    width: 50rem;
+    position: relative;
+}
+.laptop:before {
+    background: #222;
+    display: block;
+    content: "";
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    top: 0.7rem;
+    left: 24.5rem;
+    z-index: 1000;
+}
+.laptop:after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 95%;
+    margin-left: 2.5%;
+    height: 0.75rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+    border-radius: 5rem;
+}
+
+.upper {
+    width: 40rem;
+    height: 23rem;
+    background: #3d4144;
+    border: 2px solid #eaeaea;
+    border-bottom: none;
+    border-radius: 1.5rem 1.5rem 0 0;
+    margin-left: 5rem;
+    box-shadow: inset 0 0 2px 2px #222;
+    position: relative;
+}
+.upper:before {
+    width: 36rem;
+    height: 19rem;
+    background: #a1a1a1;
+    display: block;
+    content: "";
+    top: 2rem;
+    left: 2rem;
+    position: absolute;
+}
+.upper:after {
+    display: block;
+    content: "";
+    position: absolute;
+    border-bottom: 23rem solid rgba(0, 0, 0, 0.075);
+    border-right: 10rem solid transparent;
+    height: 0;
+    width: 50%;
+    border-top-left-radius: 1.5rem;
+}
+
+.lower {
+    width: 50rem;
+    height: 2rem;
+    background: #eaeaea;
+    border-radius: 2px;
+    position: relative;
+}
+.lower:before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 10rem;
+    height: 0.8rem;
+    background: #a1a1a1;
+    left: 20rem;
+    top: 0;
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.lower:after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.75rem;
+    background: #bababa;
+    top: 2rem;
+    border-bottom-right-radius: 7.5rem 2.5rem;
+    border-bottom-left-radius: 7.5rem 2.5rem;
+}
+
+
+
+
+/*@-webkit-keyframes gradient_transition {*/
+    /*0% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+    /*50% {*/
+        /*top: -200%;*/
+        /*left: -200%;*/
+    /*}*/
+    /*100% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+/*}*/
+/*@-moz-keyframes gradient_transition {*/
+    /*0% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+    /*50% {*/
+        /*top: -200%;*/
+        /*left: -200%;*/
+    /*}*/
+    /*100% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+/*}*/
+/*@-o-keyframes gradient_transition {*/
+    /*0% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+    /*50% {*/
+        /*top: -200%;*/
+        /*left: -200%;*/
+    /*}*/
+    /*100% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+/*}*/
+/*@keyframes gradient_transition {*/
+    /*0% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+    /*50% {*/
+        /*top: -200%;*/
+        /*left: -200%;*/
+    /*}*/
+    /*100% {*/
+        /*top: 0;*/
+        /*left: 0;*/
+    /*}*/
+/*}*/
+/*body {*/
+    /*color: white;*/
+    /*font-family: "Nunito";*/
+    /*font-weight: lighter;*/
+    /*overflow: hidden;*/
+/*}*/
+/*body::before, body::after {*/
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*z-index: -1;*/
+/*}*/
+/*body::before {*/
+    /*content: "";*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background-image: url("http://bryce-snyder.com/assets/img/background.jpg");*/
+    /*background-size: cover;*/
+    /*background-position: 50% 50%;*/
+    /*background-repeat: no-repeat;*/
+    /*-webkit-filter: grayscale(100%);*/
+    /*-moz-filter: grayscale(100%);*/
+    /*-ms-filter: grayscale(100%);*/
+    /*-o-filter: grayscale(100%);*/
+    /*filter: grayscale(100%);*/
+/*}*/
+/*body::after {*/
+    /*content: "";*/
+    /*width: 400%;*/
+    /*height: 400%;*/
+    /*opacity: 0.8;*/
+    /*background: -moz-linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);*/
+    /*background: -webkit-linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);*/
+    /*background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);*/
+    /*-webkit-animation: gradient_transition 15s ease infinite;*/
+    /*-moz-animation: gradient_transition 15s ease infinite;*/
+    /*-o-animation: gradient_transition 15s ease infinite;*/
+    /*animation: gradient_transition 15s ease infinite;*/
+/*}*/
 
 
 
