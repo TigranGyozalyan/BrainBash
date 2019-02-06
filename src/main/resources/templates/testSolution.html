@@ -112,16 +112,15 @@
 <script>
 
     let questionCount = 0;
-
     let wrapperDiv = $('#wrapper');
-
     wrapperDiv.ready(function () {
         let $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
 
-
         $.get('/question/test?testId=' + id, function (questions) {
+            questions = shuffle(questions);
+
             questions.forEach(function (question) {
                 let $questionDiv = $('<div/>').attr('class', 'question').attr('id', question.id);
                 questionCount++;
@@ -134,10 +133,10 @@
                     let $answerDiv = $('<div/>').attr('class', 'answer');
                     $label.html(answer.answer);
                     if (correctAnswerCount === 1) {
-                        let $input = $('<input/>').attr('type', 'radio').attr('name', 'question' + questionCount).attr('answerId',answer.id);
+                        let $input = $('<input/>').attr('type', 'radio').attr('name', 'question' + questionCount).attr('answerId', answer.id);
                         $label.prepend($input);
                     } else {
-                        let $input = $('<input/>').attr('type', 'checkbox').attr('answerId',answer.id);
+                        let $input = $('<input/>').attr('type', 'checkbox').attr('answerId', answer.id);
                         $label.prepend($input);
                     }
                     $answerDiv.append($label);
@@ -147,10 +146,9 @@
                 $questionDiv.append($answerContainer);
                 $wrapper.append($questionDiv);
             });
-            let $submit = $('<button/>').attr('class','btn-check').attr('onclick', 'submitTest()').html('Submit');
+            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit');
             $wrapper.append($submit);
         });
-
     });
 
 
@@ -175,8 +173,8 @@
             }).toArray();
 
             return {
-                questionId : questionId,
-                chosenAnswerList : answers
+                questionId: questionId,
+                chosenAnswerList: answers
             }
         }).toArray();
         let data = JSON.stringify(rawData);
@@ -191,10 +189,15 @@
             success: (function () {
                 location.href = "http://localhost:8080/user/profile";
             })
-    });
-
+        });
     }
-
+    function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
 </script>
 
 
