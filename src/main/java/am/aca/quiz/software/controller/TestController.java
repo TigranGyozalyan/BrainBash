@@ -1,11 +1,10 @@
 package am.aca.quiz.software.controller;
 
+import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.dto.*;
-import am.aca.quiz.software.service.implementations.QuestionServiceImp;
-import am.aca.quiz.software.service.implementations.TestServiceImp;
-import am.aca.quiz.software.service.implementations.TopicServiceImp;
-import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
@@ -13,11 +12,13 @@ import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -33,10 +34,11 @@ public class TestController {
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
+    private final HistoryServiceImp historyServiceImp;
     private ScorePair<Double, Double> score;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController) {
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -46,22 +48,21 @@ public class TestController {
         this.userMapper = userMapper;
         this.userServiceImp = userServiceImp;
         this.questionController = questionController;
+        this.historyServiceImp = historyServiceImp;
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
-        try {
-            if (testServiceImp.getById(id) != null) {
-                return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
-            }
-            return ResponseEntity.noContent().build();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+//    @GetMapping("/{id}")
+//    public ResponseEntity<TestDto> getById(@PathVariable("id") Long id) {
+//        try {
+//            if (testServiceImp.getById(id) != null) {
+//                return ResponseEntity.ok(testMapper.mapEntityToDto(testServiceImp.getById(id)));
+//            }
+//            return ResponseEntity.noContent().build();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     @GetMapping
     public ResponseEntity<List<TestDto>> getAll() {
@@ -75,13 +76,14 @@ public class TestController {
         return null;
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/add")
     public ModelAndView addTest() {
 
         return new ModelAndView("test");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public ModelAndView postTest(@RequestBody TestDto test) {
 
@@ -105,6 +107,7 @@ public class TestController {
         return new ModelAndView("test");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/list")
     public ModelAndView testList() {
         ModelAndView modelAndView = new ModelAndView("testList");
@@ -116,6 +119,7 @@ public class TestController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
     public ModelAndView deleteTest(@PathVariable("id") Long id) {
 
@@ -137,14 +141,14 @@ public class TestController {
 
 
     @PostMapping("/process")
-    public ModelAndView processTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        score = testServiceImp.checkTest(submitQuestionDtos);
+        testServiceImp.checkTest(submitQuestionDtos);
 
-        return new ModelAndView("redirect:/test/scorepage");
+        return new ModelAndView("testSolution");
     }
 
 
@@ -197,18 +201,22 @@ public class TestController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/selectUser/{id}")
     public ModelAndView selectUsers(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("organizeTest");
 
+
         List<UserDto> userDtos = null;
         TestDto testDto = null;
+
         try {
             testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
             userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         modelAndView.addObject("userList", userDtos);
         modelAndView.addObject("test", testDto);
@@ -218,10 +226,54 @@ public class TestController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/selectUser")
+    public ModelAndView saveHistory(@RequestBody TestUsersDto testUsersDto) {
+
+        ModelAndView modelAndView = new ModelAndView("organizeTest");
+
+        List<HistoryEntity> historyEntities = new ArrayList<>();
+        List<UserDto> userDtos = null;
+        TestDto testDto = null;
+
+        try {
+            testDto = testMapper.mapEntityToDto(testServiceImp.getById(testUsersDto.getTestId()));
+            userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        List<UserDto> finalUserDtos = userDtos;
+
+        userDtos
+                .stream()
+                .forEach(i -> {
+                    HistoryEntity historyEntity = new HistoryEntity();
+                    try {
+                        historyEntity.setUserEntity(userServiceImp.getById(i.getId()));
+                        historyEntity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
+                        historyEntity.setStatus(Status.UPCOMING);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
+                    System.out.println(testUsersDto.getStartTime());
+                    historyEntity.setScore(0);
+                    historyServiceImp.add(historyEntity);
+                });
+
+        return modelAndView;
+
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser/{id}")
     public ModelAndView filterUser(@PathVariable("id") Long id, @RequestParam Map<String, String> formDate) {
         ModelAndView modelAndView = new ModelAndView("organizeTest");
         String user = formDate.get("search");
+
         List<UserDto> userDtos = new ArrayList<>();
 
         try {
@@ -244,8 +296,6 @@ public class TestController {
                 userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNiknameLike(user));
 
             }
-
-
             modelAndView.addObject("userList", userDtos);
             modelAndView.addObject("test", testDto);
 
@@ -257,10 +307,11 @@ public class TestController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
-        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId());
-
+        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
 
 
         //TODO

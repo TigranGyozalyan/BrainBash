@@ -8,6 +8,7 @@ import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -122,6 +123,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/userList")
     public ModelAndView getAllUsers() {
         ModelAndView modelAndView = new ModelAndView("userList");
@@ -136,6 +138,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/{user}")
     public ModelAndView updateUserRole(@PathVariable Long user) {
 
@@ -153,6 +156,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ModelAndView postUserRole(@RequestParam("userId") String userId,
                                      @RequestParam Map<String, String> formData) {

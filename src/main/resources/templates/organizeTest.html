@@ -22,9 +22,11 @@
         <span>
             <label for="startTime">Choose a time for your appointment:</label>
 
-        <input type="datetime-local" id="startTime"
-               name="startTime">
+        <input type="datetime-local" id="startTime" value="2018-06-12T19:30">
         </span>
+
+
+
 
         <input type="submit" name="submit" value="Go Back to Test"/>
 
@@ -70,29 +72,23 @@
 
 <script>
 
-    let users = [];
-
     $().ready(function () {
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
-        let startTime = document.getElementById("startTime").value;
-        console.log(startTime);
+        // let startTime = $('#startTime').val();
+        console.log(dateTime);
         $('#editOptions').click(function () {
 
-
-            users.length = 0;
-            $.each($("input[name='userSelect']:checked"), function () {
-
-                // console.log($(this).attr("value"));
-                users.push(parseInt($(this).attr("value")));
-                //console.log(users);
-            });
+           let users =  $("input[name='userSelect']:checked").map(function () {
+               return parseInt($(this).attr("value"));
+            }).toArray();
 
             let userTest = JSON.stringify({
                 testId: id,
                 usersId: users,
-                startTime: startTime
+                startTime: dateTime
             });
+
             console.log(userTest);
             $.ajax({
                 type: "POST",
@@ -105,25 +101,30 @@
                 })
 
             });
-
             $.ajax({
                 type: "POST",
                 data: userTest,
                 url: "/test/selectUser",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: (function () {
-                    location.href = "http://localhost:8080/test/organize";
+                success: (function (result) {
+                    location.href = 'http://localhost:8080/';
                 })
 
             });
+
         });
+    });
 
-
+    let dateTime = $('#startTime').val();
+    $('#startTime').on('change',function updateDateTime() {
+        dateTime = $(this).val();
     });
 
 
+
 </script>
+
 
 
 </html>

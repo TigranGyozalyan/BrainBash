@@ -28,19 +28,19 @@ public class CategoryController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<List<CategoryDto>> getAll(){
-//        try {
-//            if(categoryServiceImp.getAll().isEmpty()){
-//                return ResponseEntity.noContent().build();
-//            }
-//            return ResponseEntity.ok(categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//    }
+    @GetMapping
+    public ResponseEntity<List<CategoryDto>> getAll(){
+        try {
+            if(categoryServiceImp.getAll().isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -121,7 +121,7 @@ public class CategoryController {
 //
 //        try {
 //            if(categoryServiceImp.getById(id)==null){
-//                return ResponseEntity    @PreAuthorize("hasAuthority('ADMIN')").noContent().build();
+//                return ResponseEntity.noContent().build();
 //            }
 //            return ResponseEntity.ok(categoryMapper.mapEntityToDto(categoryServiceImp.getById(id)));
 //        } catch (SQLException e) {

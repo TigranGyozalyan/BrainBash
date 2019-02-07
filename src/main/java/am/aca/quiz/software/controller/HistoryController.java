@@ -11,6 +11,7 @@ import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,11 +95,15 @@ public class HistoryController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history")
     public ModelAndView history() {
+
         return new ModelAndView("history");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/all")
     public ModelAndView modelAndView() {
         ModelAndView modelAndView = new ModelAndView("allStory");
@@ -112,6 +117,7 @@ public class HistoryController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/past")
     public ModelAndView pastStory() {
         ModelAndView modelAndView = new ModelAndView("pastStory");
@@ -124,6 +130,8 @@ public class HistoryController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/future")
     public ModelAndView futureStory() {
         ModelAndView modelAndView = new ModelAndView("futureStory");
@@ -136,6 +144,8 @@ public class HistoryController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/inprogress")
     public ModelAndView inprogressStory() {
         ModelAndView modelAndView = new ModelAndView("inprogressStory");
@@ -148,6 +158,7 @@ public class HistoryController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/history/byemail")
     public ModelAndView historyByEmail(@RequestParam Map<String, String> formDate) {
         ModelAndView modelAndView = new ModelAndView("searchHistoryByEmail");
@@ -162,11 +173,15 @@ public class HistoryController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/search")
     public ModelAndView searchHistory() {
         return new ModelAndView("searchHistory");
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/test")
     public ModelAndView createTest(@RequestParam("testId") Long testId,@RequestParam Map<String, String> formData){
 
