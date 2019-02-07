@@ -1,7 +1,10 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.service.dto.*;
+import am.aca.quiz.software.service.dto.SubmitQuestionDto;
+import am.aca.quiz.software.service.dto.TestDto;
+import am.aca.quiz.software.service.dto.TestUsersDto;
+import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
@@ -10,6 +13,7 @@ import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
+import javafx.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,7 @@ public class TestController {
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
+    private Pair<Double,Double> score;
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController) {
@@ -137,15 +142,24 @@ public class TestController {
 
 
     @PostMapping("/process")
-    public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public  ModelAndView processTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        testServiceImp.checkTest(submitQuestionDtos);
+        score=testServiceImp.checkTest(submitQuestionDtos);
 
-        return new ModelAndView("testSolution");
+        return new ModelAndView("redirect:/test/scorepage");
     }
+
+
+    @GetMapping("/scorepage")
+    public ModelAndView scorePage(){
+        System.out.println(score);
+
+        return new ModelAndView("testScore");
+    }
+
 
     @GetMapping("/menu")
     public ModelAndView loadMenu() {

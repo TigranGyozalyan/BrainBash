@@ -148,7 +148,7 @@ public class QuestionController {
             e.printStackTrace();
         }
 
-        return addQuestion();
+        return new ModelAndView("question");
     }
 
     @GetMapping(value = "/update")

@@ -6,6 +6,7 @@ import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
 import am.aca.quiz.software.service.dto.SubmitQuestionDto;
 import am.aca.quiz.software.service.interfaces.TestService;
+import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -64,7 +65,7 @@ public class TestServiceImp implements TestService {
     }
 
 
-    public void checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
+    public Pair<Double,Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
 
         double score = 0;
         double overallScore = 0;
@@ -140,7 +141,7 @@ public class TestServiceImp implements TestService {
          */
         //  allCorrectAnswerIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
         //  submissions.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
-        allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
+       // allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
 
 
         for (Long key : submissions.keySet()) {
@@ -198,9 +199,9 @@ public class TestServiceImp implements TestService {
                 score += 0;
             }
         }
-        System.out.println("User Score : " + score);
-        System.out.println("Test Overall Score : " + overallScore);
-
+//        System.out.println("User Score : " + score);
+//        System.out.println("Test Overall Score : " + overallScore);
+        return new Pair<>(score,overallScore);
 
     }
 }

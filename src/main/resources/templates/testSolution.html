@@ -149,7 +149,7 @@
                 $questionDiv.append($answerContainer);
                 $wrapper.append($questionDiv);
             });
-            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit');
+            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('href','http://localhost:8080/test/scorepage');
             $wrapper.append($submit);
         });
     });
@@ -190,7 +190,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function () {
-                location.href = "http://localhost:8080/user/profile";
+                window.location("http://localhost:8080/test/scorepage");
             })
         });
     }
