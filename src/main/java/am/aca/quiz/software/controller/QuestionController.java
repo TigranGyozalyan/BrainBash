@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,6 +31,18 @@ public class QuestionController {
     private final AnswerServiceImp answerServiceImp;
     private final TestServiceImp testServiceImp;
     private final TestMapper testMapper;
+    private  Set<Long> testID=new HashSet<>();
+
+    public List<QuestionEntity> getQuestionEntityList() {
+        return questionEntityList;
+    }
+
+    private List<QuestionEntity> questionEntityList;
+
+    public Set<Long> getTestID() {
+        return testID;
+    }
+
 
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp, TestServiceImp testServiceImp, TestMapper testMapper) {
@@ -83,7 +93,17 @@ public class QuestionController {
     @GetMapping("/test")
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTestId(@RequestParam("testId") long testId) {
         try {
+
             List<QuestionEntity> questionList = testServiceImp.getById(testId).getQuestionEntities();
+            if(!testID.contains(testId)) {
+                testID.add(testId);
+                questionEntityList=questionList;
+                Collections.shuffle(questionList);
+            }
+            else{
+                questionList=questionEntityList;
+            }
+
             return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
         } catch (SQLException e) {
             return ResponseEntity.noContent().build();

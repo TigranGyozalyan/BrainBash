@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import sun.security.provider.MD2;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -32,9 +31,10 @@ public class TestController {
     private final QuestionMapper questionMapper;
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
+    private final QuestionController questionController;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp) {
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -43,6 +43,7 @@ public class TestController {
         this.questionMapper = questionMapper;
         this.userMapper = userMapper;
         this.userServiceImp = userServiceImp;
+        this.questionController = questionController;
     }
 
 
@@ -125,13 +126,21 @@ public class TestController {
         return testList();
     }
 
+    @GetMapping("/solve/{id}")
+    public ModelAndView loadTest(@PathVariable("id") Long id) {
+
+
+
+
+        return new ModelAndView("testSolution");
+    }
+
 
     @PostMapping("/process")
     public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
-//        for(SubmitQuestionDto submitQuestionDto : submitQuestionDtos) {
-//            System.out.println("Question Id is  : " +  submitQuestionDto.getQuestionId());
-//        }
+        questionController.getTestID().clear();
+        questionController.getQuestionEntityList().clear();
 
         testServiceImp.checkTest(submitQuestionDtos);
 
@@ -164,10 +173,7 @@ public class TestController {
         return modelAndView;
     }
 
-    @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id) {
-        return new ModelAndView("testSolution");
-    }
+
 
 
     @GetMapping("/organize")
@@ -251,7 +257,7 @@ public class TestController {
 
 
 
-
+        //TODO
         return new ModelAndView("redirect:/test/organize");
 //        return selectTest();
     }
