@@ -7,6 +7,15 @@ public class TestUsersDto {
     private Long testId;
     private List<Long> usersId;
 
+    private String startTime;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
     public Long getTestId() {
         return testId;

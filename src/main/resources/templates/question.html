@@ -25,6 +25,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<form>
 <div class="navigation">
     <label>
         Category : <select id="categories" onchange="loadSubCategoriesDropDown()"></select>
@@ -56,8 +57,10 @@
     <button type="button" id="btnRemoveAnswer" class="txtAnswer" onclick="removeAnswer()">Remove answer</button>
 </div>
 
-<button type="button" value="button" onclick="createQuestion()">Create</button>
+<button type="submit" value="button" onclick="createQuestion()">Create</button>
 
+
+</form>
 <br/>
 </body>
 
@@ -130,8 +133,9 @@
             url: "/question/add",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: (function () {
-                // location.href = 'http://localhost:8080/question/add';
+            success: (function (result) {
+                console.log(result);
+                location.href = 'http://localhost:8080/question/add';
             })
         });
     }

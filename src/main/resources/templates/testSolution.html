@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <style>
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
@@ -101,12 +101,12 @@
 </head>
 <body>
 
-
+<form id="submission">
 <div id="wrapper" class="wrapper">
     <div class='result'></div>
 
 </div>
-
+</form>
 
 </body>
 
@@ -174,7 +174,7 @@
         let rawData = $('.question').map(function () {
             let questionId = parseInt($(this).attr('id'));
 
-
+            // $('#submission').attr('action','http://localhost:8080/').attr('method','POST');
             let answers = $(this).find('[answerId]').map(function () {
                 if ($(this).is(':checked')) {
                     return parseInt($(this).attr('answerId'));
@@ -198,7 +198,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function () {
-                window.location("http://localhost:8080/test/scorepage");
+
             })
         });
 

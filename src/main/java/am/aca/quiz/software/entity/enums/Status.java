@@ -5,9 +5,4 @@ public enum Status {
     UPCOMING,
     COMPLETED
 
-
-
-
-
-
 }

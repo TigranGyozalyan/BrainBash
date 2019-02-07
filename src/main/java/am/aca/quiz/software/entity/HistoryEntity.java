@@ -48,6 +48,14 @@ public class HistoryEntity {
         this.testEntity = testEntity;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,13 +72,13 @@ public class HistoryEntity {
         this.startTime = startTime;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = Status.valueOf(status.toLowerCase());
-    }
+//    public Status getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = Status.valueOf(status.toLowerCase());
+//    }
 
     public LocalDateTime getEndTime() {
         return endTime;

@@ -29,9 +29,9 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAll(){
+    public ResponseEntity<List<CategoryDto>> getAll() {
         try {
-            if(categoryServiceImp.getAll().isEmpty()){
+            if (categoryServiceImp.getAll().isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
@@ -41,8 +41,6 @@ public class CategoryController {
         }
 
     }
-
-
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -63,11 +61,12 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public ModelAndView categoryList(){
-        ModelAndView modelAndView=new ModelAndView("categoryList");
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ModelAndView categoryList() {
+        ModelAndView modelAndView = new ModelAndView("categoryList");
 
         try {
-            modelAndView.addObject("categoryList",categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
+            modelAndView.addObject("categoryList", categoryMapper.mapEntitiesToDto(categoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,12 +75,12 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/update/{id}",method = RequestMethod.GET)
-    public ModelAndView update(@PathVariable Long id){
-        ModelAndView modelAndVi=new ModelAndView("categoryUpdate");
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public ModelAndView update(@PathVariable Long id) {
+        ModelAndView modelAndVi = new ModelAndView("categoryUpdate");
         try {
-            CategoryDto categoryDto=categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
-            modelAndVi.addObject("category",categoryDto);
+            CategoryDto categoryDto = categoryMapper.mapEntityToDto(categoryServiceImp.getById(id));
+            modelAndVi.addObject("category", categoryDto);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,12 +90,12 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView updateCategory(@RequestParam("categoryId") Long categoryId,@RequestParam  Map<String,String> formData) {
+    public ModelAndView updateCategory(@RequestParam("categoryId") Long categoryId, @RequestParam Map<String, String> formData) {
 
 
         String type = formData.get("type");
         try {
-            CategoryEntity categoryEntity=categoryServiceImp.getById(categoryId);
+            CategoryEntity categoryEntity = categoryServiceImp.getById(categoryId);
             categoryEntity.setType(type);
             categoryServiceImp.update(categoryEntity);
         } catch (SQLException e) {
@@ -117,20 +116,11 @@ public class CategoryController {
         return categoryList();
     }
 
-
-
-
-
-
-    /*
-                  meaningless
-     */
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
 
         try {
-            if(categoryServiceImp.getById(id)==null){
+            if (categoryServiceImp.getById(id) == null) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(categoryMapper.mapEntityToDto(categoryServiceImp.getById(id)));

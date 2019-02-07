@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.implementations.SubCategoryServiceImp;
 import am.aca.quiz.software.service.mapper.CategoryMapper;
 import am.aca.quiz.software.service.mapper.SubCategoryMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,76 +34,50 @@ public class SubCategoryController {
         this.subCategoryMapper = subCategoryMapper;
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<SubCategoryDto>> getAll() {
-//        try {
-//            if(subCategoryServiceImp.getAll().isEmpty()){
-//                return ResponseEntity.noContent().build();
-//            }
-//            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
     @GetMapping
     public ResponseEntity<List<SubCategoryDto>> getAll() {
-
         try {
-            List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll();
-            if (subCategoryEntities.isEmpty()) {
+            if (subCategoryServiceImp.getAll().isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
+            return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryServiceImp.getAll()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+
     @GetMapping("/filter")
     public ResponseEntity<List<SubCategoryDto>> getSubCategoriesById(@RequestParam("categoryId") long categoryId) {
-        try{
+        try {
             System.out.println("Got here");
             List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
                     .filter(i -> i.getCategory().getId().equals(categoryId))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
-//        try {
-//            if(subCategoryServiceImp.getById(id)==null){
-//                return ResponseEntity.noContent().build();
-//            }
-//            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
     @GetMapping("/{id}")
     public ResponseEntity<SubCategoryDto> getById(@PathVariable("id") Long id) {
-
         try {
-            SubCategoryEntity subCategoryEntity = subCategoryServiceImp.getById(id);
-            if (subCategoryEntity == null) {
+            if (subCategoryServiceImp.getById(id) == null) {
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryEntity));
+            return ResponseEntity.ok(subCategoryMapper.mapEntityToDto(subCategoryServiceImp.getById(id)));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(value = "/add")
     public ModelAndView addSubCategory() throws SQLException {
         ModelAndView modelAndView = new ModelAndView("subCategory");
 
@@ -115,7 +88,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseBody
     public ModelAndView postNewCategory(@RequestParam Map<String, String> formData) throws SQLException {
         ModelAndView modelAndView = new ModelAndView("subCategory");
@@ -135,6 +108,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/list")
     public ModelAndView subCategoryList() {
         ModelAndView modelAndView = new ModelAndView("subCategoryList");
@@ -149,7 +123,7 @@ public class SubCategoryController {
         return modelAndView;
     }
 
-    //    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/update/{id}")
     public ModelAndView updateSubCategory(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("subCategoryUpdate");
@@ -207,8 +181,8 @@ public class SubCategoryController {
     }
 
 
-    //    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(value = "delete/{id}")
     public ModelAndView deleteSubCategory(@PathVariable("id") Long id) {
 
         try {

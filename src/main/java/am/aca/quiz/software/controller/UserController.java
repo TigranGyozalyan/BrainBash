@@ -6,8 +6,8 @@ import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -122,6 +122,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/userList")
     public ModelAndView getAllUsers() {
         ModelAndView modelAndView = new ModelAndView("userList");
@@ -136,6 +137,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/{user}")
     public ModelAndView updateUserRole(@PathVariable Long user) {
 
@@ -153,6 +155,7 @@ public class UserController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ModelAndView postUserRole(@RequestParam("userId") String userId,
                                      @RequestParam Map<String, String> formData) {
@@ -296,10 +299,11 @@ public class UserController {
 
         return modelAndView;
     }
+
     @PostMapping("/role")
-    public ResponseEntity<UserDto> getUserRole(Principal principal){
+    public ResponseEntity<UserDto> getUserRole(Principal principal) {
         try {
-            if(userServiceImp.findByEmail(principal.getName())==null){
+            if (userServiceImp.findByEmail(principal.getName()) == null) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())));
