@@ -9,11 +9,11 @@ import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
-import javafx.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +36,7 @@ public class TestController {
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
-    private Pair<Double,Double> score;
+    private ScorePair<Double, Double> score;
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController) {
@@ -135,26 +135,24 @@ public class TestController {
     public ModelAndView loadTest(@PathVariable("id") Long id) {
 
 
-
-
         return new ModelAndView("testSolution");
     }
 
 
     @PostMapping("/process")
-    public  ModelAndView processTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public ModelAndView processTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        score=testServiceImp.checkTest(submitQuestionDtos);
+        score = testServiceImp.checkTest(submitQuestionDtos);
 
         return new ModelAndView("redirect:/test/scorepage");
     }
 
 
     @GetMapping("/scorepage")
-    public ModelAndView scorePage(){
+    public ModelAndView scorePage() {
         System.out.println(score);
 
         return new ModelAndView("testScore");
@@ -186,8 +184,6 @@ public class TestController {
 
         return modelAndView;
     }
-
-
 
 
     @GetMapping("/organize")
@@ -264,11 +260,9 @@ public class TestController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/notify",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView notify(@RequestBody TestUsersDto testUsersDto){
-        System.out.println(testUsersDto.getTestId()+" "+testUsersDto.getUsersId());
-
-
+    @PostMapping(value = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
+        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId());
 
 
         //TODO

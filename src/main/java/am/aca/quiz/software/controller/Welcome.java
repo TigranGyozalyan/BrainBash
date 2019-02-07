@@ -45,12 +45,6 @@ public class Welcome {
                 "");
     }
 
-//
-//    @GetMapping(value = "notfound")
-//    public ModelAndView notFound() {
-//        return new ModelAndView("notFound");
-//    }
-
     @GetMapping("animation")
     public ModelAndView animation(){
         return new ModelAndView("animation");

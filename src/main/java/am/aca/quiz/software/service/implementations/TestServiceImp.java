@@ -5,8 +5,8 @@ import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
 import am.aca.quiz.software.service.dto.SubmitQuestionDto;
+import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.interfaces.TestService;
-import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -65,7 +65,7 @@ public class TestServiceImp implements TestService {
     }
 
 
-    public Pair<Double,Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
+    public ScorePair<Double,Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
 
         double score = 0;
         double overallScore = 0;
@@ -201,7 +201,7 @@ public class TestServiceImp implements TestService {
         }
 //        System.out.println("User Score : " + score);
 //        System.out.println("Test Overall Score : " + overallScore);
-        return new Pair<>(score,overallScore);
+        return new ScorePair<>(score,overallScore);
 
     }
 }
