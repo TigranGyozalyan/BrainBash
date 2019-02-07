@@ -318,7 +318,9 @@ public class TestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
-        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
+//        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
+
+
 
 
         //TODO
