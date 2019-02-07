@@ -1,17 +1,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Past History List</title>
+    <title>All History List</title>
 </head>
 <body>
 <form method="get">
     <table>
         <thead>
         <tr>
-            <th>Id</th>
+            <th>TestId</th>
             <th>Username</th>
             <th>Surname</th>
-            <th>Email</th>
+            <th>email</th>
             <th>Test-name</th>
             <th>Start-time</th>
             <th>End-time</th>
@@ -24,7 +24,7 @@
             <td><span th:text="${history.id}">Id</span></td>
             <td><span th:text="${history.userDto.name}">Username</span></td>
             <td><span th:text="${history.userDto.surname}">Surname</span></td>
-            <td><span th:text="${history.userDto.email}">Email</span></td>
+            <td><span th:text="${history.userDto.email}">email</span></td>
             <td><span th:text="${history.testDto.test_name}">Test-name</span></td>
             <td><span th:text="${history.startTime}">Start-time</span></td>
             <td><span th:text="${history.endTime}">End-time</span></td>

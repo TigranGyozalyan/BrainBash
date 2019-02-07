@@ -161,29 +161,29 @@ public class TopicController {
         return topicList();
     }
 
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
-//        try {
-//            if (topicServiceImp.getById(id) == null) {
-//                return ResponseEntity.noContent().build();
-//            }
-//            return ResponseEntity.ok(topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
+        try {
+            if (topicServiceImp.getById(id) == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<TopicDto>> getAllTopics() {
-//        try {
-//            if (topicServiceImp.getAll().isEmpty()) {
-//                return ResponseEntity.noContent().build();
-//            }
-//            return ResponseEntity.ok(topicMapper.mapEntitiesToDto(topicServiceImp.getAll()));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<TopicDto>> getAllTopics() {
+        try {
+            if (topicServiceImp.getAll().isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(topicMapper.mapEntitiesToDto(topicServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
