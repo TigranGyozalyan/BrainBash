@@ -13,6 +13,7 @@ import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,6 +56,7 @@ public class QuestionController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<QuestionDto> getById(@PathVariable("id") Long id) {
         try {
@@ -64,6 +66,7 @@ public class QuestionController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/list")
     public ModelAndView questionList() {
         ModelAndView modelAndView = new ModelAndView("questionList");
@@ -77,17 +80,17 @@ public class QuestionController {
         return modelAndView;
     }
 
-    @GetMapping
-    public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
-        try {
-            List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
-                    .filter(i -> i.getTopicEntity().getId().equals(topicId))
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
-        } catch (SQLException e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
+//    @GetMapping
+//    public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
+//        try {
+//            List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
+//                    .filter(i -> i.getTopicEntity().getId().equals(topicId))
+//                    .collect(Collectors.toList());
+//            return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
+//        } catch (SQLException e) {
+//            return ResponseEntity.noContent().build();
+//        }
+//    }
 
     @GetMapping("/test")
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTestId(@RequestParam("testId") long testId) {
@@ -108,12 +111,13 @@ public class QuestionController {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/add")
     public ModelAndView addQuestion() {
         return new ModelAndView("question");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView postQuestion(@RequestBody QuestionDto question) {
         try {
@@ -148,9 +152,10 @@ public class QuestionController {
             e.printStackTrace();
         }
 
-        return addQuestion();
+        return new ModelAndView("question");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/update")
     public ModelAndView updateQuestion() {
         ModelAndView modelAndView = new ModelAndView("questionUpdate");
@@ -172,6 +177,8 @@ public class QuestionController {
         return modelAndView;
     }
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/update")
     public ModelAndView updateQuestion(@RequestParam Map<String, String> formDate) {
         ModelAndView modelAndView = new ModelAndView("questionUpdate");
@@ -186,6 +193,7 @@ public class QuestionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/delete/{id}")
     public ModelAndView deleteQuestion(@PathVariable("id") Long id) {
         try {

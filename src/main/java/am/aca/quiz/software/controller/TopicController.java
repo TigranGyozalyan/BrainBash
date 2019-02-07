@@ -11,6 +11,7 @@ import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,6 +37,7 @@ public class TopicController {
     }
 
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/add")
     public ModelAndView addTopic() throws SQLException {
         ModelAndView modelAndView = new ModelAndView("topic");
@@ -47,7 +49,7 @@ public class TopicController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseBody
     public ModelAndView postNewTopic(@RequestParam Map<String, String> formData) throws SQLException {
         ModelAndView modelAndView = new ModelAndView("topic");
@@ -65,23 +67,24 @@ public class TopicController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<TopicDto>> getAllTopics(@RequestParam("subCategoryId") Long subCategoryId) {
+//    @GetMapping
+//    public ResponseEntity<List<TopicDto>> getAllTopics(@RequestParam("subCategoryId") Long subCategoryId) {
+//
+//        try {
+//            List<TopicEntity> topicEntities =
+//                    topicServiceImp.getAll()
+//                            .stream()
+//                            .filter(i -> i.getSubCategory().getId().equals(subCategoryId))
+//                            .collect(Collectors.toList());
+//            return new ResponseEntity<>(topicMapper.mapEntitiesToDto(topicEntities), HttpStatus.OK);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
-        try {
-            List<TopicEntity> topicEntities =
-                    topicServiceImp.getAll()
-                            .stream()
-                            .filter(i -> i.getSubCategory().getId().equals(subCategoryId))
-                            .collect(Collectors.toList());
-            return new ResponseEntity<>(topicMapper.mapEntitiesToDto(topicEntities), HttpStatus.OK);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/list")
     public ModelAndView topicList() {
         ModelAndView modelAndView = new ModelAndView("topicList");
@@ -93,6 +96,7 @@ public class TopicController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
     public ModelAndView deleteTopic(@PathVariable("id") Long id) {
         try {
@@ -103,6 +107,7 @@ public class TopicController {
         return topicList();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/update/{id}")
     public ModelAndView updateTopic(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("topicUpdate");
@@ -121,6 +126,7 @@ public class TopicController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/update")
     public ModelAndView updateTopic(@RequestParam("topicId") Long topicId, @RequestParam Map<String, String> formDate) {
 
@@ -128,23 +134,22 @@ public class TopicController {
         String subCategory = formDate.get("subCategoryList");
 
 
-        SubCategoryEntity subCategoryEntity=null;
-        TopicEntity updateTopicEntity=null;
+        SubCategoryEntity subCategoryEntity = null;
+        TopicEntity updateTopicEntity = null;
         try {
             if (!subCategory.equals(EMPTY)) {
-                subCategoryEntity=subCategoryServiceImp.getByTypeName(subCategory);
-                if(topicName.isEmpty()){
-                    updateTopicEntity=new TopicEntity(topicServiceImp.getById(topicId).getTopicName(),subCategoryEntity);
-                }
-                else {
-                    updateTopicEntity=new TopicEntity(topicName,subCategoryEntity);
+                subCategoryEntity = subCategoryServiceImp.getByTypeName(subCategory);
+                if (topicName.isEmpty()) {
+                    updateTopicEntity = new TopicEntity(topicServiceImp.getById(topicId).getTopicName(), subCategoryEntity);
+                } else {
+                    updateTopicEntity = new TopicEntity(topicName, subCategoryEntity);
                 }
             } else {
-                subCategoryEntity=topicServiceImp.getById(topicId).getSubCategory();
-                if(topicName.isEmpty()){
-                    updateTopicEntity=new TopicEntity(topicServiceImp.getById(topicId).getTopicName(),subCategoryEntity);
-                }else{
-                    updateTopicEntity=new TopicEntity(topicName,subCategoryEntity);
+                subCategoryEntity = topicServiceImp.getById(topicId).getSubCategory();
+                if (topicName.isEmpty()) {
+                    updateTopicEntity = new TopicEntity(topicServiceImp.getById(topicId).getTopicName(), subCategoryEntity);
+                } else {
+                    updateTopicEntity = new TopicEntity(topicName, subCategoryEntity);
                 }
             }
             updateTopicEntity.setId(topicId);
@@ -156,28 +161,29 @@ public class TopicController {
         return topicList();
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
-        try {
-            if(topicServiceImp.getById(id)==null){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    @GetMapping("/all")
-    public ResponseEntity<List<TopicDto>> getAllTopics(){
-        try {
-            if(topicServiceImp.getAll().isEmpty()){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(topicMapper.mapEntitiesToDto(topicServiceImp.getAll()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @GetMapping(value = "/{id}")
+//    public ResponseEntity<TopicDto> getById(@PathVariable("id") Long id) {
+//        try {
+//            if (topicServiceImp.getById(id) == null) {
+//                return ResponseEntity.noContent().build();
+//            }
+//            return ResponseEntity.ok(topicMapper.mapEntityToDto(topicServiceImp.getById(id)));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
+//    @GetMapping("/all")
+//    public ResponseEntity<List<TopicDto>> getAllTopics() {
+//        try {
+//            if (topicServiceImp.getAll().isEmpty()) {
+//                return ResponseEntity.noContent().build();
+//            }
+//            return ResponseEntity.ok(topicMapper.mapEntitiesToDto(topicServiceImp.getAll()));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }
