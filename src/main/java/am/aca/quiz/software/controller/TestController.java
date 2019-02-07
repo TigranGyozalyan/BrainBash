@@ -1,19 +1,10 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.service.dto.SubmitQuestionDto;
-import am.aca.quiz.software.service.dto.TestDto;
-import am.aca.quiz.software.service.dto.TestUsersDto;
-import am.aca.quiz.software.service.dto.UserDto;
-import am.aca.quiz.software.service.implementations.QuestionServiceImp;
-import am.aca.quiz.software.service.implementations.TestServiceImp;
-import am.aca.quiz.software.service.implementations.TopicServiceImp;
-import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.dto.*;
+import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
-import am.aca.quiz.software.service.mapper.QuestionMapper;
-import am.aca.quiz.software.service.mapper.TestMapper;
-import am.aca.quiz.software.service.mapper.TopicMapper;
-import am.aca.quiz.software.service.mapper.UserMapper;
+import am.aca.quiz.software.service.mapper.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +27,14 @@ public class TestController {
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
-    private ScorePair<Double, Double> score;
+    private  ScorePair<Double, Double> score;
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
+    private final AnswerServiceImp answerServiceImp;
+    private final AnswerMapper answerMapper;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController) {
+
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -49,6 +44,8 @@ public class TestController {
         this.userMapper = userMapper;
         this.userServiceImp = userServiceImp;
         this.questionController = questionController;
+        this.answerServiceImp = answerServiceImp;
+        this.answerMapper = answerMapper;
     }
 
 
@@ -134,7 +131,6 @@ public class TestController {
     @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id) {
 
-
         return new ModelAndView("testSolution");
     }
 
@@ -146,16 +142,48 @@ public class TestController {
         questionController.getQuestionEntityList().clear();
 
         score = testServiceImp.checkTest(submitQuestionDtos);
+        userSubmitQuestionDtos=submitQuestionDtos;
 
         return new ModelAndView("redirect:/test/scorepage");
     }
 
 
     @GetMapping("/scorepage")
-    public ModelAndView scorePage() {
-        System.out.println(score);
+    public ModelAndView scorePage(){
 
-        return new ModelAndView("testScore");
+        ModelAndView modelAndView=new ModelAndView("testScore");
+        TestScoreDto testScoreDto=new TestScoreDto();
+
+        List<QuestionDto> questionDtos=new ArrayList<>();
+        Map<Long,List<AnswerDto>> answersByQuestionId=new HashMap<>();
+
+        userSubmitQuestionDtos.forEach(i-> {
+            try {
+                Long id=questionServiceImp.getById(i.getQuestionId()).getId();
+
+                questionDtos.add(questionMapper.mapEntityToDto(questionServiceImp.getById(i.getQuestionId())));
+
+                answersByQuestionId.put(id,answerMapper
+                        .mapEntitiesToDto(answerServiceImp.getAnswerEntitiesByQuestionId(id)));
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        testScoreDto.setTestScore(score.getValue());
+        testScoreDto.setUserScore(score.getKey());
+
+        for(Map.Entry<Long,List<AnswerDto>> elem :answersByQuestionId.entrySet()){
+            modelAndView.addObject("answerList",elem.getValue());
+        }
+
+        modelAndView.addObject("questionList",questionDtos);
+
+        modelAndView.addObject("testScore",testScoreDto);
+
+
+        return modelAndView;
     }
 
 
@@ -184,6 +212,8 @@ public class TestController {
 
         return modelAndView;
     }
+
+
 
 
     @GetMapping("/organize")
@@ -263,6 +293,8 @@ public class TestController {
     @PostMapping(value = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
         System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId());
+
+
 
 
         //TODO

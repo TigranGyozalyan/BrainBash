@@ -95,7 +95,9 @@
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous">
+
+</script>
 </head>
 <body>
 
@@ -149,8 +151,12 @@
                 $questionDiv.append($answerContainer);
                 $wrapper.append($questionDiv);
             });
-            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit');
+            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('id','submitId');
+            let $score = $('<button/>').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/test/scorepage'").attr('value','Go to Score').html('Go to Score').attr('id','scoreId');
+            $score.prop('disabled',true);
+            $score.hide();
             $wrapper.append($submit);
+            $wrapper.append($score);
         });
     });
 
@@ -183,6 +189,8 @@
         let data = JSON.stringify(rawData);
         console.log(data);
 
+
+
         $.ajax({
             type: "POST",
             data: data,
@@ -193,14 +201,13 @@
                 window.location("http://localhost:8080/test/scorepage");
             })
         });
+
+        $('#submitId').remove();
+        $('#scoreId').prop('disabled',false).show();
+
+
     }
-    // function shuffle(a) {
-    //     for (let i = a.length - 1; i > 0; i--) {
-    //         const j = Math.floor(Math.random() * (i + 1));
-    //         [a[i], a[j]] = [a[j], a[i]];
-    //     }
-    //     return a;
-    // }
+
 </script>
 
 
