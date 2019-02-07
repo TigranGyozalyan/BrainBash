@@ -123,7 +123,11 @@
             questions.forEach(function (question) {
                 let $questionDiv = $('<div/>').attr('class', 'question').attr('id', question.id);
                 questionCount++;
-                let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question);
+
+                let points = question.points;
+
+
+                let $questionHeadLine = $('<div/>').attr('class', 'question-headline').text(questionCount + '. ' + question.question + ' (' + points + ' points)');
                 let answers = question.answerDtoList;
                 let correctAnswerCount = correct_answer_count(answers);
                 let $answerContainer = $('<div/>').attr('class', 'question-answers');

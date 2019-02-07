@@ -31,7 +31,7 @@ public class QuestionController {
     private final AnswerServiceImp answerServiceImp;
     private final TestServiceImp testServiceImp;
     private final TestMapper testMapper;
-    private  Set<Long> testID=new HashSet<>();
+    private Set<Long> testID = new HashSet<>();
 
     public List<QuestionEntity> getQuestionEntityList() {
         return questionEntityList;
@@ -42,7 +42,6 @@ public class QuestionController {
     public Set<Long> getTestID() {
         return testID;
     }
-
 
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp, TestServiceImp testServiceImp, TestMapper testMapper) {
@@ -95,13 +94,12 @@ public class QuestionController {
         try {
 
             List<QuestionEntity> questionList = testServiceImp.getById(testId).getQuestionEntities();
-            if(!testID.contains(testId)) {
+            if (!testID.contains(testId)) {
                 testID.add(testId);
-                questionEntityList=questionList;
+                questionEntityList = questionList;
                 Collections.shuffle(questionList);
-            }
-            else{
-                questionList=questionEntityList;
+            } else {
+                questionList = questionEntityList;
             }
 
             return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));

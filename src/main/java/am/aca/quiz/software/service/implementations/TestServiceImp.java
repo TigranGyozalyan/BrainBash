@@ -4,12 +4,9 @@ import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
-import am.aca.quiz.software.service.dto.AnswerDto;
-import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.SubmitQuestionDto;
 import am.aca.quiz.software.service.interfaces.TestService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -22,10 +19,12 @@ public class TestServiceImp implements TestService {
 
     private final TestRepository testRepository;
     private final QuestionServiceImp questionServiceImp;
+    private final AnswerServiceImp answerServiceImp;
 
-    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp) {
+    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp, AnswerServiceImp answerServiceImp) {
         this.testRepository = testRepository;
         this.questionServiceImp = questionServiceImp;
+        this.answerServiceImp = answerServiceImp;
     }
 
 
@@ -67,8 +66,8 @@ public class TestServiceImp implements TestService {
 
     public void checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
 
-        double score=0;
-        double overallScore=0;
+        double score = 0;
+        double overallScore = 0;
 
         /**
          * Key = Submitted question ID
@@ -80,69 +79,127 @@ public class TestServiceImp implements TestService {
          * Key = Question ID
          * Value = Question's correct answers' IDs
          */
-        Map<Long, List<Long>> allCorrectAnswerIdsForQuestion = new TreeMap<>();
+        Map<Long, List<Long>> allCorrectAnswersIdsForQuestion = new TreeMap<>();
+        Map<Long, List<Long>> allAnswersIdsForQuestion = new TreeMap<>();
         /**
          * Filling user's submitted answers in submissions map
-         * Getting from questions answers only Corrects
+         * Getting from questions all answers
+         * Putting in map allAnswersIdsForQuestion where key=Question id( user's submitted question id)
+         * and value=Answers Id( for each question).
+         * Getting from questions all correct answers
          * Putting in map allCorrectAnswerIdsForQuestion where key=Question id( user's submitted question id)
          * and value=Correct answers Id( for each question).
          */
         submitQuestionDtos
                 .stream()
                 .forEach(i -> {
-
                             submissions.put(i.getQuestionId(), i.getChosenAnswerList());
 
                             long id = i.getQuestionId();
 
                             List<AnswerEntity> allCorrectAnswers = null;
 
-                            List<Long> correctAnswerIds = new ArrayList<>();
+                            List<Long> correctAnswersIds = new ArrayList<>();
+
+                            List<Long> allAnswersIds = null;
 
                             try {
+                                allAnswersIds = questionServiceImp
+                                        .getById(id)
+                                        .getAnswerEntities()
+                                        .stream()
+                                        .map(AnswerEntity::getId)
+                                        .collect(Collectors.toList());
+
                                 allCorrectAnswers = questionServiceImp
                                         .getById(id)
                                         .getAnswerEntities()
                                         .stream()
-                                        .filter(j -> j.isIs_correct())
+                                        .filter(AnswerEntity::isIs_correct)
                                         .collect(Collectors.toList());
 
 
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
-                            allCorrectAnswers.forEach(k -> correctAnswerIds.add(k.getId()));
+                            /**
+                             * Checks whether allCorrectAnswers is null.
+                             */
 
-                            allCorrectAnswerIdsForQuestion.put(id, correctAnswerIds);
+                            Objects.requireNonNull(allCorrectAnswers).forEach(k -> correctAnswersIds.add(k.getId()));
+
+                            allCorrectAnswersIdsForQuestion.put(id, correctAnswersIds);
+
+                            allAnswersIdsForQuestion.put(id, allAnswersIds);
                         }
                 );
 
-
-        /*
-        Prints Map's Key and Value by lambda expression.
-        Testing Purposes.
+        /**
+         Prints Map's Key and Value by lambda expression.
+         Testing Purposes.
          */
         //  allCorrectAnswerIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
         //  submissions.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
+        allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
 
 
+        for (Long key : submissions.keySet()) {
 
-        for(Long key :submissions.keySet()){
-
-            List<Long> submitted=submissions.get(key);
-            List<Long> correct=allCorrectAnswerIdsForQuestion.get(key);
-
-            if(submitted.equals(correct)){
-                try {
-                    score+=questionServiceImp.getById(key).getPoints();
-                    overallScore+=score;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            List<Long> submittedAnswers = submissions.get(key);
+            List<Long> correctAnswers = allCorrectAnswersIdsForQuestion.get(key);
+            List<Long> allAnswers = allAnswersIdsForQuestion.get(key);
+            List<Long> userCorrectAnswers = new ArrayList<>();
+            List<Long> userIncorrectAnswerd = new ArrayList<>();
+            double points;
+            try {
+                points = questionServiceImp.getById(key).getPoints();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                points = 0;
             }
+            submittedAnswers
+                    .forEach(i -> {
+                        try {
+                            if (answerServiceImp.getById(i).isIs_correct()) {
+                                userCorrectAnswers.add(answerServiceImp.getById(i).getId());
+                            } else {
+                                userIncorrectAnswerd.add(answerServiceImp.getById(i).getId());
+                            }
 
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+            overallScore += points;
+
+            if (allAnswers.size() != submittedAnswers.size()) {
+
+                if (submittedAnswers.equals(correctAnswers)) {
+
+                    score += points;
+
+                } else {
+                    if (submittedAnswers.size() == 0 || userCorrectAnswers.size() == 0) {
+                        score += 0;
+                    } else {
+                        if (userIncorrectAnswerd.size() == userCorrectAnswers.size()) {
+                            score += 0;
+                        } else if (userIncorrectAnswerd.size() > userCorrectAnswers.size()) {
+                            score += 0;
+                        } else {
+                            int x = userCorrectAnswers.size() - userIncorrectAnswerd.size();
+                            score += x * (points / correctAnswers.size());
+                        }
+                    }
+                }
+
+            } else {
+                score += 0;
+            }
         }
-        System.out.println(score);
+        System.out.println("User Score : " + score);
+        System.out.println("Test Overall Score : " + overallScore);
 
 
     }
