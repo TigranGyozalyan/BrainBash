@@ -232,21 +232,29 @@ public class TestController {
 
         ModelAndView modelAndView = new ModelAndView("organizeTest");
 
-        List<HistoryEntity> historyEntities = new ArrayList<>();
-        List<UserDto> userDtos = null;
+        List<Long> recievedIds = testUsersDto.getUsersId();
         TestDto testDto = null;
 
         try {
             testDto = testMapper.mapEntityToDto(testServiceImp.getById(testUsersDto.getTestId()));
-            userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
-        List<UserDto> finalUserDtos = userDtos;
+        List<UserDto> finalUserDtos = new ArrayList<>();
+        recievedIds
+                .stream()
+                .forEach(
+                        i -> {
+                            try {
+                                finalUserDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        });
 
-        userDtos
+        finalUserDtos
                 .stream()
                 .forEach(i -> {
                     HistoryEntity historyEntity = new HistoryEntity();
@@ -258,7 +266,6 @@ public class TestController {
                         e.printStackTrace();
                     }
                     historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
-                    System.out.println(testUsersDto.getStartTime());
                     historyEntity.setScore(0);
                     historyServiceImp.add(historyEntity);
                 });
