@@ -3,6 +3,7 @@ package am.aca.quiz.software.controller;
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.enums.Status;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
@@ -31,14 +32,15 @@ public class TestController {
     private final UserMapper userMapper;
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
-    private  ScorePair<Double, Double> score;
+    private final HistoryServiceImp historyServiceImp;
+    private final MailService mailService;
+    private ScorePair<Double, Double> score;
     private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
-    private final HistoryServiceImp historyServiceImp;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper,  UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper, HistoryServiceImp historyServiceImp) {
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -48,10 +50,12 @@ public class TestController {
         this.userMapper = userMapper;
         this.userServiceImp = userServiceImp;
         this.questionController = questionController;
-        this.answerServiceImp = answerServiceImp;
-        this.answerMapper = answerMapper;
+
 
         this.historyServiceImp = historyServiceImp;
+        this.mailService = mailService;
+        this.answerServiceImp = answerServiceImp;
+        this.answerMapper = answerMapper;
     }
 
     @GetMapping("/{id}")
@@ -144,13 +148,11 @@ public class TestController {
 
 
     @PostMapping("/process")
-    public ModelAndView processTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        score = testServiceImp.checkTest(submitQuestionDtos);
-        userSubmitQuestionDtos=submitQuestionDtos;
         testServiceImp.checkTest(submitQuestionDtos);
 
         return new ModelAndView("testSolution");
@@ -339,8 +341,6 @@ public class TestController {
                 userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNiknameLike(user));
 
             }
-
-
             modelAndView.addObject("userList", userDtos);
             modelAndView.addObject("test", testDto);
 
@@ -358,7 +358,25 @@ public class TestController {
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
 //        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
 
+        List<Long> userIds = testUsersDto.getUsersId();
 
+
+        List<UserDto> userDtos = new ArrayList<>();
+
+        userIds
+                .stream()
+                .forEach(
+                        i -> {
+                            try {
+                                userDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        userDtos.forEach(i -> {
+            mailService.sendText(i.getEmail(), "notification", "notify");
+        });
 
 
         //TODO
