@@ -99,12 +99,12 @@
 </head>
 <body>
 
-
+<form id="submission">
 <div id="wrapper" class="wrapper">
     <div class='result'></div>
 
 </div>
-
+</form>
 
 </body>
 
@@ -168,7 +168,7 @@
         let rawData = $('.question').map(function () {
             let questionId = parseInt($(this).attr('id'));
 
-
+            // $('#submission').attr('action','http://localhost:8080/').attr('method','POST');
             let answers = $(this).find('[answerId]').map(function () {
                 if ($(this).is(':checked')) {
                     return parseInt($(this).attr('answerId'));
