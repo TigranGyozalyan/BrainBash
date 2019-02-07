@@ -42,7 +42,7 @@
 
 <body>
 
-
+<form>
 <label>
     Test Title: <input id="test_name"/>
 </label>
@@ -62,8 +62,10 @@
     <label>
         Categories: <select id="categories" onchange="loadSubCategories()"></select>
     </label>
-    <button type="button" onclick="createTest()" class="submit">Create a test</button>
+    <button type="submit" onclick="createTest()" class="submit">Create a test</button>
 </div>
+
+</form>
 
 <script>
     let $selectDropDown = $('#categories');

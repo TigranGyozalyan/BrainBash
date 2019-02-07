@@ -25,6 +25,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<form>
 <div class="navigation">
     <label>
         Category : <select id="categories" onchange="loadSubCategoriesDropDown()"></select>
@@ -58,6 +59,8 @@
 
 <button type="submit" value="button" onclick="createQuestion()">Create</button>
 
+
+</form>
 <br/>
 </body>
 
@@ -131,6 +134,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function (result) {
+                console.log(result);
                 location.href = 'http://localhost:8080/question/add';
             })
         });
