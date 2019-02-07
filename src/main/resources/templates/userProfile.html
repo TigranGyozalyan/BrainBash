@@ -36,75 +36,77 @@
     }
 
     .message {
-    padding-top: 20px;
-    color: cornsilk  ;
-    font-size: xx-large;
-    padding-right: 20cm;
+        padding-top: 20px;
+        color: cornsilk;
+        font-size: xx-large;
+        padding-right: 20cm;
     }
-
 
 
     .container {
-      width: 200px;
-      height: 100%;
-      margin: 0 auto 0;
-      -webkit-perspective: 1000;
-      -webkit-backface-visibility: hidden;
-      background: #fff;
+        float: left;
+        width: 0;
+        height: 100%;
+        margin: 0 auto 0;
+        -webkit-perspective: 1000;
+        -webkit-backface-visibility: hidden;
     }
 
-  .pulse-button {
-    position: relative;
-    top: 50%;
-    left: 85%;
-    margin-left: 0;
-    margin-top: 0;
-    display: block;
-    width: 100px;
-    height: 100px;
-    font-size: 1.3em;
-    font-weight: light;
-    font-family: 'Trebuchet MS', sans-serif;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 100px;
-    letter-spacing: -1px;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    background:  #3498db;
-    cursor: pointer;
-    box-shadow: 0 0 0 0 rgba(90, 153, 212, 0.5);
-    -webkit-animation: pulse 1.5s infinite;
-  }
+    .underlineDecor {
+        text-decoration-line: none;
+    }
+
+    .pulse-button {
+        position: relative;
+        top: 50%;
+        left: 100%;
+        margin-left: 0;
+        margin-top: 0;
+        display: block;
+        width: 100px;
+        height: 100px;
+        font-size: 1.3em;
+        font-weight: light;
+        font-family: 'Trebuchet MS', sans-serif;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 100px;
+        letter-spacing: -1px;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        background: #3498db;
+        cursor: pointer;
+        box-shadow: 0 0 0 0 rgba(90, 153, 212, 0.5);
+        -webkit-animation: pulse 1.5s infinite;
+    }
 
     .pulse-button:hover {
-      -webkit-animation: none;
+        -webkit-animation: none;
     }
 
     @-webkit-keyframes pulse {
-      0% {
-        -moz-transform: scale(0.9);
-        -ms-transform: scale(0.9);
-        -webkit-transform: scale(0.9);
-        transform: scale(0.9);
-      }
-      70% {
-        -moz-transform: scale(1);
-        -ms-transform: scale(1);
-        -webkit-transform: scale(1);
-        transform: scale(1);
-        box-shadow: 0 0 0 50px rgba(90, 153, 212, 0);
-      }
-      100% {
-        -moz-transform: scale(0.9);
-        -ms-transform: scale(0.9);
-        -webkit-transform: scale(0.9);
-        transform: scale(0.9);
-        box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
-      }
+        0% {
+            -moz-transform: scale(0.9);
+            -ms-transform: scale(0.9);
+            -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+        }
+        70% {
+            -moz-transform: scale(1);
+            -ms-transform: scale(1);
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            box-shadow: 0 0 0 50px rgba(90, 153, 212, 0);
+        }
+        100% {
+            -moz-transform: scale(0.9);
+            -ms-transform: scale(0.9);
+            -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+            box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
+        }
     }
-
 
 
 </style>
@@ -121,16 +123,16 @@
 </head>
 <body>
 
- <div class="message">
-     <span th:if="${message != null }">Wrong Email Address</span>
-    </div>
+<div class="message">
+    <span th:if="${message != null }">Wrong Email Address</span>
+</div>
 
 <nav class='animated bounceInDown'>
     <ul>
         <li class='sub-menu'>
             <a href='#profile'>
                 <div class='fa fa-gear'></div>
-                        <label class='badge right' th:text="${user.surname}"/>
+                <label class='badge right' th:text="${user.surname}"/>
                 Profile <label class='badge right' th:text="${user.name}"/>
                 <div class='fa fa-caret-down right'></div>
             </a>
@@ -183,41 +185,41 @@
                     <ul>
                         <li>
                             <a href='#nicknameSettings'>
-                                    <form th:action="@{/user/nickname} " method="post">
-                                        <input type="text" name="nickname" value=""/>
-                                        <input type="submit" value="Update"/>
-                                    </form>
+                                <form th:action="@{/user/nickname} " method="post">
+                                    <input type="text" name="nickname" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                  <li class='sub-menu'>
-                                    <a href='#emailSettings'>
-                                        <div class='fa fa-gear'></div>
-                                        Email
-                                        <label class='badge right' th:name="email" type="text" th:text="${user.email}"/>
-                                        <div class='fa fa-caret-down right'></div>
-                                    </a>
+                <li class='sub-menu'>
+                    <a href='#emailSettings'>
+                        <div class='fa fa-gear'></div>
+                        Email
+                        <label class='badge right' th:name="email" type="text" th:text="${user.email}"/>
+                        <div class='fa fa-caret-down right'></div>
+                    </a>
 
-                                    <ul>
-                                        <li>
-                                            <a href='#email'>
-                                                <form th:action="@{/user/email}" method="post">
-                                                    <input type="text" name="email" value=""/>
-                                                    <input type="submit" value="Update"/>
-                                                </form>
-                                            </a>
-                                        </li>
-                                    </ul>
+                    <ul>
+                        <li>
+                            <a href='#email'>
+                                <form th:action="@{/user/email}" method="post">
+                                    <input type="text" name="email" value=""/>
+                                    <input type="submit" value="Update"/>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
 
-                                </li>
+                </li>
 
                 <li class='sub-menu'>
                     <a href='#passwordSettings'>
                         <div class='fa fa-gear'></div>
                         Change Password:
-                        <label th:name="password" type="text" />
+                        <label th:name="password" type="text"/>
                         <div class='fa fa-caret-down right'></div>
                     </a>
                     <ul>
@@ -245,7 +247,7 @@
                             <a href='#delete'>
                                 Re-enter
                                 <form th:action="@{/user/question}" method="post">
-                                    <input type="email" name="delete"  placeholder="name$example.com"/>
+                                    <input type="email" name="delete" placeholder="name$example.com"/>
                                     <input type="submit" class="button_active" value="Delete"/>
                                 </form>
                             </a>
@@ -294,57 +296,50 @@
         </li>
 
         <li>
-          <a href="/animation">
-           <div class='fa fa-sign-out'></div>
-              Visit Me !!!
+            <a href="/animation">
+                <div class='fa fa-sign-out'></div>
+                Visit Me !!!
             </a>
         </li>
 
         <li>
             <a href="/logout">
-            <div class='fa fa-sign-out'></div>
-            Logout
+                <div class='fa fa-sign-out'></div>
+                Logout
             </a>
         </li>
     </ul>
 
 
-
-
 </nav>
 
-<div id="adminButton">
+<div id="adminButton" class="container">
 
 </div>
 
 <script>
 
-     $.post('/user/role', function (user) {
-               action(user)
-           });
+    $.post('/user/role', function (user) {
+        action(user)
+    });
 
     let hidden = true;
+
     function action(user) {
         console.log(user);
-       for(let i=0;i<user.role.length;i++){
-          if(user.role[i]==="ADMIN"){
-              hidden=false;
-          }
-       }
-        if(!hidden) {
-                let main = $("#adminButton");
-                main.append($("<a href='/user/admin' class='container' id='togglee' >")
+        for (let i = 0; i < user.role.length; i++) {
+            if (user.role[i] === "ADMIN") {
+                hidden = false;
+            }
+        }
+        if (!hidden) {
+            let main = $('#adminButton');
+            main.attr('class', 'container');
+            main.append($("<a href='/user/admin' id='toggle' class='underlineDecor'>")
                 .append("<span class='pulse-button'>Admin</span>")
                 .append("</a>"));
 
-                //     let $input = $('<input/>')
-                //     .attr('type','button')
-                //     .attr('class','container')
-                //     .attr('id','togglee')
-                //     .attr('onclick','location.href=/user/admin')
-                //     .attr('value','Admin');
-                //     main.append($input);
-            }
+        }
     }
 
 </script>
