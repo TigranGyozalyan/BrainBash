@@ -1,111 +1,130 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="UTF-8">
-  <title>Organize Test</title>
-  <script
-              src="https://code.jquery.com/jquery-3.3.1.js"
-              integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-              crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Organize Test</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
 
-  </script>
+    </script>
 
 </head>
 <body>
 
 <table>
-<form action="" method="post">
-<input type="text" placeholder="Search User" name="search">
+        <input type="text" placeholder="Search User" name="search">
 
-    <input type="submit" name="submit"value="Search"  />
-</form>
+        <input type="submit" name="submit" value="Search"/>
+        <br/>
 
+        <span>
+            <label for="startTime">Choose a time for your appointment:</label>
 
-               <thead>
-               <tr>
-                   <th>Email</th>
-                   <th>Name</th>
-                   <th>Surname</th>
-                   <th>Nickname</th>
-               </tr>
-               </thead>
-
-               <tbody>
-               <tr th:each="user : ${userList}">
-                   <td><span th:text="${user.email}">Email</span> </td>
-                   <td><span th:text="${user.name}">Name</span> </td>
-                   <td><span th:text="${user.surname}">Surname</span> </td>
-                   <td><span th:text="${user.nickname}">Nickname</span> </td>
-                   <td><input type="hidden" th:value="${user.id}" name="userId"/></td>
-                    <td><input type="checkbox" name="userSelect" th:value="${user.id}"/></td>
-               </tr>
+        <input type="datetime-local" id="startTime" value="2018-06-12T19:30">
+        </span>
 
 
-               </tbody>
+
+
+        <input type="submit" name="submit" value="Go Back to Test"/>
+
+
+
+    </br>
+    </br>
+
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Nickname</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="user : ${userList}">
+        <td><span th:text="${user.email}">Email</span></td>
+        <td><span th:text="${user.name}">Name</span></td>
+        <td><span th:text="${user.surname}">Surname</span></td>
+        <td><span th:text="${user.nickname}">Nickname</span></td>
+        <td><input type="hidden" th:value="${user.id}" name="userId"/></td>
+        <td><input type="checkbox" name="userSelect" th:value="${user.id}"/></td>
+    </tr>
+
+
+    </tbody>
 
 </table>
 
 
-<input type="hidden" id="testId" th:value="${test.id}" name="testId">
 
+<span>
+        <button type="button" name="editOptions" id="editOptions">Organize Test</button>
 
-<button name="editOptions" id="editOptions">Select Users </button>
+        </span>
 
-
-<form action="/test/organize" method="get">
- <input type="submit" name="submit" value="Go Back to Test"/>
-</form>
 
 </body>
 
 
 <script>
 
-let users=[];
+    $().ready(function () {
+        let pathArray = window.location.pathname.split('/');
+        let id = parseInt(pathArray[pathArray.length - 1]);
+        // let startTime = $('#startTime').val();
+        console.log(dateTime);
+        $('#editOptions').click(function () {
 
- $().ready(function() {
+           let users =  $("input[name='userSelect']:checked").map(function () {
+               return parseInt($(this).attr("value"));
+            }).toArray();
 
-let testId=parseInt($("#testId").val());
+            let userTest = JSON.stringify({
+                testId: id,
+                usersId: users,
+                startTime: dateTime
+            });
 
+            console.log(userTest);
+            $.ajax({
+                type: "POST",
+                data: userTest,
+                url: "/test/notify",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (function () {
+                    location.href = "http://localhost:8080/test/organize";
+                })
 
-                $('#editOptions').click(function() {
+            });
+            $.ajax({
+                type: "POST",
+                data: userTest,
+                url: "/test/selectUser",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (function (result) {
+                    location.href = 'http://localhost:8080/';
+                })
 
+            });
 
-                    users.length=0;
-                    $.each($("input[name='userSelect']:checked"), function(){
+        });
+    });
 
-                      // console.log($(this).attr("value"));
-                      users.push(parseInt($(this).attr("value")));
-                      //console.log(users);
-                   });
-
-                    let  userTest = JSON.stringify({
-                         testId: testId,
-                         usersId: users
-                     });
-                    console.log(userTest);
-                     $.ajax({
-                                 type: "POST",
-                                 data: userTest,
-                                 url: "/test/notify",
-                                 contentType: "application/json; charset=utf-8",
-                                 dataType: "json",
-                                 success: (function () {
-                                     location.href = "http://localhost:8080/test/organize";
-                                 })
-                             });
-              });
-
-
-
-
-
-
+    let dateTime = $('#startTime').val();
+    $('#startTime').on('change',function updateDateTime() {
+        dateTime = $(this).val();
     });
 
 
 
 </script>
+
 
 
 </html>

@@ -46,7 +46,7 @@ public class Welcome {
     }
 
     @GetMapping("animation")
-    public ModelAndView animation(){
+    public ModelAndView animation() {
         return new ModelAndView("animation");
     }
 
