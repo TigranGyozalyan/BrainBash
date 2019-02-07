@@ -30,11 +30,11 @@ public class HistoryEntity {
     private double score;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",updatable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @ManyToOne
-    @JoinColumn(name = "test_id", updatable = false)
+    @JoinColumn(name = "test_id")
     private TestEntity testEntity;
 
     public HistoryEntity() {

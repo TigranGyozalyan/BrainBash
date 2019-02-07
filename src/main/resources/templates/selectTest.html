@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Organize Test</title>
+</head>
+<body>
+
+<table>
+        <div class="test">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Duration</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="test : ${testList}">
+                <td><span th:text="${test.test_name}">Name</span></td>
+                <td><span th:text="${test.description}">Description</span></td>
+                <td><span th:text="${test.duration}">Duration</span></td>
+
+                <td>
+                    <a th:href="@{'/test/selectUser/'+${test.id}}">Select Test</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </div>
+    </table>
+
+</body>
+</html>

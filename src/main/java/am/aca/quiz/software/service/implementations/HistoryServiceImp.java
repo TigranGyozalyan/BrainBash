@@ -45,6 +45,10 @@ public class HistoryServiceImp implements HistoryService {
 
     }
 
+    public void add(HistoryEntity historyEntity){
+        historyRepository.save(historyEntity);
+    }
+
     public List<HistoryEntity> getAll() throws SQLException {
         return historyRepository.findAll();
     }

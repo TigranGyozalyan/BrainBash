@@ -138,4 +138,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return true;
     }
 
+    public List<UserEntity> findByNameLike(String name){
+        return userRepository.findByNameLike(name);
+    }
+
+    public List<UserEntity> findBySurnameLike(String surname){
+        return userRepository.findBySurnameLike(surname);
+    }
+    public List<UserEntity> findByNiknameLike(String nickname){
+        return userRepository.findByNickNameLike(nickname);
+    }
+
 }

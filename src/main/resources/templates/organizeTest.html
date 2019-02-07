@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Organize Test</title>
+  <script
+              src="https://code.jquery.com/jquery-3.3.1.js"
+              integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+              crossorigin="anonymous">
+
+  </script>
+
+</head>
+<body>
+
+<table>
+<form action="" method="post">
+<input type="text" placeholder="Search User" name="search">
+
+    <input type="submit" name="submit"value="Search"  />
+</form>
+
+
+               <thead>
+               <tr>
+                   <th>Email</th>
+                   <th>Name</th>
+                   <th>Surname</th>
+                   <th>Nickname</th>
+               </tr>
+               </thead>
+
+               <tbody>
+               <tr th:each="user : ${userList}">
+                   <td><span th:text="${user.email}">Email</span> </td>
+                   <td><span th:text="${user.name}">Name</span> </td>
+                   <td><span th:text="${user.surname}">Surname</span> </td>
+                   <td><span th:text="${user.nickname}">Nickname</span> </td>
+                   <td><input type="hidden" th:value="${user.id}" name="userId"/></td>
+                    <td><input type="checkbox" name="userSelect" th:value="${user.id}"/></td>
+               </tr>
+
+
+               </tbody>
+
+</table>
+
+
+<input type="hidden" id="testId" th:value="${test.id}" name="testId">
+
+
+<button name="editOptions" id="editOptions">Select Users </button>
+
+
+<form action="/test/organize" method="get">
+ <input type="submit" name="submit" value="Go Back to Test"/>
+</form>
+
+</body>
+
+
+<script>
+
+let users=[];
+
+ $().ready(function() {
+
+let testId=parseInt($("#testId").val());
+
+
+                $('#editOptions').click(function() {
+
+
+                    users.length=0;
+                    $.each($("input[name='userSelect']:checked"), function(){
+
+                      // console.log($(this).attr("value"));
+                      users.push(parseInt($(this).attr("value")));
+                      //console.log(users);
+                   });
+
+                    let  userTest = JSON.stringify({
+                         testId: testId,
+                         usersId: users
+                     });
+                    console.log(userTest);
+                     $.ajax({
+                                 type: "POST",
+                                 data: userTest,
+                                 url: "/test/notify",
+                                 contentType: "application/json; charset=utf-8",
+                                 dataType: "json",
+                                 success: (function () {
+                                     location.href = "http://localhost:8080/test/organize";
+                                 })
+                             });
+              });
+
+
+
+
+
+
+    });
+
+
+
+</script>
+
+
+</html>

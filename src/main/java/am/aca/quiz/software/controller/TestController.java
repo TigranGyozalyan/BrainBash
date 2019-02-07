@@ -1,8 +1,7 @@
 package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.service.dto.SubmitQuestionDto;
-import am.aca.quiz.software.service.dto.TestDto;
+import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.TopicServiceImp;
@@ -11,16 +10,15 @@ import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import am.aca.quiz.software.service.mapper.UserMapper;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import sun.security.provider.MD2;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/test")
@@ -141,26 +139,27 @@ public class TestController {
     }
 
     @GetMapping("/menu")
-    public ModelAndView loadMenu(){
-        ModelAndView modelAndView=new ModelAndView("testMenu");
+    public ModelAndView loadMenu() {
+        ModelAndView modelAndView = new ModelAndView("testMenu");
 
         return modelAndView;
     }
-    @GetMapping("/menu/{id}")
-    public ModelAndView loadTestById(@PathVariable("id") Long id){
-        ModelAndView modelAndView=new ModelAndView("testByTopic");
 
-        Set<BigInteger> testId=testServiceImp.findTestIdByTopicId(id);
-        Set<TestDto> testDtos=new HashSet<>();
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTestById(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("testByTopic");
+
+        Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
+        Set<TestDto> testDtos = new HashSet<>();
         testId.stream()
-                .forEach(i-> {
+                .forEach(i -> {
                     try {
                         testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 });
-        modelAndView.addObject("testList",testDtos);
+        modelAndView.addObject("testList", testDtos);
 
         return modelAndView;
     }
@@ -170,5 +169,91 @@ public class TestController {
         return new ModelAndView("testSolution");
     }
 
+
+    @GetMapping("/organize")
+    public ModelAndView selectTest() {
+        ModelAndView modelAndView = new ModelAndView("selectTest");
+        try {
+            List<TestDto> testDtos = testMapper.mapEntitiesToDto(testServiceImp.getAll());
+            modelAndView.addObject("testList", testDtos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return modelAndView;
+    }
+
+    @GetMapping("/selectUser/{id}")
+    public ModelAndView selectUsers(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("organizeTest");
+
+        List<UserDto> userDtos = null;
+        TestDto testDto = null;
+        try {
+            testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
+            userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        modelAndView.addObject("userList", userDtos);
+        modelAndView.addObject("test", testDto);
+
+
+        return modelAndView;
+
+    }
+
+    @PostMapping("/selectUser/{id}")
+    public ModelAndView filterUser(@PathVariable("id") Long id, @RequestParam Map<String, String> formDate) {
+        ModelAndView modelAndView = new ModelAndView("organizeTest");
+        String user = formDate.get("search");
+        List<UserDto> userDtos = new ArrayList<>();
+
+        try {
+            TestDto testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
+
+            if (userServiceImp.findByEmail(user) != null) {
+
+                userDtos.add(userMapper.mapEntityToDto(userServiceImp.findByEmail(user)));
+
+            } else if (!userServiceImp.findByNameLike(user).isEmpty()) {
+
+                userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNameLike(user));
+
+            } else if (!userServiceImp.findBySurnameLike(user).isEmpty()) {
+
+                userDtos = userMapper.mapEntitiesToDto(userServiceImp.findBySurnameLike(user));
+
+            } else if (!userServiceImp.findByNiknameLike(user).isEmpty()) {
+
+                userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNiknameLike(user));
+
+            }
+
+
+            modelAndView.addObject("userList", userDtos);
+            modelAndView.addObject("test", testDto);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/notify",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView notify(@RequestBody TestUsersDto testUsersDto){
+        System.out.println(testUsersDto.getTestId()+" "+testUsersDto.getUsersId());
+
+
+
+
+
+        return new ModelAndView("redirect:/test/organize");
+//        return selectTest();
+    }
 
 }

@@ -10,6 +10,7 @@ import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -165,4 +166,18 @@ public class HistoryController {
     public ModelAndView searchHistory() {
         return new ModelAndView("searchHistory");
     }
+
+    @PostMapping(value = "/test")
+    public ModelAndView createTest(@RequestParam("testId") Long testId,@RequestParam Map<String, String> formData){
+
+        ModelAndView modelAndView=new ModelAndView("redirect:/test/organize");
+
+        for(String key :formData.keySet()){
+            System.out.println(formData.get(key));
+        }
+
+
+        return modelAndView;
+    }
+
 }
