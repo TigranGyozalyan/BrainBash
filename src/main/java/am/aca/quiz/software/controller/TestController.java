@@ -3,6 +3,7 @@ package am.aca.quiz.software.controller;
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.enums.Status;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
@@ -35,10 +36,11 @@ public class TestController {
     private final UserServiceImp userServiceImp;
     private final QuestionController questionController;
     private final HistoryServiceImp historyServiceImp;
+    private final MailService mailService;
     private ScorePair<Double, Double> score;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp) {
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -49,6 +51,7 @@ public class TestController {
         this.userServiceImp = userServiceImp;
         this.questionController = questionController;
         this.historyServiceImp = historyServiceImp;
+        this.mailService = mailService;
     }
 
 //    @GetMapping("/{id}")
@@ -320,7 +323,25 @@ public class TestController {
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
 //        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
 
+        List<Long> userIds = testUsersDto.getUsersId();
 
+
+        List<UserDto> userDtos = new ArrayList<>();
+
+        userIds
+                .stream()
+                .forEach(
+                        i -> {
+                            try {
+                                userDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        userDtos.forEach(i -> {
+            mailService.sendText(i.getEmail(), "notification", "notify");
+        });
 
 
         //TODO
