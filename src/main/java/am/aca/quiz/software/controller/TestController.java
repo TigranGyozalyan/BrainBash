@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -35,7 +36,7 @@ public class TestController {
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
     private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos;
+    private List<SubmitQuestionDto> userSubmitQuestionDtos=new ArrayList<>();
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
 
@@ -143,17 +144,38 @@ public class TestController {
     public ModelAndView loadTest(@PathVariable("id") Long id) {
 
 
+        Timer timer=new Timer();
+        TimerTask timerTask=new TimerTask() {
+            @Override
+            public void run() {
+
+
+                System.out.println(LocalDateTime.now());
+            }
+        };
+
+        try {
+
+            timer.schedule(timerTask,0,testServiceImp.getById(id).getDuration());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
         return new ModelAndView("testSolution");
     }
 
 
     @PostMapping("/process")
-    public ModelAndView deleteTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        testServiceImp.checkTest(submitQuestionDtos);
+        score=testServiceImp.checkTest(submitQuestionDtos);
+
+
 
         return new ModelAndView("testSolution");
     }
@@ -263,6 +285,7 @@ public class TestController {
         return modelAndView;
 
     }
+    //TODO Explane
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser")
@@ -270,7 +293,7 @@ public class TestController {
 
         ModelAndView modelAndView = new ModelAndView("organizeTest");
 
-        List<Long> recievedIds = testUsersDto.getUsersId();
+        List<Long> receivedIds = testUsersDto.getUsersId();
         TestDto testDto = null;
 
         try {
@@ -281,7 +304,7 @@ public class TestController {
 
 
         List<UserDto> finalUserDtos = new ArrayList<>();
-        recievedIds
+        receivedIds
                 .stream()
                 .forEach(
                         i -> {
@@ -298,6 +321,7 @@ public class TestController {
                     HistoryEntity historyEntity = new HistoryEntity();
                     try {
                         historyEntity.setUserEntity(userServiceImp.getById(i.getId()));
+
                         historyEntity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
                         historyEntity.setStatus(Status.UPCOMING);
                     } catch (SQLException e) {
@@ -356,32 +380,55 @@ public class TestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView notify(@RequestBody TestUsersDto testUsersDto) {
-//        System.out.println(testUsersDto.getTestId() + " " + testUsersDto.getUsersId() + testUsersDto.getStartTime());
+
 
         List<Long> userIds = testUsersDto.getUsersId();
 
-
         List<UserDto> userDtos = new ArrayList<>();
 
-        userIds
-                .stream()
-                .forEach(
-                        i -> {
-                            try {
-                                userDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                        });
+        String subject="New Test Notification";
 
-        userDtos.forEach(i -> {
-            mailService.sendText(i.getEmail(), "notification", "notify");
-        });
+        try {
+        String text="Yor Test Will Start on "+ testUsersDto.getStartTime().toString() +". And Will Last "
+                    + testServiceImp.getById(testUsersDto.getTestId()).getDuration() +" minutes. Good luck.";
 
+            userIds.forEach(
+                    i -> {
+                        try {
+                            // userDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
+                            mailService.sendText(userServiceImp
+                                    .getById(i).getEmail(),subject,text);
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+        String endsubject="Finished Test Notification";
+
+        String endText="Test Was Finished You got "+score.getKey()+"Points Out Of "+score.getValue();
+
+
+        userIds.forEach(
+                i -> {
+                    try {
+                        mailService.sendText(userServiceImp
+                                .getById(i).getEmail(),endsubject,endText);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
 
         //TODO
         return new ModelAndView("redirect:/test/organize");
-//        return selectTest();
     }
 
 }
