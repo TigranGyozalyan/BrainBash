@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @RestController
@@ -36,9 +36,11 @@ public class TestController {
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
     private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos=new ArrayList<>();
+    private List<SubmitQuestionDto> userSubmitQuestionDtos = new ArrayList<>();
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
+    private LocalTime endTime;
+
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
@@ -51,8 +53,6 @@ public class TestController {
         this.userMapper = userMapper;
         this.userServiceImp = userServiceImp;
         this.questionController = questionController;
-
-
         this.historyServiceImp = historyServiceImp;
         this.mailService = mailService;
         this.answerServiceImp = answerServiceImp;
@@ -140,27 +140,29 @@ public class TestController {
         return testList();
     }
 
+    @PostMapping("/timer/{id}")
+    public ResponseEntity<TimerDto> timer(@PathVariable("id") Long id) {
+
+        TimerDto timerDto=new TimerDto();
+        LocalTime time=LocalTime.now();
+
+
+        timerDto.setCurrentTime(time.getNano()*1000000);
+        timerDto.setEndTime(endTime.getNano()*1000000);
+
+
+        return ResponseEntity.ok(timerDto);
+    }
+
     @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id) {
 
-
-        Timer timer=new Timer();
-        TimerTask timerTask=new TimerTask() {
-            @Override
-            public void run() {
-
-
-                System.out.println(LocalDateTime.now());
-            }
-        };
-
+        endTime=LocalTime.now();
         try {
-
-            timer.schedule(timerTask,0,testServiceImp.getById(id).getDuration());
+            endTime.plusMinutes(testServiceImp.getById(id).getDuration());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
 
         return new ModelAndView("testSolution");
@@ -173,8 +175,8 @@ public class TestController {
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
 
-        score=testServiceImp.checkTest(submitQuestionDtos);
 
+        score = testServiceImp.checkTest(submitQuestionDtos);
 
 
         return new ModelAndView("testSolution");
@@ -182,21 +184,21 @@ public class TestController {
 
 
     @GetMapping("/scorepage")
-    public ModelAndView scorePage(){
+    public ModelAndView scorePage() {
 
-        ModelAndView modelAndView=new ModelAndView("testScore");
-        TestScoreDto testScoreDto=new TestScoreDto();
+        ModelAndView modelAndView = new ModelAndView("testScore");
+        TestScoreDto testScoreDto = new TestScoreDto();
 
-        List<QuestionDto> questionDtos=new ArrayList<>();
-        Map<Long,List<AnswerDto>> answersByQuestionId=new HashMap<>();
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        Map<Long, List<AnswerDto>> answersByQuestionId = new HashMap<>();
 
-        userSubmitQuestionDtos.forEach(i-> {
+        userSubmitQuestionDtos.forEach(i -> {
             try {
-                Long id=questionServiceImp.getById(i.getQuestionId()).getId();
+                Long id = questionServiceImp.getById(i.getQuestionId()).getId();
 
                 questionDtos.add(questionMapper.mapEntityToDto(questionServiceImp.getById(i.getQuestionId())));
 
-                answersByQuestionId.put(id,answerMapper
+                answersByQuestionId.put(id, answerMapper
                         .mapEntitiesToDto(answerServiceImp.getAnswerEntitiesByQuestionId(id)));
 
             } catch (SQLException e) {
@@ -207,13 +209,13 @@ public class TestController {
         testScoreDto.setTestScore(score.getValue());
         testScoreDto.setUserScore(score.getKey());
 
-        for(Map.Entry<Long,List<AnswerDto>> elem :answersByQuestionId.entrySet()){
-            modelAndView.addObject("answerList",elem.getValue());
+        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
+            modelAndView.addObject("answerList", elem.getValue());
         }
 
-        modelAndView.addObject("questionList",questionDtos);
+        modelAndView.addObject("questionList", questionDtos);
 
-        modelAndView.addObject("testScore",testScoreDto);
+        modelAndView.addObject("testScore", testScoreDto);
 
 
         return modelAndView;
@@ -285,7 +287,6 @@ public class TestController {
         return modelAndView;
 
     }
-    //TODO Explane
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser")
@@ -305,7 +306,6 @@ public class TestController {
 
         List<UserDto> finalUserDtos = new ArrayList<>();
         receivedIds
-                .stream()
                 .forEach(
                         i -> {
                             try {
@@ -316,7 +316,6 @@ public class TestController {
                         });
 
         finalUserDtos
-                .stream()
                 .forEach(i -> {
                     HistoryEntity historyEntity = new HistoryEntity();
                     try {
@@ -384,20 +383,18 @@ public class TestController {
 
         List<Long> userIds = testUsersDto.getUsersId();
 
-        List<UserDto> userDtos = new ArrayList<>();
 
-        String subject="New Test Notification";
+        String subject = "New Test Notification";
 
         try {
-        String text="Yor Test Will Start on "+ testUsersDto.getStartTime().toString() +". And Will Last "
-                    + testServiceImp.getById(testUsersDto.getTestId()).getDuration() +" minutes. Good luck.";
+            String text = "Yor Test Will Start on " + testUsersDto.getStartTime().toString() + ". And Will Last "
+                    + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
 
             userIds.forEach(
                     i -> {
                         try {
-                            // userDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
                             mailService.sendText(userServiceImp
-                                    .getById(i).getEmail(),subject,text);
+                                    .getById(i).getEmail(), subject, text);
 
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -410,17 +407,16 @@ public class TestController {
         }
 
 
+        String endSubject = "Finished Test Notification";
 
-        String endsubject="Finished Test Notification";
-
-        String endText="Test Was Finished You got "+score.getKey()+"Points Out Of "+score.getValue();
+        String endText = "Test Was Finished You got " + score.getKey() + "Points Out Of " + score.getValue();
 
 
         userIds.forEach(
                 i -> {
                     try {
                         mailService.sendText(userServiceImp
-                                .getById(i).getEmail(),endsubject,endText);
+                                .getById(i).getEmail(), endSubject, endText);
 
                     } catch (SQLException e) {
                         e.printStackTrace();
