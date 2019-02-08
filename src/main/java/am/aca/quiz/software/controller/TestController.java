@@ -36,7 +36,7 @@ public class TestController {
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
     private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos = new ArrayList<>();
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
     private LocalTime endTime;
@@ -144,11 +144,11 @@ public class TestController {
     public ResponseEntity<TimerDto> timer(@PathVariable("id") Long id) {
 
         TimerDto timerDto=new TimerDto();
+
         LocalTime time=LocalTime.now();
 
-
-        timerDto.setCurrentTime(time.getNano()*1000000);
-        timerDto.setEndTime(endTime.getNano()*1000000);
+        timerDto.setCurrentTime(time.getNano());
+        timerDto.setEndTime(endTime.getNano());
 
 
         return ResponseEntity.ok(timerDto);
@@ -158,6 +158,7 @@ public class TestController {
     public ModelAndView loadTest(@PathVariable("id") Long id) {
 
         endTime=LocalTime.now();
+
         try {
             endTime.plusMinutes(testServiceImp.getById(id).getDuration());
         } catch (SQLException e) {
@@ -178,6 +179,7 @@ public class TestController {
 
         score = testServiceImp.checkTest(submitQuestionDtos);
 
+        userSubmitQuestionDtos=submitQuestionDtos;
 
         return new ModelAndView("testSolution");
     }

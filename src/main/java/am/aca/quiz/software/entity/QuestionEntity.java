@@ -16,7 +16,7 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "question", nullable = false, columnDefinition = "text")
+    @Column(name = "question", nullable = false, columnDefinition = "varchar")
     private String question;
 
     @Min(value = 0, message = "Invalid Point Argument. Points must be >= 0")
