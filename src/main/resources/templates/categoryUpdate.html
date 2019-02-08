@@ -8,11 +8,13 @@
 <body>
 
 <form th:action="@{/category/update}" method="post">
-     Type: <input name="type" type="text" th:value="${category.type}">
+    Type: <input name="type" type="text" th:value="${category.type}">
     <br/>
     <input type="submit" value="Update Category">
     <input type="hidden" th:value="${category.id}" name="categoryId">
 
 </form>
+<input type="button" onclick="location.href='http://localhost:8080/category/list'" value="Back to Category List">
+
 </body>
 </html>
