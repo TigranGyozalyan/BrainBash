@@ -165,26 +165,11 @@ public class QuestionController {
         return new ModelAndView("question");
     }
 
+
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping(value = "/update")
-    public ModelAndView updateQuestion() {
-        ModelAndView modelAndView = new ModelAndView("questionUpdate");
-        List<TopicDto> topicDtos = null;
-        List<QuestionDto> questionDtos = null;
-
-        try {
-            topicDtos = topicMapper.mapEntitiesToDto(questionServiceImp.getTopicServiceImp().getAll());
-            questionDtos = questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
-
-            modelAndView.addObject("topics", topicDtos);
-            modelAndView.addObject("question", questionDtos.get(0));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        return modelAndView;
+    @GetMapping(value = "/update/{id}")
+    public ModelAndView updateQuestion(@PathVariable("id") int id) {
+        return new ModelAndView("questionUpdate");
     }
 
 

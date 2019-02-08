@@ -136,6 +136,7 @@ div {
     let wrapperDiv = $('#wrapper');
     let interval;
     let $wrapper;
+    let second = 1000;
     wrapperDiv.ready(function () {
          $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
@@ -192,15 +193,18 @@ div {
                     let hours = (duration > 0) ? Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
                     let minutes = (duration > 0) ? Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60)) : 0;
                     let seconds = (duration > 0) ? Math.floor((duration % (1000 * 60)) / 1000) : 0;
+
+                    console.log(hours);
+                    console.log(minutes);
                     $('#hours').text(hours);
                     $('#minutes').text(minutes);
                     $('#seconds').text(seconds);
-                    now = now + 1000;
+                    now = now + second;
 
-                    if (duration < 1000) {
+                    if (duration < second) {
                         submitTest();
                     }
-                }, 1000);
+                }, second);
 
 
             });
