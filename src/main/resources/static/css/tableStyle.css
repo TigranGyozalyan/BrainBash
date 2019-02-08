@@ -44,7 +44,7 @@ div.table-title {
 
 th {
     color:#D5DDE5;;
-    background:#1b1e24;
+    background: #1b1e24;
     border-bottom:4px solid #9ea7af;
     border-right: 1px solid #343a45;
     font-size:23px;
@@ -140,4 +140,18 @@ td.text-center {
 
 td.text-right {
     text-align: right;
+}
+
+
+.Question {
+    background: #1b1e24;
+    background-size: 20px 20px;
+    color: #C1C3D1;
+    padding: 20px;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 18px;
+    text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+    border-right: 0px;
 }

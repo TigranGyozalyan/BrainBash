@@ -22,7 +22,7 @@
         <span>
             <label for="startTime">Choose a time for your appointment:</label>
 
-        <input type="datetime-local" id="startTime" value="2018-06-12T19:30">
+        <input  type="datetime-local" id="startTime" value="" >
         </span>
 
 
@@ -30,11 +30,7 @@
 
         <input type="submit" name="submit" value="Go Back to Test"/>
 
-
-
     </br>
-    </br>
-
     <thead>
     <tr>
         <th>Email</th>
@@ -59,14 +55,10 @@
 
 </table>
 
-
-
 <span>
         <button type="button" name="editOptions" id="editOptions">Organize Test</button>
 
         </span>
-
-
 </body>
 
 
@@ -121,6 +113,12 @@
         dateTime = $(this).val();
     });
 
+    //
+    // let date = "\/Date(1297246301973)\/";
+    // let nowDate = new Date(parseInt(date.substr(6)));
+    // let formatedDate=nowDate.format("yyyy-mm-dd'T'HH:MM:ss")
+    //
+    // $("#startTime").val(formatedDate);
 
 
 </script>

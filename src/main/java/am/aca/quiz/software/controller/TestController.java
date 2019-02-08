@@ -36,7 +36,7 @@ public class TestController {
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
     private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos = new ArrayList<>();
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
     private long endTime;
@@ -178,6 +178,7 @@ public class TestController {
 
         score = testServiceImp.checkTest(submitQuestionDtos);
 
+        userSubmitQuestionDtos=submitQuestionDtos;
 
         return new ModelAndView("testSolution");
     }

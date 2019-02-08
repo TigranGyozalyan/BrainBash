@@ -34,7 +34,10 @@
 
 <br/>
 <label>
-    Question body <input id="questionText" type="text">
+    Question body
+    </br>
+    <textarea rows="10" cols="50" id="questionText" type="text">
+    </textarea>
 </label>
 <br/>
 <label>
@@ -73,8 +76,8 @@
 
         let $answerBlock = $('#answerBlock');
         let $answerSet = $('<div/>').attr('class', 'answerClass');
-        let answerText = $('<input/>').attr('type', 'text').attr('id', 'answerText');
-        let answerDescription = $('<input/>').attr('type', 'text').attr('id', 'answerDescription');
+        let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText');
+        let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription');
         let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect');
         let label = $('<label/>').html('Answer #' + answerCount + ': ');
         let descriptionLabel = $('<label/>').html(' Description: ');

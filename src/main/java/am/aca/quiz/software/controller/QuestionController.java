@@ -80,6 +80,16 @@ public class QuestionController {
         return modelAndView;
     }
 
+    @GetMapping("/all")
+    public List<QuestionDto> getAllQuestions(){
+        try {
+            return questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
         try {
