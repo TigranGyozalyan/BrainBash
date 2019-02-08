@@ -85,6 +85,7 @@ div {
     #timer {
         position: fixed;
         left: 0;
+        top : 0;
         font-family: Arial, sans-serif;
         font-size: 20px;
         color: #d1d1d1;
@@ -133,8 +134,10 @@ div {
 
     let questionCount = 0;
     let wrapperDiv = $('#wrapper');
+    let interval;
+    let $wrapper;
     wrapperDiv.ready(function () {
-        let $wrapper = $('#wrapper');
+         $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
 
@@ -182,7 +185,7 @@ div {
                 $('#timer').append($('<span/>').attr('id', 'hours')).append($('<span/>').attr('id', 'minutes')).append($('<span/>').attr('id', 'seconds'));
                 let now = new Date(timerData.currentTime).getTime();
 
-                let interval = setInterval(function () {
+                interval = setInterval(function () {
 
                     let duration = endTime - now;
 
@@ -195,9 +198,6 @@ div {
                     now = now + 1000;
 
                     if (duration < 1000) {
-                        $wrapper.css("pointer-events", "none");
-                        $('.btn-check').css("pointer-events", "auto");
-                        clearInterval(interval);
                         submitTest();
                     }
                 }, 1000);
@@ -220,6 +220,9 @@ div {
     }
 
     function submitTest() {
+        $wrapper.css("pointer-events", "none");
+        $('.btn-check').css("pointer-events", "auto");
+        clearInterval(interval);
         let rawData = $('.question').map(function () {
             let questionId = parseInt($(this).attr('id'));
 
