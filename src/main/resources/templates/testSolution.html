@@ -31,14 +31,6 @@
         margin-bottom: 2em;
     }
 
-    .question.error {
-        background-color: #e74c3c;
-    }
-
-    .question.success {
-        background-color: #2ecc71;
-    }
-
     .question .question-headline {
         font-weight: 700;
         border-bottom: 2px solid #ddd;
@@ -86,6 +78,27 @@
     .btn-check:hover {
         background-color: #0f6c36;
     }
+
+    #timer {
+        position: fixed;
+        left: 1%;
+        font-family: Arial, sans-serif;
+        font-size: 20px;
+        color: #d1d1d1;
+        letter-spacing: -1px;
+    }
+
+    #timer span {
+        font-size: 60px;
+        color: #d9d9d9;
+        margin: 0 3px 0 15px;
+    }
+
+    #timer span:first-child {
+        margin-left: 0;
+    }
+
+
 </style>
 
 
@@ -97,16 +110,20 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous">
 
-</script>
+    </script>
 </head>
 <body>
 
-<form id="submission">
-<div id="wrapper" class="wrapper">
-    <div class='result'></div>
 
+<div id="wrapper" class="wrapper">
+
+    <div id="timer">
+        <span id="hours"></span>hours
+        <span id="minutes"></span>minutes
+        <span id="seconds"></span>seconds
+    </div>
+    <div class='result'></div>
 </div>
-</form>
 
 </body>
 
@@ -151,12 +168,43 @@
                 $questionDiv.append($answerContainer);
                 $wrapper.append($questionDiv);
             });
-            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('id','submitId');
-            let $score = $('<button/>').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/test/scorepage'").attr('value','Go to Score').html('Go to Score').attr('id','scoreId');
-            $score.prop('disabled',true);
+            let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('id', 'submitId');
+            let $score = $('<button/>').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/test/scorepage'").attr('value', 'Go to Score').html('Go to Score').attr('id', 'scoreId');
+            $score.prop('disabled', true);
             $score.hide();
             $wrapper.append($submit);
             $wrapper.append($score);
+
+            $.post('/test/timer/' + id, function (timerData) {
+
+                let endTime = new Date(timerData.endTime).getTime();
+                $('#timer').append($('<span/>').attr('id', 'hours')).append($('<span/>').attr('id', 'minutes')).append($('<span/>').attr('id', 'seconds'));
+                let now = new Date(timerData.currentTime).getTime();
+
+                let interval = setInterval(function () {
+
+                    let duration = endTime - now;
+
+                    let hours = (duration > 0) ? Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
+                    let minutes = (duration > 0) ? Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60)) : 0;
+                    let seconds = (duration > 0) ? Math.floor((duration % (1000 * 60)) / 1000) : 0;
+                    $('#hours').text(hours);
+                    $('#minutes').text(minutes);
+                    $('#seconds').text(seconds);
+                    now = now + 1000;
+
+                    if (duration < 1000) {
+                        $wrapper.css("pointer-events", "none");
+                        $('.btn-check').css("pointer-events", "auto");
+                        clearInterval(interval);
+                        submitTest();
+                    }
+                }, 1000);
+
+
+            });
+
+
         });
     });
 
@@ -190,7 +238,6 @@
         console.log(data);
 
 
-
         $.ajax({
             type: "POST",
             data: data,
@@ -203,10 +250,11 @@
         });
 
         $('#submitId').remove();
-        $('#scoreId').prop('disabled',false).show();
+        $('#scoreId').prop('disabled', false).show();
 
 
     }
+
 
 </script>
 

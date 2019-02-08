@@ -39,8 +39,8 @@ public class TestController {
     private List<SubmitQuestionDto> userSubmitQuestionDtos = new ArrayList<>();
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
-    private LocalTime endTime;
-
+    private long endTime;
+    private int reloadCount = 0;
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
@@ -143,29 +143,29 @@ public class TestController {
     @PostMapping("/timer/{id}")
     public ResponseEntity<TimerDto> timer(@PathVariable("id") Long id) {
 
-        TimerDto timerDto=new TimerDto();
-        LocalTime time=LocalTime.now();
+        TimerDto timerDto = new TimerDto();
+        long time = System.currentTimeMillis();
 
 
-        timerDto.setCurrentTime(time.getNano()*1000000);
-        timerDto.setEndTime(endTime.getNano()*1000000);
-
+        timerDto.setCurrentTime(time);
+        timerDto.setEndTime(endTime);
+        System.out.println("Start time is : " + time);
+        System.out.println("End time is : " + endTime);
 
         return ResponseEntity.ok(timerDto);
     }
 
     @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id) {
-
-        endTime=LocalTime.now();
-        try {
-            endTime.plusMinutes(testServiceImp.getById(id).getDuration());
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public ModelAndView loadTest(@PathVariable("id") Long id) throws SQLException {
+        if (reloadCount == 0) {
+            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
+            System.out.println(endTime);
+            reloadCount++;
         }
 
 
         return new ModelAndView("testSolution");
+
     }
 
 
@@ -185,7 +185,7 @@ public class TestController {
 
     @GetMapping("/scorepage")
     public ModelAndView scorePage() {
-
+        reloadCount = 0;
         ModelAndView modelAndView = new ModelAndView("testScore");
         TestScoreDto testScoreDto = new TestScoreDto();
 

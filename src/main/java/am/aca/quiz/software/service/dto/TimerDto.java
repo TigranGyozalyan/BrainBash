@@ -2,23 +2,23 @@ package am.aca.quiz.software.service.dto;
 
 public class TimerDto {
 
-    private int currentTime;
-    private int endTime;
+    private long currentTime;
+    private long endTime;
 
 
-    public int getCurrentTime() {
+    public long getCurrentTime() {
         return currentTime;
     }
 
-    public void setCurrentTime(int currentTime) {
+    public void setCurrentTime(long currentTime) {
         this.currentTime = currentTime;
     }
 
-    public int getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(int endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 }
