@@ -136,6 +136,10 @@ div {
     let wrapperDiv = $('#wrapper');
     let interval;
     let $wrapper;
+
+    let current;
+    let end;
+
     wrapperDiv.ready(function () {
          $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
@@ -182,7 +186,9 @@ div {
             $.post('/test/timer/' + id, function (timerData) {
 
                 let endTime = new Date(timerData.endTime).getTime();
+
                 $('#timer').append($('<span/>').attr('id', 'hours')).append($('<span/>').attr('id', 'minutes')).append($('<span/>').attr('id', 'seconds'));
+
                 let now = new Date(timerData.currentTime).getTime();
 
                 interval = setInterval(function () {
@@ -197,9 +203,16 @@ div {
                     $('#seconds').text(seconds);
                     now = now + 1000;
 
+
                     if (duration < 1000) {
                         submitTest();
                     }
+
+
+                    current=timerData.currentTime;
+                    end=now;
+
+
                 }, 1000);
 
 
@@ -242,6 +255,27 @@ div {
         console.log(data);
 
 
+
+         let timeData = JSON.stringify({
+                currentTime : parseInt(current),
+                endTime : parseInt(end)
+
+         });
+         console.log(timeData);
+
+        $.ajax({
+                    type: "GET",
+                    data: timeData,
+                    url: "/test/scorepage",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (function () {
+
+                    })
+                });
+
+
+
         $.ajax({
             type: "POST",
             data: data,
@@ -252,6 +286,10 @@ div {
 
             })
         });
+
+
+
+
 
         $('#submitId').remove();
         $('#scoreId').prop('disabled', false).show();

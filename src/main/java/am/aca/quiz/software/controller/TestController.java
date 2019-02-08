@@ -2,6 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
+import java.security.Principal;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @RestController
@@ -41,6 +45,7 @@ public class TestController {
     private final AnswerMapper answerMapper;
     private long endTime;
     private int reloadCount = 0;
+    private Long testId;
 
 
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
@@ -147,6 +152,8 @@ public class TestController {
         long time = System.currentTimeMillis();
 
 
+        this.testId=id;
+
         timerDto.setCurrentTime(time);
         timerDto.setEndTime(endTime);
         System.out.println("Start time is : " + time);
@@ -172,8 +179,10 @@ public class TestController {
     @PostMapping("/process")
     public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
 
+
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
+
 
 
         score = testServiceImp.checkTest(submitQuestionDtos);
@@ -184,8 +193,9 @@ public class TestController {
     }
 
 
-    @GetMapping("/scorepage")
-    public ModelAndView scorePage() {
+    @GetMapping(value = "/scorepage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView scorePage(@RequestBody TimerDto timerDto, Principal principal) {
+
         reloadCount = 0;
         ModelAndView modelAndView = new ModelAndView("testScore");
         TestScoreDto testScoreDto = new TestScoreDto();
@@ -213,10 +223,31 @@ public class TestController {
         for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
             modelAndView.addObject("answerList", elem.getValue());
         }
-
         modelAndView.addObject("questionList", questionDtos);
-
         modelAndView.addObject("testScore", testScoreDto);
+
+
+
+        /*
+        History
+         */
+        UserEntity userEntity= null;
+        try {
+            userEntity = userServiceImp.findByEmail(principal.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        HistoryEntity historyEntity=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testId);
+
+        if(historyEntity==null){
+
+        }else {
+            LocalDateTime finishTime =
+                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+            historyEntity.setEndTime(finishTime);
+            historyEntity.setScore(score.getKey());
+        }
+
 
 
         return modelAndView;
@@ -329,7 +360,7 @@ public class TestController {
                     }
                     historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
                     historyEntity.setScore(0);
-                    historyServiceImp.add(historyEntity);
+                    historyServiceImp.addHistory(historyEntity);
                 });
 
         return modelAndView;
@@ -408,21 +439,21 @@ public class TestController {
         }
 
 
-        String endSubject = "Finished Test Notification";
-
-        String endText = "Test Was Finished You got " + score.getKey() + "Points Out Of " + score.getValue();
-
-
-        userIds.forEach(
-                i -> {
-                    try {
-                        mailService.sendText(userServiceImp
-                                .getById(i).getEmail(), endSubject, endText);
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
+//        String endSubject = "Finished Test Notification";
+//
+//        String endText = "Test Was Finished You got " + score.getKey() + "Points Out Of " + score.getValue();
+//
+//
+//        userIds.forEach(
+//                i -> {
+//                    try {
+//                        mailService.sendText(userServiceImp
+//                                .getById(i).getEmail(), endSubject, endText);
+//
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
 
         //TODO
         return new ModelAndView("redirect:/test/organize");
