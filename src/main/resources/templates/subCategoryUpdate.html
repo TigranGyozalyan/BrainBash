@@ -21,10 +21,12 @@
 
     <label>
         SubCategory : <input name="typename" type="text" th:value="${subCategory.typeName}">
-           <br/>
+        <br/>
         <input type="submit" value="Update SubCategory">
         <input type="hidden" th:value="${subCategory.id}" name="id">
     </label>
 </form>
+<input type="button" onclick="location.href='http://localhost:8080/category/list'" value="Back to Category List">
+
 </body>
 </html>
