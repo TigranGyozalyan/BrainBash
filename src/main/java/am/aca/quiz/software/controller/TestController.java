@@ -219,7 +219,7 @@ public class TestController {
 
         score = testServiceImp.checkTest(submitQuestionDtos);
 
-        scoreServiceImp.foo(testId, score.getValue());
+        scoreServiceImp.foo(testId, score.getKey());
 
         userSubmitQuestionDtos = submitQuestionDtos;
 
