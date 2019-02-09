@@ -173,11 +173,9 @@ public class TestController {
 
             if (upcoming == null) {
 
-
                 upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
                 historyServiceImp.addHistory(upcoming);
                 return new ModelAndView("testSolution");
-
 
             } else {
                 //Can User Somehow Change Time?

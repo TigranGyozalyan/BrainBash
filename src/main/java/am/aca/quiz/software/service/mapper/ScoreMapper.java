@@ -3,6 +3,7 @@ package am.aca.quiz.software.service.mapper;
 import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.dto.ScoreDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 @Component
 public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
 
+    @Autowired
+    private TopicMapper topicMapper;
     @Override
     public ScoreDto mapEntityToDto(ScoreEntity scoreEntity) {
         ScoreDto scoreDto = new ScoreDto();
@@ -24,6 +27,7 @@ public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
 
         scoreDto.setUserId(userId);
         scoreDto.setTopicId(topicId);
+        scoreDto.setTopic(topicMapper.mapEntityToDto(scoreEntity.getTopic()));
 
 
         return scoreDto;

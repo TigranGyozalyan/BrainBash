@@ -11,14 +11,12 @@
     <table>
         <thead>
         <tr>
-            <th>Id</th>
             <th>Topic-name</th>
             <th>Score</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="score : ${scoreList}">
-            <td><span th:text="${score.id}">Id</span></td>
             <td><span th:text="${score.topic.topicName}">Topic-name</span></td>
             <td><span th:text="${score.value}">Score</span></td>
         </tr>

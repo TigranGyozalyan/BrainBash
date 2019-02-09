@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.dto;
 
 public class ScoreDto {
+
     private Long id;
     private double value;
     private int count;
