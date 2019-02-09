@@ -256,23 +256,7 @@ div {
 
 
 
-         let timeData = JSON.stringify({
-                currentTime : parseInt(current),
-                endTime : parseInt(end)
 
-         });
-         console.log(timeData);
-
-        $.ajax({
-                    type: "GET",
-                    data: timeData,
-                    url: "/test/scorepage",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: (function () {
-
-                    })
-                });
 
 
 
@@ -287,6 +271,23 @@ div {
             })
         });
 
+         let timeData = JSON.stringify({
+                        currentTime : parseInt(current),
+                        endTime : parseInt(end)
+
+                 });
+                 console.log(timeData);
+
+                $.ajax({
+                            type: "POST",
+                            data: timeData,
+                            url: "/history/test/update",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: (function () {
+
+                            })
+                        });
 
 
 

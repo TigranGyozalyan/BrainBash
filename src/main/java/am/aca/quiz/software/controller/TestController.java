@@ -156,25 +156,56 @@ public class TestController {
 
         timerDto.setCurrentTime(time);
         timerDto.setEndTime(endTime);
-        System.out.println("Start time is : " + time);
-        System.out.println("End time is : " + endTime);
+
 
         return ResponseEntity.ok(timerDto);
     }
 
     @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id) throws SQLException {
+    public ModelAndView loadTest(@PathVariable("id") Long id,Principal principal) throws SQLException {
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
             System.out.println(endTime);
             reloadCount++;
         }
+        if(historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(),"INPROGRESS")==null) {
+            HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
+            if (upcoming == null) {
+                HistoryEntity inprogress = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "INPROGRESS");
+                if (inprogress == null) {
+                    upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
+                    historyServiceImp.addHistory(upcoming);
+                    return new ModelAndView("testSolution");
+                } else {
 
+                    System.out.println("YOU ARE ALREADY SOLVING");
+                    //TODO REDIRECT PAGE YOU ARE ALREADY SOLVING THIS TEST.
+                }
 
-        return new ModelAndView("testSolution");
+            } else {
+                //Can User Somehow Change Time?
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
+
+                if (now.isAfter(upcoming.getStartTime()) && now.isBefore(duration)) {
+                    upcoming.setStatus(Status.INPROGRESS);
+                    historyServiceImp.addHistory(upcoming);
+                    return new ModelAndView("testSolution");
+                } else {
+                    System.out.println("YOU ARE NOT ALLOWED");
+
+                    //TODO REDIRECT USER PAGE YOU ARE NOT ALLOWED
+
+                }
+            }
+        }else {
+
+            System.out.println("FINISH TOUR TEST");
+            //TODO
+        }
+        return null;
 
     }
-
 
     @PostMapping("/process")
     public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
@@ -182,7 +213,6 @@ public class TestController {
 
         questionController.getTestID().clear();
         questionController.getQuestionEntityList().clear();
-
 
 
         score = testServiceImp.checkTest(submitQuestionDtos);
@@ -193,8 +223,8 @@ public class TestController {
     }
 
 
-    @GetMapping(value = "/scorepage", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView scorePage(@RequestBody TimerDto timerDto, Principal principal) {
+    @GetMapping(value = "/scorepage" )
+    public ModelAndView scorePage() {
 
         reloadCount = 0;
         ModelAndView modelAndView = new ModelAndView("testScore");
@@ -227,31 +257,9 @@ public class TestController {
         modelAndView.addObject("testScore", testScoreDto);
 
 
-
-        /*
-        History
-         */
-        UserEntity userEntity= null;
-        try {
-            userEntity = userServiceImp.findByEmail(principal.getName());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        HistoryEntity historyEntity=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testId);
-
-        if(historyEntity==null){
-
-        }else {
-            LocalDateTime finishTime =
-                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
-            historyEntity.setEndTime(finishTime);
-            historyEntity.setScore(score.getKey());
-        }
-
-
-
         return modelAndView;
     }
+
 
 
     @GetMapping("/menu")
@@ -459,4 +467,10 @@ public class TestController {
         return new ModelAndView("redirect:/test/organize");
     }
 
+    public Long getTestId() {
+        return this.testId;
+    }
+    public  ScorePair<Double,Double> getScore(){
+        return this.score;
+    }
 }

@@ -75,8 +75,12 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAllByUserEntityEmail(email);
     }
 
-    public HistoryEntity findHistoryByUserIdAndTetId(Long userId,Long testId){
-        return historyRepository.getHistoryEntityByUserIdAndTestId(userId,testId);
+    public HistoryEntity findHistoryByUserIdAndTetId(Long userId,Long testId,String status){
+        return historyRepository.getHistoryEntityByUserIdAndTestId(userId,testId, status);
+    }
+
+    public HistoryEntity findHistoryBySUerIdAndStatus(Long userId,String status){
+        return historyRepository.getHistoryByUserIdAndStatus(userId,status);
     }
 
 }
