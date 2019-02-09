@@ -8,6 +8,16 @@ public class ScoreDto {
     private Long topicId;
     private Long userId;
 
+    private TopicDto topic;
+
+    public TopicDto getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicDto topic) {
+        this.topic = topic;
+    }
+
     public Long getTopicId() {
         return topicId;
     }

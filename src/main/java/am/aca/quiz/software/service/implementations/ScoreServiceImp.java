@@ -56,9 +56,8 @@ public class ScoreServiceImp implements ScoreService {
         return scoreRepository.findById(id).get();
     }
 
-    @Override
-    public void removeById(Long id) throws SQLException {
-        scoreRepository.deleteById(id);
-    }
 
+    public List<ScoreEntity> getAllByUserId(Long id) {
+        return scoreRepository.findAllByUserEntityId(id);
+    }
 }

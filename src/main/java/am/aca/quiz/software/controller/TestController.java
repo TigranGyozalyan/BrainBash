@@ -2,7 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
@@ -12,17 +12,13 @@ import am.aca.quiz.software.service.mapper.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.security.Principal;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @RestController
@@ -44,12 +40,13 @@ public class TestController {
     private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
+    private final ScoreServiceImp scoreServiceImp;
     private long endTime;
     private int reloadCount = 0;
     private Long testId;
 
 
-    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper) {
+    public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper, ScoreServiceImp scoreServiceImp) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
         this.topicServiceImp = topicServiceImp;
@@ -63,6 +60,7 @@ public class TestController {
         this.mailService = mailService;
         this.answerServiceImp = answerServiceImp;
         this.answerMapper = answerMapper;
+        this.scoreServiceImp = scoreServiceImp;
     }
 
     @GetMapping("/{id}")
@@ -153,7 +151,7 @@ public class TestController {
         long time = System.currentTimeMillis();
 
 
-        this.testId=id;
+        this.testId = id;
 
         timerDto.setCurrentTime(time);
         timerDto.setEndTime(endTime);
@@ -163,13 +161,13 @@ public class TestController {
     }
 
     @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id,Principal principal) throws SQLException {
+    public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
             System.out.println(endTime);
             reloadCount++;
         }
-        if(historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(),"INPROGRESS")==null) {
+        if (historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
             HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
             if (upcoming == null) {
                 HistoryEntity inprogress = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "INPROGRESS");
@@ -199,9 +197,13 @@ public class TestController {
 
                 }
             }
-        }else {
-
+        } else {
             System.out.println("FINISH TOUR TEST");
+//            int i = 0;
+//            ScoreEntity scoreEntity = new ScoreEntity();
+//            scoreEntity.setTopic();
+//            scoreEntity.setCount(++i);
+//            sc
             //TODO
         }
         return null;
@@ -227,7 +229,7 @@ public class TestController {
     }
 
 
-    @GetMapping(value = "/scorepage" )
+    @GetMapping(value = "/scorepage")
     public ModelAndView scorePage() {
 
         reloadCount = 0;
@@ -265,7 +267,6 @@ public class TestController {
     }
 
 
-
     @GetMapping("/menu")
     public ModelAndView loadMenu() {
         ModelAndView modelAndView = new ModelAndView("testMenu");
@@ -288,7 +289,7 @@ public class TestController {
                     }
                 });
         modelAndView.addObject("testList", testDtos);
-        modelAndView.addObject("id",id);
+        modelAndView.addObject("id", id);
 
         return modelAndView;
     }
@@ -311,7 +312,7 @@ public class TestController {
     @PostMapping("/organize")
     public ModelAndView selectTest(@RequestParam("search") String search) {
         ModelAndView modelAndView = new ModelAndView("selectTest");
-        if (!search.isEmpty()){
+        if (!search.isEmpty()) {
 
         }
 
@@ -485,13 +486,14 @@ public class TestController {
     public Long getTestId() {
         return this.testId;
     }
-    public  ScorePair<Double,Double> getScore(){
+
+    public ScorePair<Double, Double> getScore() {
         return this.score;
     }
 
 
     @PostMapping("/test/random/{id}")
-    public ModelAndView random(@PathVariable("id") Long id){
+    public ModelAndView random(@PathVariable("id") Long id) {
         System.out.println("INSIDE");
         return null;
     }

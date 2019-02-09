@@ -1,0 +1,31 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Score</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttonStyle.css}">
+
+</head>
+<body>
+<form method="get">
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Topic-name</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="score : ${scoreList}">
+            <td><span th:text="${score.id}">Id</span></td>
+            <td><span th:text="${score.topic.topicName}">Topic-name</span></td>
+            <td><span th:text="${score.value}">Score</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <input class="button" type="button" onclick="location.href='http://localhost:8080/user/profile'"
+           value="Back to Profile">
+</form>
+</body>
+</html>
