@@ -89,6 +89,7 @@ public class ScoreServiceImp implements ScoreService {
                     e.printStackTrace();
                 }
             } else {
+                scoreEntity = scoreRepository.findByTopicId(id.get(i));
                 int count = scoreEntity.getCount();
                 double score = scoreRepository.findByTopicId(id.get(i)).getValue();
                 scoreEntity.setCount(++count);
