@@ -1,5 +1,6 @@
 package am.aca.quiz.software.controller;
 
+import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
@@ -132,7 +133,6 @@ public class QuestionController {
     public ModelAndView postQuestion(@RequestBody QuestionDto question) {
         try {
 
-
             String questionBody = question.getQuestion();
             String level = question.getLevel();
             int points = question.getPoints();
@@ -156,8 +156,6 @@ public class QuestionController {
                 answerServiceImp.addAnswer(answerText, description, isCorrect, questionId);
             }
 
-            List<TopicDto> topicDtos = topicMapper.mapEntitiesToDto(topicServiceImp.getAll());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,42 +163,50 @@ public class QuestionController {
         return new ModelAndView("question");
     }
 
+
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping(value = "/update")
-    public ModelAndView updateQuestion() {
-        ModelAndView modelAndView = new ModelAndView("questionUpdate");
-        List<TopicDto> topicDtos = null;
-        List<QuestionDto> questionDtos = null;
+    @GetMapping(value = "/update/{id}")
+    public ModelAndView updateQuestion(@PathVariable("id") int id) {
+        return new ModelAndView("questionUpdate");
+    }
 
+
+    @SuppressWarnings("Duplicates")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/update/{id}")
+    public ModelAndView updateQuestion(@PathVariable int id ,@RequestBody QuestionDto questionDto) {
+
+        String questionBody = questionDto.getQuestion();
+        String level = questionDto.getLevel();
+        int points = questionDto.getPoints();
+        int corr_answer_count = 0;
+
+        List<AnswerDto> answerList = questionDto.getAnswerDtoList();
+
+        for (AnswerDto answer : answerList) {
+            corr_answer_count += answer.isCorrect() ? 1 : 0;
+        }
+
+        Long topicId = questionDto.getTopicId();
         try {
-            topicDtos = topicMapper.mapEntitiesToDto(questionServiceImp.getTopicServiceImp().getAll());
-            questionDtos = questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
+            QuestionEntity updatedQuestionEntity = new QuestionEntity(questionBody,  points, level, corr_answer_count, topicServiceImp.getById(topicId));
+            updatedQuestionEntity.setId(questionDto.getId());
+            questionServiceImp.update(updatedQuestionEntity);
 
-            modelAndView.addObject("topics", topicDtos);
-            modelAndView.addObject("question", questionDtos.get(0));
+            for (AnswerDto answer : answerList) {
+                String answerText = answer.getAnswer();
+                String description = answer.getDescription();
+                boolean isCorrect = answer.isCorrect();
+                AnswerEntity updatedAnswer = new AnswerEntity(answerText,description,isCorrect,updatedQuestionEntity);
+                updatedAnswer.setId(answer.getId());
+                answerServiceImp.update(updatedAnswer);
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        return modelAndView;
-    }
-
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping(value = "/update")
-    public ModelAndView updateQuestion(@RequestParam Map<String, String> formDate) {
-        ModelAndView modelAndView = new ModelAndView("questionUpdate");
-        String topicName = formDate.get("topicList");
-        String questionBody = formDate.get("questionText");
-        String level = formDate.get("level");
-
-        int points = Integer.parseInt(formDate.get("points"));
-        int corr_answer_count = Integer.parseInt(formDate.get("corr_answer_count"));
-
-
-        return modelAndView;
+        return new ModelAndView("question");
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
