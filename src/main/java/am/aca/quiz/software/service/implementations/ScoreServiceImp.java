@@ -7,8 +7,9 @@ import am.aca.quiz.software.repository.ScoreRepository;
 import am.aca.quiz.software.service.interfaces.ScoreService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -39,6 +40,10 @@ public class ScoreServiceImp implements ScoreService {
 
     }
 
+    public void addScore(ScoreEntity scoreEntity) {
+        scoreRepository.save(scoreEntity);
+    }
+
     @Override
     public List<ScoreEntity> getAll() throws SQLException {
         return scoreRepository.findAll();
@@ -59,5 +64,44 @@ public class ScoreServiceImp implements ScoreService {
 
     public List<ScoreEntity> getAllByUserId(Long id) {
         return scoreRepository.findAllByUserEntityId(id);
+    }
+
+    public void foo(Long testId, double userScore) {
+        List<BigInteger> ids = new ArrayList<>(topicServiceImp.findTopicIdByTestId(testId));
+
+        List<Long> id = new ArrayList<>();
+
+        for (int i = 0; i < ids.size(); i++) {
+            id.add(ids.get(i).longValue());
+        }
+
+
+        for (int i = 0; i < id.size(); i++) {
+            ScoreEntity scoreEntity = new ScoreEntity();
+            if (scoreRepository.findByTopicId(id.get(i)) == null) {
+                try {
+                    scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
+                    scoreEntity.setCount(1);
+                    scoreEntity.setValue(userScore);
+                    addScore(scoreEntity);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                int count = scoreEntity.getCount();
+                double score = scoreRepository.findByTopicId(id.get(i)).getValue();
+                scoreEntity.setCount(++count);
+                scoreEntity.setValue((userScore + score) / count);
+                try {
+                    scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                scoreEntity.setId(scoreRepository.findByTopicId(id.get(i)).getId());
+                addScore(scoreEntity);
+            }
+        }
+
+
     }
 }
