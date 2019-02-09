@@ -75,40 +75,38 @@ public class ScoreServiceImp implements ScoreService {
             id.add(ids.get(i).longValue());
         }
 
-
         for (int i = 0; i < id.size(); i++) {
+
             ScoreEntity scoreEntity = new ScoreEntity();
-            if (scoreRepository.findByTopicId(id.get(i)) == null) {
+
+            if (scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId)==null) {
                 try {
                     scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
                     scoreEntity.setCount(1);
                     scoreEntity.setValue(userScore);
                     scoreEntity.setUserEntity(userServiceImp.getById(userId));
                     addScore(scoreEntity);
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             } else {
                 scoreEntity = scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId);
                 int count = scoreEntity.getCount();
-                double score = scoreRepository.findByTopicId(id.get(i)).getValue();
+                double score = scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId).getValue();
                 scoreEntity.setCount(++count);
                 scoreEntity.setValue((userScore + score) / count);
-//                try {
-////                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
                 try {
+                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
                     scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                scoreEntity.setId(scoreRepository.findByTopicId(id.get(i)).getId());
                 addScore(scoreEntity);
             }
         }
-        //todo userID and TopicId
+
 
     }
 }
