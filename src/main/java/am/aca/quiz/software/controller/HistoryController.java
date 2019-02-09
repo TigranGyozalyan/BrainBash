@@ -9,6 +9,7 @@ import am.aca.quiz.software.service.dto.TimerDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
+import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import org.springframework.http.MediaType;
@@ -203,6 +204,7 @@ public class HistoryController {
     public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto){
 
         try {
+            double score=testController.getScore().getKey();
             UserEntity userEntity=userServiceImp.findByEmail(principal.getName());
 
             HistoryEntity history=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testController.getTestId(),"INPROGRESS");
@@ -210,7 +212,7 @@ public class HistoryController {
                 LocalDateTime endTime =
                         LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
-                history.setScore(testController.getScore().getKey());
+                history.setScore(score);
                 history.setEndTime(endTime);
                 history.setStatus(Status.COMPLETED);
                 historyServiceImp.addHistory(history);

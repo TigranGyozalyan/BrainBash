@@ -151,7 +151,7 @@ public class TestController {
         long time = System.currentTimeMillis();
 
 
-        this.testId = id;
+        this.testId=id;
 
         timerDto.setCurrentTime(time);
         timerDto.setEndTime(endTime);
@@ -161,13 +161,13 @@ public class TestController {
     }
 
     @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
+    public ModelAndView loadTest(@PathVariable("id") Long id,Principal principal) throws SQLException {
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
             System.out.println(endTime);
             reloadCount++;
         }
-        if (historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
+        if(historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(),"INPROGRESS")==null) {
             HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
             if (upcoming == null) {
                 HistoryEntity inprogress = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "INPROGRESS");
@@ -229,7 +229,7 @@ public class TestController {
     }
 
 
-    @GetMapping(value = "/scorepage")
+    @GetMapping(value = "/scorepage" )
     public ModelAndView scorePage() {
 
         reloadCount = 0;
@@ -267,6 +267,7 @@ public class TestController {
     }
 
 
+
     @GetMapping("/menu")
     public ModelAndView loadMenu() {
         ModelAndView modelAndView = new ModelAndView("testMenu");
@@ -289,7 +290,7 @@ public class TestController {
                     }
                 });
         modelAndView.addObject("testList", testDtos);
-        modelAndView.addObject("id", id);
+        modelAndView.addObject("id",id);
 
         return modelAndView;
     }
@@ -312,7 +313,7 @@ public class TestController {
     @PostMapping("/organize")
     public ModelAndView selectTest(@RequestParam("search") String search) {
         ModelAndView modelAndView = new ModelAndView("selectTest");
-        if (!search.isEmpty()) {
+        if (!search.isEmpty()){
 
         }
 
@@ -486,14 +487,13 @@ public class TestController {
     public Long getTestId() {
         return this.testId;
     }
-
-    public ScorePair<Double, Double> getScore() {
+    public  ScorePair<Double,Double> getScore(){
         return this.score;
     }
 
 
     @PostMapping("/test/random/{id}")
-    public ModelAndView random(@PathVariable("id") Long id) {
+    public ModelAndView random(@PathVariable("id") Long id){
         System.out.println("INSIDE");
         return null;
     }

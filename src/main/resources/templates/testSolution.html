@@ -177,10 +177,14 @@ div {
                 $wrapper.append($questionDiv);
             });
             let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('id', 'submitId');
-            let $score = $('<button/>').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/test/scorepage'").attr('value', 'Go to Score').html('Go to Score').attr('id', 'scoreId');
+          //  let $send=$('<form>').attr('action','http://localhost:8080/test/scorepage').attr('method','get');
+            let $score = $('<button />').attr('class', 'btn-check').attr('onclick', "sendData();location.href='http://localhost:8080/test/scorepage'").attr('value', 'Go to Score').html('Go to Score').attr('id', 'scoreId');
+        //    let $sendFinish=$('</form>');
             $score.prop('disabled', true);
             $score.hide();
+           // $wrapper.append($send);
             $wrapper.append($submit);
+          ///  $wrapper.append($sendFinish);
             $wrapper.append($score);
 
             $.post('/test/timer/' + id, function (timerData) {
@@ -252,11 +256,6 @@ div {
         console.log(data);
 
 
-
-
-
-
-
         $.ajax({
             type: "POST",
             data: data,
@@ -268,25 +267,6 @@ div {
             })
         });
 
-         let timeData = JSON.stringify({
-                        currentTime : parseInt(current),
-                        endTime : parseInt(end)
-
-                 });
-                 console.log(timeData);
-
-                $.ajax({
-                            type: "POST",
-                            data: timeData,
-                            url: "/history/test/update",
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            success: (function () {
-
-                            })
-                        });
-
-
 
 
         $('#submitId').remove();
@@ -295,6 +275,28 @@ div {
 
     }
 
+
+
+function sendData() {
+   let timeData = JSON.stringify({
+      currentTime : parseInt(current),
+      endTime : parseInt(end)
+
+       });
+       console.log(timeData);
+
+      $.ajax({
+          type: "POST",
+          data: timeData,
+          url: "/history/test/update",
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: (function () {
+
+          })
+     });
+
+}
 
 </script>
 

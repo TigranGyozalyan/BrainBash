@@ -69,4 +69,7 @@ public class QuestionServiceImp implements QuestionService {
         return questionRepository.findQuestionEntitiesByQuestion(question);
     }
 
+    public List<QuestionEntity> getQuestionsByTopicEntity(TopicEntity topicEntity){
+        return questionRepository.findQuestionEntitiesByTopicEntity(topicEntity);
+    }
 }
