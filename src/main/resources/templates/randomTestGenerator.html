@@ -1,25 +1,156 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Random Test</title>
-</head>
-<body>
-<form th:action="@{'/test/random/'+${id}}" method="post">
-    <label>
-            Difficulty :
-            <select name="questionList">
-                <option th:each="question : ${questionList}"
-                        th:value="${question.level}">
+<style>
 
-               </option>
-            </select>
-        </label>
-        <label>
-            <input th:type="text" th:placeholder="Number of Questions" name="number">
-        </label>
+    .navigation {
+        float: left;
+        width: 100%;
+        height: 100%;
+    }
+
+    .subCategoryNavigation {
+        padding-left: 1em;
+    }
+
+    .topicNavigation {
+        padding-left: 2em;
+    }
+
+    .questionSpace {
+
+        width: 100%;
+        padding-left: 50%;
+    }
+
+    .submit {
+        float: bottom;
+    }
+
+
+</style>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a test</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+
+<form>
+
+<h3>Generate Random Test</h3>
+
+<div class="navigation">
+    <label>
+        Categories: <select id="categories" onchange="loadSubCategories()"></select>
+    </label>
+    <button type="submit" onclick="createTest()" class="submit">Create a test</button>
+</div>
 
 </form>
+
+
+<script>
+
+
+    let topicId=[];
+
+    let $selectDropDown = $('#categories');
+    $.get('/category', function (categories) {
+        loadCategories(categories);
+    });
+    function loadCategories(categories) {
+        loadSelectOptionsCategories($selectDropDown, categories);
+    }
+    function loadSubCategories() {
+        $('#subCategoryDiv').remove();
+        let categoryId = $selectDropDown.val();
+        let $subCategoryDiv = $('<Div/>').attr('id', 'subCategoryDiv').attr('class', 'subCategoryNavigation');
+        $('.navigation').append($subCategoryDiv);
+        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
+
+            $subCategoryDiv.empty();
+            subCategories.forEach(function (subCategory) {
+
+                let subCategoryLabel = $('<label/>').html(subCategory.typeName);
+                let subCategoryCheckBox = $('<input/>').attr({
+                    type: 'checkBox'
+                }).attr('subCategoryId', subCategory.id)
+                    .on('click', function () {
+                        if ($(this).is(":checked")) {
+                            let subCategoryId = subCategoryCheckBox.attr('subCategoryId');
+                            let $topicDiv = $('<Div/>').attr('id', 'topicsDiv').attr('class', 'topicNavigation');
+                            $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
+
+                                if (!($.isEmptyObject(topics))) {
+                                    topics.forEach(function (topic) {
+                                        let topicLabel = $('<label/>').html(topic.topicName);
+                                        let topicCheckBox = $('<input/>').attr({
+                                            type: 'checkbox'
+                                        }).attr('topicId', topic.id);
+                                        $topicDiv.prepend('<br/>');
+                                        $topicDiv.prepend(topicLabel.prepend(topicCheckBox));
+                                        topicCheckBox.on('click', function () {
+                                            if ($(this).is(':checked')) {
+                                                let Id = $(this).attr('topicId');
+                                                topicId.push(parseInt(Id));
+                                           }
+                                        })
+                                    });
+                                } else {
+                                    alert('topic is empty');
+                                    alert(subCategory.typeName + ' is empty');
+                                    subCategoryCheckBox.prop('checked', false);
+                                }
+
+                            });
+                            subCategoryLabel.append($topicDiv);
+                        } else {
+                            let $topicDiv = $('#topicsDiv');
+                            $topicDiv.remove();
+                        }
+                    });
+                $subCategoryDiv.prepend($('<br/>'));
+                $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
+            })
+        })
+    }
+    function loadSelectOptionsCategories($select, categories) {
+        categories.forEach(function (category) {
+            let $option = $('<option/>', {
+                value: category.id,
+                text: category.type
+            });
+            $select.append($option);
+        });
+        $select.val([]);
+    }
+    function createTest() {
+
+
+        let random = JSON.stringify({
+            topicId :topicId
+        });
+        // JSON.stringify(random);
+        console.log(random);
+        $.ajax({
+            type: "POST",
+            data: random,
+            url: "/test/random/generate",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (function () {
+                alert('Question was successfully created');
+            })
+        })
+    }
+</script>
 
 </body>
 </html>

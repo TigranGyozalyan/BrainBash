@@ -8,6 +8,7 @@ import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.*;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -476,9 +477,21 @@ public class TestController {
     }
 
 
-    @PostMapping("/test/random/{id}")
-    public ModelAndView random(@PathVariable("id") Long id) {
-        System.out.println("INSIDE");
-        return null;
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/random")
+    public ModelAndView random() {
+        ModelAndView modelAndView=new ModelAndView("randomTestGenerator");
+
+        return modelAndView;
     }
+
+    @PostMapping(value = "/random/generate",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView generateRandomTest(@RequestBody RandomDto randomDto) {
+
+        System.out.println(randomDto.getTopicId());
+
+        return new ModelAndView();
+
+    }
+
 }
