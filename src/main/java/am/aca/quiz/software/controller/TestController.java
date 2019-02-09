@@ -219,10 +219,9 @@ public class TestController {
 
         score = testServiceImp.checkTest(submitQuestionDtos);
 
+        scoreServiceImp.foo(testId, score.getValue());
+
         userSubmitQuestionDtos = submitQuestionDtos;
-
-
-
 
 
         return new ModelAndView("testSolution");
@@ -461,8 +460,6 @@ public class TestController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
 
 
         return new ModelAndView("redirect:/test/organize");
