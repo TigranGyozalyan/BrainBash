@@ -66,7 +66,7 @@ public class ScoreServiceImp implements ScoreService {
         return scoreRepository.findAllByUserEntityId(id);
     }
 
-    public void foo(Long testId, double userScore) {
+    public void foo(Long testId, double userScore,Long userId) {
         List<BigInteger> ids = new ArrayList<>(topicServiceImp.findTopicIdByTestId(testId));
 
         List<Long> id = new ArrayList<>();
@@ -83,6 +83,7 @@ public class ScoreServiceImp implements ScoreService {
                     scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
                     scoreEntity.setCount(1);
                     scoreEntity.setValue(userScore);
+                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
                     addScore(scoreEntity);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -92,6 +93,11 @@ public class ScoreServiceImp implements ScoreService {
                 double score = scoreRepository.findByTopicId(id.get(i)).getValue();
                 scoreEntity.setCount(++count);
                 scoreEntity.setValue((userScore + score) / count);
+                try {
+                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 try {
                     scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
                 } catch (SQLException e) {

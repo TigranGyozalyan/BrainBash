@@ -210,7 +210,7 @@ public class TestController {
     }
 
     @PostMapping("/process")
-    public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos) {
+    public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos,Principal principal) {
 
 
         questionController.getTestID().clear();
@@ -218,8 +218,13 @@ public class TestController {
 
 
         score = testServiceImp.checkTest(submitQuestionDtos);
+        try {
+            Long userId = userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())).getId();
+            scoreServiceImp.foo(testId, score.getKey(),userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        scoreServiceImp.foo(testId, score.getKey());
 
         userSubmitQuestionDtos = submitQuestionDtos;
 
