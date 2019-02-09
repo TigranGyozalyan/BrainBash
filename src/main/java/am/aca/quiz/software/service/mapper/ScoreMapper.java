@@ -2,18 +2,25 @@ package am.aca.quiz.software.service.mapper;
 
 import am.aca.quiz.software.entity.ScoreEntity;
 import am.aca.quiz.software.service.dto.ScoreDto;
+import am.aca.quiz.software.service.implementations.TopicServiceImp;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
 
-    @Autowired
     private TopicMapper topicMapper;
+    private TopicServiceImp topicServiceImp;
+
+    public ScoreMapper(TopicMapper topicMapper, TopicServiceImp topicServiceImp) {
+        this.topicMapper = topicMapper;
+        this.topicServiceImp = topicServiceImp;
+    }
+
     @Override
     public ScoreDto mapEntityToDto(ScoreEntity scoreEntity) {
         ScoreDto scoreDto = new ScoreDto();
@@ -27,7 +34,12 @@ public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
 
         scoreDto.setUserId(userId);
         scoreDto.setTopicId(topicId);
-        scoreDto.setTopic(topicMapper.mapEntityToDto(scoreEntity.getTopic()));
+
+        try {
+            scoreDto.setTopic(topicMapper.mapEntityToDto(topicServiceImp.getById(topicId)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         return scoreDto;
