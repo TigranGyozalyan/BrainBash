@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Test</title>
+</head>
+<body>
+<form th:action="@{'/test/random/'+${id}}" method="post">
+    <label>
+            Difficulty :
+            <select name="questionList">
+                <option th:each="question : ${questionList}"
+                        th:value="${question.level}">
+
+               </option>
+            </select>
+        </label>
+        <label>
+            <input th:type="text" th:placeholder="Number of Questions" name="number">
+        </label>
+
+</form>
+
+</body>
+</html>

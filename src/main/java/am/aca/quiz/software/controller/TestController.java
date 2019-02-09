@@ -2,6 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.TopicEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
@@ -490,9 +491,21 @@ public class TestController {
     }
 
 
-    @PostMapping("/test/random/{id}")
+    @PostMapping("/generate/{id}")
     public ModelAndView random(@PathVariable("id") Long id){
-        System.out.println("INSIDE");
+
+        ModelAndView modelAndVie=new ModelAndView("randomTestGenerator");
+//        TopicEntity topicEntity=null;
+//        try {
+//             topicEntity=topicServiceImp.getById(id);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        List<QuestionEntity> questions=questionServiceImp.getQuestionsByTopicEntity(topicEntity);
+
+
+
+
         return null;
     }
 }
