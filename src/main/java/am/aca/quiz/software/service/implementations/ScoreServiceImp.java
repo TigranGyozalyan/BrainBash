@@ -89,16 +89,16 @@ public class ScoreServiceImp implements ScoreService {
                     e.printStackTrace();
                 }
             } else {
-                scoreEntity = scoreRepository.findByTopicId(id.get(i));
+                scoreEntity = scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId);
                 int count = scoreEntity.getCount();
                 double score = scoreRepository.findByTopicId(id.get(i)).getValue();
                 scoreEntity.setCount(++count);
                 scoreEntity.setValue((userScore + score) / count);
-                try {
-                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+//                try {
+////                    scoreEntity.setUserEntity(userServiceImp.getById(userId));
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
                 try {
                     scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
                 } catch (SQLException e) {
@@ -108,7 +108,7 @@ public class ScoreServiceImp implements ScoreService {
                 addScore(scoreEntity);
             }
         }
-
+        //todo userID and TopicId
 
     }
 }
