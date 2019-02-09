@@ -29,9 +29,9 @@
     <br/>
     <label>
         Level : <select id="level">
-        <option name="beginner">beginner</option>
-        <option name="intermediate">intermediate</option>
-        <option name="advanced">advanced</option>
+        <option name="beginner" value="beginner">Beginner</option>
+        <option name="intermediate" value="intermediate">Intermediate</option>
+        <option name="advanced" value="advanced">Advanced</option>
     </select>
     </label>
     <br/>
@@ -59,25 +59,125 @@
 
     let pathArray = window.location.pathname.split('/');
     let id = parseInt(pathArray[pathArray.length - 1]);
-    console.log(id);
     let initialQuestion;
     let initialTopicId;
     let initialCategoryId;
     let initialSubCategoryId;
 
-    $(document).ready(function () {
+    $.get('/question/' + id, function (data) {
+        initialQuestion = data;
+        initialTopicId = data.topicId;
+        $.get('/topic/' + initialQuestion.topicId, function (topicData) {
+            initialSubCategoryId = topicData.subCategoryId;
+            $.get('/subcategory/' + initialSubCategoryId, function (subData) {
 
-        $.get('/question/' + id, function (data) {
-            initialQuestion = data;
-            initialTopicId = initialQuestion.topicId;
-            $.get('/topic/' + initialQuestion.topicId, function (topicData) {
-                $.get('/topic?subCategoryId=' + topicData.subCategoryId, function (subData) {
-                    initialSubCategoryId = subData.id;
-                    initialCategoryId = subData.categoryId;
+
+                $('#points').val(initialQuestion.points);
+                $('#questionText').val(initialQuestion.question);
+                $('#level').val(initialQuestion.level);
+
+                initialQuestion.answerDtoList.forEach(function (answer) {
+                    addAnswer();
+                    $('#answerText' + answerCount).val(answer.answer);
+                    $('#answerDescription' + answerCount).val(answer.description);
+                    if (answer.correct) {
+                        $('#isCorrect' + answerCount).prop('checked', true);
+                    }
                 });
+
+
+                initialSubCategoryId = subData.id;
+                initialCategoryId = subData.categoryId;
+                $('#categories').val(initialCategoryId);
+                console.log('after setting cat val to ' + initialCategoryId);
+                // $('#subCategories').val(initialSubCategoryId,loadSubCategoriesDropDown());
+                function f(callBack) {
+                    $('#subCategories').val(initialSubCategoryId);
+                }
+
+                f(loadSubCategoriesDropDown());
+
+                // console.log('After setting the value of subCategories dropdown to :' + initialSubCategoryId);
+                // loadTopicsDropDown();
+                // $('#topics').val(initialTopicId);
+
+
             });
         });
     });
+
+
+    let $selectDropDown = $('#categories');
+
+    $.get('/category', function (categories) {
+        loadCategories(categories);
+    });
+
+    function loadCategories(categories) {
+        loadSelectOptionsCategories($selectDropDown, categories);
+    }
+
+    function loadSelectOptionsCategories($select, categories) {
+        categories.forEach(function (category) {
+            let $option = $('<option/>', {
+                value: category.id,
+                text: category.type
+            });
+            $select.append($option);
+        });
+
+        $select.val([]);
+    }
+
+    function loadSubCategoriesDropDown(callback) {
+        $('#subCategoryDiv').empty();
+        let categoryId = $('#categories').val();
+        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
+
+            let $subCategoryDiv = $('<div/>').attr('id', 'subCategoryDiv');
+
+            let $subCategorySelector = $('<select/>').attr('id', 'subCategories');
+
+            subCategories.forEach(function (subCategory) {
+                let $option = $('<option/>', {
+                    value: subCategory.id,
+                    text: subCategory.typeName
+                });
+                $subCategorySelector.append($option);
+            });
+            let subLabel = $('<label/>').html(' SubCategory: ');
+            subLabel.append($subCategorySelector);
+            $('.navigation').append($subCategoryDiv);
+            $('#subCategoryDiv').append($('<br/>')).append(subLabel);
+            $subCategorySelector.val([]);
+            $subCategorySelector.attr('onchange', 'loadTopicsDropDown()');
+            console.log('finished loading subCatSelector');
+        });
+    }
+
+    function loadTopicsDropDown() {
+        $('#topicDiv').empty();
+        let subCategoryId = $('#subCategories').val();
+        console.log('subCat id from TopicSelector before get call is ' + subCategoryId);
+        $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
+            let $topicDiv = $('<div/>').attr('id', 'topicDiv');
+            let $topicSelector = $('<select/>').attr('id', 'topics');
+
+            topics.forEach(function (topic) {
+                let $option = $('<option/>', {
+                    value: topic.id,
+                    text: topic.topicName
+                });
+                $topicSelector.append($option);
+                $topicSelector.val([]);
+            });
+
+            let topicLabel = $('<label/>').html(' Topic: ');
+            topicLabel.append($topicSelector);
+            $('#subCategoryDiv').append($topicDiv);
+            $('#topicDiv').append($('<br/>')).append(topicLabel);
+        });
+    }
 
 
     let answerCount = 0;
@@ -88,9 +188,9 @@
 
         let $answerBlock = $('#answerBlock');
         let $answerSet = $('<div/>').attr('class', 'answerClass');
-        let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText');
-        let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription');
-        let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect');
+        let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText' + answerCount);
+        let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription' + answerCount);
+        let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect' + answerCount);
         let label = $('<label/>').html('Answer #' + answerCount + ': ');
         let descriptionLabel = $('<label/>').html(' Description: ');
         let isCorrectLabel = $('<label/>').html(' Is Correct ');
@@ -151,79 +251,6 @@
                 console.log(result);
                 location.href = 'http://localhost:8080/question/add';
             })
-        });
-    }
-
-
-    let $selectDropDown = $('#categories');
-
-    $.get('/category', function (categories) {
-        loadCategories(categories);
-    });
-
-    function loadCategories(categories) {
-        loadSelectOptionsCategories($selectDropDown, categories);
-    }
-
-    function loadSelectOptionsCategories($select, categories) {
-        categories.forEach(function (category) {
-            let $option = $('<option/>', {
-                value: category.id,
-                text: category.type
-            });
-            $select.append($option);
-        });
-        $select.val(initialCategoryId);
-        console.log(initialCategoryId);
-        loadSubCategoriesDropDown()
-    }
-
-    function loadSubCategoriesDropDown() {
-        $('#subCategoryDiv').empty();
-        let categoryId = $('#categories').val();
-        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
-
-            let $subCategoryDiv = $('<div/>').attr('id', 'subCategoryDiv');
-
-            let $subCategorySelector = $('<select/>').attr('id', 'subCategories');
-
-            subCategories.forEach(function (subCategory) {
-                let $option = $('<option/>', {
-                    value: subCategory.id,
-                    text: subCategory.typeName
-                });
-                $subCategorySelector.append($option);
-            });
-            let subLabel = $('<label/>').html(' SubCategory: ');
-            subLabel.append($subCategorySelector);
-            $('.navigation').append($subCategoryDiv);
-            $('#subCategoryDiv').append($('<br/>')).append(subLabel);
-            $subCategorySelector.val(initialSubCategoryId);
-            $subCategorySelector.attr('onchange', 'loadTopicsDropDown()');
-            loadTopicsDropDown();
-        });
-    }
-
-    function loadTopicsDropDown() {
-        $('#topicDiv').empty();
-        let subCategoryId = $('#subCategories').val();
-        $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
-            let $topicDiv = $('<div/>').attr('id', 'topicDiv');
-            let $topicSelector = $('<select/>').attr('id', 'topics');
-
-            topics.forEach(function (topic) {
-                let $option = $('<option/>', {
-                    value: topic.id,
-                    text: topic.topicName
-                });
-                $topicSelector.append($option);
-                $topicSelector.val(initialTopicId);
-            });
-
-            let topicLabel = $('<label/>').html(' Topic: ');
-            topicLabel.append($topicSelector);
-            $('#subCategoryDiv').append($topicDiv);
-            $('#topicDiv').append($('<br/>')).append(topicLabel);
         });
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface HistoryService {
     //create
-    void addHistory(Long userId, Long testId, double score, Status status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException;
+    void addHistory(HistoryEntity historyEntity) throws SQLException;
 
     //read
     List<HistoryEntity> getAll() throws SQLException;

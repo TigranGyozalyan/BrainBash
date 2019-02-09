@@ -31,21 +31,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     @Override
-    public void addHistory(Long userId, Long testId, double score, Status status, LocalDateTime startTime, LocalDateTime endTime) throws SQLException {
-        UserEntity userEntity = userService.getById(userId);
-        TestEntity testEntity = testService.getById(testId);
-
-
-        HistoryEntity historyEntity = new HistoryEntity(startTime, status, score, userEntity, testEntity);
-
-        userEntity.getHistoryList().add(historyEntity);
-        testEntity.getHistoryEntities().add(historyEntity);
-
-        historyRepository.saveAndFlush(historyEntity);
-
-    }
-
-    public void add(HistoryEntity historyEntity){
+    public void addHistory(HistoryEntity historyEntity){
         historyRepository.save(historyEntity);
     }
 
@@ -88,4 +74,9 @@ public class HistoryServiceImp implements HistoryService {
     public List<HistoryEntity> findByEmail(String email) {
         return historyRepository.findAllByUserEntityEmail(email);
     }
+
+    public HistoryEntity findHistoryByUserIdAndTetId(Long userId,Long testId){
+        return historyRepository.getHistoryEntityByUserIdAndTestId(userId,testId);
+    }
+
 }
