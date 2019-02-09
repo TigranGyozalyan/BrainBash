@@ -18,7 +18,12 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
 
     List<HistoryEntity> findAllByUserEntityEmail(String email);
 
-    @Query(value = "SELECT * FROM history WHERE user_id=?1 AND test_id=?2",nativeQuery =true)
-    public HistoryEntity getHistoryEntityByUserIdAndTestId(Long userId, Long testId);
+    @Query(value = "SELECT * FROM history WHERE user_id=?1 AND test_id=?2 AND status=?3",nativeQuery =true)
+    HistoryEntity getHistoryEntityByUserIdAndTestId(Long userId, Long testId,String status);
+
+    @Query(value = "SELECT * FROM history WHERE user_id=?1  AND status=?2",nativeQuery =true)
+    HistoryEntity getHistoryByUserIdAndStatus(Long userId, String status);
+
+
 
 }

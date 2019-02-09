@@ -200,7 +200,9 @@ td.text-right {
 	</div>
 </div>
 
-
+<form th:action="@{'/test/random/'+${id}}" method="post">
+    <input type="submit" value="Random Test" />
+</form>
 
 </body>
 

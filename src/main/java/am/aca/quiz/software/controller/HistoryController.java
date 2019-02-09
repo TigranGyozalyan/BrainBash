@@ -4,17 +4,23 @@ import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.dto.HistoryDto;
+import am.aca.quiz.software.service.dto.TestDto;
+import am.aca.quiz.software.service.dto.TimerDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,13 +33,15 @@ public class HistoryController {
     private final UserServiceImp userServiceImp;
     private final TestServiceImp testServiceImp;
     private final TestMapper testMapper;
+    private final TestController testController;
 
-    public HistoryController(HistoryServiceImp historyServiceImp, HistoryMapper historyMapper, UserServiceImp userServiceImp, TestServiceImp testServiceImp, TestMapper testMapper) {
+    public HistoryController(HistoryServiceImp historyServiceImp, HistoryMapper historyMapper, UserServiceImp userServiceImp, TestServiceImp testServiceImp, TestMapper testMapper, TestController testController) {
         this.historyServiceImp = historyServiceImp;
         this.historyMapper = historyMapper;
         this.userServiceImp = userServiceImp;
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
+        this.testController = testController;
     }
 
     @GetMapping("/future")
@@ -189,6 +197,30 @@ public class HistoryController {
 
 
         return modelAndView;
+    }
+
+    @PostMapping(value = "/test/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto){
+
+        try {
+            UserEntity userEntity=userServiceImp.findByEmail(principal.getName());
+
+            HistoryEntity history=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testController.getTestId(),"INPROGRESS");
+
+                LocalDateTime endTime =
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+
+                history.setScore(testController.getScore().getKey());
+                history.setEndTime(endTime);
+                history.setStatus(Status.COMPLETED);
+                historyServiceImp.addHistory(history);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

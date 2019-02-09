@@ -2,10 +2,9 @@
 <html lang="en">
 
 <style>
-    div {
-        white-space: pre-wrap;
-    }
-
+div {
+    white-space: pre-wrap;
+}
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
     * {
@@ -86,7 +85,7 @@
     #timer {
         position: fixed;
         left: 0;
-        top: 0;
+        top : 0;
         font-family: Arial, sans-serif;
         font-size: 20px;
         color: #d1d1d1;
@@ -142,7 +141,7 @@
     let end;
 
     wrapperDiv.ready(function () {
-        $wrapper = $('#wrapper');
+         $wrapper = $('#wrapper');
         let pathArray = window.location.pathname.split('/');
         let id = parseInt(pathArray[pathArray.length - 1]);
 
@@ -253,23 +252,9 @@
         console.log(data);
 
 
-        let timeData = JSON.stringify({
-            currentTime: parseInt(current),
-            endTime: parseInt(end)
 
-        });
-        console.log(timeData);
 
-        $.ajax({
-            type: "GET",
-            data: timeData,
-            url: "/test/scorepage",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: (function () {
 
-            })
-        });
 
 
         $.ajax({
@@ -282,6 +267,26 @@
 
             })
         });
+
+         let timeData = JSON.stringify({
+                        currentTime : parseInt(current),
+                        endTime : parseInt(end)
+
+                 });
+                 console.log(timeData);
+
+                $.ajax({
+                            type: "POST",
+                            data: timeData,
+                            url: "/history/test/update",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: (function () {
+
+                            })
+                        });
+
+
 
 
         $('#submitId').remove();

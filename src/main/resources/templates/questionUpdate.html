@@ -12,7 +12,6 @@
 
 
 <body>
-<form>
     <div class="navigation">
         <label>
             Category : <select id="categories" onchange="loadSubCategoriesDropDown()"></select>
@@ -47,10 +46,9 @@
         <button type="button" id="btnRemoveAnswer" class="txtAnswer" onclick="removeAnswer()">Remove answer</button>
     </div>
 
-    <button type="submit" value="button" onclick="createQuestion()">Create</button>
+    <button type="submit" value="button" onclick="UpdateQuestion()">Update</button>
 
 
-</form>
 <br/>
 </body>
 
@@ -85,23 +83,19 @@
                     }
                 });
 
-
                 initialSubCategoryId = subData.id;
                 initialCategoryId = subData.categoryId;
+
                 $('#categories').val(initialCategoryId);
-                console.log('after setting cat val to ' + initialCategoryId);
-                // $('#subCategories').val(initialSubCategoryId,loadSubCategoriesDropDown());
-                function f(callBack) {
+                $.when(loadSubCategoriesDropDown()).done(function f() {
+
                     $('#subCategories').val(initialSubCategoryId);
-                }
-
-                f(loadSubCategoriesDropDown());
-
-                // console.log('After setting the value of subCategories dropdown to :' + initialSubCategoryId);
-                // loadTopicsDropDown();
-                // $('#topics').val(initialTopicId);
-
-
+                    console.log(initialSubCategoryId);
+                    $.when(loadTopicsDropDown()).done(function () {
+                        $('#topics').val(initialTopicId);
+                        console.log(initialTopicId);
+                    });
+                });
             });
         });
     });
@@ -129,7 +123,8 @@
         $select.val([]);
     }
 
-    function loadSubCategoriesDropDown(callback) {
+    function loadSubCategoriesDropDown() {
+        let def = $.Deferred();
         $('#subCategoryDiv').empty();
         let categoryId = $('#categories').val();
         $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
@@ -152,13 +147,15 @@
             $subCategorySelector.val([]);
             $subCategorySelector.attr('onchange', 'loadTopicsDropDown()');
             console.log('finished loading subCatSelector');
+            def.resolve();
         });
+        return def.promise();
     }
 
     function loadTopicsDropDown() {
+        let def = $.Deferred();
         $('#topicDiv').empty();
         let subCategoryId = $('#subCategories').val();
-        console.log('subCat id from TopicSelector before get call is ' + subCategoryId);
         $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
             let $topicDiv = $('<div/>').attr('id', 'topicDiv');
             let $topicSelector = $('<select/>').attr('id', 'topics');
@@ -176,7 +173,11 @@
             topicLabel.append($topicSelector);
             $('#subCategoryDiv').append($topicDiv);
             $('#topicDiv').append($('<br/>')).append(topicLabel);
+            console.log('topic selector is loaded');
+            def.resolve();
+
         });
+        return def.promise();
     }
 
 
@@ -188,9 +189,9 @@
 
         let $answerBlock = $('#answerBlock');
         let $answerSet = $('<div/>').attr('class', 'answerClass');
-        let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText' + answerCount);
-        let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription' + answerCount);
-        let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect' + answerCount);
+        let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText' + answerCount).attr('class','answerText');
+        let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription' + answerCount).attr('class','description');
+        let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect' + answerCount).attr('class','isCorrect');
         let label = $('<label/>').html('Answer #' + answerCount + ': ');
         let descriptionLabel = $('<label/>').html(' Description: ');
         let isCorrectLabel = $('<label/>').html(' Is Correct ');
@@ -211,20 +212,24 @@
     }
 
 
-    function createQuestion() {
+    function UpdateQuestion() {
         let topicId = parseInt($('#topics').val());
         let questionText = $('#questionText').val();
         let level = $('#level').val();
         let points = parseInt($('#points').val());
 
-
+        let localCount = -1;
         let answerData = $('#answerBlock').find('.answerClass').map(function () {
-
-            let answerText = $(this).find('#answerText').val();
-            let answerDescription = $(this).find('#answerDescription').val();
-            let isCorrect = $(this).find('#isCorrect').is(":checked");
-
+            localCount++;
+            let answerText = $(this).find('.answerText').val();
+            console.log(answerText);
+            let answerDescription = $(this).find('.description').val();
+            console.log(answerDescription);
+            let isCorrect = $(this).find('.isCorrect').is(":checked");
+            console.log(isCorrect);
+            console.log(initialQuestion.answerDtoList[localCount].id);
             return {
+                id : initialQuestion.answerDtoList[localCount].id,
                 answer: answerText,
                 description: answerDescription,
                 correct: isCorrect
@@ -233,6 +238,7 @@
         console.log(answerData);
 
         let question = JSON.stringify({
+            id : initialQuestion.id,
             topicId: topicId,
             question: questionText,
             level: level,
@@ -244,13 +250,9 @@
         $.ajax({
             type: "POST",
             data: question,
-            url: "/question/add",
+            url: "/question/update/" + id,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: (function (result) {
-                console.log(result);
-                location.href = 'http://localhost:8080/question/add';
-            })
         });
     }
 
