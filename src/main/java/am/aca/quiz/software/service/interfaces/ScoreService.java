@@ -20,7 +20,5 @@ public interface ScoreService {
 
     ScoreEntity getById(Long id) throws SQLException;
 
-    void removeById(Long id) throws SQLException;
-
 
 }
