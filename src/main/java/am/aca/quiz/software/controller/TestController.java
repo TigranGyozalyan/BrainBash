@@ -221,7 +221,7 @@ public class TestController {
 
         score = testServiceImp.checkTest(submitQuestionDtos);
 
-        userSubmitQuestionDtos=submitQuestionDtos;
+        userSubmitQuestionDtos = submitQuestionDtos;
 
         return new ModelAndView("testSolution");
     }
@@ -304,6 +304,16 @@ public class TestController {
             e.printStackTrace();
         }
 
+
+        return modelAndView;
+    }
+
+    @PostMapping("/organize")
+    public ModelAndView selectTest(@RequestParam("search") String search) {
+        ModelAndView modelAndView = new ModelAndView("selectTest");
+        if (!search.isEmpty()){
+
+        }
 
         return modelAndView;
     }

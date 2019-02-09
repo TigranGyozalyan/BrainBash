@@ -46,13 +46,15 @@
         </select>
     </label>
     <br/>
-        <label>
-            Topic : <input name="topicName" type="text" th:value="${topic.topicName}">
+    <label>
+        Topic : <input name="topicName" type="text" th:value="${topic.topicName}">
 
-        </label>
-        <br/>
-     <input type="submit" value="Update Topic">
-     <input type="hidden" th:value="${topic.id}" name="topicId">
+    </label>
+    <br/>
+    <input type="submit" value="Update Topic">
+    <input type="hidden" th:value="${topic.id}" name="topicId">
 </form>
+<input type="button" onclick="location.href='http://localhost:8080/topic/list'" value="Back to Topic List">
+
 </body>
 </html>
