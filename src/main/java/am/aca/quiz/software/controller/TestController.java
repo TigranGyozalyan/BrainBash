@@ -12,6 +12,7 @@ import am.aca.quiz.software.service.mapper.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -205,6 +206,9 @@ public class TestController {
         }
         return null;
 
+
+        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
+
     }
 
     @PostMapping("/process")
@@ -284,6 +288,7 @@ public class TestController {
                     }
                 });
         modelAndView.addObject("testList", testDtos);
+        modelAndView.addObject("id",id);
 
         return modelAndView;
     }
@@ -463,7 +468,7 @@ public class TestController {
 //                    }
 //                });
 
-        //TODO
+        //TODO SEND NOTIFICATION AFTER TEST END ?
         return new ModelAndView("redirect:/test/organize");
     }
 
@@ -472,5 +477,12 @@ public class TestController {
     }
     public  ScorePair<Double,Double> getScore(){
         return this.score;
+    }
+
+
+    @PostMapping("/test/random/{id}")
+    public ModelAndView random(@PathVariable("id") Long id){
+        System.out.println("INSIDE");
+        return null;
     }
 }

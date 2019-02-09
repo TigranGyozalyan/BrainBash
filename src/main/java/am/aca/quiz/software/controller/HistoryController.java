@@ -210,11 +210,12 @@ public class HistoryController {
 
                 LocalDateTime endTime =
                         LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+
                 history.setScore(testController.getScore().getKey());
                 history.setEndTime(endTime);
                 history.setStatus(Status.COMPLETED);
                 historyServiceImp.addHistory(history);
-                
+
 
         } catch (SQLException e) {
             e.printStackTrace();
