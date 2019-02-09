@@ -47,11 +47,6 @@ public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
 
     @Override
     public List<ScoreDto> mapEntitiesToDto(List<ScoreEntity> scoreEntityList) {
-//        List<ScoreDto> scoreDtoList = new ArrayList<>();
-//        for (ScoreEntity scoreEntity : scoreEntityList) {
-//            scoreDtoList.add(mapEntityToDto(scoreEntity));
-//        }
-//        return scoreDtoList;
 
         return scoreEntityList
                 .stream()

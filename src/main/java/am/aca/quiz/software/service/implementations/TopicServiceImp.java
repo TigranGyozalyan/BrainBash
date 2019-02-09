@@ -7,8 +7,10 @@ import am.aca.quiz.software.service.interfaces.TopicService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -80,4 +82,8 @@ public class TopicServiceImp implements TopicService {
         return topicEntity;
     }
 
+    public Set<BigInteger> findTopicIdByTestId(Long id) {
+        return topicRepository.findTopicByTestId(id);
+
+    }
 }
