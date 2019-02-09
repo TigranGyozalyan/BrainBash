@@ -63,7 +63,6 @@ public class HistoryController {
         List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyEntityList.stream()
                 .filter(i -> i.getStatus().equals(Status.UPCOMING))
                 .collect(Collectors.toList()));
-        ;
 
         modelAndView.addObject("historyList", historyDtos);
 

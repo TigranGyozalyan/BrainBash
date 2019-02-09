@@ -14,7 +14,7 @@
 
 </style>
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <title>Add a Question</title>
@@ -211,6 +211,7 @@
             topicLabel.append($topicSelector);
             $('#subCategoryDiv').append($topicDiv);
             $('#topicDiv').append($('<br/>')).append(topicLabel);
+            $topicSelector.val([]);
         });
     }
 

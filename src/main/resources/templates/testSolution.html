@@ -209,13 +209,10 @@ div {
 
 
                     if (duration < 1000) {
+                        current = timerData.currentTime;
+                        end = now;
                         submitTest();
                     }
-
-
-                    current=timerData.currentTime;
-                    end=now;
-
 
                 }, 1000);
 

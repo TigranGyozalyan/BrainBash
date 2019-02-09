@@ -30,17 +30,6 @@ public class QuestionDto {
         this.answerDtoList = answerDtoList;
     }
 
-
-    private TopicDto topicDto;
-
-    public TopicDto getTopicDto() {
-        return topicDto;
-    }
-
-    public void setTopicDto(TopicDto topicDto) {
-        this.topicDto = topicDto;
-    }
-
     public Long getId() {
         return id;
     }
