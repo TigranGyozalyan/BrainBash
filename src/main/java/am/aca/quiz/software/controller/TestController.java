@@ -220,7 +220,7 @@ public class TestController {
         score = testServiceImp.checkTest(submitQuestionDtos);
         try {
             Long userId = userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())).getId();
-            scoreServiceImp.foo(testId, score.getKey(), userId);
+            scoreServiceImp.avgScore(testId, score.getKey(),userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -495,7 +495,7 @@ public class TestController {
         testQuestions.forEach(i-> System.out.println(i.getQuestion()));
 
         try {
-            testServiceImp.addTest("Random Test","Random Test",randomDto.getDuration(),testQuestions);
+            testServiceImp.addTest( randomDto.getName(),randomDto.getDescription(),randomDto.getDuration(),testQuestions);
         } catch (SQLException e) {
             e.printStackTrace();
         }

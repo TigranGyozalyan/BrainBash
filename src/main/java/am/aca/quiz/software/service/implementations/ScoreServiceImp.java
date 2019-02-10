@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -66,23 +67,22 @@ public class ScoreServiceImp implements ScoreService {
         return scoreRepository.findAllByUserEntityId(id);
     }
 
-    public void foo(Long testId, double userScore,Long userId) {
-        List<BigInteger> ids = new ArrayList<>(topicServiceImp.findTopicIdByTestId(testId));
+    public void avgScore(Long testId, double userScore, Long userId) {
+        List<BigInteger> topicIds = new ArrayList<>(topicServiceImp.findTopicIdByTestId(testId));
 
-        List<Long> id = new ArrayList<>();
+        List<Long> topicLongIds = new ArrayList<>();
 
-        for (int i = 0; i < ids.size(); i++) {
-
-            id.add(ids.get(i).longValue());
+        for (int i = 0; i < topicIds.size(); i++) {
+            topicLongIds.add(topicIds.get(i).longValue());
         }
 
-        for (int i = 0; i < id.size(); i++) {
+        for (int i = 0; i < topicLongIds.size(); i++) {
 
             ScoreEntity scoreEntity = new ScoreEntity();
 
-            if (scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId)==null) {
+            if (scoreRepository.findByTopicIdAndUserEntityId(topicLongIds.get(i), userId) == null) {
                 try {
-                    scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
+                    scoreEntity.setTopic(topicServiceImp.getById(topicLongIds.get(i)));
                     scoreEntity.setCount(1);
                     scoreEntity.setValue(userScore);
                     scoreEntity.setUserEntity(userServiceImp.getById(userId));
@@ -92,14 +92,15 @@ public class ScoreServiceImp implements ScoreService {
                     e.printStackTrace();
                 }
             } else {
-                scoreEntity = scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId);
+                scoreEntity = scoreRepository.findByTopicIdAndUserEntityId(topicLongIds.get(i), userId);
                 int count = scoreEntity.getCount();
-                double score = scoreRepository.findByTopicIdAndUserEntityId(id.get(i),userId).getValue();
+                double score = scoreRepository.findByTopicIdAndUserEntityId(topicLongIds.get(i), userId).getValue();
                 scoreEntity.setCount(++count);
-                scoreEntity.setValue((userScore + score) / count);
+                double avg = (userScore + score) / count;
+                scoreEntity.setValue(Math.round(avg));
                 try {
                     scoreEntity.setUserEntity(userServiceImp.getById(userId));
-                    scoreEntity.setTopic(topicServiceImp.getById(id.get(i)));
+                    scoreEntity.setTopic(topicServiceImp.getById(topicLongIds.get(i)));
 
                 } catch (SQLException e) {
                     e.printStackTrace();

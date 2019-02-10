@@ -46,6 +46,12 @@
 
 <h3>Generate Random Test</h3>
 
+<label>
+    Test  Name: <input id="testName"/>
+</label>
+<label>
+    Test  Description: <input id="testDescription"/>
+</label>
 
 <label>
     Test Questions Number: <input id="questionNumber"/>
@@ -156,8 +162,12 @@
       let number = parseInt($('#questionNumber').val());
       let duration = parseInt($('#testDuration').val());
       let level = $('#level').val();
+      let description = $("#testDescription").val();
+      let name=$("#testName").val();
 
         let random = JSON.stringify({
+            name : name,
+            description : description,
             level : level,
             questionNumber : number,
             duration :duration,
