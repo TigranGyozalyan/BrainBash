@@ -227,9 +227,8 @@
             console.log(answerDescription);
             let isCorrect = $(this).find('.isCorrect').is(":checked");
             console.log(isCorrect);
-            console.log(initialQuestion.answerDtoList[localCount].id);
+
             return {
-                id : initialQuestion.answerDtoList[localCount].id,
                 answer: answerText,
                 description: answerDescription,
                 correct: isCorrect
@@ -238,7 +237,6 @@
         console.log(answerData);
 
         let question = JSON.stringify({
-            id : initialQuestion.id,
             topicId: topicId,
             question: questionText,
             level: level,

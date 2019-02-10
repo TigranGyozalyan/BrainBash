@@ -174,7 +174,7 @@ public class QuestionController {
     @SuppressWarnings("Duplicates")
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/update/{id}")
-    public ModelAndView updateQuestion(@PathVariable int id ,@RequestBody QuestionDto questionDto) {
+    public ModelAndView updateQuestion(@PathVariable Long id ,@RequestBody QuestionDto questionDto) {
 
         String questionBody = questionDto.getQuestion();
         String level = questionDto.getLevel();
@@ -190,16 +190,20 @@ public class QuestionController {
         Long topicId = questionDto.getTopicId();
         try {
             QuestionEntity updatedQuestionEntity = new QuestionEntity(questionBody,  points, level, corr_answer_count, topicServiceImp.getById(topicId));
-            updatedQuestionEntity.setId(questionDto.getId());
+            updatedQuestionEntity.setId(id);
             questionServiceImp.update(updatedQuestionEntity);
+
+            List<AnswerEntity> initialAnswers = answerServiceImp.getAnswerEntitiesByQuestionId(id);
+
+            for(AnswerEntity answerEntity : initialAnswers) {
+                answerServiceImp.removeById(answerEntity.getId());
+            }
 
             for (AnswerDto answer : answerList) {
                 String answerText = answer.getAnswer();
                 String description = answer.getDescription();
                 boolean isCorrect = answer.isCorrect();
-                AnswerEntity updatedAnswer = new AnswerEntity(answerText,description,isCorrect,updatedQuestionEntity);
-                updatedAnswer.setId(answer.getId());
-                answerServiceImp.update(updatedAnswer);
+                answerServiceImp.addAnswer(answerText,description,isCorrect,updatedQuestionEntity.getId());
             }
 
 
