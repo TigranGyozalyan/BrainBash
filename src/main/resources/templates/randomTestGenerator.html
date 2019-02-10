@@ -29,7 +29,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add a test</title>
@@ -42,9 +42,28 @@
 
 <body>
 
-<form>
+<form th:action="@{/test/organize}" method="get">
 
 <h3>Generate Random Test</h3>
+
+
+<label>
+    Test Questions Number: <input id="questionNumber"/>
+</label>
+
+<label>
+    Test Duration : <input id="testDuration"/>
+</label>
+
+</br>
+ <label>
+      Test Question Level : <select id="level">
+     <option name="beginner">beginner</option>
+     <option name="intermediate">intermediate</option>
+     <option name="advanced">advanced</option>
+ </select>
+ </label>
+</br>
 
 <div class="navigation">
     <label>
@@ -59,7 +78,7 @@
 <script>
 
 
-    let topicId=[];
+    let array=[];
 
     let $selectDropDown = $('#categories');
     $.get('/category', function (categories) {
@@ -99,7 +118,7 @@
                                         topicCheckBox.on('click', function () {
                                             if ($(this).is(':checked')) {
                                                 let Id = $(this).attr('topicId');
-                                                topicId.push(parseInt(Id));
+                                               array.push(parseInt(Id));
                                            }
                                         })
                                     });
@@ -134,15 +153,22 @@
     function createTest() {
 
 
+      let number = parseInt($('#questionNumber').val());
+      let duration = parseInt($('#testDuration').val());
+      let level = $('#level').val();
+
         let random = JSON.stringify({
-            topicId :topicId
+            level : level,
+            questionNumber : number,
+            duration :duration,
+            topicId : array
         });
-         JSON.stringify(random);
+        JSON.stringify(random);
         console.log(random);
         $.ajax({
             type: "POST",
             data: random,
-            url: "/test/random/generate",
+            url: "http://localhost:8080/test/random/generate",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function () {

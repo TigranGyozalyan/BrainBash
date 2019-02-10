@@ -2,13 +2,13 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.*;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -210,7 +210,7 @@ public class TestController {
     }
 
     @PostMapping("/process")
-    public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos,Principal principal) {
+    public ModelAndView checkTest(@RequestBody List<SubmitQuestionDto> submitQuestionDtos, Principal principal) {
 
 
         questionController.getTestID().clear();
@@ -220,7 +220,7 @@ public class TestController {
         score = testServiceImp.checkTest(submitQuestionDtos);
         try {
             Long userId = userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())).getId();
-            scoreServiceImp.foo(testId, score.getKey(),userId);
+            scoreServiceImp.foo(testId, score.getKey(), userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -482,18 +482,25 @@ public class TestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/random")
     public ModelAndView random() {
-        ModelAndView modelAndView=new ModelAndView("randomTestGenerator");
+        ModelAndView modelAndView = new ModelAndView("randomTestGenerator");
 
         return modelAndView;
     }
 
-    @PostMapping(value = "/random/generate",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/random/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView generateRandomTest(@RequestBody RandomDto randomDto) {
 
-        System.out.println(randomDto.getTopicId());
+        List<QuestionEntity> testQuestions=testServiceImp.randomQuestionGenerator(randomDto);
 
-        return new ModelAndView();
+        testQuestions.forEach(i-> System.out.println(i.getQuestion()));
 
+        try {
+            testServiceImp.addTest("Random Test","Random Test",randomDto.getDuration(),testQuestions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new ModelAndView("redirect:/test/organize");
     }
 
 }

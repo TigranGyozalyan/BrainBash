@@ -72,6 +72,7 @@ public class ScoreServiceImp implements ScoreService {
         List<Long> id = new ArrayList<>();
 
         for (int i = 0; i < ids.size(); i++) {
+
             id.add(ids.get(i).longValue());
         }
 

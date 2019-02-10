@@ -4,15 +4,17 @@ import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
+import am.aca.quiz.software.service.dto.QuestionDto;
+import am.aca.quiz.software.service.dto.RandomDto;
 import am.aca.quiz.software.service.dto.SubmitQuestionDto;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.interfaces.TestService;
+import am.aca.quiz.software.service.mapper.QuestionMapper;
+import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,17 @@ public class TestServiceImp implements TestService {
     private final TestRepository testRepository;
     private final QuestionServiceImp questionServiceImp;
     private final AnswerServiceImp answerServiceImp;
+    private final TopicServiceImp topicServiceImp;
+    private final TopicMapper topicMapper;
+    private final QuestionMapper questionMapper;
 
-    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp, AnswerServiceImp answerServiceImp) {
+    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp, AnswerServiceImp answerServiceImp, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionMapper questionMapper) {
         this.testRepository = testRepository;
         this.questionServiceImp = questionServiceImp;
         this.answerServiceImp = answerServiceImp;
+        this.topicServiceImp = topicServiceImp;
+        this.topicMapper = topicMapper;
+        this.questionMapper = questionMapper;
     }
 
 
@@ -205,6 +213,49 @@ public class TestServiceImp implements TestService {
 //        System.out.println("Test Overall Score : " + overallScore);
         return new ScorePair<>(score,overallScore);
 
+    }
+
+    public List<QuestionEntity> randomQuestionGenerator(RandomDto randomDto){
+        List<QuestionEntity> testQuestions = new ArrayList<>(randomDto.getQuestionNumber().intValue());
+
+        List<QuestionEntity> allQuestions = new ArrayList<>();
+
+        randomDto.getTopicId().forEach(i -> {
+            try {
+                questionServiceImp.getQuestionsByTopicEntity(topicServiceImp.getById(i))
+                        .forEach(j -> {
+                            if (j.getLevel().toString().equals(randomDto.getLevel())) {
+                                allQuestions.add(j);
+                            }
+                        });
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        System.out.println("All questions Size : " +allQuestions.size());
+        Random random = new Random();
+        for (int i = 0; i < randomDto.getQuestionNumber(); i++) {
+            if (allQuestions.isEmpty()) {
+                break;
+            }
+            if(allQuestions.size()==1){
+                testQuestions.add(allQuestions.get(0));
+                allQuestions.remove(0);
+                break;
+            }
+            else {
+                int randomIndex = random.nextInt(allQuestions.size());
+                if(randomIndex==0){
+                    ++randomIndex;
+                }
+
+                testQuestions.add(allQuestions.get(randomIndex - 1));
+                allQuestions.remove(randomIndex-1);
+            }
+        }
+        return testQuestions;
     }
 
 
