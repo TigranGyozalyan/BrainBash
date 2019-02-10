@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Transfer Page</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/transferPageStyle.css}">
+</head>
+<body>
+<div class='modal'>
+  <div class='header'>
+    Do You Want To Continue?
+  </div>
+  <div class='content'>
+    <label>
+      Test Name :  <span type="text" th:text="${test.test_name}"></span>
+      </label>
+      </br>
+      <label>
+       Test Description : <span type="text" th:text="${test.description}"></span>
+       </label>
+       </br>
+       <label>
+       Test Duration : <span type="text" th:text="${test.duration}"></span>
+    </label>
+
+    <input type="hidden" th:value="${test.id}" name="testId">
+
+
+  </div>
+  <div class='actions'>
+  <form th:action="@{'/test/solve/'+${test.id}}" method="post">
+     <button  class='success' >Yes, do it</button>
+    </form>
+
+    <form th:action="@{'/test/menu/'+${id}}" method="get">
+         <button  class='fail' >No, cancel</button>
+     </form>
+  </div>
+  <div class='loader-bar'>
+    <div class='bar'></div>
+  </div>
+</div>
+
+
+</body>
+</html>

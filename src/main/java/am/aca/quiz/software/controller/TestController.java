@@ -12,6 +12,7 @@ import am.aca.quiz.software.service.mapper.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -160,7 +161,50 @@ public class TestController {
         return ResponseEntity.ok(timerDto);
     }
 
-    @GetMapping("/solve/{id}")
+
+    @GetMapping("/menu")
+    public ModelAndView loadMenu() {
+        ModelAndView modelAndView = new ModelAndView("testMenu");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTestById(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("testByTopic");
+
+        Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
+        Set<TestDto> testDtos = new HashSet<>();
+        testId.stream()
+                .forEach(i -> {
+                    try {
+                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+        modelAndView.addObject("testList", testDtos);
+        modelAndView.addObject("topicId", id);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/transfer/{topicId}/{testId}")
+    public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId){
+     ModelAndView modelAndView=new ModelAndView("transferPage");
+        try {
+            TestDto testDto=testMapper.mapEntityToDto(testServiceImp.getById(testId));
+            modelAndView.addObject("test",testDto);
+            modelAndView.addObject("id",topicId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+
+    }
+
+    @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
@@ -271,32 +315,6 @@ public class TestController {
     }
 
 
-    @GetMapping("/menu")
-    public ModelAndView loadMenu() {
-        ModelAndView modelAndView = new ModelAndView("testMenu");
-
-        return modelAndView;
-    }
-
-    @GetMapping("/menu/{id}")
-    public ModelAndView loadTestById(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("testByTopic");
-
-        Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
-        Set<TestDto> testDtos = new HashSet<>();
-        testId.stream()
-                .forEach(i -> {
-                    try {
-                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-        modelAndView.addObject("testList", testDtos);
-        modelAndView.addObject("id", id);
-
-        return modelAndView;
-    }
 
 
     @GetMapping("/organize")
