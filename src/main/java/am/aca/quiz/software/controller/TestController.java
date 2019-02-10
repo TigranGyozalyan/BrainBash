@@ -447,7 +447,7 @@ public class TestController {
         String subject = "New Test Notification";
 
         try {
-            String text = "Yor Test Will Start on " + testUsersDto.getStartTime().toString() + ". And Will Last "
+            String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
                     + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
 
             userIds.forEach(
@@ -488,7 +488,7 @@ public class TestController {
     }
 
     @PostMapping(value = "/random/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView generateRandomTest(@RequestBody RandomDto randomDto) {
+    public void generateRandomTest(@RequestBody RandomDto randomDto) {
 
         List<QuestionEntity> testQuestions=testServiceImp.randomQuestionGenerator(randomDto);
 
@@ -500,7 +500,7 @@ public class TestController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("redirect:/test/organize");
+
     }
 
 }
