@@ -6,6 +6,7 @@ import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -148,5 +151,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public List<UserEntity> findByNiknameLike(String nickname){
         return userRepository.findByNickNameLike(nickname);
     }
+
+
+
+
 
 }

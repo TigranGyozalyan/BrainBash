@@ -3,6 +3,7 @@ package am.aca.quiz.software.service.dto;
 import am.aca.quiz.software.entity.enums.Status;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class HistoryDto {
     private Long id;
@@ -87,5 +88,20 @@ public class HistoryDto {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HistoryDto that = (HistoryDto) o;
+        return startTime.equals(that.startTime);
+
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startTime, endTime, status, score, userId, testId, testDto, userDto);
     }
 }

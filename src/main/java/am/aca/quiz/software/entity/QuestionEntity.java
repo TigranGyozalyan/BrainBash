@@ -34,7 +34,7 @@ public class QuestionEntity {
     @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.ALL)
     private List<AnswerEntity> answerEntities = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})

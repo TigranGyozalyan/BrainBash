@@ -149,7 +149,7 @@ public class TestController {
 
         TimerDto timerDto = new TimerDto();
         long time = System.currentTimeMillis();
-
+        System.out.println(time);
 
         this.testId = id;
 
