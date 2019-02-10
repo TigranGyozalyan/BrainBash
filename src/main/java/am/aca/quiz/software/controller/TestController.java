@@ -8,7 +8,6 @@ import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.*;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -220,7 +219,7 @@ public class TestController {
         score = testServiceImp.checkTest(submitQuestionDtos);
         try {
             Long userId = userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())).getId();
-            scoreServiceImp.foo(testId, score.getKey(),userId);
+            scoreServiceImp.avgScore(testId, score.getKey(),userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
