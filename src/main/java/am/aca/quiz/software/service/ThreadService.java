@@ -53,13 +53,15 @@ public class ThreadService {
                 upcomingTest.forEach(i -> {
                     LocalDateTime userStartTime = i.getStartTime();
                     try {
-                        if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
-                            HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
-                            historyEntity.setScore(0);
-                            historyEntity.setStatus(Status.COMPLETED);
-                            historyEntity.setEndTime(now);
-                            historyServiceImp.addHistory(historyEntity);
-                            upcomingTest.remove(i);
+                        synchronized (upcomingTest) {
+                            if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
+                                HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
+                                historyEntity.setScore(0);
+                                historyEntity.setStatus(Status.COMPLETED);
+                                historyEntity.setEndTime(now);
+                                historyServiceImp.addHistory(historyEntity);
+                                upcomingTest.remove(i);
+                            }
                         }
 
                     } catch (SQLException e) {

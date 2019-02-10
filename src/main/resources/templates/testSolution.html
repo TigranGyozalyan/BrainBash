@@ -208,9 +208,11 @@ div {
                     now = now + 1000;
 
 
+                    current = timerData.currentTime;
+                    end = now;
+
                     if (duration < 1000) {
-                        current = timerData.currentTime;
-                        end = now;
+
                         submitTest();
                     }
 
@@ -252,6 +254,7 @@ div {
                 chosenAnswerList: answers
             }
         }).toArray();
+
         let data = JSON.stringify(rawData);
         console.log(data);
 

@@ -12,7 +12,6 @@ import am.aca.quiz.software.service.mapper.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -150,7 +149,6 @@ public class TestController {
 
         TimerDto timerDto = new TimerDto();
         long time = System.currentTimeMillis();
-        System.out.println(time);
 
         this.testId = id;
 
@@ -190,12 +188,12 @@ public class TestController {
     }
 
     @GetMapping("/transfer/{topicId}/{testId}")
-    public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId){
-     ModelAndView modelAndView=new ModelAndView("transferPage");
+    public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId) {
+        ModelAndView modelAndView = new ModelAndView("transferPage");
         try {
-            TestDto testDto=testMapper.mapEntityToDto(testServiceImp.getById(testId));
-            modelAndView.addObject("test",testDto);
-            modelAndView.addObject("id",topicId);
+            TestDto testDto = testMapper.mapEntityToDto(testServiceImp.getById(testId));
+            modelAndView.addObject("test", testDto);
+            modelAndView.addObject("id", topicId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -206,24 +204,35 @@ public class TestController {
 
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        TestEntity testEntity = testServiceImp.getById(id);
+        HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
+                userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
+        );
+        if (currentTime.isBefore(historyEntity.getStartTime())) {
+            return new ModelAndView("UserBanPage");
+        }
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
             System.out.println(endTime);
             reloadCount++;
         }
 
-        if (historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
+        if (historyServiceImp.findHistoryBySUerIdAndStatus(
+                userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
 
             HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
 
             if (upcoming == null) {
+
 
                 upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
                 historyServiceImp.addHistory(upcoming);
                 return new ModelAndView("testSolution");
 
             } else {
-                //Can User Somehow Change Time?
+
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
 
@@ -234,23 +243,15 @@ public class TestController {
 
                     return new ModelAndView("testSolution");
 
-                } else {
-                    System.out.println("YOU ARE NOT ALLOWED");
-
-                    //TODO REDIRECT USER PAGE YOU ARE NOT ALLOWED
-
                 }
             }
         } else {
             System.out.println("FINISH TOUR TEST");
 
-            //TODO
+            //TODO PAGE
         }
+
         return null;
-
-
-        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
-
     }
 
     @PostMapping("/process")
@@ -264,7 +265,7 @@ public class TestController {
         score = testServiceImp.checkTest(submitQuestionDtos);
         try {
             Long userId = userMapper.mapEntityToDto(userServiceImp.findByEmail(principal.getName())).getId();
-            scoreServiceImp.avgScore(testId, score.getKey(),userId);
+            scoreServiceImp.avgScore(testId, score.getKey(), userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -313,8 +314,6 @@ public class TestController {
 
         return modelAndView;
     }
-
-
 
 
     @GetMapping("/organize")
@@ -395,19 +394,26 @@ public class TestController {
 
         finalUserDtos
                 .forEach(i -> {
-                    HistoryEntity historyEntity = new HistoryEntity();
-                    try {
-                        historyEntity.setUserEntity(userServiceImp.getById(i.getId()));
 
-                        historyEntity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
-                        historyEntity.setStatus(Status.UPCOMING);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    if (historyServiceImp.findHistoryByUserIdAndTetId(i.getId(), testUsersDto.getTestId(), "UPCOMING") == null) {
+                        HistoryEntity historyEntity = new HistoryEntity();
+                        try {
+
+                            historyEntity.setUserEntity(userServiceImp.getById(i.getId()));
+
+                            historyEntity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
+                            historyEntity.setStatus(Status.UPCOMING);
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
+                        historyEntity.setScore(0);
+                        historyServiceImp.addHistory(historyEntity);
                     }
-                    historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
-                    historyEntity.setScore(0);
-                    historyServiceImp.addHistory(historyEntity);
+
                 });
+
 
         return modelAndView;
 
@@ -508,12 +514,12 @@ public class TestController {
     @PostMapping(value = "/random/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void generateRandomTest(@RequestBody RandomDto randomDto) {
 
-        List<QuestionEntity> testQuestions=testServiceImp.randomQuestionGenerator(randomDto);
+        List<QuestionEntity> testQuestions = testServiceImp.randomQuestionGenerator(randomDto);
 
-        testQuestions.forEach(i-> System.out.println(i.getQuestion()));
+        testQuestions.forEach(i -> System.out.println(i.getQuestion()));
 
         try {
-            testServiceImp.addTest( randomDto.getName(),randomDto.getDescription(),randomDto.getDuration(),testQuestions);
+            testServiceImp.addTest(randomDto.getName(), randomDto.getDescription(), randomDto.getDuration(), testQuestions);
         } catch (SQLException e) {
             e.printStackTrace();
         }
