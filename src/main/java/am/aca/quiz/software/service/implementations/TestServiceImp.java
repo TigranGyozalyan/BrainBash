@@ -12,6 +12,7 @@ import am.aca.quiz.software.service.interfaces.TestService;
 import am.aca.quiz.software.service.mapper.QuestionMapper;
 import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public class TestServiceImp implements TestService {
     @Override
     public void addTest(String testName, String description, long duration, List<QuestionEntity> questionEntities) throws SQLException {
         TestEntity testEntity = new TestEntity(testName, description, duration, questionEntities);
-        testRepository.saveAndFlush(testEntity);
+        testRepository.save(testEntity);
     }
 
     @Override
@@ -50,22 +51,29 @@ public class TestServiceImp implements TestService {
         return testRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void update(TestEntity test) throws SQLException {
         testRepository.save(test);
     }
 
 
+    @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        if (testRepository.findById(id) != null) {
+        if (testRepository.findById(id).isPresent()) {
             testRepository.deleteById(id);
         }
+        throw new SQLException();
     }
 
     @Override
     public TestEntity getById(Long id) throws SQLException {
-        return testRepository.findById(id).get();
+        if (testRepository.findById(id).isPresent()) {
+            return testRepository.findById(id).get();
+        }
+        throw new SQLException();
+
     }
 
     @Override
@@ -75,7 +83,7 @@ public class TestServiceImp implements TestService {
     }
 
 
-    public ScorePair<Double,Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
+    public ScorePair<Double, Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
 
         double score = 0;
         double overallScore = 0;
@@ -151,7 +159,7 @@ public class TestServiceImp implements TestService {
          */
         //  allCorrectAnswerIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
         //  submissions.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
-       // allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
+        // allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
 
 
         for (Long key : submissions.keySet()) {
@@ -211,11 +219,11 @@ public class TestServiceImp implements TestService {
         }
 //        System.out.println("User Score : " + score);
 //        System.out.println("Test Overall Score : " + overallScore);
-        return new ScorePair<>(score,overallScore);
+        return new ScorePair<>(score, overallScore);
 
     }
 
-    public List<QuestionEntity> randomQuestionGenerator(RandomDto randomDto){
+    public List<QuestionEntity> randomQuestionGenerator(RandomDto randomDto) {
         List<QuestionEntity> testQuestions = new ArrayList<>(randomDto.getQuestionNumber().intValue());
 
         List<QuestionEntity> allQuestions = new ArrayList<>();
@@ -234,30 +242,28 @@ public class TestServiceImp implements TestService {
             }
         });
 
-        System.out.println("All questions Size : " +allQuestions.size());
+        System.out.println("All questions Size : " + allQuestions.size());
         Random random = new Random();
         for (int i = 0; i < randomDto.getQuestionNumber(); i++) {
             if (allQuestions.isEmpty()) {
                 break;
             }
-            if(allQuestions.size()==1){
+            if (allQuestions.size() == 1) {
                 testQuestions.add(allQuestions.get(0));
                 allQuestions.remove(0);
                 break;
-            }
-            else {
+            } else {
                 int randomIndex = random.nextInt(allQuestions.size());
-                if(randomIndex==0){
+                if (randomIndex == 0) {
                     ++randomIndex;
                 }
 
                 testQuestions.add(allQuestions.get(randomIndex - 1));
-                allQuestions.remove(randomIndex-1);
+                allQuestions.remove(randomIndex - 1);
             }
         }
         return testQuestions;
     }
-
 
 
 }

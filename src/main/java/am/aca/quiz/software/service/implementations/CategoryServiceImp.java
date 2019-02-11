@@ -32,7 +32,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void addCategory(CategoryEntity categoryEntity) throws SQLException {
-        categoryRepository.saveAndFlush(categoryEntity);
+        categoryRepository.save(categoryEntity);
     }
 
     public List<CategoryEntity> getAll() throws SQLException {
@@ -48,9 +48,8 @@ public class CategoryServiceImp implements CategoryService {
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        CategoryEntity targetEntity = categoryRepository.findById(id).get();
 
-        if (targetEntity != null) {
+        if (categoryRepository.findById(id).isPresent()) {
             categoryRepository.deleteById(id);
         } else {
             throw new SQLException("category not found");
@@ -60,9 +59,8 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
-        CategoryEntity targetEntity = categoryRepository.findById(id).get();
-
-        if (targetEntity != null) {
+        if (categoryRepository.findById(id).isPresent()) {
+            CategoryEntity targetEntity = categoryRepository.findById(id).get();
             return targetEntity;
         } else {
             throw new SQLException("category not found");
@@ -79,8 +77,10 @@ public class CategoryServiceImp implements CategoryService {
         }
     }
 
+    @Transactional
     @Override
-    public void update(CategoryEntity categoryEntity){
+    public void update(CategoryEntity categoryEntity) {
+
         categoryRepository.save(categoryEntity);
     }
 

@@ -6,6 +6,7 @@ import am.aca.quiz.software.entity.enums.Level;
 import am.aca.quiz.software.repository.QuestionRepository;
 import am.aca.quiz.software.service.interfaces.QuestionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -34,7 +35,7 @@ public class QuestionServiceImp implements QuestionService {
         QuestionEntity questionEntity = new QuestionEntity(question, points, level, correctAnswerCount, topicEntity);
 
         topicEntity.getQuestionEntities().add(questionEntity);
-        questionRepository.saveAndFlush(questionEntity);
+        questionRepository.save(questionEntity);
     }
 
     @Override
@@ -49,18 +50,23 @@ public class QuestionServiceImp implements QuestionService {
 
     @Override
     public QuestionEntity getById(Long id) throws SQLException {
-        QuestionEntity questionEntity = questionRepository.findById(id).get();
-        if (questionEntity == null) {
-            throw new SQLException("Entity not found");
+        if (questionRepository.findById(id).isPresent()) {
+            QuestionEntity questionEntity = questionRepository.findById(id).get();
+            return questionEntity;
         }
+        throw new SQLException("Entity not found");
 
-        return questionEntity;
     }
 
+    @Transactional
     @Override
     public void removeByid(Long id) throws SQLException {
-        QuestionEntity deletedQuestion = questionRepository.findById(id).get();
-        questionRepository.delete(deletedQuestion);
+        if (questionRepository.findById(id).isPresent()) {
+            QuestionEntity deletedQuestion = questionRepository.findById(id).get();
+            questionRepository.delete(deletedQuestion);
+        }
+        throw new SQLException();
+
 
     }
 
@@ -69,7 +75,7 @@ public class QuestionServiceImp implements QuestionService {
         return questionRepository.findQuestionEntitiesByQuestion(question);
     }
 
-    public List<QuestionEntity> getQuestionsByTopicEntity(TopicEntity topicEntity){
+    public List<QuestionEntity> getQuestionsByTopicEntity(TopicEntity topicEntity) {
         return questionRepository.findQuestionEntitiesByTopicEntity(topicEntity);
     }
 

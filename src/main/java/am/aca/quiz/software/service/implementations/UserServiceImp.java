@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
@@ -77,6 +78,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
 
+    @Transactional
     @Override
     public void removeByid(Long id) throws SQLException {
         userRepository.deleteById(id);
@@ -84,10 +86,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public UserEntity getById(Long id) throws SQLException {
-        return userRepository.findById(id).get();
+        if (userRepository.findById(id).isPresent()) {
+            return userRepository.findById(id).get();
+        }
+        throw new SQLException();
     }
 
 
+    @Transactional
     @Override
     public void removeByUserEntity(UserEntity userEntity) throws SQLException {
         userEntity.setActive(false);
@@ -141,19 +147,17 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return true;
     }
 
-    public List<UserEntity> findByNameLike(String name){
+    public List<UserEntity> findByNameLike(String name) {
         return userRepository.findByNameLike(name);
     }
 
-    public List<UserEntity> findBySurnameLike(String surname){
+    public List<UserEntity> findBySurnameLike(String surname) {
         return userRepository.findBySurnameLike(surname);
     }
-    public List<UserEntity> findByNiknameLike(String nickname){
+
+    public List<UserEntity> findByNiknameLike(String nickname) {
         return userRepository.findByNickNameLike(nickname);
     }
-
-
-
 
 
 }
