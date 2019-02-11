@@ -5,6 +5,7 @@ import am.aca.quiz.software.entity.SubCategoryEntity;
 import am.aca.quiz.software.repository.SubCategoryRepository;
 import am.aca.quiz.software.service.interfaces.SubCategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -61,6 +62,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
         return subCategoryEntity.get();
     }
 
+    @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
         SubCategoryEntity targetEntity = getById(id);
@@ -83,6 +85,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
         }
     }
 
+    @Transactional
     @Override
     public void update(SubCategoryEntity updatedSubCategoryEntity) throws SQLException {
         subCategoryRepository.save(updatedSubCategoryEntity);
