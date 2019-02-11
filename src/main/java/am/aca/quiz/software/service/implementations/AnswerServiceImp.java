@@ -5,6 +5,7 @@ import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.repository.AnswerRepository;
 import am.aca.quiz.software.service.interfaces.AnswerService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -30,7 +31,7 @@ public class AnswerServiceImp implements AnswerService {
         AnswerEntity answerEntity = new AnswerEntity(answer, description, isCorrect, questionEntity);
         questionEntity.getAnswerEntities().add(answerEntity);
 
-        answerRepository.saveAndFlush(answerEntity);
+        answerRepository.save(answerEntity);
 
     }
 
@@ -39,7 +40,7 @@ public class AnswerServiceImp implements AnswerService {
         return answerRepository.findAll();
     }
 
-
+    @Transactional
     @Override
     public void update(AnswerEntity updateAnswer) throws SQLException {
         answerRepository.save(updateAnswer);
@@ -54,10 +55,16 @@ public class AnswerServiceImp implements AnswerService {
         return answerEntity.get();
     }
 
+    @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        AnswerEntity deleted_answer = answerRepository.findById(id).get();
-        answerRepository.delete(deleted_answer);
+        if (answerRepository.findById(id).isPresent()) {
+            AnswerEntity deleted_answer = answerRepository.findById(id).get();
+            answerRepository.delete(deleted_answer);
+
+        }
+        throw new SQLException();
+
     }
 
     @Override
