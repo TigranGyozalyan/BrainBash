@@ -36,7 +36,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
                 subCategoryEntity.setTypeName(typename);
                 subCategoryEntity.setCategory(categoryEntity);
                 categoryEntity.getSubCategoryEntityLists().add(subCategoryEntity);
-                subCategoryRepository.saveAndFlush(subCategoryEntity);
+                subCategoryRepository.save(subCategoryEntity);
             } else {
                 throw new SQLException("subCategory is exist");
             }
