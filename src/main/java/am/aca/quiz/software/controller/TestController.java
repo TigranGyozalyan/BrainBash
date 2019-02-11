@@ -2,6 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
@@ -153,7 +154,7 @@ public class TestController {
         long time = System.currentTimeMillis();
 
 
-        this.testId=id;
+        this.testId = id;
 
         timerDto.setCurrentTime(time);
         timerDto.setEndTime(endTime);
@@ -163,13 +164,13 @@ public class TestController {
     }
 
     @GetMapping("/solve/{id}")
-    public ModelAndView loadTest(@PathVariable("id") Long id,Principal principal) throws SQLException {
+    public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
             System.out.println(endTime);
             reloadCount++;
         }
-        if(historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(),"INPROGRESS")==null) {
+        if (historyServiceImp.findHistoryBySUerIdAndStatus(userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
             HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
             if (upcoming == null) {
                 HistoryEntity inprogress = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "INPROGRESS");
@@ -199,7 +200,7 @@ public class TestController {
 
                 }
             }
-        }else {
+        } else {
 
             System.out.println("FINISH TOUR TEST");
             //TODO
@@ -207,7 +208,7 @@ public class TestController {
         return null;
 
 
-        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
+        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINTS ?
 
     }
 
@@ -227,7 +228,7 @@ public class TestController {
     }
 
 
-    @GetMapping(value = "/scorepage" )
+    @GetMapping(value = "/scorepage")
     public ModelAndView scorePage() {
 
         reloadCount = 0;
@@ -265,7 +266,6 @@ public class TestController {
     }
 
 
-
     @GetMapping("/menu")
     public ModelAndView loadMenu() {
         ModelAndView modelAndView = new ModelAndView("testMenu");
@@ -288,7 +288,7 @@ public class TestController {
                     }
                 });
         modelAndView.addObject("testList", testDtos);
-        modelAndView.addObject("id",id);
+        modelAndView.addObject("id", id);
 
         return modelAndView;
     }
@@ -311,7 +311,7 @@ public class TestController {
     @PostMapping("/organize")
     public ModelAndView selectTest(@RequestParam("search") String search) {
         ModelAndView modelAndView = new ModelAndView("selectTest");
-        if (!search.isEmpty()){
+        if (!search.isEmpty()) {
 
         }
 
@@ -455,28 +455,10 @@ public class TestController {
                             e.printStackTrace();
                         }
                     });
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
-//        String endSubject = "Finished Test Notification";
-//
-//        String endText = "Test Was Finished You got " + score.getKey() + "Points Out Of " + score.getValue();
-//
-//
-//        userIds.forEach(
-//                i -> {
-//                    try {
-//                        mailService.sendText(userServiceImp
-//                                .getById(i).getEmail(), endSubject, endText);
-//
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                });
 
         //TODO SEND NOTIFICATION AFTER TEST END ?
         return new ModelAndView("redirect:/test/organize");
@@ -485,14 +467,51 @@ public class TestController {
     public Long getTestId() {
         return this.testId;
     }
-    public  ScorePair<Double,Double> getScore(){
+
+    public ScorePair<Double, Double> getScore() {
         return this.score;
     }
 
 
     @PostMapping("/test/random/{id}")
-    public ModelAndView random(@PathVariable("id") Long id){
+    public ModelAndView random(@PathVariable("id") Long id) {
         System.out.println("INSIDE");
         return null;
     }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("update/{id}")
+    public ModelAndView updateTest(@PathVariable Long id) {
+        return new ModelAndView("testUpdate");
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("update/{id}")
+    public ModelAndView updateTest(@PathVariable Long id, @RequestBody TestDto test) {
+
+        try {
+            testServiceImp.removeById(id);
+
+            String test_name = test.getTest_name();
+            String description = test.getDescription();
+            long duration = test.getDuration();
+
+            List<Long> questionIds = test.getQuestionIds();
+            List<QuestionEntity> questions = new ArrayList<>();
+            for (Long questionId : questionIds) {
+                QuestionEntity questionEntity = questionServiceImp.getById(questionId);
+                questions.add(questionEntity);
+            }
+            TestEntity testEntity = new TestEntity(test_name, description, duration, questions);
+            testEntity.setId(id);
+            testServiceImp.update(testEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new ModelAndView("testList");
+    }
+
 }
