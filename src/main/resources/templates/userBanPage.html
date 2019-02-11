@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<!-- Source code from http://apps.thecodepost.org/trex/trex.html -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+     <script
+                src="https://code.jquery.com/jquery-3.3.1.js"
+                integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+                crossorigin="anonymous"></script>
     <script>
         function hideClass(name) {
             for (var elem of $(name)) elem.style.display = "none";
@@ -2224,6 +2227,7 @@
 <div id="main-frame-error" class="interstitial-wrapper" jstcache="0">
     <div class="onlyforchrome" style="font-size: 30px;text-align: center;font-family: Helvetica;">You Are Not Allowed To Visit This Page Yet. You Can Pass Your Time Playing.</div>
 	<div id="main-frame-notchrome" style="display:none; margin-top:50px;">Sorry, this game only runs on the Google Chrome!</div>
+	</br>
     <div id="offline-resources" jstcache="0">
     <div id="offline-resources-1x" jstcache="0">
       <img id="1x-obstacle-large" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAMAAACJUtIoAAAACVBMVEX////39/dTU1OabbyfAAAAAXRSTlMAQObYZgAAAXhJREFUeF7t2NGqAjEMANGM///RlwvaYQndULuFPJgHUYaEI6IPhgNAOA8HZ+3U6384F5y1U6YzAZTWG+dZamnFEstBFtCKJZSHWMADLJ18z+JqpQeLdKoDC8siC5iFCQs4znIxB5B1t6F3lQWkL4N0JsF+u6GXJdbI+FKW+yWr3lhgCZ2VSag3Nlk/FnRkIRbasLCO0oulikMsvmGpeiGLZ1jOMgtIP5bODivYYUXEIVbwFCt4khVssRgsgidZwQaLd2A8m7MYLGTl4KeQQs2y4kMAMGGlmQViDIb5O6xZnnLD485dIBzqDSE1yyFdL4Iqu4XJqUUWl/NVAFSZq1P6a5aqbAUM2epQbBioWflUBABiUyhYyZoCBev8XyMAObDNOhOAfiyxmHU0YNlldGAphGjFCjA3YkUn1o/1Y3EkZFZ5isCC6NUgwDBn1RuXH96doNfAhDXfsIyJ2AnolcCVhay0kcYbW0HvCO8OwIcJ3GzkORpkFuUP/1Ec8FW1qJkAAAAASUVORK5CYII=" jstcache="0">
@@ -2250,6 +2254,7 @@
     </template>
   </div>
 
+
   <script type="text/javascript">
     if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
       new Runner('.interstitial-wrapper');
@@ -2265,5 +2270,50 @@
 	}
   </script>
   </div>
+
+
+  <input type="hidden" th:value="${id}" id="testId"/>
+  <input type="hidden" th:value="${user_id}" id="userId">
+
+
+
 </body>
+
+
+<script>
+     let $userId = $('#userId').val();
+     let $testId=$('#testId').val();
+
+    console.log($userId);
+    console.log($testId);
+
+    let request=true;
+
+            $.post('/history/user/' + $userId+'/'+$testId, function (timerData) {
+
+                let startTime = new Date(timerData.startTime).getTime();
+
+                let now = new Date(timerData.currentTime).getTime();
+
+                  console.log(startTime);
+                  console.log(now);
+
+                interval = setInterval(function () {
+
+                  if(startTime===now){
+                      request=false;
+                      window.location.replace('http://localhost:8080/test/solve/'+$testId);
+                  }
+                 now = now + 1000;
+
+                }, 1000);
+
+
+            });
+
+
+
+
+
+</script>
 </html>

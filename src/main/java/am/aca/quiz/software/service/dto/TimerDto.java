@@ -4,6 +4,7 @@ public class TimerDto {
 
     private long currentTime;
     private long endTime;
+    private long startTime;
 
 
     public long getCurrentTime() {
@@ -20,5 +21,13 @@ public class TimerDto {
 
     public void setEndTime(long endTime) {
         this.endTime = endTime;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 }

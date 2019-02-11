@@ -4,15 +4,14 @@ import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.dto.HistoryDto;
-import am.aca.quiz.software.service.dto.TestDto;
 import am.aca.quiz.software.service.dto.TimerDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
-import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import am.aca.quiz.software.service.mapper.TestMapper;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -221,6 +220,18 @@ public class HistoryController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+    }
+    @PostMapping("/user/{userId}/{testId}")
+    public ResponseEntity<TimerDto> sendHistory(@PathVariable("userId") Long userId, @PathVariable("testId") Long testId){
+
+        HistoryDto historyDto=historyMapper.mapEntityToDto(historyServiceImp.findHistoryByUserIdAndTetId(userId,testId,"UPCOMING"));
+        TimerDto timerDto=new TimerDto();
+        timerDto.setCurrentTime(System.currentTimeMillis());
+        timerDto.setStartTime(historyDto.getStartTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+
+        return ResponseEntity.ok(timerDto);
 
 
     }

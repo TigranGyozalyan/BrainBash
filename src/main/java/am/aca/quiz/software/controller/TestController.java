@@ -202,8 +202,16 @@ public class TestController {
 
     }
 
+
+
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
+
+        if (reloadCount == 0) {
+            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
+            System.out.println(endTime);
+            reloadCount++;
+        }
 
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
@@ -212,16 +220,14 @@ public class TestController {
         );
         if(historyEntity!=null) {
             if (currentTime.isBefore(historyEntity.getStartTime())) {
-                return new ModelAndView("UserBanPage");
+                ModelAndView modelAndView=new ModelAndView("userBanPage");
+
+                modelAndView.addObject("id",id);
+                modelAndView.addObject("user_id",userServiceImp.findByEmail(principal.getName()).getId());
+
+                return modelAndView;
             }
         }
-
-            if (reloadCount == 0) {
-                endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-                System.out.println(endTime);
-                reloadCount++;
-            }
-
             if (historyServiceImp.findHistoryBySUerIdAndStatus(
                     userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
 

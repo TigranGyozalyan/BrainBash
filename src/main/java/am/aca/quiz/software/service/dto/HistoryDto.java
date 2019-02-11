@@ -8,6 +8,7 @@ import java.util.Objects;
 public class HistoryDto {
     private Long id;
     private LocalDateTime startTime;
+
     private LocalDateTime endTime;
     private Status status;
     private double score;
