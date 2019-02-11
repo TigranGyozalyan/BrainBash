@@ -3,7 +3,9 @@ package am.aca.quiz.software.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -14,26 +16,26 @@ public class TestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "test_name",nullable = false)
+    @Column(name = "test_name", nullable = false)
     private String test;
 
-    @Column(name = "duration",nullable = false)
+    @Column(name = "duration", nullable = false)
     private long duration;
 
-    @Column(name = "description",nullable = false,columnDefinition = "text")
+    @Column(name = "description", nullable = false, columnDefinition = "text")
     private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "question_id")})
-    private List<QuestionEntity> questionEntities=new ArrayList<>();
+    private List<QuestionEntity> questionEntities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "testEntity",cascade = CascadeType.ALL)
-    private List<HistoryEntity> historyEntities=new ArrayList<>();
+    @OneToMany(mappedBy = "testEntity", cascade = CascadeType.ALL)
+    private Set<HistoryEntity> historyEntities = new HashSet<>();
 
 
-    public TestEntity(String test_name,  String description, long duration , List<QuestionEntity> questionEntities) {
+    public TestEntity(String test_name, String description, long duration, List<QuestionEntity> questionEntities) {
         this.test = test_name;
         this.duration = duration;
         this.description = description;
@@ -87,11 +89,12 @@ public class TestEntity {
         this.questionEntities = questionEntities;
     }
 
-    public List<HistoryEntity> getHistoryEntities() {
+
+    public Set<HistoryEntity> getHistoryEntities() {
         return historyEntities;
     }
 
-    public void setHistoryEntities(List<HistoryEntity> historyEntities) {
+    public void setHistoryEntities(Set<HistoryEntity> historyEntities) {
         this.historyEntities = historyEntities;
     }
 

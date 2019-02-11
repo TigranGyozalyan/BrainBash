@@ -3,7 +3,7 @@ package am.aca.quiz.software.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "answer")
+@Table(name = "answer",indexes = {@Index(name = "IDX_questionId",columnList = "question_id")})
 public class AnswerEntity {
 
     @Id

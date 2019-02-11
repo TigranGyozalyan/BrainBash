@@ -3,16 +3,16 @@ package am.aca.quiz.software.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "average_score")
+@Table(name = "average_score", indexes = {@Index(name = "IDX_usrID_topicID", columnList = "user_id,topic_id")})
 public class ScoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "score_value", nullable = false,columnDefinition = "numeric default 0.0")
+    @Column(name = "score_value", nullable = false, columnDefinition = "numeric default 0.0")
     private double value;
 
-    @Column(name = "count", nullable = false,columnDefinition = "bigint default '0'")
+    @Column(name = "count", nullable = false, columnDefinition = "bigint default '0'")
     private int count;
 
     @ManyToOne
@@ -20,7 +20,7 @@ public class ScoreEntity {
     private TopicEntity topic;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",updatable = false)
+    @JoinColumn(name = "user_id", updatable = false)
     private UserEntity userEntity;
 
     public ScoreEntity() {

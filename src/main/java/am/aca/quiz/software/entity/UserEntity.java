@@ -10,7 +10,9 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "IDX_FIRST_NAME", columnList = "first_name"),
+        @Index(name = "IDX_LAST_NAME", columnList = "last_name")})
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +27,7 @@ public class UserEntity implements UserDetails {
     @Email(message = "Please provide a valid email address")
     private String email;
 
-    @Column(name = "active",nullable = false)
+    @Column(name = "active", nullable = false)
     private boolean active;
 
     @Size(min = 3)
@@ -36,14 +38,14 @@ public class UserEntity implements UserDetails {
     @Column(name = "passwords", nullable = false)
     private String password;
 
-    @Column(name="activationCode")
+    @Column(name = "activationCode")
     private String activationCode;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles=new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyList = new ArrayList<>();
@@ -52,12 +54,11 @@ public class UserEntity implements UserDetails {
     private List<ScoreEntity> scoreList = new ArrayList<>();
 
 
-
     public UserEntity() {
     }
 
 
-    public UserEntity(String name, String surname, String email,String nickname) {
+    public UserEntity(String name, String surname, String email, String nickname) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -109,7 +110,6 @@ public class UserEntity implements UserDetails {
     public String getPassword() {
         return password;
     }
-
 
 
     public void setPassword(String password) {
@@ -184,6 +184,7 @@ public class UserEntity implements UserDetails {
     public void setUsername(String username) {
         this.email = username;
     }
+
     @Override
     public String getUsername() {
         return this.email;

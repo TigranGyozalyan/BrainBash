@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "topic")
+@Table(name = "topic",indexes = {@Index(name = "IDX_topic_name",columnList = "topic_name")})
 public class TopicEntity {
 
     @Id

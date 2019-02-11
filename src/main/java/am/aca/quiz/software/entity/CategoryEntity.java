@@ -5,22 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category", indexes = {@Index(name = "IDX_TYPE", columnList = "type")})
 public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type",unique = true,nullable = false)
+    @Column(name = "type", unique = true, nullable = false)
     private String type;
 
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<SubCategoryEntity> subCategoryEntityLists = new ArrayList<>();
 
 
-    public CategoryEntity(){
+    public CategoryEntity() {
     }
 
     public CategoryEntity(String type) {

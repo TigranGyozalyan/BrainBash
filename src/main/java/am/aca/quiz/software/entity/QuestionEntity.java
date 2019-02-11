@@ -6,10 +6,14 @@ import am.aca.quiz.software.entity.enums.Level;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "questions", indexes = {@Index(name = "IDX_question", columnList = "question"),
+        @Index(name = "IDX_topicId", columnList = "topic_entity_id")}
+)
 public class QuestionEntity {
 
     @Id
@@ -38,7 +42,7 @@ public class QuestionEntity {
     @JoinTable(name = "question_test",
             joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
-    private List<TestEntity> testEntities = new ArrayList<>();
+    private Set<TestEntity> testEntities = new HashSet<>();
 
     @ManyToOne
     private TopicEntity topicEntity;
@@ -104,11 +108,12 @@ public class QuestionEntity {
         this.answerEntities = answerEntities;
     }
 
-    public List<TestEntity> getTestEntities() {
+
+    public Set<TestEntity> getTestEntities() {
         return testEntities;
     }
 
-    public void setTestEntities(List<TestEntity> testEntities) {
+    public void setTestEntities(Set<TestEntity> testEntities) {
         this.testEntities = testEntities;
     }
 

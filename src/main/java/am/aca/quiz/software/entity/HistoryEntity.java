@@ -7,14 +7,16 @@ import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "history")
+@Table(name = "history", indexes = {@Index(name = "IDX_STATUS", columnList = "status"),
+        @Index(name = "IDX_userId_testId_status", columnList = "status,user_id,test_id")}
+)
 public class HistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_time", nullable = false,columnDefinition = "timestamp default CURRENT_DATE")
+    @Column(name = "start_time", nullable = false, columnDefinition = "timestamp default CURRENT_DATE")
     private LocalDateTime startTime;
 
     @Column(name = "end_time")
@@ -40,7 +42,7 @@ public class HistoryEntity {
     public HistoryEntity() {
     }
 
-    public HistoryEntity(LocalDateTime startTime, Status status,@Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
+    public HistoryEntity(LocalDateTime startTime, Status status, @Min(value = 0, message = "Invalid Score Value") double score, UserEntity userEntity, TestEntity testEntity) {
         this.startTime = startTime;
         this.status = status;
         this.score = score;
@@ -123,7 +125,6 @@ public class HistoryEntity {
                 ", score=" + score +
                 '}';
     }
-
 
 
 }
