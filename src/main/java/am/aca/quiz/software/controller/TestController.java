@@ -492,8 +492,6 @@ public class TestController {
     public ModelAndView updateTest(@PathVariable Long id, @RequestBody TestDto test) {
 
         try {
-            testServiceImp.removeById(id);
-
             String test_name = test.getTest_name();
             String description = test.getDescription();
             long duration = test.getDuration();
