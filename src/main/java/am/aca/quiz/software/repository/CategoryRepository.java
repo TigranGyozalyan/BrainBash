@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     CategoryEntity findCategoryEntityByType(String type);
-    CategoryEntity findCategoryEntityById(Long id);
+
+
     CategoryEntity removeById(Long id);
 
-//    @Query(value = "select SubCategoryEntity.category FROM SubCategoryEntity where SubCategoryEntity .typeName = ?1")
-//    Long findCategoryIdBySubCategoryTypeName(String typename);
+
 }

@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Repository
 public interface TestRepository extends JpaRepository<TestEntity,Long> {
-    TestEntity findTestEntitiesByTest(String test);
+
 
     @Query(value = " SELECT t.id FROM test as t INNER JOIN question_test as qt ON t.id=qt.test_id INNER JOIN questions as q ON qt.question_id=q.id WHERE q.topic_entity_id=?1",nativeQuery = true)
     Set<BigInteger> findTestByTopicId(Long id);
