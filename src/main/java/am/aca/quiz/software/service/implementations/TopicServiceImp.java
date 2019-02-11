@@ -37,7 +37,7 @@ public class TopicServiceImp implements TopicService {
             if (topicRepository.findByTopicName(topicName) == null) {
                 TopicEntity topicEntity = new TopicEntity(topicName, subCategoryEntity);
                 subCategoryEntity.getTopicEntityList().add(topicEntity);
-                topicRepository.saveAndFlush(topicEntity);
+                topicRepository.save(topicEntity);
             } else {
                 throw new SQLException("topic is exist");
             }
@@ -56,6 +56,7 @@ public class TopicServiceImp implements TopicService {
         }
     }
 
+    @Transactional
     @Override
     public void update(TopicEntity updatedTopic) throws SQLException {
         topicRepository.save(updatedTopic);
@@ -64,8 +65,7 @@ public class TopicServiceImp implements TopicService {
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        TopicEntity deletedTopic = topicRepository.findById(id).get();
-        if (deletedTopic != null) {
+        if (topicRepository.findById(id).isPresent()) {
             topicRepository.deleteById(id);
         } else {
             throw new SQLException("entity not found");
@@ -75,11 +75,11 @@ public class TopicServiceImp implements TopicService {
 
     @Override
     public TopicEntity getById(Long id) throws SQLException {
-        TopicEntity topicEntity = topicRepository.findById(id).get();
-        if (topicEntity == null) {
-            throw new SQLException("Entity not found");
+        if (topicRepository.findById(id).isPresent()) {
+            TopicEntity topicEntity = topicRepository.findById(id).get();
+            return topicEntity;
         }
-        return topicEntity;
+        throw new SQLException("Entity not found");
     }
 
     public Set<BigInteger> findTopicIdByTestId(Long id) {

@@ -32,7 +32,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void addCategory(CategoryEntity categoryEntity) throws SQLException {
-        categoryRepository.saveAndFlush(categoryEntity);
+        categoryRepository.save(categoryEntity);
     }
 
     public List<CategoryEntity> getAll() throws SQLException {
