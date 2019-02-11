@@ -6,6 +6,7 @@ import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.repository.ScoreRepository;
 import am.aca.quiz.software.service.interfaces.ScoreService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -50,6 +51,7 @@ public class ScoreServiceImp implements ScoreService {
         return scoreRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void update(ScoreEntity score) throws SQLException {
         scoreRepository.save(score);
@@ -59,7 +61,10 @@ public class ScoreServiceImp implements ScoreService {
 
     @Override
     public ScoreEntity getById(Long id) throws SQLException {
-        return scoreRepository.findById(id).get();
+        if (scoreRepository.findById(id).isPresent()) {
+            return scoreRepository.findById(id).get();
+        }
+        throw new SQLException();
     }
 
 

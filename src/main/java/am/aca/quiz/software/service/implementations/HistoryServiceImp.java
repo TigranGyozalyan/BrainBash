@@ -9,6 +9,7 @@ import am.aca.quiz.software.service.interfaces.HistoryService;
 import am.aca.quiz.software.service.interfaces.TestService;
 import am.aca.quiz.software.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class HistoryServiceImp implements HistoryService {
 
 
     @Override
-    public void addHistory(HistoryEntity historyEntity){
+    public void addHistory(HistoryEntity historyEntity) {
         historyRepository.save(historyEntity);
     }
 
@@ -39,12 +40,14 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void update(HistoryEntity history, Long id) throws SQLException {
         historyRepository.save(history);
     }
 
 
+    @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
         historyRepository.deleteById(id);
@@ -75,12 +78,12 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAllByUserEntityEmail(email);
     }
 
-    public HistoryEntity findHistoryByUserIdAndTetId(Long userId,Long testId,String status){
-        return historyRepository.getHistoryEntityByUserIdAndTestId(userId,testId, status);
+    public HistoryEntity findHistoryByUserIdAndTetId(Long userId, Long testId, String status) {
+        return historyRepository.getHistoryEntityByUserIdAndTestId(userId, testId, status);
     }
 
-    public HistoryEntity findHistoryBySUerIdAndStatus(Long userId,String status){
-        return historyRepository.getHistoryByUserIdAndStatus(userId,status);
+    public HistoryEntity findHistoryBySUerIdAndStatus(Long userId, String status) {
+        return historyRepository.getHistoryByUserIdAndStatus(userId, status);
     }
 
 }
