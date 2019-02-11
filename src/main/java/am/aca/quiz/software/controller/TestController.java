@@ -210,46 +210,50 @@ public class TestController {
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
                 userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
         );
-        if (currentTime.isBefore(historyEntity.getStartTime())) {
-            return new ModelAndView("UserBanPage");
-        }
-        if (reloadCount == 0) {
-            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-            System.out.println(endTime);
-            reloadCount++;
+        if(historyEntity!=null) {
+            if (currentTime.isBefore(historyEntity.getStartTime())) {
+                return new ModelAndView("UserBanPage");
+            }
         }
 
-        if (historyServiceImp.findHistoryBySUerIdAndStatus(
-                userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
+            if (reloadCount == 0) {
+                endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
+                System.out.println(endTime);
+                reloadCount++;
+            }
 
-            HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
+            if (historyServiceImp.findHistoryBySUerIdAndStatus(
+                    userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
 
-            if (upcoming == null) {
+                HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
+
+                if (upcoming == null) {
 
 
-                upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
-                historyServiceImp.addHistory(upcoming);
-                return new ModelAndView("testSolution");
-
-            } else {
-
-                LocalDateTime now = LocalDateTime.now();
-                LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
-
-                if (now.isAfter(upcoming.getStartTime()) && now.isBefore(duration)) {
-
-                    upcoming.setStatus(Status.INPROGRESS);
+                    upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
                     historyServiceImp.addHistory(upcoming);
-
                     return new ModelAndView("testSolution");
 
-                }
-            }
-        } else {
-            System.out.println("FINISH TOUR TEST");
+                } else {
 
-            //TODO PAGE
-        }
+                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
+
+                    if (now.isAfter(upcoming.getStartTime()) && now.isBefore(duration)) {
+
+                        upcoming.setStatus(Status.INPROGRESS);
+                        historyServiceImp.addHistory(upcoming);
+
+                        return new ModelAndView("testSolution");
+
+                    }
+                }
+            } else {
+                System.out.println("FINISH TOUR TEST");
+
+                //TODO PAGE
+            }
+
 
         return null;
     }

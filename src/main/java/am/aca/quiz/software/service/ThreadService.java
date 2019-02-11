@@ -36,40 +36,59 @@ public class ThreadService {
     @Async("threadPoolTaskExecutor")
     public void findUser() throws InterruptedException {
 
+
         while (true) {
             Set<HistoryDto> upcomingTest = new HashSet<>();
 
             List<HistoryDto> userHistories = historyMapper
                     .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
-
             userHistories.forEach(i -> upcomingTest.add(i));
 
             while (!upcomingTest.isEmpty()) {
+                upcomingTest.clear();
+                List<HistoryDto> checker = historyMapper
+                        .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+                checker.forEach(i -> upcomingTest.add(i));
 
-                LocalDateTime now = LocalDateTime.now();
+//                upcomingTest.forEach(j -> {
+//                        synchronized (upcomingTest) {
+//                            try {
+//                                if (historyServiceImp.getById(j.getId()) == null) {
+//                                    upcomingTest.remove(j);
+//                                }
+//                            } catch (SQLException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//
+//                    });
+                    if(!upcomingTest.isEmpty()) {
 
-                System.out.println(now);
+                        LocalDateTime now = LocalDateTime.now();
 
-                upcomingTest.forEach(i -> {
-                    LocalDateTime userStartTime = i.getStartTime();
-                    try {
-                        synchronized (upcomingTest) {
-                            if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
-                                HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
-                                historyEntity.setScore(0);
-                                historyEntity.setStatus(Status.COMPLETED);
-                                historyEntity.setEndTime(now);
-                                historyServiceImp.addHistory(historyEntity);
-                                upcomingTest.remove(i);
+                        System.out.println(now);
+                        System.out.println("SET SIZE "+upcomingTest.size());
+
+                        upcomingTest.forEach(i -> {
+                            LocalDateTime userStartTime = i.getStartTime();
+                            try {
+                                synchronized (upcomingTest) {
+                                    if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
+                                        HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
+                                        historyEntity.setScore(0);
+                                        historyEntity.setStatus(Status.COMPLETED);
+                                        historyEntity.setEndTime(now);
+                                        historyServiceImp.addHistory(historyEntity);
+                                        upcomingTest.remove(i);
+                                    }
+                                }
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
-                        }
 
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                        });
                     }
-
-                });
-
             }
         }
     }
