@@ -23,7 +23,6 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
 
     List<HistoryEntity> findAllByUserEntitySurname(String surname);
 
-
     List<HistoryEntity> findAllByUserEntityNickname(String nickname);
 
 

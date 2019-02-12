@@ -210,12 +210,6 @@ public class TestController {
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
-        if (reloadCount == 0) {
-            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-            System.out.println(endTime);
-            reloadCount++;
-        }
-
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
