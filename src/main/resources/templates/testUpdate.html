@@ -79,8 +79,8 @@
     let initialSubCategoryList = [];
     let initialCategory;
     let initialQuestionList;
-    let injectedSubCats = false;
-    let injectedTopics = false;
+    let injectedSubCats = 0;
+    let injectedTopics = 0;
     let injectedQuestions = 0;
     $.get(/test/ + id, function (testData) {
         $('#test_name').val(testData.test_name);
@@ -204,9 +204,9 @@
                                     alert(subCategory.typeName + ' is empty');
                                     subCategoryCheckBox.prop('checked', false);
                                 }
-                                if (!injectedTopics) {
+                                if (injectedTopics !== initialTopicList.length) {
                                     loadInitialTopicSelections();
-                                    injectedTopics = true;
+                                    injectedTopics++;
                                 }
                             });
                             subCategoryLabel.append($topicDiv);
@@ -219,9 +219,9 @@
                 $subCategoryDiv.prepend($('<br/>'));
                 $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
             });
-            if (!injectedSubCats) {
+            if (injectedSubCats !== initialSubCategoryList.length) {
                 loadInitialSubCategorySelections();
-                injectedSubCats = true;
+                injectedSubCats++;
             }
         });
     }
@@ -234,9 +234,10 @@
 
     function loadInitialTopicSelections() {
         initialTopicList.forEach(function (topicId) {
-            $("[topicId=" + topicId + "]").click();
+            let selector = $("[topicId=" + topicId + "]");
+            if(!selector.is(":checked"))
+                selector.click();
         });
-        return true;
     }
 
 
