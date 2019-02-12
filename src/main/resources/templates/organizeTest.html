@@ -14,9 +14,11 @@
 <body>
 
 <table>
-        <input type="text" placeholder="Search User" name="search">
+       <form th:action="@{'/test/selectUser/'+${test.id}}" method="post">
+           <input type="text" placeholder="Search User" name="search">
 
-        <input type="submit" name="submit" value="Search"/>
+           <input type="submit" name="submit" value="Search"/>
+       </form>
         <br/>
 
         <span>

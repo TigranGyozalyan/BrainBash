@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -78,6 +79,18 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAllByUserEntityEmail(email);
     }
 
+    public List<HistoryEntity> findByName(String name) {
+        return historyRepository.findAllByUserEntityName(name);
+    }
+
+    public List<HistoryEntity> findBySurname(String surname) {
+        return historyRepository.findAllByUserEntitySurname(surname);
+    }
+
+    public List<HistoryEntity> findByNickname(String nickname) {
+        return historyRepository.findAllByUserEntityNickname(nickname);
+    }
+
     public HistoryEntity findHistoryByUserIdAndTetId(Long userId, Long testId, String status) {
         return historyRepository.getHistoryEntityByUserIdAndTestId(userId, testId, status);
     }
@@ -85,5 +98,4 @@ public class HistoryServiceImp implements HistoryService {
     public HistoryEntity findHistoryBySUerIdAndStatus(Long userId, String status) {
         return historyRepository.getHistoryByUserIdAndStatus(userId, status);
     }
-
 }

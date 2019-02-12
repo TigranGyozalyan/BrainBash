@@ -3,13 +3,13 @@ package am.aca.quiz.software.controller;
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
+import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.*;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -189,6 +189,7 @@ public class TestController {
     }
 
 
+
     @GetMapping("/transfer/{topicId}/{testId}")
     public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId) {
         ModelAndView modelAndView = new ModelAndView("transferPage");
@@ -205,9 +206,15 @@ public class TestController {
     }
 
 
+
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
+        if (reloadCount == 0) {
+            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
+            System.out.println(endTime);
+            reloadCount++;
+        }
 
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
@@ -443,11 +450,7 @@ public class TestController {
         try {
             TestDto testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
 
-            if (userServiceImp.findByEmail(user) != null) {
-
-                userDtos.add(userMapper.mapEntityToDto(userServiceImp.findByEmail(user)));
-
-            } else if (!userServiceImp.findByNameLike(user).isEmpty()) {
+            if (!userServiceImp.findByNameLike(user).isEmpty()) {
 
                 userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNameLike(user));
 
@@ -538,6 +541,7 @@ public class TestController {
 
 
     }
+
 
 
     @PreAuthorize("hasAuthority('ADMIN')")

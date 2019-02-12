@@ -167,13 +167,25 @@ public class HistoryController {
     public ModelAndView historyByEmail(@RequestParam Map<String, String> formDate) {
         ModelAndView modelAndView = new ModelAndView("searchHistoryByEmail");
 
-        String email = formDate.get("email");
+        String user = formDate.get("user");
 
-        if (!email.isEmpty()) {
-            List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(email));
-            modelAndView.addObject("historyList", historyDtos);
+
+        List<HistoryDto> historyDtos = null;
+        if (!user.isEmpty()) {
+
+            if (!historyServiceImp.findByEmail(user).isEmpty()) {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(user));
+            } else if (!historyServiceImp.findByName(user).isEmpty()) {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByName(user));
+            }else if (!historyServiceImp.findBySurname(user).isEmpty()){
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findBySurname(user));
+            }else {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByNickname(user));
+            }
+
         }
 
+        modelAndView.addObject("historyList", historyDtos);
         return modelAndView;
     }
 
