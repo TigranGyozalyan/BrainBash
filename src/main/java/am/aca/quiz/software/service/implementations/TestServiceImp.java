@@ -64,7 +64,9 @@ public class TestServiceImp implements TestService {
         if (testRepository.findById(id).isPresent()) {
             testRepository.deleteById(id);
         }
-        throw new SQLException();
+        else {
+            throw new SQLException();
+        }
     }
 
     @Override

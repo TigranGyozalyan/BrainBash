@@ -65,8 +65,14 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        SubCategoryEntity targetEntity = getById(id);
-        remove(targetEntity);
+        if(subCategoryRepository.findById(id).isPresent()) {
+            SubCategoryEntity targetEntity = getById(id);
+            remove(targetEntity);
+
+        }
+        else {
+            throw new SQLException();
+        }
     }
 
     public void remove(SubCategoryEntity subCategoryEntity) throws SQLException {
