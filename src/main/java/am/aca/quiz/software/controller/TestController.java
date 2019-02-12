@@ -2,7 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
-import am.aca.quiz.software.entity.TestEntity;
+import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
@@ -262,6 +262,10 @@ public class TestController {
 
 
         return null;
+
+
+        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
+
     }
 
     @PostMapping("/process")
@@ -282,7 +286,6 @@ public class TestController {
 
 
         userSubmitQuestionDtos = submitQuestionDtos;
-
 
         return new ModelAndView("testSolution");
     }
@@ -321,6 +324,35 @@ public class TestController {
         modelAndView.addObject("questionList", questionDtos);
         modelAndView.addObject("testScore", testScoreDto);
 
+
+        return modelAndView;
+    }
+
+
+
+    @GetMapping("/menu")
+    public ModelAndView loadMenu() {
+        ModelAndView modelAndView = new ModelAndView("testMenu");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/menu/{id}")
+    public ModelAndView loadTestById(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("testByTopic");
+
+        Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
+        Set<TestDto> testDtos = new HashSet<>();
+        testId.stream()
+                .forEach(i -> {
+                    try {
+                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+        modelAndView.addObject("testList", testDtos);
+        modelAndView.addObject("id",id);
 
         return modelAndView;
     }
@@ -423,7 +455,6 @@ public class TestController {
                     }
 
                 });
-
 
         return modelAndView;
 
@@ -535,6 +566,42 @@ public class TestController {
         }
 
 
+    }
+
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("update/{id}")
+    public ModelAndView updateTest(@PathVariable Long id) {
+        return new ModelAndView("testUpdate");
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("update/{id}")
+    public ModelAndView updateTest(@PathVariable Long id, @RequestBody TestDto test) {
+
+        try {
+            testServiceImp.removeById(id);
+
+            String test_name = test.getTest_name();
+            String description = test.getDescription();
+            long duration = test.getDuration();
+
+            List<Long> questionIds = test.getQuestionIds();
+            List<QuestionEntity> questions = new ArrayList<>();
+            for (Long questionId : questionIds) {
+                QuestionEntity questionEntity = questionServiceImp.getById(questionId);
+                questions.add(questionEntity);
+            }
+            TestEntity testEntity = new TestEntity(test_name, description, duration, questions);
+            testEntity.setId(id);
+            testServiceImp.update(testEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new ModelAndView("testList");
     }
 
 }

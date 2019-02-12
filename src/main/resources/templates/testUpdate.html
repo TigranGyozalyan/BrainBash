@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <style>
 
     .navigation {
@@ -28,21 +31,19 @@
 </style>
 
 
-<!DOCTYPE html >
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add a test</title>
+    <title>Update a test</title>
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous">
+
+    </script>
 </head>
-
-
 <body>
 
-<form th:action="@{/test/list}">
+<form th:action="@{/test/list}" method="get">
     <label>
         Test Title: <input id="test_name"/>
     </label>
@@ -62,21 +63,77 @@
         <label>
             Categories: <select id="categories" onchange="loadSubCategories()"></select>
         </label>
-        <button type="submit" onclick="createTest()" class="submit">Create a test</button>
+        <button type="submit" onclick="createTest()" class="submit">Update</button>
     </div>
 
 </form>
 
-
+</body>
 
 <script>
     let $selectDropDown = $('#categories');
+    let pathArray = window.location.pathname.split('/');
+    let id = parseInt(pathArray[pathArray.length - 1]);
+    let initialTest;
+    let initialTopicList = [];
+    let initialSubCategoryList = [];
+    let initialCategory;
+    let initialQuestionList;
+    let injectedSubCats = false;
+    let injectedTopics = false;
+    let injectedQuestions = 0;
+    $.get(/test/ + id, function (testData) {
+        $('#test_name').val(testData.test_name);
+        $('#test_description').val(testData.description);
+        $('#duration').val(testData.duration);
+        initialTest = testData;
+        initialQuestionList = initialTest.questionIds;
+        console.log('the question list is : ' + initialQuestionList);
+        let topicPromise;
+        $.each(initialQuestionList, function () {
+            topicPromise = $.when(topicPromise, $.get('/question/' + this, function (initialQuestion) {
+                let topicId = initialQuestion.topicId;
+                if (initialTopicList.indexOf(topicId) === -1)
+                    initialTopicList.push(topicId);
+                // console.log(initialTopicList);
+            }));
+        });
+        topicPromise.done(function () {
+
+            let subCategoryPromise;
+            $.each(initialTopicList, function () {
+                // console.log(initialTopicList);
+                subCategoryPromise = $.when(subCategoryPromise, $.get('/topic/' + this, function (initialTopic) {
+                    let subCategoryId = initialTopic.subCategoryId;
+                    // console.log('subCat list : ' + initialSubCategoryList);
+                    if (initialSubCategoryList.indexOf(subCategoryId) === -1)
+                        initialSubCategoryList.push(subCategoryId);
+                    // console.log(initialSubCategoryList);
+                }));
+
+            });
+            subCategoryPromise.done(function () {
+                let categoryPromise;
+                let initSubCategoryId = initialSubCategoryList[0];
+                categoryPromise = $.get('/subcategory/' + initSubCategoryId, function (initialSubCategory) {
+                    initialCategory = initialSubCategory.categoryId;
+                });
+                categoryPromise.done(function () {
+                    $('#categories').val(initialCategory).change();
+                });
+            });
+        });
+    });
+
+
     $.get('/category', function (categories) {
         loadCategories(categories);
     });
+
     function loadCategories(categories) {
         loadSelectOptionsCategories($selectDropDown, categories);
     }
+
     function loadSubCategories() {
         $('#subCategoryDiv').remove();
         let categoryId = $selectDropDown.val();
@@ -108,8 +165,7 @@
                                         topicCheckBox.on('click', function () {
                                             if ($(this).is(':checked')) {
                                                 let topicId = $(this).attr('topicId');
-                                                let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);
-                                                $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
+                                                let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);                                                $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
                                                 $.get('/question?topicId=' + topicId, function (questions) {
                                                     console.log(questions);
                                                     if (!($.isEmptyObject(questions))) {
@@ -119,8 +175,7 @@
                                                             let $questionLabel = $('<label/>').html(question.question);
                                                             let $questionCheckBox = $('<input/>').attr({
                                                                 type: 'checkbox'
-                                                            }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).
-                                                            attr('questionId', question.id);
+                                                            }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).attr('questionId', question.id);
                                                             $questionLabel.prepend($questionCheckBox);
                                                             $questionDiv.append($questionLabel);
                                                             $questionsDiv.append($questionDiv);
@@ -129,6 +184,11 @@
                                                     } else {
                                                         alert(topic.topicName + ' is empty');
                                                         topicCheckBox.prop('checked', false);
+                                                    }
+                                                    if (injectedQuestions !== initialTopicList.length) {
+                                                        console.log('iteration number ' + injectedQuestions);
+                                                        loadInitialQuestionSelections();
+                                                        injectedQuestions++;
                                                     }
                                                 });
                                             } else {
@@ -144,8 +204,13 @@
                                     alert(subCategory.typeName + ' is empty');
                                     subCategoryCheckBox.prop('checked', false);
                                 }
+                                if (!injectedTopics) {
+                                    loadInitialTopicSelections();
+                                    injectedTopics = true;
+                                }
                             });
                             subCategoryLabel.append($topicDiv);
+
                         } else {
                             let $topicDiv = $('#topicsDiv' + subCategory.id);
                             $topicDiv.remove();
@@ -153,9 +218,36 @@
                     });
                 $subCategoryDiv.prepend($('<br/>'));
                 $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
-            })
+            });
+            if (!injectedSubCats) {
+                loadInitialSubCategorySelections();
+                injectedSubCats = true;
+            }
+        });
+    }
+
+    function loadInitialSubCategorySelections() {
+        initialSubCategoryList.forEach(function (subCategoryId) {
+            $("[subcategoryId=" + subCategoryId + "]").click();
+        });
+    }
+
+    function loadInitialTopicSelections() {
+        initialTopicList.forEach(function (topicId) {
+            $("[topicId=" + topicId + "]").click();
+        });
+        return true;
+    }
+
+
+    function loadInitialQuestionSelections() {
+        initialQuestionList.forEach(function (initialQuestionId) {
+            $("[questionId=" + initialQuestionId + "]").prop('checked', true);
+            console.log('checked question with id ' + initialQuestionId);
         })
     }
+
+
     function loadSelectOptionsCategories($select, categories) {
         // $select.children().remove();
         categories.forEach(function (category) {
@@ -167,8 +259,8 @@
         });
         $select.val([]);
     }
-    function createTest() {
 
+    function createTest() {
         let questionIdList = $("input:checkbox[class=questionInputClass]:checked").map(function () {
             let id = parseInt($(this).attr('questionId'));
             return id;
@@ -187,7 +279,7 @@
         $.ajax({
             type: "POST",
             data: test,
-            url: "/test/add",
+            url: "/test/update/" + id,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: (function () {
@@ -195,7 +287,9 @@
             })
         })
     }
+
+
 </script>
 
-</body>
+
 </html>
