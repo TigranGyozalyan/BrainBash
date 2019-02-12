@@ -333,33 +333,6 @@ public class TestController {
 
 
 
-    @GetMapping("/menu")
-    public ModelAndView loadMenu() {
-        ModelAndView modelAndView = new ModelAndView("testMenu");
-
-        return modelAndView;
-    }
-
-    @GetMapping("/menu/{id}")
-    public ModelAndView loadTestById(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("testByTopic");
-
-        Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
-        Set<TestDto> testDtos = new HashSet<>();
-        testId.stream()
-                .forEach(i -> {
-                    try {
-                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-        modelAndView.addObject("testList", testDtos);
-        modelAndView.addObject("id",id);
-
-        return modelAndView;
-    }
-
 
     @GetMapping("/organize")
     public ModelAndView selectTest() {
