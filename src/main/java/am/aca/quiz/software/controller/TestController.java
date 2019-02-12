@@ -2,6 +2,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
+import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
@@ -186,6 +187,8 @@ public class TestController {
 
         return modelAndView;
     }
+
+
 
     @GetMapping("/transfer/{topicId}/{testId}")
     public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId) {
