@@ -5,11 +5,13 @@ import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
+import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
 import am.aca.quiz.software.service.implementations.*;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.mapper.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -189,7 +191,6 @@ public class TestController {
     }
 
 
-
     @GetMapping("/transfer/{topicId}/{testId}")
     public ModelAndView testTransferPage(@PathVariable("topicId") Long topicId, @PathVariable("testId") Long testId) {
         ModelAndView modelAndView = new ModelAndView("transferPage");
@@ -206,7 +207,6 @@ public class TestController {
     }
 
 
-
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
@@ -221,47 +221,47 @@ public class TestController {
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
                 userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
         );
-        if(historyEntity!=null) {
+        if (historyEntity != null) {
             if (currentTime.isBefore(historyEntity.getStartTime())) {
-                ModelAndView modelAndView=new ModelAndView("userBanPage");
+                ModelAndView modelAndView = new ModelAndView("userBanPage");
 
-                modelAndView.addObject("id",id);
-                modelAndView.addObject("user_id",userServiceImp.findByEmail(principal.getName()).getId());
+                modelAndView.addObject("id", id);
+                modelAndView.addObject("user_id", userServiceImp.findByEmail(principal.getName()).getId());
 
                 return modelAndView;
             }
         }
-            if (historyServiceImp.findHistoryBySUerIdAndStatus(
-                    userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
+        if (historyServiceImp.findHistoryBySUerIdAndStatus(
+                userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
 
-                HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
+            HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
 
-                if (upcoming == null) {
+            if (upcoming == null) {
 
 
-                    upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
+                upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
+                historyServiceImp.addHistory(upcoming);
+                return new ModelAndView("testSolution");
+
+            } else {
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
+
+                if (now.isAfter(upcoming.getStartTime()) && now.isBefore(duration)) {
+
+                    upcoming.setStatus(Status.INPROGRESS);
                     historyServiceImp.addHistory(upcoming);
+
                     return new ModelAndView("testSolution");
 
-                } else {
-
-                    LocalDateTime now = LocalDateTime.now();
-                    LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
-
-                    if (now.isAfter(upcoming.getStartTime()) && now.isBefore(duration)) {
-
-                        upcoming.setStatus(Status.INPROGRESS);
-                        historyServiceImp.addHistory(upcoming);
-
-                        return new ModelAndView("testSolution");
-
-                    }
                 }
-            } else {
-                System.out.println("FINISH TOUR TEST");
-
-                //TODO PAGE
             }
+        } else {
+            System.out.println("FINISH TOUR TEST");
+
+            //TODO PAGE
+        }
 
 
         return null;
@@ -446,11 +446,7 @@ public class TestController {
         try {
             TestDto testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
 
-            if (userServiceImp.findByEmail(user) != null) {
-
-                userDtos.add(userMapper.mapEntityToDto(userServiceImp.findByEmail(user)));
-
-            } else if (!userServiceImp.findByNameLike(user).isEmpty()) {
+            if (!userServiceImp.findByNameLike(user).isEmpty()) {
 
                 userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNameLike(user));
 
@@ -541,7 +537,6 @@ public class TestController {
 
 
     }
-
 
 
     @PreAuthorize("hasAuthority('ADMIN')")

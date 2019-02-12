@@ -167,13 +167,25 @@ public class HistoryController {
     public ModelAndView historyByEmail(@RequestParam Map<String, String> formDate) {
         ModelAndView modelAndView = new ModelAndView("searchHistoryByEmail");
 
-        String email = formDate.get("email");
+        String user = formDate.get("user");
 
-        if (!email.isEmpty()) {
-            List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(email));
-            modelAndView.addObject("historyList", historyDtos);
+
+        List<HistoryDto> historyDtos = null;
+        if (!user.isEmpty()) {
+
+            if (!historyServiceImp.findByEmail(user).isEmpty()) {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(user));
+            } else if (!historyServiceImp.findByName(user).isEmpty()) {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByName(user));
+            }else if (!historyServiceImp.findBySurname(user).isEmpty()){
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findBySurname(user));
+            }else {
+                historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByNickname(user));
+            }
+
         }
 
+        modelAndView.addObject("historyList", historyDtos);
         return modelAndView;
     }
 
@@ -200,21 +212,21 @@ public class HistoryController {
     }
 
     @PostMapping(value = "/test/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto){
+    public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto) {
 
         try {
-            double score=testController.getScore().getKey();
-            UserEntity userEntity=userServiceImp.findByEmail(principal.getName());
+            double score = testController.getScore().getKey();
+            UserEntity userEntity = userServiceImp.findByEmail(principal.getName());
 
-            HistoryEntity history=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testController.getTestId(),"INPROGRESS");
+            HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
 
-                LocalDateTime endTime =
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+            LocalDateTime endTime =
+                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
-                history.setScore(score);
-                history.setEndTime(endTime);
-                history.setStatus(Status.COMPLETED);
-                historyServiceImp.addHistory(history);
+            history.setScore(score);
+            history.setEndTime(endTime);
+            history.setStatus(Status.COMPLETED);
+            historyServiceImp.addHistory(history);
 
 
         } catch (SQLException e) {
@@ -223,11 +235,12 @@ public class HistoryController {
 
 
     }
-    @PostMapping("/user/{userId}/{testId}")
-    public ResponseEntity<TimerDto> sendHistory(@PathVariable("userId") Long userId, @PathVariable("testId") Long testId){
 
-        HistoryDto historyDto=historyMapper.mapEntityToDto(historyServiceImp.findHistoryByUserIdAndTetId(userId,testId,"UPCOMING"));
-        TimerDto timerDto=new TimerDto();
+    @PostMapping("/user/{userId}/{testId}")
+    public ResponseEntity<TimerDto> sendHistory(@PathVariable("userId") Long userId, @PathVariable("testId") Long testId) {
+
+        HistoryDto historyDto = historyMapper.mapEntityToDto(historyServiceImp.findHistoryByUserIdAndTetId(userId, testId, "UPCOMING"));
+        TimerDto timerDto = new TimerDto();
         timerDto.setCurrentTime(System.currentTimeMillis());
         timerDto.setStartTime(historyDto.getStartTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
