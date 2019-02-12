@@ -151,7 +151,7 @@ public class HistoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/history/inprogress")
-    public ModelAndView inprogressStory() {
+    public ModelAndView inProgressStory() {
         ModelAndView modelAndView = new ModelAndView("inprogressStory");
 
         List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.INPROGRESS));
@@ -200,40 +200,36 @@ public class HistoryController {
     }
 
     @PostMapping(value = "/test/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto){
+    public void updateUserHistory(Principal principal, @RequestBody TimerDto timerDto) {
 
         try {
-            double score=testController.getScore().getKey();
-            UserEntity userEntity=userServiceImp.findByEmail(principal.getName());
+            double score = testController.getScore().getKey();
+            UserEntity userEntity = userServiceImp.findByEmail(principal.getName());
 
-            HistoryEntity history=historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(),testController.getTestId(),"INPROGRESS");
+            HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
 
-                LocalDateTime endTime =
-                        LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+            LocalDateTime endTime =
+                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
-                history.setScore(score);
-                history.setEndTime(endTime);
-                history.setStatus(Status.COMPLETED);
-                historyServiceImp.addHistory(history);
+            history.setScore(score);
+            history.setEndTime(endTime);
+            history.setStatus(Status.COMPLETED);
+            historyServiceImp.addHistory(history);
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
-    @PostMapping("/user/{userId}/{testId}")
-    public ResponseEntity<TimerDto> sendHistory(@PathVariable("userId") Long userId, @PathVariable("testId") Long testId){
 
-        HistoryDto historyDto=historyMapper.mapEntityToDto(historyServiceImp.findHistoryByUserIdAndTetId(userId,testId,"UPCOMING"));
-        TimerDto timerDto=new TimerDto();
+    @PostMapping("/user/{userId}/{testId}")
+    public ResponseEntity<TimerDto> sendHistory(@PathVariable("userId") Long userId, @PathVariable("testId") Long testId) {
+
+        HistoryDto historyDto = historyMapper.mapEntityToDto(historyServiceImp.findHistoryByUserIdAndTetId(userId, testId, "UPCOMING"));
+        TimerDto timerDto = new TimerDto();
         timerDto.setCurrentTime(System.currentTimeMillis());
         timerDto.setStartTime(historyDto.getStartTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-
         return ResponseEntity.ok(timerDto);
 
-
     }
-
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <style>
 div {
@@ -126,7 +126,7 @@ div {
     </div>
     <div class='result'></div>
 </div>
-
+<input type="hidden" th:value="${testId}" id="testId">
 </body>
 
 
@@ -142,9 +142,9 @@ div {
 
     wrapperDiv.ready(function () {
          $wrapper = $('#wrapper');
-        let pathArray = window.location.pathname.split('/');
-        let id = parseInt(pathArray[pathArray.length - 1]);
 
+        let id = parseInt($('#testId').val());
+        console.log(id);
         $.get('/question/test?testId=' + id, function (questions) {
 
             questions.forEach(function (question) {

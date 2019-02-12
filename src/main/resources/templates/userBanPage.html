@@ -2255,6 +2255,8 @@
   </div>
 
 
+
+
   <script type="text/javascript">
     if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
       new Runner('.interstitial-wrapper');
@@ -2275,6 +2277,9 @@
   <input type="hidden" th:value="${id}" id="testId"/>
   <input type="hidden" th:value="${user_id}" id="userId">
 
+    <form th:action="@{'/test/solve/'+${id}}" method="post">
+    <input type="submit" id="submit">
+</form>
 
 
 </body>
@@ -2284,8 +2289,11 @@
      let $userId = $('#userId').val();
      let $testId=$('#testId').val();
 
+
     console.log($userId);
     console.log($testId);
+    let sub=$('#submit');
+    sub.hide();
 
     let request=true;
 
@@ -2293,19 +2301,35 @@
 
                 let startTime = new Date(timerData.startTime).getTime();
 
+
+                    let hours = (startTime > 0) ? Math.floor((startTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
+                    let minutes = (startTime > 0) ? Math.floor((startTime % (1000 * 60 * 60)) / (1000 * 60)) : 0;
+                    let seconds = (startTime > 0) ? Math.floor((startTime % (1000 * 60)) / 1000) : 0;
+                       console.log(startTime.toString());
+                       console.log('startTime : ' + hours + 'h' + ' ' + minutes + 'm ' + seconds + 's ');
+
                 let now = new Date(timerData.currentTime).getTime();
 
-                  console.log(startTime);
-                  console.log(now);
+                 hours = (now > 0) ? Math.floor((now % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
+                                     minutes = (now> 0) ? Math.floor((now % (1000 * 60 * 60)) / (1000 * 60)) : 0;
+                                     seconds = (now > 0) ? Math.floor((now % (1000 * 60)) / 1000) : 0;
+                console.log(now.toString());
+                console.log('now : ' + hours + 'h' + ' ' + minutes + 'm ' + seconds + 's ');
 
-                interval = setInterval(function () {
 
-                  if(startTime===now){
-                      request=false;
-                      window.location.replace('http://localhost:8080/test/solve/'+$testId);
+
+
+
+                let interval = setInterval(function () {
+
+                  if(now >= startTime){
+                      clearInterval(interval);
+                      console.log("reached destination.Stopping interval with value of now : " + now );
+                      // window.location.replace('http://localhost:8080/test/solve/'+ $testId);
+                      sub.click();
                   }
-                 now = now + 1000;
-
+                    now = now + 1000;
+                   console.log('Now is ' + now);
                 }, 1000);
 
 
