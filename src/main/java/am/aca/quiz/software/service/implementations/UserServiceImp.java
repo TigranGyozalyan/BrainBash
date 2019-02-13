@@ -5,6 +5,7 @@ import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
+import org.hibernate.hql.internal.ast.SqlASTFactory;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,7 +82,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void removeByid(Long id) throws SQLException {
-        userRepository.deleteById(id);
+           if (userRepository.findById(id).isPresent()) {
+               userRepository.deleteById(id);
+           }else {
+               throw new SQLException();
+           }
     }
 
     @Override

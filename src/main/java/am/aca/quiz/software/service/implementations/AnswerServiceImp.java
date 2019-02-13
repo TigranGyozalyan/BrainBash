@@ -59,11 +59,13 @@ public class AnswerServiceImp implements AnswerService {
     @Override
     public void removeById(Long id) throws SQLException {
         if (answerRepository.findById(id).isPresent()) {
-            AnswerEntity deleted_answer = answerRepository.findById(id).get();
-            answerRepository.delete(deleted_answer);
+
+            answerRepository.deleteById(id);
 
         }
-        throw new SQLException();
+        else {
+            throw new SQLException();
+        }
 
     }
 

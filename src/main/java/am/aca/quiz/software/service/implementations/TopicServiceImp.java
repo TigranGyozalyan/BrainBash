@@ -68,7 +68,7 @@ public class TopicServiceImp implements TopicService {
         if (topicRepository.findById(id).isPresent()) {
             topicRepository.deleteById(id);
         } else {
-            throw new SQLException("entity not found");
+            throw new SQLException();
         }
 
     }

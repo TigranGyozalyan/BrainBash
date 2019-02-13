@@ -16,13 +16,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findByActivationCode(String activationCode);
 
-        @Query(value = "SELECT * FROM users where first_name ILIKE ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM users where first_name ILIKE ?1",nativeQuery = true)
     List<UserEntity> findByNameLike(String name);
 
     @Query(value = "SELECT * FROM users where last_name ILIKE ?1", nativeQuery = true)
     List<UserEntity> findBySurnameLike(String surname);
 
-    //TODO ASK VAHE ABOUT INDEX
+    //TODO ASK  ABOUT INDEX
     @Query(value = "SELECT * FROM users where nickname ILIKE ?1", nativeQuery = true)
     List<UserEntity> findByNickNameLike(String Nickname);
 

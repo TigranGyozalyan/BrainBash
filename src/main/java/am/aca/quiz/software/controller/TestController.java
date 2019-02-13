@@ -210,11 +210,7 @@ public class TestController {
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
-        if (reloadCount == 0) {
-            endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-            System.out.println(endTime);
-            reloadCount++;
-        }
+
 
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
@@ -271,7 +267,6 @@ public class TestController {
         return modelAndView;
 
 
-        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
 
     }
 

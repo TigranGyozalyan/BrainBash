@@ -51,7 +51,11 @@ public class HistoryServiceImp implements HistoryService {
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        historyRepository.deleteById(id);
+        if(historyRepository.findById(id).isPresent()) {
+            historyRepository.deleteById(id);
+        }else {
+            throw new SQLException();
+        }
     }
 
     @Override

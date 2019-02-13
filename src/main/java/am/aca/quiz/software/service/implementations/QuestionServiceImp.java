@@ -65,7 +65,9 @@ public class QuestionServiceImp implements QuestionService {
             QuestionEntity deletedQuestion = questionRepository.findById(id).get();
             questionRepository.delete(deletedQuestion);
         }
-        throw new SQLException();
+        else {
+            throw new SQLException();
+        }
 
 
     }
