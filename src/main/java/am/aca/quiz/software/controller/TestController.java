@@ -210,6 +210,8 @@ public class TestController {
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
+
+
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
@@ -265,7 +267,6 @@ public class TestController {
         return modelAndView;
 
 
-        //TODO IF TIME OF THE TEST HAS PAST THAN USER HISTORY IS UPDATING AND HE/SHE GETS 0 POINT ?
 
     }
 
