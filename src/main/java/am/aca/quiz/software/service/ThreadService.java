@@ -9,10 +9,12 @@ import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,62 +36,44 @@ public class ThreadService {
 
 
     @Async("threadPoolTaskExecutor")
+    @Scheduled(cron = "*/10 * * * * ?")
     public void findUser() throws InterruptedException {
 
+        System.out.println("START : "+LocalTime.now());
+        Set<HistoryDto> upcomingTest = new HashSet<>();
 
-        while (true) {
-            Set<HistoryDto> upcomingTest = new HashSet<>();
+        List<HistoryDto> userHistories = historyMapper
+                .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+        userHistories.forEach(i -> upcomingTest.add(i));
 
-            List<HistoryDto> userHistories = historyMapper
-                    .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
-            userHistories.forEach(i -> upcomingTest.add(i));
 
-            while (!upcomingTest.isEmpty()) {
-                upcomingTest.clear();
-                List<HistoryDto> checker = historyMapper
-                        .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
-                checker.forEach(i -> upcomingTest.add(i));
+        if (!upcomingTest.isEmpty()) {
 
-//                upcomingTest.forEach(j -> {
-//                        synchronized (upcomingTest) {
-//                            try {
-//                                if (historyServiceImp.getById(j.getId()) == null) {
-//                                    upcomingTest.remove(j);
-//                                }
-//                            } catch (SQLException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                    });
-                    if(!upcomingTest.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
 
-                        LocalDateTime now = LocalDateTime.now();
+            System.out.println(now);
+            System.out.println("SET SIZE " + upcomingTest.size());
 
-                        System.out.println(now);
-                        System.out.println("SET SIZE "+upcomingTest.size());
-
-                        upcomingTest.forEach(i -> {
-                            LocalDateTime userStartTime = i.getStartTime();
-                            try {
-                                synchronized (upcomingTest) {
-                                    if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
-                                        HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
-                                        historyEntity.setScore(0);
-                                        historyEntity.setStatus(Status.COMPLETED);
-                                        historyEntity.setEndTime(now);
-                                        historyServiceImp.addHistory(historyEntity);
-                                        upcomingTest.remove(i);
-                                    }
-                                }
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-
-                        });
+            upcomingTest.forEach(i -> {
+                LocalDateTime userStartTime = i.getStartTime();
+                try {
+                    synchronized (upcomingTest) {
+                        if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
+                            HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
+                            historyEntity.setScore(0);
+                            historyEntity.setStatus(Status.COMPLETED);
+                            historyEntity.setEndTime(now);
+                            historyServiceImp.addHistory(historyEntity);
+                            upcomingTest.remove(i);
+                        }
                     }
-            }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            });
         }
+        System.out.println("END : "+LocalTime.now());
     }
 }
