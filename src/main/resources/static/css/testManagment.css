@@ -1,0 +1,25 @@
+
+.navigation {
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.subCategoryNavigation {
+    padding-left: 1em;
+}
+
+.topicNavigation {
+    padding-left: 2em;
+}
+
+.questionSpace {
+
+    width: 100%;
+    padding-left: 50%;
+}
+
+.submit {
+    float: bottom;
+}
+

@@ -1,15 +1,14 @@
-
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Quiz</title>
     <script
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/welcomeStyle.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/welcomeStyle.css}"/>
     <link
             rel="stylesheet"
             href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
@@ -21,31 +20,29 @@
 <form method="get">
 
 
-<div id="welcome-page" class="pages">
-    <div class="intro">
-        <div class="buttonWrapper">
-            <a class="button" href="/login">Sign In</a>
-        </div>
-        <div class="buttonWrapper">
-            <a class="button" href="/registration">Create Account</a>
+    <div id="welcome-page" class="pages">
+        <div class="intro">
+            <div class="buttonWrapper">
+                <a class="button" href="/login">Sign In</a>
+            </div>
+            <div class="buttonWrapper">
+                <a class="button" href="/registration">Create Account</a>
+            </div>
         </div>
     </div>
-</div>
 
-
-
-<link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous"
-/>
-<script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"
-></script>
-<script src="js/main.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+    />
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"
+    ></script>
+    <script th:src="@{/js/main.js}"></script>
 
 </form>
 </body>

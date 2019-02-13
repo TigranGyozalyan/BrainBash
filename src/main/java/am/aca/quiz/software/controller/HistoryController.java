@@ -149,18 +149,18 @@ public class HistoryController {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/history/inprogress")
-    public ModelAndView inProgressStory() {
-        ModelAndView modelAndView = new ModelAndView("inprogressStory");
-
-        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.INPROGRESS));
-
-        modelAndView.addObject("historyList", historyDtos);
-
-
-        return modelAndView;
-    }
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    @GetMapping("/history/inprogress")
+//    public ModelAndView inProgressStory() {
+//        ModelAndView modelAndView = new ModelAndView("inprogressStory");
+//
+//        List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.INPROGRESS));
+//
+//        modelAndView.addObject("historyList", historyDtos);
+//
+//
+//        return modelAndView;
+//    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/history/byemail")

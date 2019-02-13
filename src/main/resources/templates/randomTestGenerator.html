@@ -1,33 +1,3 @@
-<style>
-
-    .navigation {
-        float: left;
-        width: 100%;
-        height: 100%;
-    }
-
-    .subCategoryNavigation {
-        padding-left: 1em;
-    }
-
-    .topicNavigation {
-        padding-left: 2em;
-    }
-
-    .questionSpace {
-
-        width: 100%;
-        padding-left: 50%;
-    }
-
-    .submit {
-        float: bottom;
-    }
-
-
-</style>
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -37,6 +7,7 @@
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/testManagment.css}">
 </head>
 
 
@@ -44,149 +15,43 @@
 
 <form th:action="@{/test/organize}" method="get">
 
-<h3>Generate Random Test</h3>
-
-<label>
-    Test  Name: <input id="testName"/>
-</label>
-<label>
-    Test  Description: <input id="testDescription"/>
-</label>
-
-<label>
-    Test Questions Number: <input id="questionNumber"/>
-</label>
-
-<label>
-    Test Duration : <input id="testDuration"/>
-</label>
-
-</br>
- <label>
-      Test Question Level : <select id="level">
-     <option name="beginner">beginner</option>
-     <option name="intermediate">intermediate</option>
-     <option name="advanced">advanced</option>
- </select>
- </label>
-</br>
-
-<div class="navigation">
+    <h3>Generate Random Test</h3>
+    </br>
     <label>
-        Categories: <select id="categories" onchange="loadSubCategories()"></select>
+        Test Name: <input id="testName"/>
     </label>
-    <button type="submit" onclick="createTest()" class="submit">Create a test</button>
-</div>
+    </br>
+    <label>
+        Test Description: <input id="testDescription"/>
+    </label>
+    </br>
+    <label>
+        Test Questions Number: <input id="questionNumber"/>
+    </label>
+    </br>
+    <label>
+        Test Duration : <input id="testDuration"/>
+    </label>
+    <label>
+        Level : <select id="level">
+        <option name="beginner" value="beginner">Beginner</option>
+        <option name="intermediate" value="intermediate">Intermediate</option>
+        <option name="advanced" value="advanced">Advanced</option>
+    </select>
+    </label>
+    </br>
+
+    <div class="navigation">
+        <label>
+            Categories: <select id="categories" onchange="loadSubCategories()"></select>
+        </label>
+        <button type="submit" onclick="createTest()" class="submit">Create a test</button>
+    </div>
 
 </form>
 
 
-<script>
-
-
-    let array=[];
-
-    let $selectDropDown = $('#categories');
-    $.get('/category', function (categories) {
-        loadCategories(categories);
-    });
-    function loadCategories(categories) {
-        loadSelectOptionsCategories($selectDropDown, categories);
-    }
-    function loadSubCategories() {
-        $('#subCategoryDiv').remove();
-        let categoryId = $selectDropDown.val();
-        let $subCategoryDiv = $('<Div/>').attr('id', 'subCategoryDiv').attr('class', 'subCategoryNavigation');
-        $('.navigation').append($subCategoryDiv);
-        $.get('/subcategory/filter?categoryId=' + categoryId, function (subCategories) {
-
-            $subCategoryDiv.empty();
-            subCategories.forEach(function (subCategory) {
-
-                let subCategoryLabel = $('<label/>').html(subCategory.typeName);
-                let subCategoryCheckBox = $('<input/>').attr({
-                    type: 'checkBox'
-                }).attr('subCategoryId', subCategory.id)
-                    .on('click', function () {
-                        if ($(this).is(":checked")) {
-                            let subCategoryId = subCategoryCheckBox.attr('subCategoryId');
-                            let $topicDiv = $('<Div/>').attr('id', 'topicsDiv').attr('class', 'topicNavigation');
-                            $.get('/topic?subCategoryId=' + subCategoryId, function (topics) {
-
-                                if (!($.isEmptyObject(topics))) {
-                                    topics.forEach(function (topic) {
-                                        let topicLabel = $('<label/>').html(topic.topicName);
-                                        let topicCheckBox = $('<input/>').attr({
-                                            type: 'checkbox'
-                                        }).attr('topicId', topic.id);
-                                        $topicDiv.prepend('<br/>');
-                                        $topicDiv.prepend(topicLabel.prepend(topicCheckBox));
-                                        topicCheckBox.on('click', function () {
-                                            if ($(this).is(':checked')) {
-                                                let Id = $(this).attr('topicId');
-                                               array.push(parseInt(Id));
-                                           }
-                                        })
-                                    });
-                                } else {
-                                    alert('topic is empty');
-                                    alert(subCategory.typeName + ' is empty');
-                                    subCategoryCheckBox.prop('checked', false);
-                                }
-
-                            });
-                            subCategoryLabel.append($topicDiv);
-                        } else {
-                            let $topicDiv = $('#topicsDiv');
-                            $topicDiv.remove();
-                        }
-                    });
-                $subCategoryDiv.prepend($('<br/>'));
-                $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
-            })
-        })
-    }
-    function loadSelectOptionsCategories($select, categories) {
-        categories.forEach(function (category) {
-            let $option = $('<option/>', {
-                value: category.id,
-                text: category.type
-            });
-            $select.append($option);
-        });
-        $select.val([]);
-    }
-    function createTest() {
-
-
-      let number = parseInt($('#questionNumber').val());
-      let duration = parseInt($('#testDuration').val());
-      let level = $('#level').val();
-      let description = $("#testDescription").val();
-      let name=$("#testName").val();
-
-        let random = JSON.stringify({
-            name : name,
-            description : description,
-            level : level,
-            questionNumber : number,
-            duration :duration,
-            topicId : array
-        });
-        JSON.stringify(random);
-        console.log(random);
-        $.ajax({
-            type: "POST",
-            data: random,
-            url: "http://localhost:8080/test/random/generate",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: (function () {
-                alert('Question was successfully created');
-            })
-        })
-    }
-</script>
+<script th:src="@{/js/randomTestGenerator.js}"></script>
 
 </body>
 </html>

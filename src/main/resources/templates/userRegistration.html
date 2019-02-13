@@ -3,10 +3,10 @@
 
 <style>
 
-.message {
-padding-top: 20px;
-color: #BDBDBD;
-}
+    .message {
+        padding-top: 20px;
+        color: #BDBDBD;
+    }
 
 </style>
 
@@ -17,50 +17,53 @@ color: #BDBDBD;
     <title>User Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-     <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
 </head>
 <body>
 <form method="post" action="/user/register">
 
-        <div class="login-page">
-         <h1>Register</h1>
-            <div class="form">
+    <div class="login-page">
+        <h1>Register</h1>
+        <div class="form">
 
-    <div class="message">
-     <span th:if="${message != null }">Email Already Exists</span>
-    </div>
-     <div class="message">
-         <span th:if="${message2 != null }">Check Your Email</span>
+            <div class="message">
+                <span th:if="${message != null }">Email Already Exists</span>
+            </div>
+            <div class="message">
+                <span th:if="${message2 != null }">Check Your Email</span>
+            </div>
+
+            <label>
+                <input th:type="text" name="name" placeholder="First Name" required/>
+            </label>
+            <br/>
+            <label>
+                <input th:type="text" name="name2" placeholder="Last Name" required/>
+            </label>
+            <br/>
+            <label>
+                <input th:type="email" name="email" placeholder="Email" required/>
+            </label>
+            <br/>
+            <label>
+                <input th:type="password" placeholder="Password" name="password" pattern="^\S{6,}$"
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password2.pattern = this.value;"
+                       required>
+            </label>
+            <br/>
+            <label>
+                <input th:type="password" placeholder="Confirm Password" name="password2" pattern="^\S{6,}$"
+                       onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');"
+                       required>
+            </label>
+            <br/>
+            <label>
+                <input th:type="text" name="nickname" placeholder="Nickname" required/>
+            </label>
+            <br/>
+            <button type="submit">Save</button>
         </div>
-
-    <label>
-        <input th:type="text" name="name" placeholder="First Name" required />
-    </label>
-    <br/>
-    <label>
-        <input th:type="text" name="name2" placeholder="Last Name" required />
-    </label>
-    <br/>
-   <label>
-       <input th:type="email" name="email" placeholder="Email" required />
-   </label>
-    <br/>
-    <label>
-        <input th:type="password" placeholder="Password" name="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.password2.pattern = this.value;" required>
-    </label>
-    <br/>
-    <label>
-        <input th:type="password" placeholder="Confirm Password" name="password2" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" required>
-    </label>
-    <br/>
-    <label>
-        <input th:type="text" name="nickname" placeholder="Nickname" required/>
-    </label>
-    <br/>
-    <button type="submit">Save</button>
-
-
-
+    </div>
 </form>
 </body>
 </html>
