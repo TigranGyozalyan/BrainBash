@@ -7,34 +7,6 @@
 </head>
 <body>
 <form th:action="@{/topic/update}" method="post">
-    <!--
-    <label>
-        Select SubCategory :
-        <select name="subCategoryList">
-            <option name="empty" selected="selected">empty</option>
-            <option th:each="subCategory : ${subCategories}"
-                    th:value="${subCategory.typeName}"
-                    th:text="${subCategory.typeName}"></option>
-        </select>
-    </label>
-    <br/>
-    <label>
-        Select Topic :
-        <select name="topicList">
-            <option th:each="topic : ${topics}"
-                    th:value="${topic.topicName}"
-                    th:text="${topic.topicName}"></option>
-        </select>
-    </label>
-
-
-    <br/>
-    <label>
-        Topic : <input name="topicName" type="text" placeholder="Enter topic name">
-    </label>
-    <br/> -->
-
-
     <label>
         Select SubCategory :
         <select name="subCategoryList">

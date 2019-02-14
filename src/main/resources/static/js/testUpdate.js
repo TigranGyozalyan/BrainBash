@@ -1,10 +1,66 @@
 let $selectDropDown = $('#categories');
+let pathArray = window.location.pathname.split('/');
+let id = parseInt(pathArray[pathArray.length - 1]);
+let initialTest;
+let initialTopicList = [];
+let initialSubCategoryList = [];
+let initialCategory;
+let initialQuestionList;
+let injectedSubCats = 0;
+let injectedTopics = 0;
+let injectedQuestions = 0;
+$.get(/test/ + id, function (testData) {
+    $('#test_name').val(testData.test_name);
+    $('#test_description').val(testData.description);
+    $('#duration').val(testData.duration);
+    initialTest = testData;
+    initialQuestionList = initialTest.questionIds;
+    console.log('the question list is : ' + initialQuestionList);
+    let topicPromise;
+    $.each(initialQuestionList, function () {
+        topicPromise = $.when(topicPromise, $.get('/question/' + this, function (initialQuestion) {
+            let topicId = initialQuestion.topicId;
+            if (initialTopicList.indexOf(topicId) === -1)
+                initialTopicList.push(topicId);
+            // console.log(initialTopicList);
+        }));
+    });
+    topicPromise.done(function () {
+
+        let subCategoryPromise;
+        $.each(initialTopicList, function () {
+            // console.log(initialTopicList);
+            subCategoryPromise = $.when(subCategoryPromise, $.get('/topic/' + this, function (initialTopic) {
+                let subCategoryId = initialTopic.subCategoryId;
+                // console.log('subCat list : ' + initialSubCategoryList);
+                if (initialSubCategoryList.indexOf(subCategoryId) === -1)
+                    initialSubCategoryList.push(subCategoryId);
+                // console.log(initialSubCategoryList);
+            }));
+
+        });
+        subCategoryPromise.done(function () {
+            let categoryPromise;
+            let initSubCategoryId = initialSubCategoryList[0];
+            categoryPromise = $.get('/subcategory/' + initSubCategoryId, function (initialSubCategory) {
+                initialCategory = initialSubCategory.categoryId;
+            });
+            categoryPromise.done(function () {
+                $('#categories').val(initialCategory).change();
+            });
+        });
+    });
+});
+
+
 $.get('/category', function (categories) {
     loadCategories(categories);
 });
+
 function loadCategories(categories) {
     loadSelectOptionsCategories($selectDropDown, categories);
 }
+
 function loadSubCategories() {
     $('#subCategoryDiv').remove();
     let categoryId = $selectDropDown.val();
@@ -36,8 +92,7 @@ function loadSubCategories() {
                                     topicCheckBox.on('click', function () {
                                         if ($(this).is(':checked')) {
                                             let topicId = $(this).attr('topicId');
-                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);
-                                            $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
+                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);                                                $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
                                             $.get('/question?topicId=' + topicId, function (questions) {
                                                 console.log(questions);
                                                 if (!($.isEmptyObject(questions))) {
@@ -47,8 +102,7 @@ function loadSubCategories() {
                                                         let $questionLabel = $('<label/>').html(question.question);
                                                         let $questionCheckBox = $('<input/>').attr({
                                                             type: 'checkbox'
-                                                        }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).
-                                                        attr('questionId', question.id);
+                                                        }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).attr('questionId', question.id);
                                                         $questionLabel.prepend($questionCheckBox);
                                                         $questionDiv.append($questionLabel);
                                                         $questionsDiv.append($questionDiv);
@@ -57,6 +111,11 @@ function loadSubCategories() {
                                                 } else {
                                                     alert(topic.topicName + ' is empty');
                                                     topicCheckBox.prop('checked', false);
+                                                }
+                                                if (injectedQuestions !== initialTopicList.length) {
+                                                    console.log('iteration number ' + injectedQuestions);
+                                                    loadInitialQuestionSelections();
+                                                    injectedQuestions++;
                                                 }
                                             });
                                         } else {
@@ -72,8 +131,13 @@ function loadSubCategories() {
                                 alert(subCategory.typeName + ' is empty');
                                 subCategoryCheckBox.prop('checked', false);
                             }
+                            if (injectedTopics !== initialTopicList.length) {
+                                loadInitialTopicSelections();
+                                injectedTopics++;
+                            }
                         });
                         subCategoryLabel.append($topicDiv);
+
                     } else {
                         let $topicDiv = $('#topicsDiv' + subCategory.id);
                         $topicDiv.remove();
@@ -81,10 +145,39 @@ function loadSubCategories() {
                 });
             $subCategoryDiv.prepend($('<br/>'));
             $subCategoryDiv.prepend(subCategoryLabel.prepend(subCategoryCheckBox));
-        })
+        });
+        if (injectedSubCats !== initialSubCategoryList.length) {
+            loadInitialSubCategorySelections();
+            injectedSubCats++;
+        }
+    });
+}
+
+function loadInitialSubCategorySelections() {
+    initialSubCategoryList.forEach(function (subCategoryId) {
+        $("[subcategoryId=" + subCategoryId + "]").click();
+    });
+}
+
+function loadInitialTopicSelections() {
+    initialTopicList.forEach(function (topicId) {
+        let selector = $("[topicId=" + topicId + "]");
+        if(!selector.is(":checked"))
+            selector.click();
+    });
+}
+
+
+function loadInitialQuestionSelections() {
+    initialQuestionList.forEach(function (initialQuestionId) {
+        $("[questionId=" + initialQuestionId + "]").prop('checked', true);
+        console.log('checked question with id ' + initialQuestionId);
     })
 }
+
+
 function loadSelectOptionsCategories($select, categories) {
+    // $select.children().remove();
     categories.forEach(function (category) {
         let $option = $('<option/>', {
             value: category.id,
@@ -94,8 +187,8 @@ function loadSelectOptionsCategories($select, categories) {
     });
     $select.val([]);
 }
-function createTest() {
 
+function createTest() {
     let questionIdList = $("input:checkbox[class=questionInputClass]:checked").map(function () {
         let id = parseInt($(this).attr('questionId'));
         return id;
@@ -114,7 +207,7 @@ function createTest() {
     $.ajax({
         type: "POST",
         data: test,
-        url: "/test/add",
+        url: "/test/update/" + id,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: (function () {
