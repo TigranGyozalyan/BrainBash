@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -36,10 +35,10 @@ public class ThreadService {
 
 
     @Async("threadPoolTaskExecutor")
-    @Scheduled(cron = "*/10 * * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void findUser() throws InterruptedException {
 
-        System.out.println("START : "+LocalTime.now());
+        System.out.println("START : " + LocalTime.now());
         Set<HistoryDto> upcomingTest = new HashSet<>();
 
         List<HistoryDto> userHistories = historyMapper
@@ -74,6 +73,6 @@ public class ThreadService {
 
             });
         }
-        System.out.println("END : "+LocalTime.now());
+        System.out.println("END : " + LocalTime.now());
     }
 }

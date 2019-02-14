@@ -234,7 +234,7 @@ var Table = function Table() {return (
                 this.state,frequency = _state4.frequency,amplitude = _state4.amplitude,animation = _state4.animation;
                 return (
                     React.createElement("div", { className: "app" },
-                        React.createElement("h1", null, "Wormco"),
+                        React.createElement("h1", null, "BrainBash"),
                         React.createElement("div", { className: "wrapper" },
                             React.createElement(ArmLeft, {
                                 animation: this.state.animation,
@@ -517,7 +517,7 @@ var Table = function Table() {return (
                 this.state,frequency = _state4.frequency,amplitude = _state4.amplitude,animation = _state4.animation;
                 return (
                     React.createElement("div", { className: "app" },
-                        React.createElement("h1", null, "Wormco"),
+                        React.createElement("h1", null, "Bash"),
                         React.createElement("div", { className: "wrapper" },
                             React.createElement(ArmLeft, {
                                 animation: this.state.animation,

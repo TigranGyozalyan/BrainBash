@@ -34,6 +34,8 @@ public class SubCategoryController {
         this.subCategoryMapper = subCategoryMapper;
     }
 
+    @SuppressWarnings("Duplicates")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SubCategoryDto>> getAll() {
         try {

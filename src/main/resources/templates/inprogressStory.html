@@ -1,0 +1,38 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>In Progress History List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttonStyle.css}">
+
+</head>
+<body>
+<form method="get">
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Test-name</th>
+            <th>Start-time</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="history : ${historyList}">
+            <td><span th:text="${history.id}">Id</span></td>
+            <td><span th:text="${history.userDto.name}">Username</span></td>
+            <td><span th:text="${history.userDto.surname}">Surname</span></td>
+            <td><span th:text="${history.userDto.email}">Email</span></td>
+            <td><span th:text="${history.testDto.test_name}">Test-name</span></td>
+            <td><span th:text="${history.startTime}">Start-time</span></td>
+            <td><span th:text="${history.status}">Status</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <input class="button" type="button" onclick="location.href='http://localhost:8080/history/history'" value="Back to history">
+</form>
+</body>
+</html>
