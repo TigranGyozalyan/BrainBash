@@ -42,7 +42,7 @@ public class ScoreController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        modelAndView.addObject("scoreList",  scoreDtos);
+        modelAndView.addObject("scoreList", scoreDtos);
 
         return modelAndView;
     }

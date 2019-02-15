@@ -6,6 +6,7 @@ body {
     font-size: 16px;
     font-weight: 400;
     text-rendering: optimizeLegibility;
+    text-align: center;
 }
 
 div.table-title {
@@ -44,13 +45,13 @@ div.table-title {
 
 th {
     color:#D5DDE5;;
-    background: #1b1e24;
+    background: #2a3d64;
     border-bottom:4px solid #9ea7af;
     border-right: 1px solid #343a45;
     font-size:23px;
     font-weight: 100;
     padding:24px;
-    text-align:left;
+    text-align: center;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align:middle;
 }
@@ -106,7 +107,7 @@ tr:last-child td:last-child {
 td {
     background:#FFFFFF;
     padding:20px;
-    text-align:left;
+    text-align: center;
     vertical-align:middle;
     font-weight:300;
     font-size:18px;
@@ -144,14 +145,14 @@ td.text-right {
 
 
 .Question {
-    background: #1b1e24;
+    background: #2a3d64;
     background-size: 20px 20px;
     color: #C1C3D1;
     padding: 20px;
-    text-align: left;
     vertical-align: middle;
     font-weight: 300;
     font-size: 18px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 0px;
+    text-align: center;
 }
