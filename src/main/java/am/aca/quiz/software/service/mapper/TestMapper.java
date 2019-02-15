@@ -22,7 +22,7 @@ public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
         List<QuestionEntity> questionEntities = testEntity.getQuestionEntities();
         List<Long> questionIds = new ArrayList<>();
 
-        for(QuestionEntity question : questionEntities) {
+        for (QuestionEntity question : questionEntities) {
             questionIds.add(question.getId());
         }
         testDto.setQuestionIds(questionIds);
@@ -31,11 +31,6 @@ public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
 
     @Override
     public List<TestDto> mapEntitiesToDto(List<TestEntity> testEntities) {
-//        List<TestDto> testDtos = new ArrayList<>();
-//        for (TestEntity testEntity : testEntities) {
-//            testDtos.add(mapEntityToDto(testEntity));
-//        }
-//        return testDtos;
 
         return testEntities
                 .stream()

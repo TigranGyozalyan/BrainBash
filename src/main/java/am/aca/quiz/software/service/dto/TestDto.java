@@ -4,12 +4,14 @@ import java.util.List;
 
 public class TestDto {
 
-
     private Long id;
 
     private long duration;
+
     private String test_name;
+
     private String description;
+
     private List<Long> questionIds;
 
     public List<Long> getQuestionIds() {

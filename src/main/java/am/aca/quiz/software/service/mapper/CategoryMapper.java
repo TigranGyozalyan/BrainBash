@@ -22,13 +22,6 @@ public class CategoryMapper implements MapEntityToDto<CategoryEntity, CategoryDt
 
     @Override
     public  List<CategoryDto> mapEntitiesToDto(List<CategoryEntity> categoryEntityList) {
-
-//        List<CategoryDto> categoryDtoList = new ArrayList<>();
-//        for (CategoryEntity categoryEntity : categoryEntityList) {
-//            categoryDtoList.add(mapEntityToDto(categoryEntity));
-//        }
-//        return categoryDtoList;
-
         return categoryEntityList
                 .stream()
                 .map(this::mapEntityToDto)

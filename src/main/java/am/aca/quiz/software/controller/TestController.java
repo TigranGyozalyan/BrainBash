@@ -3,7 +3,6 @@ package am.aca.quiz.software.controller;
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
-import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.*;
@@ -453,9 +452,9 @@ public class TestController {
 
                 userDtos = userMapper.mapEntitiesToDto(userServiceImp.findBySurnameLike(user));
 
-            } else if (!userServiceImp.findByNiknameLike(user).isEmpty()) {
+            } else if (!userServiceImp.findByNicknameLike(user).isEmpty()) {
 
-                userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNiknameLike(user));
+                userDtos = userMapper.mapEntitiesToDto(userServiceImp.findByNicknameLike(user));
 
             }
             modelAndView.addObject("userList", userDtos);

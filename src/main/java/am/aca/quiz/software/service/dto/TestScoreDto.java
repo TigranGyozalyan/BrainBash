@@ -1,9 +1,9 @@
 package am.aca.quiz.software.service.dto;
 
 public class TestScoreDto {
+
     private Double userScore;
     private Double testScore;
-
 
     public Double getUserScore() {
         return userScore;

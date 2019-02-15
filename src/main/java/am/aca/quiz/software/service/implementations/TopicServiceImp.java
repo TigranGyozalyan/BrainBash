@@ -19,7 +19,6 @@ public class TopicServiceImp implements TopicService {
     private final TopicRepository topicRepository;
     private final SubCategoryServiceImp subCategoryServiceImpl;
 
-
     public TopicServiceImp(TopicRepository topicRepository, SubCategoryServiceImp subCategoryServiceImpl) {
         this.topicRepository = topicRepository;
         this.subCategoryServiceImpl = subCategoryServiceImpl;
@@ -28,7 +27,6 @@ public class TopicServiceImp implements TopicService {
     public SubCategoryServiceImp getSubCategoryServiceImpl() {
         return subCategoryServiceImpl;
     }
-
 
     @Override
     public void addTopic(String topicName, Long subCategoryId) throws SQLException {
@@ -43,7 +41,6 @@ public class TopicServiceImp implements TopicService {
             }
         }
     }
-
 
     @Override
     public List<TopicEntity> getAll() throws SQLException {
@@ -76,8 +73,7 @@ public class TopicServiceImp implements TopicService {
     @Override
     public TopicEntity getById(Long id) throws SQLException {
         if (topicRepository.findById(id).isPresent()) {
-            TopicEntity topicEntity = topicRepository.findById(id).get();
-            return topicEntity;
+            return topicRepository.findById(id).get();
         }
         throw new SQLException("Entity not found");
     }

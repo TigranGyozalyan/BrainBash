@@ -27,19 +27,16 @@ public class ScoreServiceImp implements ScoreService {
         this.userServiceImp = userServiceImp;
     }
 
-
     @Override
     public void addScore(Long topicId, Long userId) throws SQLException {
+
         TopicEntity topicEntity = topicServiceImp.getById(topicId);
         UserEntity userEntity = userServiceImp.getById(userId);
 
         ScoreEntity scoreEntity = new ScoreEntity();
         scoreEntity.setTopic(topicEntity);
         scoreEntity.setUserEntity(userEntity);
-
-
         scoreRepository.save(scoreEntity);
-
     }
 
     public void addScore(ScoreEntity scoreEntity) {
@@ -55,9 +52,7 @@ public class ScoreServiceImp implements ScoreService {
     @Override
     public void update(ScoreEntity score) throws SQLException {
         scoreRepository.save(score);
-
     }
-
 
     @Override
     public ScoreEntity getById(Long id) throws SQLException {
@@ -66,7 +61,6 @@ public class ScoreServiceImp implements ScoreService {
         }
         throw new SQLException();
     }
-
 
     public List<ScoreEntity> getAllByUserId(Long id) {
         return scoreRepository.findAllByUserEntityId(id);
@@ -77,8 +71,8 @@ public class ScoreServiceImp implements ScoreService {
 
         List<Long> topicLongIds = new ArrayList<>();
 
-        for (int i = 0; i < topicIds.size(); i++) {
-            topicLongIds.add(topicIds.get(i).longValue());
+        for (BigInteger topicId : topicIds) {
+            topicLongIds.add(topicId.longValue());
         }
 
         for (int i = 0; i < topicLongIds.size(); i++) {
@@ -92,7 +86,6 @@ public class ScoreServiceImp implements ScoreService {
                     scoreEntity.setValue(userScore);
                     scoreEntity.setUserEntity(userServiceImp.getById(userId));
                     addScore(scoreEntity);
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -106,14 +99,11 @@ public class ScoreServiceImp implements ScoreService {
                 try {
                     scoreEntity.setUserEntity(userServiceImp.getById(userId));
                     scoreEntity.setTopic(topicServiceImp.getById(topicLongIds.get(i)));
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 addScore(scoreEntity);
             }
         }
-
-
     }
 }

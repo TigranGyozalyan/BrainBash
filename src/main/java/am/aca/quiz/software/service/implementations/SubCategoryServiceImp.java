@@ -23,7 +23,6 @@ public class SubCategoryServiceImp implements SubCategoryService {
         this.categoryServiceImp = categoryServiceImp;
     }
 
-
     public CategoryServiceImp getCategoryServiceImp() {
         return categoryServiceImp;
     }
@@ -65,12 +64,10 @@ public class SubCategoryServiceImp implements SubCategoryService {
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-        if(subCategoryRepository.findById(id).isPresent()) {
+        if (subCategoryRepository.findById(id).isPresent()) {
             SubCategoryEntity targetEntity = getById(id);
             remove(targetEntity);
-
-        }
-        else {
+        } else {
             throw new SQLException();
         }
     }
@@ -78,6 +75,8 @@ public class SubCategoryServiceImp implements SubCategoryService {
     public void remove(SubCategoryEntity subCategoryEntity) throws SQLException {
         if (subCategoryEntity != null) {
             subCategoryRepository.delete(subCategoryEntity);
+        } else {
+            throw new SQLException("Entity not found");
         }
     }
 
@@ -87,7 +86,7 @@ public class SubCategoryServiceImp implements SubCategoryService {
         if (targetEntity != null) {
             return targetEntity;
         } else {
-            throw new SQLException("entity not found");
+            throw new SQLException("Entity not found");
         }
     }
 

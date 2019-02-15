@@ -19,7 +19,7 @@ public interface QuestionService {
 
     QuestionEntity getById(Long id) throws SQLException;
 
-    void removeByid(Long id) throws SQLException;
+    void removeById(Long id) throws SQLException;
 
     QuestionEntity getQuestionEntityByQuestion(String question) throws SQLException;
 

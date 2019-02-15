@@ -26,11 +26,6 @@ public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubC
 
     @Override
     public List<SubCategoryDto> mapEntitiesToDto(List<SubCategoryEntity> subCategoryEntityList) {
-//        List<SubCategoryDto> subCategoryDtoList = new ArrayList<>();
-//        for (SubCategoryEntity subCategoryEntity : subCategoryEntityList) {
-//            subCategoryDtoList.add(mapEntityToDto(subCategoryEntity));
-//        }
-//        return subCategoryDtoList;
 
         return subCategoryEntityList
                 .stream()

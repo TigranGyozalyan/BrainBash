@@ -57,7 +57,6 @@ public class UserEntity implements UserDetails {
     public UserEntity() {
     }
 
-
     public UserEntity(String name, String surname, String email, String nickname) {
         this.name = name;
         this.surname = surname;
@@ -69,7 +68,6 @@ public class UserEntity implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public Long getId() {
         return id;

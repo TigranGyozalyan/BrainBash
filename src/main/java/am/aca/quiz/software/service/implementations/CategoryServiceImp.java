@@ -25,7 +25,7 @@ public class CategoryServiceImp implements CategoryService {
             CategoryEntity categoryEntity = new CategoryEntity(type);
             addCategory(categoryEntity);
         } else {
-            throw new SQLException("Category is exist");
+            throw new SQLException("Category is existing");
         }
 
     }
@@ -44,28 +44,23 @@ public class CategoryServiceImp implements CategoryService {
         }
     }
 
-
     @Transactional
     @Override
     public void removeById(Long id) throws SQLException {
-
         if (categoryRepository.findById(id).isPresent()) {
             categoryRepository.deleteById(id);
         } else {
             throw new SQLException("category not found");
         }
-
     }
 
     @Override
     public CategoryEntity getById(Long id) throws SQLException {
         if (categoryRepository.findById(id).isPresent()) {
-            CategoryEntity targetEntity = categoryRepository.findById(id).get();
-            return targetEntity;
+            return categoryRepository.findById(id).get();
         } else {
             throw new SQLException("category not found");
         }
-
     }
 
     public CategoryEntity getByType(String type) throws SQLException {
@@ -80,8 +75,6 @@ public class CategoryServiceImp implements CategoryService {
     @Transactional
     @Override
     public void update(CategoryEntity categoryEntity) {
-
         categoryRepository.save(categoryEntity);
     }
-
 }

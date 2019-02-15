@@ -21,12 +21,12 @@ import java.util.Set;
 
 @Service
 public class ThreadService {
+
     private HistoryServiceImp historyServiceImp;
 
     private HistoryMapper historyMapper;
 
     private TestServiceImp testServiceImp;
-
 
     public ThreadService(HistoryServiceImp historyServiceImp, HistoryMapper historyMapper, TestServiceImp testServiceImp) {
         this.historyServiceImp = historyServiceImp;
@@ -34,18 +34,16 @@ public class ThreadService {
         this.testServiceImp = testServiceImp;
     }
 
-
     @Async("threadPoolTaskExecutor")
-    @Scheduled(cron = "*/10 * * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void findUser() throws InterruptedException {
 
-        System.out.println("START : "+LocalTime.now());
+        System.out.println("START : " + LocalTime.now());
         Set<HistoryDto> upcomingTest = new HashSet<>();
 
         List<HistoryDto> userHistories = historyMapper
                 .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
         userHistories.forEach(i -> upcomingTest.add(i));
-
 
         if (!upcomingTest.isEmpty()) {
 
@@ -67,13 +65,12 @@ public class ThreadService {
                             upcomingTest.remove(i);
                         }
                     }
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
             });
         }
-        System.out.println("END : "+LocalTime.now());
+        System.out.println("END : " + LocalTime.now());
     }
 }

@@ -15,17 +15,12 @@ import java.util.List;
 @Service
 public class QuestionServiceImp implements QuestionService {
 
-
     private final QuestionRepository questionRepository;
     private final TopicServiceImp topicServiceImp;
 
     public QuestionServiceImp(QuestionRepository questionRepository, TopicServiceImp topicServiceImp) {
         this.questionRepository = questionRepository;
         this.topicServiceImp = topicServiceImp;
-    }
-
-    public TopicServiceImp getTopicServiceImp() {
-        return topicServiceImp;
     }
 
     @Override
@@ -51,25 +46,20 @@ public class QuestionServiceImp implements QuestionService {
     @Override
     public QuestionEntity getById(Long id) throws SQLException {
         if (questionRepository.findById(id).isPresent()) {
-            QuestionEntity questionEntity = questionRepository.findById(id).get();
-            return questionEntity;
+            return questionRepository.findById(id).get();
         }
         throw new SQLException("Entity not found");
-
     }
 
     @Transactional
     @Override
-    public void removeByid(Long id) throws SQLException {
+    public void removeById(Long id) throws SQLException {
         if (questionRepository.findById(id).isPresent()) {
             QuestionEntity deletedQuestion = questionRepository.findById(id).get();
             questionRepository.delete(deletedQuestion);
-        }
-        else {
+        } else {
             throw new SQLException();
         }
-
-
     }
 
     @Override
@@ -80,5 +70,4 @@ public class QuestionServiceImp implements QuestionService {
     public List<QuestionEntity> getQuestionsByTopicEntity(TopicEntity topicEntity) {
         return questionRepository.findQuestionEntitiesByTopicEntity(topicEntity);
     }
-
 }

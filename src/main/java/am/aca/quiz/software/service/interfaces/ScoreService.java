@@ -9,16 +9,13 @@ import java.util.List;
 
 @Service
 public interface ScoreService {
-    //create
-    void addScore(Long topicId, Long userId) throws SQLException;
 
     //read
     List<ScoreEntity> getAll() throws SQLException;
 
-    //update
-    void update(ScoreEntity score) throws SQLException;
-
     ScoreEntity getById(Long id) throws SQLException;
 
+    //update
+    void update(ScoreEntity score) throws SQLException;
 
 }

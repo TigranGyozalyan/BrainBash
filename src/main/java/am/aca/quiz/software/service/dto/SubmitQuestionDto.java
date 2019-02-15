@@ -5,8 +5,8 @@ import java.util.List;
 public class SubmitQuestionDto {
 
     private Long questionId;
-    private List<Long> chosenAnswerList;
 
+    private List<Long> chosenAnswerList;
 
     public Long getQuestionId() {
         return questionId;

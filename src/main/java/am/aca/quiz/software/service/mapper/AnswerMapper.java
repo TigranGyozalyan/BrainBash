@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class AnswerMapper implements MapEntityToDto<AnswerEntity, AnswerDto> {
 
     @Override
-    public AnswerDto mapEntityToDto (AnswerEntity answerEntity) {
+    public AnswerDto mapEntityToDto(AnswerEntity answerEntity) {
         AnswerDto answerDto = new AnswerDto();
 
         answerDto.setAnswer(answerEntity.getAnswer_text());
@@ -25,9 +25,9 @@ public class AnswerMapper implements MapEntityToDto<AnswerEntity, AnswerDto> {
     }
 
     @Override
-    public  List<AnswerDto> mapEntitiesToDto (List<AnswerEntity> answerEntities) {
-        //IF ?
-       return answerEntities
+    public List<AnswerDto> mapEntitiesToDto(List<AnswerEntity> answerEntities) {
+
+        return answerEntities
                 .stream()
                 .map(this::mapEntityToDto) // Same as i->mapEntityDto(i)
                 .collect(Collectors.toList());

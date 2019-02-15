@@ -15,12 +15,13 @@ public interface UserService {
     //read
     List<UserEntity> getAll() throws SQLException;
 
+    UserEntity getById(Long id) throws SQLException;
+
     //update
     void updateUser(UserEntity userEntity);
 
-    void removeByid(Long id) throws SQLException;
-
-    UserEntity getById(Long id) throws SQLException;
+    //delete
+    void removeById(Long id) throws SQLException;
 
     void removeByUserEntity(UserEntity userEntity) throws SQLException;
 

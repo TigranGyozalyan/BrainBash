@@ -3,9 +3,10 @@ package am.aca.quiz.software.service.dto;
 public class TimerDto {
 
     private long currentTime;
-    private long endTime;
-    private long startTime;
 
+    private long endTime;
+
+    private long startTime;
 
     public long getCurrentTime() {
         return currentTime;
