@@ -1,4 +1,3 @@
-
 let questionCount = 0;
 let wrapperDiv = $('#wrapper');
 let interval;
@@ -138,7 +137,6 @@ function submitTest() {
     });
 
 
-
     $('#submitId').remove();
     $('#scoreId').prop('disabled', false).show();
 
@@ -146,11 +144,10 @@ function submitTest() {
 }
 
 
-
 function sendData() {
     let timeData = JSON.stringify({
-        currentTime : parseInt(current),
-        endTime : parseInt(end)
+        currentTime: parseInt(current),
+        endTime: parseInt(end)
 
     });
     console.log(timeData);

@@ -2,9 +2,11 @@ let $selectDropDown = $('#categories');
 $.get('/category', function (categories) {
     loadCategories(categories);
 });
+
 function loadCategories(categories) {
     loadSelectOptionsCategories($selectDropDown, categories);
 }
+
 function loadSubCategories() {
     $('#subCategoryDiv').remove();
     let categoryId = $selectDropDown.val();
@@ -36,7 +38,7 @@ function loadSubCategories() {
                                     topicCheckBox.on('click', function () {
                                         if ($(this).is(':checked')) {
                                             let topicId = $(this).attr('topicId');
-                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);
+                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId', topicId);
                                             $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
                                             $.get('/question?topicId=' + topicId, function (questions) {
                                                 console.log(questions);
@@ -47,8 +49,7 @@ function loadSubCategories() {
                                                         let $questionLabel = $('<label/>').html(question.question);
                                                         let $questionCheckBox = $('<input/>').attr({
                                                             type: 'checkbox'
-                                                        }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).
-                                                        attr('questionId', question.id);
+                                                        }).attr('questionId', question.id).attr('class', 'questionInputClass').attr('topicId', question.topicId).attr('questionId', question.id);
                                                         $questionLabel.prepend($questionCheckBox);
                                                         $questionDiv.append($questionLabel);
                                                         $questionsDiv.append($questionDiv);
@@ -61,7 +62,7 @@ function loadSubCategories() {
                                             });
                                         } else {
                                             let topicId = $(this).attr('topicId');
-                                            let selector = $("[class =questionSpace][topicId="+ topicId + "]");
+                                            let selector = $("[class =questionSpace][topicId=" + topicId + "]");
                                             let $questionDivToRemove = $topicDiv.find(selector);
                                             $questionDivToRemove.remove();
                                         }
@@ -84,6 +85,7 @@ function loadSubCategories() {
         })
     })
 }
+
 function loadSelectOptionsCategories($select, categories) {
     categories.forEach(function (category) {
         let $option = $('<option/>', {
@@ -94,6 +96,7 @@ function loadSelectOptionsCategories($select, categories) {
     });
     $select.val([]);
 }
+
 function createTest() {
 
     let questionIdList = $("input:checkbox[class=questionInputClass]:checked").map(function () {

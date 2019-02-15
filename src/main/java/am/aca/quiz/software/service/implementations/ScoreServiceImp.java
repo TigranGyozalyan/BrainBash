@@ -27,18 +27,6 @@ public class ScoreServiceImp implements ScoreService {
         this.userServiceImp = userServiceImp;
     }
 
-    @Override
-    public void addScore(Long topicId, Long userId) throws SQLException {
-
-        TopicEntity topicEntity = topicServiceImp.getById(topicId);
-        UserEntity userEntity = userServiceImp.getById(userId);
-
-        ScoreEntity scoreEntity = new ScoreEntity();
-        scoreEntity.setTopic(topicEntity);
-        scoreEntity.setUserEntity(userEntity);
-        scoreRepository.save(scoreEntity);
-    }
-
     public void addScore(ScoreEntity scoreEntity) {
         scoreRepository.save(scoreEntity);
     }
