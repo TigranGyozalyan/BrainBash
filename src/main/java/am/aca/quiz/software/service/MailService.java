@@ -15,23 +15,17 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailService {
 
-
     @Value("${spring.mail.username}")
     private String from;
 
     private final JavaMailSender mailSender;
 
-
-    private final TemplateEngine templateEngine;
-
-
-    public MailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
+    public MailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-
-        this.templateEngine = templateEngine;
     }
 
     public void sendText(String emailTo, String subject, String text) {
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(from);
@@ -42,29 +36,7 @@ public class MailService {
         try {
             mailSender.send(mailMessage);
         }catch (MailException e){
+            e.printStackTrace();
         }
-    }
-
-    private void send(String emailTo, String subject,String htmlMsg) {
-
-        try {
-            MimeMessage mail = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-
-            helper.setTo(emailTo);
-            helper.setSubject(subject);
-
-            helper.setText(htmlMsg, true);
-
-            mailSender.send(mail);
-
-        } catch (Exception e) {
-           e.printStackTrace();
-        }
-    }
-
-    public void sendHtml(String to, String subject, String templateName){
-        String body = templateEngine.process(templateName,new Context());
-        send(to,subject,body);
     }
 }

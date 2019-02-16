@@ -20,7 +20,7 @@ public class RandomDto {
         this.topicId = topicId;
     }
 
-    public Long getQuestionNumber() {
+    public Long getQuestionCount() {
         return questionNumber;
     }
 

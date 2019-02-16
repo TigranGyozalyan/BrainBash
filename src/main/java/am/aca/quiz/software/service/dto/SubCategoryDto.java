@@ -1,7 +1,9 @@
 package am.aca.quiz.software.service.dto;
 
 public class SubCategoryDto {
+
     private Long id;
+
     private String typeName;
 
     private Long categoryId;
@@ -29,6 +31,5 @@ public class SubCategoryDto {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-
 
 }

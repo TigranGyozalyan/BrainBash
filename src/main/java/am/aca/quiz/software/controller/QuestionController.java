@@ -4,7 +4,6 @@ import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.service.dto.AnswerDto;
 import am.aca.quiz.software.service.dto.QuestionDto;
-import am.aca.quiz.software.service.dto.TopicDto;
 import am.aca.quiz.software.service.implementations.AnswerServiceImp;
 import am.aca.quiz.software.service.implementations.QuestionServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
@@ -217,7 +216,7 @@ public class QuestionController {
     @GetMapping(value = "/delete/{id}")
     public ModelAndView deleteQuestion(@PathVariable("id") Long id) {
         try {
-            questionServiceImp.removeByid(id);
+            questionServiceImp.removeById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

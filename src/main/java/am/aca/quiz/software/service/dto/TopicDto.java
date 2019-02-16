@@ -1,12 +1,12 @@
 package am.aca.quiz.software.service.dto;
 
 public class TopicDto {
+
     private Long id;
 
     private String topicName;
 
     private Long subCategoryId;
-
 
     public Long getSubCategoryId() {
         return subCategoryId;

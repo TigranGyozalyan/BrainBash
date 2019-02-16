@@ -15,11 +15,11 @@ public interface TopicService {
     //read
     List<TopicEntity> getAll() throws SQLException;
 
+    TopicEntity getById(Long id) throws SQLException;
+
     //update
     void update(TopicEntity topic) throws SQLException;
 
-
+    //delete
     void removeById(Long id) throws SQLException;
-
-    TopicEntity getById(Long id) throws SQLException;
 }

@@ -26,13 +26,10 @@ public class AnswerServiceImp implements AnswerService {
 
     @Override
     public void addAnswer(String answer, String description, boolean isCorrect, Long questionId) throws SQLException {
-
         QuestionEntity questionEntity = questionServiceImp.getById(questionId);
         AnswerEntity answerEntity = new AnswerEntity(answer, description, isCorrect, questionEntity);
         questionEntity.getAnswerEntities().add(answerEntity);
-
         answerRepository.save(answerEntity);
-
     }
 
     @Override
@@ -59,14 +56,10 @@ public class AnswerServiceImp implements AnswerService {
     @Override
     public void removeById(Long id) throws SQLException {
         if (answerRepository.findById(id).isPresent()) {
-
             answerRepository.deleteById(id);
-
-        }
-        else {
+        } else {
             throw new SQLException();
         }
-
     }
 
     @Override

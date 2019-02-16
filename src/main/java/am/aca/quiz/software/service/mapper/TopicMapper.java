@@ -26,11 +26,6 @@ public class TopicMapper implements MapEntityToDto<TopicEntity, TopicDto> {
 
     @Override
     public List<TopicDto> mapEntitiesToDto(List<TopicEntity> topicEntityList) {
-//        List<TopicDto> topicDtoList = new ArrayList<>();
-//        for (TopicEntity topicEntity : topicEntityList) {
-//            topicDtoList.add(mapEntityToDto(topicEntity));
-//        }
-//        return topicDtoList;
 
         return topicEntityList
                 .stream()

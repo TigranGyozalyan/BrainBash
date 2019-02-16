@@ -3,7 +3,7 @@ package am.aca.quiz.software.service.implementations.score;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ScorePair<K,V> implements Serializable {
+public class ScorePair<K, V> implements Serializable {
 
 
     private K key;
@@ -25,11 +25,10 @@ public class ScorePair<K,V> implements Serializable {
         this.value = value;
     }
 
-    public ScorePair(){
-
+    public ScorePair() {
     }
 
-    public ScorePair( K key, V value) {
+    public ScorePair(K key, V value) {
         this.key = key;
         this.value = value;
     }
@@ -58,7 +57,4 @@ public class ScorePair<K,V> implements Serializable {
         }
         return false;
     }
-
-
-
 }

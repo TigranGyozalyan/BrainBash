@@ -22,7 +22,6 @@ public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDt
         this.answerMapper = answerMapper;
     }
 
-
     @Override
     public QuestionDto mapEntityToDto(QuestionEntity questionEntity) {
         QuestionDto questionDto = new QuestionDto();

@@ -30,9 +30,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final MailService mailService;
 
-
     private PasswordEncoder passwordEncoder;
-
 
     public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -43,10 +41,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public void addUser(String fName, String lName, String nickname, String email, String password, String password2) throws SQLException {
 
-
         if (!password.equals(password2)) {
-            throw new SQLException();
+            return;
         }
+
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
         userEntity.setPassword(passwordEncoder.encode(password));
 
@@ -59,18 +57,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
             if (!StringUtils.isEmpty(userEntity.getEmail())) {
                 String message =
                         "Hello," + userEntity.getName() + "\n" +
-                                "Please, visit next link: http://localhost:8080/user/activate/" +
+                                "Please, visit the following link: http://localhost:8080/user/activate/" +
                                 userEntity.getActivationCode();
-
                 mailService.sendText(email, "Activation", message);
             }
-
-
         } catch (MailException e) {
             throw new RuntimeException("Invalid Mail");
         }
-        userRepository.saveAndFlush(userEntity);
-
+        userRepository.save(userEntity);
     }
 
     @Override
@@ -78,15 +72,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-
     @Transactional
     @Override
-    public void removeByid(Long id) throws SQLException {
-           if (userRepository.findById(id).isPresent()) {
-               userRepository.deleteById(id);
-           }else {
-               throw new SQLException();
-           }
+    public void removeById(Long id) throws SQLException {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new SQLException();
+        }
     }
 
     @Override
@@ -124,8 +117,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
             return userEntity;
         } catch (SQLException e) {
             e.printStackTrace();
+            return userEntity;
         }
-        return userEntity;
     }
 
     public void updateUser(UserEntity userEntity) {
@@ -137,8 +130,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(userEntity);
     }
 
-
     public boolean activateUser(String code) {
+
         UserEntity user = userRepository.findByActivationCode(code);
 
         if (user == null) {
@@ -161,9 +154,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userRepository.findBySurnameLike(surname);
     }
 
-    public List<UserEntity> findByNiknameLike(String nickname) {
+    public List<UserEntity> findByNicknameLike(String nickname) {
         return userRepository.findByNickNameLike(nickname);
     }
-
-
 }

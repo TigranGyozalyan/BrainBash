@@ -17,12 +17,12 @@ public interface SubCategoryService {
 
     SubCategoryEntity getById(Long id) throws SQLException;
 
+    SubCategoryEntity getByTypeName(String type) throws SQLException;
+
     //update
     void update(SubCategoryEntity updatedSubCategory) throws SQLException;
 
     //delete
     void removeById(Long id) throws SQLException;
 
-
-    SubCategoryEntity getByTypeName(String type) throws SQLException;
 }

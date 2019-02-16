@@ -38,18 +38,11 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
         historyDto.setTestDto(testMapper.mapEntityToDto(historyEntity.getTestEntity()));
         historyDto.setUserDto(userMapper.mapEntityToDto(historyEntity.getUserEntity()));
 
-
         return historyDto;
     }
 
     @Override
     public List<HistoryDto> mapEntitiesToDto(List<HistoryEntity> historyEntityList) {
-//        List<HistoryDto> historyDtoList=new ArrayList<>();
-//        for(HistoryEntity historyEntity : historyEntityList){
-//            historyDtoList.add(mapEntityToDto(historyEntity));
-//        }
-//        return historyDtoList;
-
 
         return historyEntityList
                 .stream()

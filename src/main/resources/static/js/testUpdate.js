@@ -92,7 +92,8 @@ function loadSubCategories() {
                                     topicCheckBox.on('click', function () {
                                         if ($(this).is(':checked')) {
                                             let topicId = $(this).attr('topicId');
-                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId',topicId);                                                $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
+                                            let $questionsDiv = $('<div/>').attr('class', 'questionSpace').attr('topicId', topicId);
+                                            $questionsDiv.append($('<br/>')).append($('<label/>').html(topic.topicName));
                                             $.get('/question?topicId=' + topicId, function (questions) {
                                                 console.log(questions);
                                                 if (!($.isEmptyObject(questions))) {
@@ -120,7 +121,7 @@ function loadSubCategories() {
                                             });
                                         } else {
                                             let topicId = $(this).attr('topicId');
-                                            let selector = $("[class =questionSpace][topicId="+ topicId + "]");
+                                            let selector = $("[class =questionSpace][topicId=" + topicId + "]");
                                             let $questionDivToRemove = $topicDiv.find(selector);
                                             $questionDivToRemove.remove();
                                         }
@@ -162,7 +163,7 @@ function loadInitialSubCategorySelections() {
 function loadInitialTopicSelections() {
     initialTopicList.forEach(function (topicId) {
         let selector = $("[topicId=" + topicId + "]");
-        if(!selector.is(":checked"))
+        if (!selector.is(":checked"))
             selector.click();
     });
 }

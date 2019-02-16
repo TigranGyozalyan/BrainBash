@@ -9,12 +9,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
+public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
 
     CategoryEntity findCategoryEntityByType(String type);
 
-
     CategoryEntity removeById(Long id);
-
-
 }

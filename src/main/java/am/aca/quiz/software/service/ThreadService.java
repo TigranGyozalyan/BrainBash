@@ -20,19 +20,18 @@ import java.util.Set;
 
 @Service
 public class ThreadService {
+
     private HistoryServiceImp historyServiceImp;
 
     private HistoryMapper historyMapper;
 
     private TestServiceImp testServiceImp;
 
-
     public ThreadService(HistoryServiceImp historyServiceImp, HistoryMapper historyMapper, TestServiceImp testServiceImp) {
         this.historyServiceImp = historyServiceImp;
         this.historyMapper = historyMapper;
         this.testServiceImp = testServiceImp;
     }
-
 
     @Async("threadPoolTaskExecutor")
     @Scheduled(cron = "0 */1 * * * ?")
@@ -44,7 +43,6 @@ public class ThreadService {
         List<HistoryDto> userHistories = historyMapper
                 .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
         userHistories.forEach(i -> upcomingTest.add(i));
-
 
         if (!upcomingTest.isEmpty()) {
 
@@ -66,7 +64,6 @@ public class ThreadService {
                             upcomingTest.remove(i);
                         }
                     }
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

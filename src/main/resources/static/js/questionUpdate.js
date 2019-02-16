@@ -1,5 +1,3 @@
-
-
 let pathArray = window.location.pathname.split('/');
 let id = parseInt(pathArray[pathArray.length - 1]);
 let initialQuestion;
@@ -134,9 +132,9 @@ function addAnswer() {
 
     let $answerBlock = $('#answerBlock');
     let $answerSet = $('<div/>').attr('class', 'answerClass');
-    let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText' + answerCount).attr('class','answerText');
-    let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription' + answerCount).attr('class','description');
-    let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect' + answerCount).attr('class','isCorrect');
+    let answerText = $('<textarea />').attr('row', '5').attr('column', '25').attr('type', 'text').attr('id', 'answerText' + answerCount).attr('class', 'answerText');
+    let answerDescription = $('<textarea />').attr('row', '5').attr('column', '25').attr('id', 'answerDescription' + answerCount).attr('class', 'description');
+    let isCorrect = $('<input/>').attr('type', 'checkbox').attr('id', 'isCorrect' + answerCount).attr('class', 'isCorrect');
     let label = $('<label/>').html('Answer #' + answerCount + ': ');
     let descriptionLabel = $('<label/>').html(' Description: ');
     let isCorrectLabel = $('<label/>').html(' Is Correct ');

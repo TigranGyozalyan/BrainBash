@@ -25,9 +25,7 @@ public class Quiz implements CommandLineRunner {
     private ThreadService threadService;
 
     public static void main(String[] args) {
-
         SpringApplication.run(Quiz.class, args);
-
     }
 
     @Bean
@@ -45,8 +43,6 @@ public class Quiz implements CommandLineRunner {
         executor.setThreadNamePrefix("Async-");
         return executor;
     }
-
-
 
     @Override
     public void run(String... args) throws Exception {

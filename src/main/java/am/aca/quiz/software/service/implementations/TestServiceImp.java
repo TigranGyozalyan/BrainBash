@@ -4,13 +4,10 @@ import am.aca.quiz.software.entity.AnswerEntity;
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TestEntity;
 import am.aca.quiz.software.repository.TestRepository;
-import am.aca.quiz.software.service.dto.QuestionDto;
 import am.aca.quiz.software.service.dto.RandomDto;
 import am.aca.quiz.software.service.dto.SubmitQuestionDto;
 import am.aca.quiz.software.service.implementations.score.ScorePair;
 import am.aca.quiz.software.service.interfaces.TestService;
-import am.aca.quiz.software.service.mapper.QuestionMapper;
-import am.aca.quiz.software.service.mapper.TopicMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,18 +24,14 @@ public class TestServiceImp implements TestService {
     private final QuestionServiceImp questionServiceImp;
     private final AnswerServiceImp answerServiceImp;
     private final TopicServiceImp topicServiceImp;
-    private final TopicMapper topicMapper;
-    private final QuestionMapper questionMapper;
 
-    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp, AnswerServiceImp answerServiceImp, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionMapper questionMapper) {
+
+    public TestServiceImp(TestRepository testRepository, QuestionServiceImp questionServiceImp, AnswerServiceImp answerServiceImp, TopicServiceImp topicServiceImp) {
         this.testRepository = testRepository;
         this.questionServiceImp = questionServiceImp;
         this.answerServiceImp = answerServiceImp;
         this.topicServiceImp = topicServiceImp;
-        this.topicMapper = topicMapper;
-        this.questionMapper = questionMapper;
     }
-
 
     @Override
     public void addTest(String testName, String description, long duration, List<QuestionEntity> questionEntities) throws SQLException {
@@ -63,8 +56,7 @@ public class TestServiceImp implements TestService {
     public void removeById(Long id) throws SQLException {
         if (testRepository.findById(id).isPresent()) {
             testRepository.deleteById(id);
-        }
-        else {
+        } else {
             throw new SQLException();
         }
     }
@@ -81,9 +73,7 @@ public class TestServiceImp implements TestService {
     @Override
     public Set<BigInteger> findTestIdByTopicId(Long id) {
         return testRepository.findTestByTopicId(id);
-
     }
-
 
     public ScorePair<Double, Double> checkTest(List<SubmitQuestionDto> submitQuestionDtos) {
 
@@ -104,9 +94,9 @@ public class TestServiceImp implements TestService {
         Map<Long, List<Long>> allAnswersIdsForQuestion = new TreeMap<>();
         /**
          * Filling user's submitted answers in submissions map
-         * Getting from questions all answers
-         * Putting in map allAnswersIdsForQuestion where key=Question id( user's submitted question id)
-         * and value=Answers Id( for each question).
+         * Getting all answers from questions
+         * Putting in map allAnswersIdsForQuestion where key == Question id(user's submitted question id)
+         * and value == Answers Id( for each question).
          * Getting from questions all correct answers
          * Putting in map allCorrectAnswerIdsForQuestion where key=Question id( user's submitted question id)
          * and value=Correct answers Id( for each question).
@@ -138,8 +128,6 @@ public class TestServiceImp implements TestService {
                                         .stream()
                                         .filter(AnswerEntity::isIs_correct)
                                         .collect(Collectors.toList());
-
-
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -155,23 +143,20 @@ public class TestServiceImp implements TestService {
                         }
                 );
 
-        /**
-         Prints Map's Key and Value by lambda expression.
-         Testing Purposes.
-         */
-        //  allCorrectAnswerIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
-        //  submissions.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
-        // allAnswersIdsForQuestion.forEach((k, v) -> System.out.println("Question Id is " + k + " , Answer id is " + v));
-
-
         for (Long key : submissions.keySet()) {
 
             List<Long> submittedAnswers = submissions.get(key);
+
             List<Long> correctAnswers = allCorrectAnswersIdsForQuestion.get(key);
+
             List<Long> allAnswers = allAnswersIdsForQuestion.get(key);
+
             List<Long> userCorrectAnswers = new ArrayList<>();
-            List<Long> userIncorrectAnswerd = new ArrayList<>();
+
+            List<Long> userIncorrectAnswerId = new ArrayList<>();
+
             double points;
+
             try {
                 points = questionServiceImp.getById(key).getPoints();
             } catch (SQLException e) {
@@ -184,9 +169,8 @@ public class TestServiceImp implements TestService {
                             if (answerServiceImp.getById(i).isIs_correct()) {
                                 userCorrectAnswers.add(answerServiceImp.getById(i).getId());
                             } else {
-                                userIncorrectAnswerd.add(answerServiceImp.getById(i).getId());
+                                userIncorrectAnswerId.add(answerServiceImp.getById(i).getId());
                             }
-
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -194,39 +178,53 @@ public class TestServiceImp implements TestService {
 
             overallScore += points;
 
+            /**
+             * Proceed only if user hasn't selected all possible answers
+             * Otherwise give 0 points
+             */
             if (allAnswers.size() != submittedAnswers.size()) {
-
+                /**
+                 * If user selected all correct answers without incorrect ones
+                 */
                 if (submittedAnswers.equals(correctAnswers)) {
 
                     score += points;
 
                 } else {
+                    /**
+                     * If user hasn't selected any correct answers or any answers at all
+                     */
                     if (submittedAnswers.size() == 0 || userCorrectAnswers.size() == 0) {
                         score += 0;
                     } else {
-                        if (userIncorrectAnswerd.size() == userCorrectAnswers.size()) {
+                        /**
+                         * If user has selected equal amounts of correct and incorrect answers
+                         */
+                        if (userIncorrectAnswerId.size() == userCorrectAnswers.size()) {
                             score += 0;
-                        } else if (userIncorrectAnswerd.size() > userCorrectAnswers.size()) {
+                        } else if (userIncorrectAnswerId.size() > userCorrectAnswers.size()) {
                             score += 0;
                         } else {
-                            int x = userCorrectAnswers.size() - userIncorrectAnswerd.size();
-                            score += x * (points / correctAnswers.size());
+                            /**
+                             * MAGIC Starts Here...
+                             */
+                            int remainingCorrectAnswers = userCorrectAnswers.size() - userIncorrectAnswerId.size();
+                            score += remainingCorrectAnswers * (points / correctAnswers.size());
+                            /**
+                             * MAGIC Ends Here...
+                             */
                         }
                     }
                 }
-
             } else {
                 score += 0;
             }
         }
-//        System.out.println("User Score : " + score);
-//        System.out.println("Test Overall Score : " + overallScore);
         return new ScorePair<>(score, overallScore);
-
     }
 
     public List<QuestionEntity> randomQuestionGenerator(RandomDto randomDto) {
-        List<QuestionEntity> testQuestions = new ArrayList<>(randomDto.getQuestionNumber().intValue());
+        List<QuestionEntity> testQuestions = new ArrayList<>(randomDto.getQuestionCount().intValue());
 
         List<QuestionEntity> allQuestions = new ArrayList<>();
 
@@ -244,9 +242,8 @@ public class TestServiceImp implements TestService {
             }
         });
 
-        System.out.println("All questions Size : " + allQuestions.size());
         Random random = new Random();
-        for (int i = 0; i < randomDto.getQuestionNumber(); i++) {
+        for (int i = 0; i < randomDto.getQuestionCount(); i++) {
             if (allQuestions.isEmpty()) {
                 break;
             }
@@ -259,13 +256,10 @@ public class TestServiceImp implements TestService {
                 if (randomIndex == 0) {
                     ++randomIndex;
                 }
-
                 testQuestions.add(allQuestions.get(randomIndex - 1));
                 allQuestions.remove(randomIndex - 1);
             }
         }
         return testQuestions;
     }
-
-
 }

@@ -5,7 +5,7 @@ $().ready(function () {
     console.log(dateTime);
     $('#editOptions').click(function () {
 
-        let users =  $("input[name='userSelect']:checked").map(function () {
+        let users = $("input[name='userSelect']:checked").map(function () {
             return parseInt($(this).attr("value"));
         }).toArray();
 
@@ -43,6 +43,6 @@ $().ready(function () {
 });
 
 let dateTime = $('#startTime').val();
-$('#startTime').on('change',function updateDateTime() {
+$('#startTime').on('change', function updateDateTime() {
     dateTime = $(this).val();
 });

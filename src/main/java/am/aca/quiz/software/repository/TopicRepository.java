@@ -14,7 +14,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Long> {
 
     TopicEntity findByTopicName(String topicName);
 
-
     @Query(value = "SELECT t.id  FROM topic as t  INNER JOIN questions as q  ON t.id=q.topic_entity_id INNER JOIN question_test as qt ON qt.question_id=q.id WHERE qt.test_id=?1",nativeQuery = true)
     Set<BigInteger> findTopicByTestId(Long testId);
 }
