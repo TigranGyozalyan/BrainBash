@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ThreadService {
@@ -35,7 +33,7 @@ public class ThreadService {
 
     @Async("threadPoolTaskExecutor")
     @Scheduled(cron = "0 */1 * * * ?")
-    public void findUser() throws InterruptedException {
+    public  void  findUser() throws InterruptedException {
 
         System.out.println("START : " + LocalTime.now());
         Set<HistoryDto> upcomingTest = new HashSet<>();
@@ -46,29 +44,30 @@ public class ThreadService {
 
         if (!upcomingTest.isEmpty()) {
 
-            LocalDateTime now = LocalDateTime.now();
+                LocalDateTime now = LocalDateTime.now();
 
-            System.out.println(now);
-            System.out.println("SET SIZE " + upcomingTest.size());
+                System.out.println(now);
+                System.out.println("SET SIZE " + upcomingTest.size());
 
-            upcomingTest.forEach(i -> {
-                LocalDateTime userStartTime = i.getStartTime();
-                try {
-                    synchronized (upcomingTest) {
+            Iterator<HistoryDto> iterator=upcomingTest.iterator();
+                while (iterator.hasNext()) {
+                    HistoryDto i = iterator.next();
+                    LocalDateTime userStartTime = i.getStartTime();
+                    try {
                         if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
                             HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
                             historyEntity.setScore(0);
                             historyEntity.setStatus(Status.COMPLETED);
                             historyEntity.setEndTime(now);
                             historyServiceImp.addHistory(historyEntity);
-                            upcomingTest.remove(i);
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
 
-            });
+                            iterator.remove();
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
         }
         System.out.println("END : " + LocalTime.now());
     }
