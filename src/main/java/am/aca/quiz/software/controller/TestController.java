@@ -329,7 +329,7 @@ public class TestController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/organize")
     public ModelAndView selectTest() {
         ModelAndView modelAndView = new ModelAndView("selectTest");
@@ -344,6 +344,7 @@ public class TestController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/organize")
     public ModelAndView selectTest(@RequestParam("search") String search) {
         ModelAndView modelAndView = new ModelAndView("selectTest");
@@ -354,30 +355,7 @@ public class TestController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/selectUser/{id}")
-    public ModelAndView selectUsers(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("organizeTest");
 
-
-        List<UserDto> userDtos = null;
-        TestDto testDto = null;
-
-        try {
-            testDto = testMapper.mapEntityToDto(testServiceImp.getById(id));
-            userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        modelAndView.addObject("userList", userDtos);
-        modelAndView.addObject("test", testDto);
-
-
-        return modelAndView;
-
-    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser")
@@ -408,21 +386,23 @@ public class TestController {
 
         finalUserDtos
                 .forEach(i -> {
-
-                    if (historyServiceImp.findHistoryByUserIdAndTetId(i.getId(), testUsersDto.getTestId(), "UPCOMING") == null) {
-                        HistoryEntity historyEntity = new HistoryEntity();
+                        HistoryEntity historyEntity=historyServiceImp.findHistoryByUserIdAndTetId(i.getId(), testUsersDto.getTestId(), "UPCOMING");
+                    if (historyEntity == null) {
+                        HistoryEntity entity = new HistoryEntity();
                         try {
+                            entity.setUserEntity(userServiceImp.getById(i.getId()));
 
-                            historyEntity.setUserEntity(userServiceImp.getById(i.getId()));
-
-                            historyEntity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
-                            historyEntity.setStatus(Status.UPCOMING);
+                            entity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
+                            entity.setStatus(Status.UPCOMING);
 
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
+                        entity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
+                        entity.setScore(0);
+                        historyServiceImp.addHistory(entity);
+                    }else{
                         historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
-                        historyEntity.setScore(0);
                         historyServiceImp.addHistory(historyEntity);
                     }
 
@@ -432,6 +412,28 @@ public class TestController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/selectUser/{id}")
+    public ModelAndView selectUsers(@PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("organizeTest");
+
+
+        List<UserDto> userDtos = null;
+
+        try {
+            userDtos = userMapper.mapEntitiesToDto(userServiceImp.getAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        modelAndView.addObject("userList", userDtos);
+        modelAndView.addObject("id", id);
+
+
+        return modelAndView;
+
+    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser/{id}")

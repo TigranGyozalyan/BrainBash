@@ -91,17 +91,6 @@
                         <div class='fa fa-caret-down right'></div>
                     </a>
 
-                    <ul>
-                        <li>
-                            <a href="#email">
-                                <form th:action="@{/user/email}" method="post">
-                                    <input type="text" name="email" value=""/>
-                                    <input type="submit" value="Update"/>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
-
                 </li>
 
                 <li class="sub-menu">
@@ -136,7 +125,7 @@
                             <a href="#delete">
                                 Re-enter
                                 <form th:action="@{/user/question}" method="post">
-                                    <input type="email" name="delete" placeholder="name$example.com"/>
+                                    <input type="email" name="delete"  placeholder="example@mail.com"/>
                                     <input type="submit" class="button_active" value="Delete"/>
                                 </form>
                             </a>

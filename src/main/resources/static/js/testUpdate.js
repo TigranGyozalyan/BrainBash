@@ -26,16 +26,13 @@ $.get(/test/ + id, function (testData) {
         }));
     });
     topicPromise.done(function () {
-
         let subCategoryPromise;
         $.each(initialTopicList, function () {
             // console.log(initialTopicList);
             subCategoryPromise = $.when(subCategoryPromise, $.get('/topic/' + this, function (initialTopic) {
                 let subCategoryId = initialTopic.subCategoryId;
-                // console.log('subCat list : ' + initialSubCategoryList);
                 if (initialSubCategoryList.indexOf(subCategoryId) === -1)
                     initialSubCategoryList.push(subCategoryId);
-                // console.log(initialSubCategoryList);
             }));
 
         });
