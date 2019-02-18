@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,17 +36,7 @@ public class QuestionController {
     private final TestServiceImp testServiceImp;
     private final TestMapper testMapper;
     private Set<Long> testID = new HashSet<>();
-
-    public List<QuestionEntity> getQuestionEntityList() {
-        return questionEntityList;
-    }
-
     private List<QuestionEntity> questionEntityList;
-
-    public Set<Long> getTestID() {
-        return testID;
-    }
-
 
     public QuestionController(QuestionServiceImp questionServiceImp, TopicServiceImp topicServiceImp, QuestionMapper questionMapper, TopicMapper topicMapper, AnswerServiceImp answerServiceImp, TestServiceImp testServiceImp, TestMapper testMapper) {
         this.questionServiceImp = questionServiceImp;
@@ -54,6 +47,14 @@ public class QuestionController {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
 
+    }
+
+    public List<QuestionEntity> getQuestionEntityList() {
+        return questionEntityList;
+    }
+
+    public Set<Long> getTestID() {
+        return testID;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -81,7 +82,7 @@ public class QuestionController {
     }
 
     @GetMapping("/all")
-    public List<QuestionDto> getAllQuestions(){
+    public List<QuestionDto> getAllQuestions() {
         try {
             return questionMapper.mapEntitiesToDto(questionServiceImp.getAll());
         } catch (SQLException e) {
@@ -94,8 +95,8 @@ public class QuestionController {
     public ResponseEntity<List<QuestionDto>> getAllQuestionsByTopicId(@RequestParam("topicId") Long topicId) {
         try {
             List<QuestionEntity> questionList = questionServiceImp.getAll().stream()
-                    .filter(i -> i.getTopicEntity().getId().equals(topicId))
-                    .collect(Collectors.toList());
+                .filter(i -> i.getTopicEntity().getId().equals(topicId))
+                .collect(Collectors.toList());
             return ResponseEntity.ok(questionMapper.mapEntitiesToDto(questionList));
         } catch (SQLException e) {
             return ResponseEntity.noContent().build();
@@ -173,7 +174,7 @@ public class QuestionController {
     @SuppressWarnings("Duplicates")
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/update/{id}")
-    public ModelAndView updateQuestion(@PathVariable Long id ,@RequestBody QuestionDto questionDto) {
+    public ModelAndView updateQuestion(@PathVariable Long id, @RequestBody QuestionDto questionDto) {
 
         String questionBody = questionDto.getQuestion();
         String level = questionDto.getLevel();
@@ -188,13 +189,13 @@ public class QuestionController {
 
         Long topicId = questionDto.getTopicId();
         try {
-            QuestionEntity updatedQuestionEntity = new QuestionEntity(questionBody,  points, level, corr_answer_count, topicServiceImp.getById(topicId));
+            QuestionEntity updatedQuestionEntity = new QuestionEntity(questionBody, points, level, corr_answer_count, topicServiceImp.getById(topicId));
             updatedQuestionEntity.setId(id);
             questionServiceImp.update(updatedQuestionEntity);
 
             List<AnswerEntity> initialAnswers = answerServiceImp.getAnswerEntitiesByQuestionId(id);
 
-            for(AnswerEntity answerEntity : initialAnswers) {
+            for (AnswerEntity answerEntity : initialAnswers) {
                 answerServiceImp.removeById(answerEntity.getId());
             }
 
@@ -202,7 +203,7 @@ public class QuestionController {
                 String answerText = answer.getAnswer();
                 String description = answer.getDescription();
                 boolean isCorrect = answer.isCorrect();
-                answerServiceImp.addAnswer(answerText,description,isCorrect,updatedQuestionEntity.getId());
+                answerServiceImp.addAnswer(answerText, description, isCorrect, updatedQuestionEntity.getId());
             }
 
 

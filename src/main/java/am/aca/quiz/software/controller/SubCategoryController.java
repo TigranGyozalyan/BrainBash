@@ -54,8 +54,8 @@ public class SubCategoryController {
         try {
             System.out.println("Got here");
             List<SubCategoryEntity> subCategoryEntities = subCategoryServiceImp.getAll().stream()
-                    .filter(i -> i.getCategory().getId().equals(categoryId))
-                    .collect(Collectors.toList());
+                .filter(i -> i.getCategory().getId().equals(categoryId))
+                .collect(Collectors.toList());
             return ResponseEntity.ok(subCategoryMapper.mapEntitiesToDto(subCategoryEntities));
         } catch (SQLException e) {
             e.printStackTrace();

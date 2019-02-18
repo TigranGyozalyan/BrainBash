@@ -33,9 +33,9 @@ public class TestMapper implements MapEntityToDto<TestEntity, TestDto> {
     public List<TestDto> mapEntitiesToDto(List<TestEntity> testEntities) {
 
         return testEntities
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 }

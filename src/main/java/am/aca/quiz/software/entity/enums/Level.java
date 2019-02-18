@@ -7,6 +7,10 @@ public enum Level {
 
     private final String stringValue;
 
+    Level(String stringValue) {
+        this.stringValue = stringValue;
+    }
+
     public static Level getLevel(String level) {
         for (Level l : values()) {
             if (l.stringValue.equals(level)) {
@@ -14,10 +18,6 @@ public enum Level {
             }
         }
         return null;
-    }
-
-    Level(String stringValue) {
-        this.stringValue = stringValue;
     }
 
     @Override

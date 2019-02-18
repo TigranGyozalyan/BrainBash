@@ -45,9 +45,9 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
     public List<HistoryDto> mapEntitiesToDto(List<HistoryEntity> historyEntityList) {
 
         return historyEntityList
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 

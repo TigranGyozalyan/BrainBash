@@ -54,9 +54,9 @@ public class CategoryEntity {
     @Override
     public String toString() {
         return "CategoryEntity{" +
-                "id=" + id +
-                ", type='" + type + '\'' +
-                '}';
+            "id=" + id +
+            ", type='" + type + '\'' +
+            '}';
     }
 
 

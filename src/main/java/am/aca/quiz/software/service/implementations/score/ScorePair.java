@@ -9,6 +9,14 @@ public class ScorePair<K, V> implements Serializable {
     private K key;
     private V value;
 
+    public ScorePair() {
+    }
+
+    public ScorePair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
     public K getKey() {
         return key;
     }
@@ -22,14 +30,6 @@ public class ScorePair<K, V> implements Serializable {
     }
 
     public void setValue(V value) {
-        this.value = value;
-    }
-
-    public ScorePair() {
-    }
-
-    public ScorePair(K key, V value) {
-        this.key = key;
         this.value = value;
     }
 

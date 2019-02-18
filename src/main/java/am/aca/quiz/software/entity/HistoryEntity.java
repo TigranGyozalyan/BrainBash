@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history", indexes = {@Index(name = "IDX_STATUS", columnList = "status"),
-        @Index(name = "IDX_userId_testId_status", columnList = "status,user_id,test_id")}
+    @Index(name = "IDX_userId_testId_status", columnList = "status,user_id,test_id")}
 )
 public class HistoryEntity {
 
@@ -58,12 +58,12 @@ public class HistoryEntity {
         this.status = status;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getStartTime() {
@@ -118,12 +118,12 @@ public class HistoryEntity {
     @Override
     public String toString() {
         return "HistoryEntity{" +
-                "id=" + id +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", status='" + status + '\'' +
-                ", score=" + score +
-                '}';
+            "id=" + id +
+            ", startTime=" + startTime +
+            ", endTime=" + endTime +
+            ", status='" + status + '\'' +
+            ", score=" + score +
+            '}';
     }
 
 

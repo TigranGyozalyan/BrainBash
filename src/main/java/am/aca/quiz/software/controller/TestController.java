@@ -36,11 +36,11 @@ public class TestController {
     private final QuestionController questionController;
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
-    private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
     private final ScoreServiceImp scoreServiceImp;
+    private ScorePair<Double, Double> score;
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private long endTime;
     private int reloadCount = 0;
     private Long testId;
@@ -174,19 +174,18 @@ public class TestController {
         Set<BigInteger> testId = testServiceImp.findTestIdByTopicId(id);
         Set<TestDto> testDtos = new HashSet<>();
         testId.stream()
-                .forEach(i -> {
-                    try {
-                        testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
+            .forEach(i -> {
+                try {
+                    testDtos.add(testMapper.mapEntityToDto(testServiceImp.getById(i.longValue())));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         modelAndView.addObject("testList", testDtos);
         modelAndView.addObject("topicId", id);
 
         return modelAndView;
     }
-
 
 
     @GetMapping("/transfer/{topicId}/{testId}")
@@ -205,16 +204,14 @@ public class TestController {
     }
 
 
-
     @PostMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
-
 
 
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
-                userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
+            userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
         );
         if (historyEntity != null) {
             if (currentTime.isBefore(historyEntity.getStartTime())) {
@@ -227,7 +224,7 @@ public class TestController {
             }
         }
         if (historyServiceImp.findHistoryBySUerIdAndStatus(
-                userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
+            userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS") == null) {
 
             HistoryEntity upcoming = historyServiceImp.findHistoryByUserIdAndTetId(userServiceImp.findByEmail(principal.getName()).getId(), id, "UPCOMING");
 
@@ -251,8 +248,8 @@ public class TestController {
             }
 
         } else {
-            id=historyServiceImp.findHistoryBySUerIdAndStatus(
-                    userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS").getTestEntity().getId();
+            id = historyServiceImp.findHistoryBySUerIdAndStatus(
+                userServiceImp.findByEmail(principal.getName()).getId(), "INPROGRESS").getTestEntity().getId();
         }
 
         if (reloadCount == 0) {
@@ -260,11 +257,10 @@ public class TestController {
             System.out.println(endTime);
             reloadCount++;
         }
-        ModelAndView modelAndView=new ModelAndView("testSolution");
-        modelAndView.addObject("testId",id);
+        ModelAndView modelAndView = new ModelAndView("testSolution");
+        modelAndView.addObject("testId", id);
 
         return modelAndView;
-
 
 
     }
@@ -309,7 +305,7 @@ public class TestController {
                 questionDtos.add(questionMapper.mapEntityToDto(questionServiceImp.getById(i.getQuestionId())));
 
                 answersByQuestionId.put(id, answerMapper
-                        .mapEntitiesToDto(answerServiceImp.getAnswerEntitiesByQuestionId(id)));
+                    .mapEntitiesToDto(answerServiceImp.getAnswerEntitiesByQuestionId(id)));
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -356,7 +352,6 @@ public class TestController {
     }
 
 
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/selectUser")
     public ModelAndView saveHistory(@RequestBody TestUsersDto testUsersDto) {
@@ -375,38 +370,38 @@ public class TestController {
 
         List<UserDto> finalUserDtos = new ArrayList<>();
         receivedIds
-                .forEach(
-                        i -> {
-                            try {
-                                finalUserDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                        });
+            .forEach(
+                i -> {
+                    try {
+                        finalUserDtos.add(userMapper.mapEntityToDto(userServiceImp.getById(i)));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
 
         finalUserDtos
-                .forEach(i -> {
-                        HistoryEntity historyEntity=historyServiceImp.findHistoryByUserIdAndTetId(i.getId(), testUsersDto.getTestId(), "UPCOMING");
-                    if (historyEntity == null) {
-                        HistoryEntity entity = new HistoryEntity();
-                        try {
-                            entity.setUserEntity(userServiceImp.getById(i.getId()));
+            .forEach(i -> {
+                HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(i.getId(), testUsersDto.getTestId(), "UPCOMING");
+                if (historyEntity == null) {
+                    HistoryEntity entity = new HistoryEntity();
+                    try {
+                        entity.setUserEntity(userServiceImp.getById(i.getId()));
 
-                            entity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
-                            entity.setStatus(Status.UPCOMING);
+                        entity.setTestEntity(testServiceImp.getById(testUsersDto.getTestId()));
+                        entity.setStatus(Status.UPCOMING);
 
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                        entity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
-                        entity.setScore(0);
-                        historyServiceImp.addHistory(entity);
-                    }else{
-                        historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
-                        historyServiceImp.addHistory(historyEntity);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
+                    entity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
+                    entity.setScore(0);
+                    historyServiceImp.addHistory(entity);
+                } else {
+                    historyEntity.setStartTime(LocalDateTime.parse(testUsersDto.getStartTime()));
+                    historyServiceImp.addHistory(historyEntity);
+                }
 
-                });
+            });
 
         return modelAndView;
 
@@ -483,18 +478,18 @@ public class TestController {
 
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
-                    + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
+                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
 
             userIds.forEach(
-                    i -> {
-                        try {
-                            mailService.sendText(userServiceImp
-                                    .getById(i).getEmail(), subject, text);
+                i -> {
+                    try {
+                        mailService.sendText(userServiceImp
+                            .getById(i).getEmail(), subject, text);
 
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
 
 
         } catch (SQLException e) {
@@ -537,7 +532,6 @@ public class TestController {
 
 
     }
-
 
 
     @PreAuthorize("hasAuthority('ADMIN')")

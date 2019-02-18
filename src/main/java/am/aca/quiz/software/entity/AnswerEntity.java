@@ -3,30 +3,30 @@ package am.aca.quiz.software.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "answer",indexes = {@Index(name = "IDX_questionId",columnList = "question_id")})
+@Table(name = "answer", indexes = {@Index(name = "IDX_questionId", columnList = "question_id")})
 public class AnswerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description",columnDefinition = "text")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    @Column(name = "is_correct",nullable = false)
+    @Column(name = "is_correct", nullable = false)
     private boolean is_correct;
 
-    @Column(name = "answer",nullable = false,columnDefinition = "text")
+    @Column(name = "answer", nullable = false, columnDefinition = "text")
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name = "question_id",updatable = false)
+    @JoinColumn(name = "question_id", updatable = false)
     private QuestionEntity questionEntity;
 
     public AnswerEntity() {
     }
 
-    public AnswerEntity(String answer_text,String description, boolean is_correct, QuestionEntity questionEntity) {
+    public AnswerEntity(String answer_text, String description, boolean is_correct, QuestionEntity questionEntity) {
         this.description = description;
         this.is_correct = is_correct;
         this.answer = answer_text;
@@ -77,10 +77,10 @@ public class AnswerEntity {
     @Override
     public String toString() {
         return "AnswerEntity{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", is_correct=" + is_correct +
-                ", answer_text='" + answer + '\'' +
-                '}';
+            "id=" + id +
+            ", description='" + description + '\'' +
+            ", is_correct=" + is_correct +
+            ", answer_text='" + answer + '\'' +
+            '}';
     }
 }

@@ -5,6 +5,11 @@ body {
     width: 100%;
 }
 
+footer {
+    position: absolute;
+    width: 100%;
+}
+
 /*Landing page */
 
 #welcome-page {
