@@ -15,7 +15,7 @@ $().ready(function () {
             startTime: dateTime
         });
 
-        // console.log(userTest);
+         console.log(userTest);
         $.ajax({
             type: "POST",
             data: userTest,

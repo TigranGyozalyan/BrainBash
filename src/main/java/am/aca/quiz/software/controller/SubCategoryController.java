@@ -35,7 +35,6 @@ public class SubCategoryController {
     }
 
     @SuppressWarnings("Duplicates")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SubCategoryDto>> getAll() {
         try {
