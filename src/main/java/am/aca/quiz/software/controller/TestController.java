@@ -314,9 +314,10 @@ public class TestController {
         testScoreDto.setTestScore(score.getValue());
         testScoreDto.setUserScore(score.getKey());
 
-        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
-            modelAndView.addObject("answerList", elem.getValue());
-        }
+//        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
+//            modelAndView.addObject("answerList", elem.getValue());
+//        }
+//
         modelAndView.addObject("questionList", questionDtos);
         modelAndView.addObject("testScore", testScoreDto);
 

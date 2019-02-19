@@ -18,6 +18,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
 </head>
 <body>
 <form method="post" action="/user/register">
@@ -34,15 +38,15 @@
             </div>
 
             <label>
-                <input th:type="text" name="name" placeholder="First Name" required/>
+                <input th:type="text" name="name" placeholder="First Name" required  th:value="${name}"/>
             </label>
             <br/>
             <label>
-                <input th:type="text" name="name2" placeholder="Last Name" required/>
+                <input th:type="text" name="name2" placeholder="Last Name" required  th:value="${surname}"/>
             </label>
             <br/>
             <label>
-                <input th:type="email" name="email" placeholder="Email" required/>
+                <input th:type="email" name="email" placeholder="Email" required  th:value="${email}"/>
             </label>
             <br/>
             <label>
@@ -58,12 +62,39 @@
             </label>
             <br/>
             <label>
-                <input th:type="text" name="nickname" placeholder="Nickname" required/>
+                <input th:type="text" name="nickname" placeholder="Nickname" required th:value="${nickname}"/>
             </label>
             <br/>
-            <button type="submit">Save</button>
+
+            <div id="magic">
+
+
+            </div>
         </div>
     </div>
 </form>
 </body>
+
+<script>
+
+    let $magic=$('#magic');
+    let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submit()').html('Register').attr('id', 'submitId');
+    let $activationButton = $('<button />').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/user/resend'").attr('value', 'Resend Email').html('Resend Email').attr('id', 'scoreId');
+
+    $activationButton.prop('disabled', true);
+    $activationButton.hide();
+
+    $magic.append($submit);
+    $magic.append($activationButton);
+
+
+    function submit() {
+
+        $('#submitId').remove();
+        $('#scoreId').prop('disabled', false).show();
+    }
+
+
+
+</script>
 </html>

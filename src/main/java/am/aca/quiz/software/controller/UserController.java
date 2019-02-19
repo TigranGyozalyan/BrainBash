@@ -3,6 +3,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Role;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
@@ -27,16 +28,21 @@ public class UserController {
     private final UserMapper userMapper;
     private String email;
     private boolean message;
+    private final MailService mailService;
+    private  String resendEmail;
 
-    public UserController(UserServiceImp userServiceImp, UserMapper userMapper) {
+    public UserController(UserServiceImp userServiceImp, UserMapper userMapper, MailService mailService) {
         this.userServiceImp = userServiceImp;
         this.userMapper = userMapper;
+        this.mailService = mailService;
     }
 
 
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
         ModelAndView modelAndView = new ModelAndView("userRegistration");
+
+        UserDto userDto=new UserDto();
 
         String name = formData.get("name");
         String lastName = formData.get("name2");
@@ -46,21 +52,38 @@ public class UserController {
         String password2 = formData.get("password2");
 
         try {
-            UserEntity dbUser = userServiceImp.findByEmail(email);
-            if (dbUser == null) {
-                try {
+            if (userServiceImp.findByEmail(email) == null) {
 
-                    userServiceImp.addUser(name, lastName, nickname, email, password, password2);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                UserEntity dbUser = userServiceImp.findByEmail(email);
+                if (dbUser == null) {
+                    try {
+
+                        userServiceImp.addUser(name, lastName, nickname, email, password, password2);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    modelAndView.addObject("message2", "Check Your Email");
+                } else {
+                    modelAndView.addObject("message", "User exists");
                 }
-                modelAndView.addObject("message2", "Check Your Email");
-            } else {
-                modelAndView.addObject("message", "User exists");
+            }else{
+                userDto=userMapper.mapEntityToDto(userServiceImp.findByEmail(email));
+                name=userDto.getName();
+                lastName=userDto.getSurname();
+                email=userDto.getEmail();
+                nickname=userDto.getNickname();
+
             }
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
+
+        modelAndView.addObject("name",name);
+        modelAndView.addObject("surname",lastName);
+        modelAndView.addObject("email",email);
+        modelAndView.addObject("nickname",nickname);
+
 
         return modelAndView;
     }
@@ -298,6 +321,12 @@ public class UserController {
 
         return modelAndView;
     }
+
+//    @GetMapping("/resend")
+//    public void resend(){
+//
+//        mailService.sendActivationCode();
+//    }
 
     @PostMapping("/role")
     public ResponseEntity<UserDto> getUserRole(Principal principal) {
