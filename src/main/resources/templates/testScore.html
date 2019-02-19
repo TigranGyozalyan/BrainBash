@@ -147,7 +147,7 @@ div {
             </thead>
             <tbody>
 
-            <tr th:each="answer : ${answerList}">
+            <tr th:each="answer : ${question.getAnswerDtoList()}">
                 <td><span th:text="${answer.answer}">Answer</span></td>
                 <td><span th:text="${answer.description}">Description</span></td>
                 <td><span th:text="${answer.correct}">Correct</span></td>
