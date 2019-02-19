@@ -103,7 +103,6 @@ public class TestServiceImp implements TestService {
          * and value=Correct answers Id( for each question).
          */
         submitQuestionDtos
-            .stream()
             .forEach(i -> {
                     submissions.put(i.getQuestionId(), i.getChosenAnswerList());
 
@@ -129,6 +128,7 @@ public class TestServiceImp implements TestService {
                             .stream()
                             .filter(AnswerEntity::isIs_correct)
                             .collect(Collectors.toList());
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
