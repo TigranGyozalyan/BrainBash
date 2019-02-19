@@ -15,6 +15,12 @@ color: lightgrey;
 .message3{
 color: lightgrey;
 }
+
+ .active {
+     padding-top: 20px;
+     color: #BDBDBD;
+ }
+
 </style>
 
 <head>
@@ -24,6 +30,9 @@ color: lightgrey;
 
 <body>
 
+<div class="active">
+    <span th:if="${message != null }">Profile Is Activated</span>
+</div>
 
 <div th:if="${param.error}" class="message2">
             Invalid username and password.

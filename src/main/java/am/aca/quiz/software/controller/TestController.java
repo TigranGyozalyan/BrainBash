@@ -203,8 +203,7 @@ public class TestController {
 
     }
 
-
-    @PostMapping("/solve/{id}")
+    @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
 

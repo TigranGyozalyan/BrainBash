@@ -28,7 +28,6 @@ public class UserController {
     private String email;
     private boolean message;
 
-
     public UserController(UserServiceImp userServiceImp, UserMapper userMapper) {
         this.userServiceImp = userServiceImp;
         this.userMapper = userMapper;

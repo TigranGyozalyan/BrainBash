@@ -28,6 +28,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
+    private String activate;
+
+
     public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -128,6 +131,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     public boolean activateUser(String code) {
 
+        activate=code;
+
         UserEntity user = userRepository.findByActivationCode(code);
 
         if (user == null) {
@@ -152,5 +157,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     public List<UserEntity> findByNicknameLike(String nickname) {
         return userRepository.findByNickNameLike(nickname);
+    }
+
+    public String getCode() {
+        return activate;
+    }
+
+    public void setCode(String code) {
+        this.activate = code;
     }
 }
