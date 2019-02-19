@@ -72,10 +72,10 @@ public class TopicController {
 
         try {
             List<TopicEntity> topicEntities =
-                    topicServiceImp.getAll()
-                            .stream()
-                            .filter(i -> i.getSubCategory().getId().equals(subCategoryId))
-                            .collect(Collectors.toList());
+                topicServiceImp.getAll()
+                    .stream()
+                    .filter(i -> i.getSubCategory().getId().equals(subCategoryId))
+                    .collect(Collectors.toList());
             return new ResponseEntity<>(topicMapper.mapEntitiesToDto(topicEntities), HttpStatus.OK);
         } catch (SQLException e) {
             e.printStackTrace();

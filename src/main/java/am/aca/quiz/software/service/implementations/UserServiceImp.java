@@ -5,9 +5,7 @@ import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
-import org.hibernate.hql.internal.ast.SqlASTFactory;
 import org.springframework.mail.MailException;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -56,9 +52,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
             if (!StringUtils.isEmpty(userEntity.getEmail())) {
                 String message =
-                        "Hello," + userEntity.getName() + "\n" +
-                                "Please, visit the following link: http://localhost:8080/user/activate/" +
-                                userEntity.getActivationCode();
+                    "Hello," + userEntity.getName() + "\n" +
+                        "Please, visit the following link: http://localhost:8080/user/activate/" +
+                        userEntity.getActivationCode();
                 mailService.sendText(email, "Activation", message);
             }
         } catch (MailException e) {

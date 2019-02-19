@@ -79,6 +79,7 @@
             <version>${postgreSQLVersion}</version>
         </dependency>
 
+        <!--TODO http://www.mdoninger.de/2015/05/16/completion-for-custom-properties-in-spring-boot.html-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

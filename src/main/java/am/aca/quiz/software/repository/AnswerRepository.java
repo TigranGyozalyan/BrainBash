@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AnswerRepository extends JpaRepository<AnswerEntity,Long> {
+public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
-    @Query(value = "SELECT * FROM answer WHERE question_id = ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM answer WHERE question_id = ?1", nativeQuery = true)
     List<AnswerEntity> findAnswersByQuestionId(Long questionId);
 }

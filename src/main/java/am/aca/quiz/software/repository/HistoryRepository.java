@@ -1,7 +1,6 @@
 package am.aca.quiz.software.repository;
 
 import am.aca.quiz.software.entity.HistoryEntity;
-import org.hibernate.validator.constraints.EAN;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

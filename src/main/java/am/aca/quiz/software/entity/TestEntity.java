@@ -27,8 +27,8 @@ public class TestEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
-            joinColumns = {@JoinColumn(name = "test_id")},
-            inverseJoinColumns = {@JoinColumn(name = "question_id")})
+        joinColumns = {@JoinColumn(name = "test_id")},
+        inverseJoinColumns = {@JoinColumn(name = "question_id")})
     private List<QuestionEntity> questionEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "testEntity", cascade = CascadeType.ALL)
@@ -45,40 +45,40 @@ public class TestEntity {
     public TestEntity() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTest_name() {
         return this.test;
     }
 
-    public long getDuration() {
-        return this.duration;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
     public void setTest_name(String test_name) {
         this.test = test_name;
+    }
+
+    public long getDuration() {
+        return this.duration;
     }
 
     public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<QuestionEntity> getQuestionEntities() {
@@ -101,10 +101,10 @@ public class TestEntity {
     @Override
     public String toString() {
         return "TestEntity{" +
-                "id=" + id +
-                ", test_name='" + test + '\'' +
-                ", duration=" + duration +
-                ", description='" + description + '\'' +
-                '}';
+            "id=" + id +
+            ", test_name='" + test + '\'' +
+            ", duration=" + duration +
+            ", description='" + description + '\'' +
+            '}';
     }
 }
