@@ -5,7 +5,6 @@ import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +30,9 @@ public class UserMapper implements MapEntityToDto<UserEntity, UserDto> {
     public List<UserDto> mapEntitiesToDto(List<UserEntity> userEntityList) {
 
         return userEntityList
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 }

@@ -92,6 +92,7 @@ public class TestServiceImp implements TestService {
          */
         Map<Long, List<Long>> allCorrectAnswersIdsForQuestion = new TreeMap<>();
         Map<Long, List<Long>> allAnswersIdsForQuestion = new TreeMap<>();
+
         /**
          * Filling user's submitted answers in submissions map
          * Getting all answers from questions
@@ -102,46 +103,46 @@ public class TestServiceImp implements TestService {
          * and value=Correct answers Id( for each question).
          */
         submitQuestionDtos
-                .stream()
-                .forEach(i -> {
-                            submissions.put(i.getQuestionId(), i.getChosenAnswerList());
+            .stream()
+            .forEach(i -> {
+                    submissions.put(i.getQuestionId(), i.getChosenAnswerList());
 
-                            long id = i.getQuestionId();
+                    long id = i.getQuestionId();
 
-                            List<AnswerEntity> allCorrectAnswers = null;
+                    List<AnswerEntity> allCorrectAnswers = null;
 
-                            List<Long> correctAnswersIds = new ArrayList<>();
+                    List<Long> correctAnswersIds = new ArrayList<>();
 
-                            List<Long> allAnswersIds = null;
+                    List<Long> allAnswersIds = null;
 
-                            try {
-                                allAnswersIds = questionServiceImp
-                                        .getById(id)
-                                        .getAnswerEntities()
-                                        .stream()
-                                        .map(AnswerEntity::getId)
-                                        .collect(Collectors.toList());
+                    try {
+                        allAnswersIds = questionServiceImp
+                            .getById(id)
+                            .getAnswerEntities()
+                            .stream()
+                            .map(AnswerEntity::getId)
+                            .collect(Collectors.toList());
 
-                                allCorrectAnswers = questionServiceImp
-                                        .getById(id)
-                                        .getAnswerEntities()
-                                        .stream()
-                                        .filter(AnswerEntity::isIs_correct)
-                                        .collect(Collectors.toList());
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                            /**
-                             * Checks whether allCorrectAnswers is null.
-                             */
+                        allCorrectAnswers = questionServiceImp
+                            .getById(id)
+                            .getAnswerEntities()
+                            .stream()
+                            .filter(AnswerEntity::isIs_correct)
+                            .collect(Collectors.toList());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    /**
+                     * Checks whether allCorrectAnswers is null.
+                     */
 
-                            Objects.requireNonNull(allCorrectAnswers).forEach(k -> correctAnswersIds.add(k.getId()));
+                    Objects.requireNonNull(allCorrectAnswers).forEach(k -> correctAnswersIds.add(k.getId()));
 
-                            allCorrectAnswersIdsForQuestion.put(id, correctAnswersIds);
+                    allCorrectAnswersIdsForQuestion.put(id, correctAnswersIds);
 
-                            allAnswersIdsForQuestion.put(id, allAnswersIds);
-                        }
-                );
+                    allAnswersIdsForQuestion.put(id, allAnswersIds);
+                }
+            );
 
         for (Long key : submissions.keySet()) {
 
@@ -164,17 +165,17 @@ public class TestServiceImp implements TestService {
                 points = 0;
             }
             submittedAnswers
-                    .forEach(i -> {
-                        try {
-                            if (answerServiceImp.getById(i).isIs_correct()) {
-                                userCorrectAnswers.add(answerServiceImp.getById(i).getId());
-                            } else {
-                                userIncorrectAnswerId.add(answerServiceImp.getById(i).getId());
-                            }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
+                .forEach(i -> {
+                    try {
+                        if (answerServiceImp.getById(i).isIs_correct()) {
+                            userCorrectAnswers.add(answerServiceImp.getById(i).getId());
+                        } else {
+                            userIncorrectAnswerId.add(answerServiceImp.getById(i).getId());
                         }
-                    });
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
 
             overallScore += points;
 
@@ -231,11 +232,11 @@ public class TestServiceImp implements TestService {
         randomDto.getTopicId().forEach(i -> {
             try {
                 questionServiceImp.getQuestionsByTopicEntity(topicServiceImp.getById(i))
-                        .forEach(j -> {
-                            if (j.getLevel().toString().equals(randomDto.getLevel())) {
-                                allQuestions.add(j);
-                            }
-                        });
+                    .forEach(j -> {
+                        if (j.getLevel().toString().equals(randomDto.getLevel())) {
+                            allQuestions.add(j);
+                        }
+                    });
 
             } catch (SQLException e) {
                 e.printStackTrace();

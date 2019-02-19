@@ -11,8 +11,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "users", indexes = {
-        @Index(name = "IDX_FIRST_NAME", columnList = "first_name"),
-        @Index(name = "IDX_LAST_NAME", columnList = "last_name")})
+    @Index(name = "IDX_FIRST_NAME", columnList = "first_name"),
+    @Index(name = "IDX_LAST_NAME", columnList = "last_name")})
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,12 +65,12 @@ public class UserEntity implements UserDetails {
 
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -142,13 +142,13 @@ public class UserEntity implements UserDetails {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", nickname='" + nickname + '\'' +
+            ", password='" + password + '\'' +
+            '}';
     }
 
     public boolean isActive() {
@@ -179,13 +179,13 @@ public class UserEntity implements UserDetails {
         return isActive();
     }
 
-    public void setUsername(String username) {
-        this.email = username;
-    }
-
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public void setUsername(String username) {
+        this.email = username;
     }
 
     @Override

@@ -5,9 +5,7 @@ import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
-import org.hibernate.hql.internal.ast.SqlASTFactory;
 import org.springframework.mail.MailException;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -31,6 +27,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private final MailService mailService;
 
     private PasswordEncoder passwordEncoder;
+
+    private String activate;
+
 
     public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -49,23 +48,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userEntity.setPassword(passwordEncoder.encode(password));
 
         try {
-
-            userEntity.setActivationCode(UUID.randomUUID().toString());
-
-            userEntity.setRoles(Collections.singleton(Role.USER));
-
-            if (!StringUtils.isEmpty(userEntity.getEmail())) {
-                String message =
-                        "Hello," + userEntity.getName() + "\n" +
-                                "Please, visit the following link: http://localhost:8080/user/activate/" +
-                                userEntity.getActivationCode();
-                mailService.sendText(email, "Activation", message);
-            }
+            mailService.sendActivationCode(email, userEntity);
         } catch (MailException e) {
             throw new RuntimeException("Invalid Mail");
         }
         userRepository.save(userEntity);
     }
+
+
 
     @Override
     public List<UserEntity> getAll() throws SQLException {
@@ -132,6 +122,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     public boolean activateUser(String code) {
 
+        activate=code;
+
         UserEntity user = userRepository.findByActivationCode(code);
 
         if (user == null) {
@@ -157,4 +149,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public List<UserEntity> findByNicknameLike(String nickname) {
         return userRepository.findByNickNameLike(nickname);
     }
+
+    public String getCode() {
+        return activate;
+    }
+
+    public void setCode(String code) {
+        this.activate = code;
+    }
+
 }

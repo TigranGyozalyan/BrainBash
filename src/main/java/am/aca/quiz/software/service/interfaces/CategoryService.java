@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public interface CategoryService{
+public interface CategoryService {
     //create
     void addCategory(String type) throws SQLException;
 

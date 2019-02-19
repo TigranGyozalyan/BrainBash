@@ -1,6 +1,8 @@
 package am.aca.quiz.software.controller;
 
 
+import am.aca.quiz.software.service.implementations.UserServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/")
 public class Welcome {
+
+    @Autowired
+    private UserServiceImp userServiceImp;
 
     @GetMapping
     public ModelAndView welcomePage() {
@@ -36,13 +41,17 @@ public class Welcome {
 
     @GetMapping("login")
     public ModelAndView login() {
+
         ModelAndView modelAndView = new ModelAndView("login");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
+            if (userServiceImp.getCode() != null) {
+                modelAndView.addObject("message", "Profile is activated");
+                userServiceImp.setCode(null);
+            }
             return modelAndView;
         }
-        return new ModelAndView("redirect:/user/profile" +
-                "");
+        return new ModelAndView("redirect:/user/profile" + "");
     }
 
     @GetMapping("animation")

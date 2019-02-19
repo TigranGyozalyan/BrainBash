@@ -156,28 +156,6 @@ function submitTest() {
 }
 
 
-$.when(submitTest()).done(function sendData() {
-
-    // console.log('in function sendData');
-    // let timeData = JSON.stringify({
-    //     currentTime: parseInt(current),
-    //     endTime: parseInt(end)
-    //
-    // });
-    // console.log(timeData);
-    //
-    // $.ajax({
-    //     type: "POST",
-    //     data: timeData,
-    //     url: "/history/test/update",
-    //     contentType: "application/json; charset=utf-8",
-    //     dataType: "json",
-    //     success: (function () {
-    //
-    //     })
-    // });
-    // location.href='http://localhost:8080/test/scorepage';
-});
 
 // Disable Back Button
 history.pushState(null, null, location.href);

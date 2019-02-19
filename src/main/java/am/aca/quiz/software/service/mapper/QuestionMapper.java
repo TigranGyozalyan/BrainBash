@@ -32,8 +32,8 @@ public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDt
         questionDto.setTopicId(questionEntity.getTopicEntity().getId());
 
         List<AnswerDto> answerDtos = answerMapper
-                .mapEntitiesToDto(answerServiceImp
-                        .getAnswerEntitiesByQuestionId(questionEntity.getId()));
+            .mapEntitiesToDto(answerServiceImp
+                .getAnswerEntitiesByQuestionId(questionEntity.getId()));
 
         questionDto.setAnswerDtoList(answerDtos);
         return questionDto;
@@ -48,9 +48,9 @@ public class QuestionMapper implements MapEntityToDto<QuestionEntity, QuestionDt
 //        return questionDtos;
 
         return questionEntities
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 }

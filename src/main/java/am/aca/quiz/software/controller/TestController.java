@@ -23,8 +23,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static java.math.BigDecimal.valueOf;
-
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -40,11 +38,11 @@ public class TestController {
     private final QuestionController questionController;
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
-    private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
     private final ScoreServiceImp scoreServiceImp;
+    private ScorePair<Double, Double> score;
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private long endTime;
     private int reloadCount = 0;
     private Long testId;
@@ -207,8 +205,7 @@ public class TestController {
 
     }
 
-
-    @PostMapping("/solve/{id}")
+    @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
 
