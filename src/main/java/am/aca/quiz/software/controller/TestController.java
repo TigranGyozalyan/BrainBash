@@ -472,12 +472,17 @@ public class TestController {
 
         List<Long> userIds = testUsersDto.getUsersId();
 
+        Long topicId = topicServiceImp.findTopicIdByTest(testUsersDto.getTestId());
+
 
         String subject = "New Test Notification";
 
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
-                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
+                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.   " +
+                "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId + "/" + testUsersDto.getTestId();
+
+            //Todo
 
             userIds.forEach(
                 i -> {

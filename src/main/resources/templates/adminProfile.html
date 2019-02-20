@@ -4,40 +4,49 @@
     <meta charset="UTF-8">
     <title>Admin Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttonStyle.css}">
+
+    <style>
+        body {
+            background: #3498db;
+        }
+    </style>
+
 </head>
 <body>
 
 <form action="/category/list" method="get">
-    <input type="submit" value="Category">
+    <input class="button" type="submit" value="Category">
 </form>
 
 <form action="/subcategory/list" method="get">
-    <input type="submit" value="SubCategory">
+    <input class="button" type="submit" value="SubCategory">
 </form>
 
 
 <form action="/topic/list" method="get">
-    <input type="submit" value="Topic">
+    <input class="button" type="submit" value="Topic">
 </form>
 
 <form action="/question/list" method="get">
-    <input type="submit" value="Question">
+    <input class="button" type="submit" value="Question">
 </form>
 
 <form action="/test/list" method="get">
-    <input type="submit" value="Test">
+    <input class="button" type="submit" value="Test">
 </form>
 
 <form action="/user/userList" method="get">
-    <input type="submit" value="User">
+    <input class="button" type="submit" value="User">
 </form>
 
 <form action="/history/history" method="get">
-    <input type="submit" value="History">
+    <input class="button" type="submit" value="History">
 </form>
 
 <form action="/test/organize" method="get">
-    <input type="submit" value="Organize Test">
+    <input class="button" type="submit" value="Organize Test">
 </form>
 
 <input type="button" onclick="location.href='http://localhost:8080/user/profile'" value="Go Back To Profile">
