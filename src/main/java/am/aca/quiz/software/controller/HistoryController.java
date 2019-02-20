@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -216,19 +217,28 @@ public class HistoryController {
 
         try {
             double score = testController.getScore().getKey();
-            UserEntity userEntity = userServiceImp.findByEmail(principal.getName());
 
+            UserEntity userEntity = userServiceImp.findByEmail(principal.getName());
             HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
 
-            LocalDateTime endTime =
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+            if (history != null) {
+                if (history.getSessionId() != null) {
 
-            history.setScore(score);
-            history.setEndTime(endTime);
-            history.setStatus(Status.COMPLETED);
-            historyServiceImp.addHistory(history);
+                    LocalDateTime endTime =
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
+                    history.setScore(score);
+                    history.setEndTime(endTime);
 
+                    history.setStatus(Status.COMPLETED);
+                    history.setSessionId(null);
+
+                    historyServiceImp.addHistory(history);
+
+                } else {
+                    //TODO FUN PAGE
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

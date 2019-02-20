@@ -97,4 +97,9 @@ public class HistoryServiceImp implements HistoryService {
     public HistoryEntity findHistoryBySUerIdAndStatus(Long userId, String status) {
         return historyRepository.getHistoryByUserIdAndStatus(userId, status);
     }
+
+    public HistoryEntity findHistoryBySessionId(String sessionId) throws SQLException {
+        return historyRepository.findHistoryEntityBySessionId(sessionId);
+    }
+
 }

@@ -2,7 +2,6 @@ let questionCount = 0;
 let wrapperDiv = $('#wrapper');
 let interval;
 let $wrapper;
-
 let current;
 let end;
 
@@ -150,15 +149,20 @@ function submitTest() {
         dataType: "json",
         async : false
     });
-    alert('done here');
+
     location.href='/test/scorepage';
 
 }
 
 
-
 // Disable Back Button
 history.pushState(null, null, location.href);
+
+
+
+
+
+
 window.onpopstate = function () {
     history.go(1);
 };

@@ -39,6 +39,9 @@ public class HistoryEntity {
     @JoinColumn(name = "test_id")
     private TestEntity testEntity;
 
+    @Column(name = "session_id")
+    private String sessionId;
+
     public HistoryEntity() {
     }
 
@@ -81,6 +84,15 @@ public class HistoryEntity {
 //    public void setStatus(String status) {
 //        this.status = Status.valueOf(status.toLowerCase());
 //    }
+
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public LocalDateTime getEndTime() {
         return endTime;
