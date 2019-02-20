@@ -25,9 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //TODO WHAT IS /redirect?
         http
             .authorizeRequests()
-            .antMatchers("/", "/registration", "/user/register", "/redirect", "/user/activate/**", "/css/**", "/js/**").permitAll()
+            .antMatchers("/", "/registration", "/user/register","/user/resend", "/redirect", "/user/activate/**", "/css/**", "/js/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()

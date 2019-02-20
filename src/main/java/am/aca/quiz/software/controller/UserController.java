@@ -42,8 +42,6 @@ public class UserController {
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
         ModelAndView modelAndView = new ModelAndView("userRegistration");
 
-        UserDto userDto=new UserDto();
-
         String name = formData.get("name");
         String lastName = formData.get("name2");
         String nickname = formData.get("nickname");
@@ -67,13 +65,6 @@ public class UserController {
                 } else {
                     modelAndView.addObject("message", "User exists");
                 }
-            }else{
-                userDto=userMapper.mapEntityToDto(userServiceImp.findByEmail(email));
-                name=userDto.getName();
-                lastName=userDto.getSurname();
-                email=userDto.getEmail();
-                nickname=userDto.getNickname();
-
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -84,6 +75,8 @@ public class UserController {
         modelAndView.addObject("email",email);
         modelAndView.addObject("nickname",nickname);
 
+
+        resendEmail=email;
 
         return modelAndView;
     }
@@ -322,11 +315,18 @@ public class UserController {
         return modelAndView;
     }
 
-//    @GetMapping("/resend")
-//    public void resend(){
-//
-//        mailService.sendActivationCode();
-//    }
+    @GetMapping("/resend")
+    public void resend(){
+
+        try {
+            UserEntity userEntity=userServiceImp.findByEmail(resendEmail);
+            mailService.sendActivationCode(resendEmail,userEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     @PostMapping("/role")
     public ResponseEntity<UserDto> getUserRole(Principal principal) {

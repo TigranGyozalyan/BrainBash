@@ -46,6 +46,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
         userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setRoles(Collections.singleton(Role.USER));
 
         try {
             mailService.sendActivationCode(email, userEntity);

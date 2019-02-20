@@ -46,7 +46,7 @@
             </label>
             <br/>
             <label>
-                <input th:type="email" name="email" placeholder="Email" required  th:value="${email}"/>
+                <input id='email' th:type="email" name="email" placeholder="Email" required  th:value="${email}"/>
             </label>
             <br/>
             <label>
@@ -68,33 +68,37 @@
 
             <div id="magic">
 
-
             </div>
         </div>
     </div>
+</form>
+<form method="get" action="/user/resend">
+<div id="resend">
+
+</div>
 </form>
 </body>
 
 <script>
 
     let $magic=$('#magic');
-    let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submit()').html('Register').attr('id', 'submitId');
+    let $resend=$("#resend");
+    let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick','submit').html('Register').attr('id', 'submitId');
     let $activationButton = $('<button />').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/user/resend'").attr('value', 'Resend Email').html('Resend Email').attr('id', 'scoreId');
 
     $activationButton.prop('disabled', true);
     $activationButton.hide();
 
     $magic.append($submit);
-    $magic.append($activationButton);
+    $resend.append($activationButton);
 
+    $(document).ready(function() {
+        if ($('#email').val() != '') {
+            $('#submitId').remove();
+            $('#scoreId').prop('disabled', false).show();
+        }
 
-    function submit() {
-
-        $('#submitId').remove();
-        $('#scoreId').prop('disabled', false).show();
-    }
-
-
+    });
 
 </script>
 </html>
