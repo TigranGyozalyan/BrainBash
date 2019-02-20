@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -310,14 +312,11 @@ public class TestController {
                 e.printStackTrace();
             }
         });
+        double testScore = new BigDecimal(Double.toString(score.getValue())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setTestScore(testScore);
+        double userScore = new BigDecimal(Double.toString(score.getKey())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setUserScore(userScore);
 
-        testScoreDto.setTestScore(score.getValue());
-        testScoreDto.setUserScore(score.getKey());
-
-//        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
-//            modelAndView.addObject("answerList", elem.getValue());
-//        }
-//
         modelAndView.addObject("questionList", questionDtos);
         modelAndView.addObject("testScore", testScoreDto);
 
