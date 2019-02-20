@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //TODO WHAT IS /redirect?
         http
             .authorizeRequests()
-            .antMatchers("/", "/registration", "/user/register","/user/resend", "/redirect", "/user/activate/**", "/css/**", "/js/**").permitAll()
+            .antMatchers("/", "/registration", "/user/register","/user/resend/{code}","/user/resend/email/{code}", "/redirect", "/user/activate/**", "/css/**", "/js/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()

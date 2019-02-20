@@ -7,6 +7,7 @@ import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,6 @@ public class UserController {
     private String email;
     private boolean message;
     private final MailService mailService;
-    private  String resendEmail;
 
     public UserController(UserServiceImp userServiceImp, UserMapper userMapper, MailService mailService) {
         this.userServiceImp = userServiceImp;
@@ -61,8 +61,9 @@ public class UserController {
                         e.printStackTrace();
                     }
                 }
-                modelAndView=new ModelAndView("resendPage");
-                modelAndView.addObject("message2", "Check Your Email");
+                UserEntity userEntity=userServiceImp.findByEmail(email);
+                modelAndView=new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
+                modelAndView.addObject("code",userEntity.getActivationCode());
                 return modelAndView;
             }
             else {
@@ -77,11 +78,32 @@ public class UserController {
         modelAndView.addObject("email",email);
         modelAndView.addObject("nickname",nickname);
 
+        return modelAndView;
+    }
 
-        resendEmail=email;
+    @GetMapping("/resend/{code}")
+    public ModelAndView resend(@PathVariable("code") String code){
+        ModelAndView modelAndView=new ModelAndView("resendPage");
+        modelAndView.addObject("message2", "Check Your Email");
+
 
         return modelAndView;
     }
+
+    @GetMapping("/resend/email/{code}")
+    public ModelAndView resendLogic(@PathVariable("code") String code){
+        ModelAndView modelAndView=new ModelAndView("resendPage");
+        UserEntity userEntity=userServiceImp.findByActiovationCode(code);
+        userEntity.setActivationCode(UUID.randomUUID().toString());
+        userServiceImp.updateUser(userEntity);
+        mailService.sendActivationCode(userEntity.getEmail(),userEntity);
+
+        modelAndView.addObject("code",userEntity.getActivationCode());
+        modelAndView.addObject("message2", "Check Your Email");
+
+        return  modelAndView;
+    }
+
 
     @GetMapping(value = "/profile")
     public ModelAndView profilePage(Principal principal) {
@@ -121,7 +143,6 @@ public class UserController {
             return profilePage(principal);
 
         }
-
 
         return modelAndView;
     }
@@ -317,20 +338,6 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/resend")
-    public void resend(){
-
-        try {
-            UserEntity userEntity=userServiceImp.findByEmail(resendEmail);
-            userEntity.setActivationCode(UUID.randomUUID().toString());
-            userServiceImp.updateUser(userEntity);
-            mailService.sendActivationCode(resendEmail,userEntity);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     @PostMapping("/role")
     public ResponseEntity<UserDto> getUserRole(Principal principal) {

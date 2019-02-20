@@ -10,7 +10,6 @@
 
 </style>
 
-
 <head>
 
     <meta charset="UTF-8">
@@ -24,7 +23,7 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-<form method="get" action="/user/resend">
+<form method="get" th:action="@{'/user/resend/email/'+${code}}">
 
     <div class="login-page">
         <h1>Didn't receive your activation code?</h1>
@@ -40,9 +39,4 @@
 
 </body>
 
-<script>
-
-
-
-</script>
 </html>

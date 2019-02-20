@@ -121,11 +121,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(userEntity);
     }
 
+    public UserEntity findByActiovationCode(String code){
+        return userRepository.findByActivationCode(code);
+    }
+
     public boolean activateUser(String code) {
 
         activate=code;
 
-        UserEntity user = userRepository.findByActivationCode(code);
+        UserEntity user = findByActiovationCode(code);
 
         if (user == null) {
             return false;
