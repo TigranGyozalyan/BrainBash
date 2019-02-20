@@ -43,6 +43,7 @@ public class ThreadService {
 
         List<HistoryDto> userHistories = historyMapper
             .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+        //TODO In progres
         userHistories.forEach(i -> upcomingTest.add(i));
 
         if (!upcomingTest.isEmpty()) {
@@ -62,6 +63,7 @@ public class ThreadService {
                         historyEntity.setScore(0);
                         historyEntity.setStatus(Status.COMPLETED);
                         historyEntity.setEndTime(now);
+                        historyEntity.setSessionId(null);
                         historyServiceImp.addHistory(historyEntity);
 
                         iterator.remove();
