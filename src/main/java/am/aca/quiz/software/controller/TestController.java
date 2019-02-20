@@ -236,7 +236,7 @@ public class TestController {
                 historyServiceImp.addHistory(upcoming);
 
             } else {
-
+                upcoming.setSessionId(seesionId);
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
 

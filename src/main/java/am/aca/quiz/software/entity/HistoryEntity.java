@@ -129,7 +129,7 @@ public class HistoryEntity {
 
     @Override
     public String toString() {
-        return "HistoryEntity{" +
+        return "HistoryDto{" +
             "id=" + id +
             ", startTime=" + startTime +
             ", endTime=" + endTime +
