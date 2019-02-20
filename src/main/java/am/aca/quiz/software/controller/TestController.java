@@ -478,7 +478,9 @@ public class TestController {
 
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
-                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
+                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck." /* +
+                "Please, visit the following link: http://localhost:8080/test/solve/" + testUsersDto.getTestId()*/ ;
+                //TODO
 
             userIds.forEach(
                 i -> {
