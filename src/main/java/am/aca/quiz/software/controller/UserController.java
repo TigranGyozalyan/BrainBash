@@ -52,22 +52,36 @@ public class UserController {
         String password2 = formData.get("password2");
 
         try {
-            if (userServiceImp.findByEmail(email) == null) {
-                UserEntity dbUser = userServiceImp.findByEmail(email);
-                if (dbUser == null) {
-                    try {
-                        userServiceImp.addUser(name, lastName, nickname, email, password, password2);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            UserEntity userEntity=userServiceImp.findByEmail(email);
+            if (userEntity==null ) {
+                try {
+                    userServiceImp.addUser(name, lastName, nickname, email, password, password2);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                UserEntity userEntity=userServiceImp.findByEmail(email);
-                modelAndView=new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
-                modelAndView.addObject("code",userEntity.getActivationCode());
+                userEntity = userServiceImp.findByEmail(email);
+
+                modelAndView = new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
+                modelAndView.addObject("code", userEntity.getActivationCode());
                 return modelAndView;
             }
             else {
-                modelAndView.addObject("message", "User exists");
+                if(!userEntity.isActive()){
+                    userEntity = userServiceImp.findByEmail(email);
+                    userEntity.setPassword(password);
+                    userEntity.setName(name);
+                    userEntity.setSurname(lastName);
+                    userEntity.setName(nickname);
+
+                    userServiceImp.ubdateNonActiveUser(userEntity);
+
+                    modelAndView = new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
+                    modelAndView.addObject("code", userEntity.getActivationCode());
+                    return modelAndView;
+                }
+                else {
+                    modelAndView.addObject("message", "User exists");
+                }
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -81,11 +95,13 @@ public class UserController {
         return modelAndView;
     }
 
+    /*
+        Spring autowire's into resendPage code instead of us
+     */
     @GetMapping("/resend/{code}")
     public ModelAndView resend(@PathVariable("code") String code){
         ModelAndView modelAndView=new ModelAndView("resendPage");
         modelAndView.addObject("message2", "Check Your Email");
-
 
         return modelAndView;
     }
@@ -93,6 +109,7 @@ public class UserController {
     @GetMapping("/resend/email/{code}")
     public ModelAndView resendLogic(@PathVariable("code") String code){
         ModelAndView modelAndView=new ModelAndView("resendPage");
+
         UserEntity userEntity=userServiceImp.findByActiovationCode(code);
         userEntity.setActivationCode(UUID.randomUUID().toString());
         userServiceImp.updateUser(userEntity);
@@ -146,7 +163,6 @@ public class UserController {
 
         return modelAndView;
     }
-
 
     @PostMapping("/delete")
     public ModelAndView deleteAccount(@RequestParam Map<String, String> formData) {

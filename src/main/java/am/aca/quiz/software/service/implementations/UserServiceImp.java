@@ -43,8 +43,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if (!password.equals(password2)) {
             return;
         }
-
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
+        addToDb(userEntity, password, email);
+    }
+
+    public void ubdateNonActiveUser(UserEntity userEntity){
+        addToDb(userEntity,userEntity.getPassword(),userEntity.getEmail());
+    }
+
+    private void addToDb(UserEntity userEntity,String password,String email) {
         userEntity.setPassword(passwordEncoder.encode(password));
         userEntity.setRoles(Collections.singleton(Role.USER));
         userEntity.setActivationCode(UUID.randomUUID().toString());
@@ -55,7 +62,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }
         userRepository.save(userEntity);
     }
-
 
 
     @Override
