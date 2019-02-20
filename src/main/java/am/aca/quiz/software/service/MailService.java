@@ -1,14 +1,13 @@
 package am.aca.quiz.software.service;
 
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.service.implementations.UserServiceImp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.UUID;
 
 @Service
 public class MailService {
@@ -38,7 +37,6 @@ public class MailService {
         }
     }
     public void sendActivationCode(String email, UserEntity userEntity) {
-        userEntity.setActivationCode(UUID.randomUUID().toString());
 
         if (!StringUtils.isEmpty(userEntity.getEmail())) {
             String message =

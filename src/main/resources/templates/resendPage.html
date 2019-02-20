@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<style>
+
+    .message {
+        padding-top: 20px;
+        color: #BDBDBD;
+    }
+
+</style>
+
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registrationLoginStyle.css}">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+</head>
+<body>
+<form method="get" action="/user/resend">
+
+    <div class="login-page">
+        <h1>Didn't receive your activation code?</h1>
+        <div class="form">
+
+            <div class="message">
+                <span th:if="${message2 != null }">Check Your Email</span>
+            </div>
+            <button>Resend Email</button>
+        </div>
+    </div>
+</form>
+
+</body>
+
+<script>
+
+
+
+</script>
+</html>

@@ -14,10 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -38,6 +35,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/register")
+    public ModelAndView reloadData(){
+        return new ModelAndView("userRegistration");
+    }
+
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
         ModelAndView modelAndView = new ModelAndView("userRegistration");
@@ -51,20 +53,20 @@ public class UserController {
 
         try {
             if (userServiceImp.findByEmail(email) == null) {
-
                 UserEntity dbUser = userServiceImp.findByEmail(email);
                 if (dbUser == null) {
                     try {
-
                         userServiceImp.addUser(name, lastName, nickname, email, password, password2);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
-                    modelAndView.addObject("message2", "Check Your Email");
-                } else {
-                    modelAndView.addObject("message", "User exists");
                 }
+                modelAndView=new ModelAndView("resendPage");
+                modelAndView.addObject("message2", "Check Your Email");
+                return modelAndView;
+            }
+            else {
+                modelAndView.addObject("message", "User exists");
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -320,6 +322,8 @@ public class UserController {
 
         try {
             UserEntity userEntity=userServiceImp.findByEmail(resendEmail);
+            userEntity.setActivationCode(UUID.randomUUID().toString());
+            userServiceImp.updateUser(userEntity);
             mailService.sendActivationCode(resendEmail,userEntity);
         } catch (SQLException e) {
             e.printStackTrace();
