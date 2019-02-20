@@ -26,5 +26,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT * FROM users where nickname ILIKE ?1", nativeQuery = true)
     List<UserEntity> findByNickNameLike(String Nickname);
 
+
 }
 

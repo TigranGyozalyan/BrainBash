@@ -33,5 +33,5 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
     @Query(value = "SELECT * FROM history WHERE user_id=?1  AND status=?2", nativeQuery = true)
     HistoryEntity getHistoryByUserIdAndStatus(Long userId, String status);
 
-
+    HistoryEntity findHistoryEntityBySessionId(String sessionId);
 }

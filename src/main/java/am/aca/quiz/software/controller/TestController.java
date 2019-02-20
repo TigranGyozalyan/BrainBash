@@ -208,12 +208,12 @@ public class TestController {
     @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
-
+        String seesionId = UUID.randomUUID().toString();
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
-            userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
-        );
+            userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING");
+
         if (historyEntity != null) {
             if (currentTime.isBefore(historyEntity.getStartTime())) {
                 ModelAndView modelAndView = new ModelAndView("userBanPage");
@@ -231,10 +231,9 @@ public class TestController {
 
             if (upcoming == null) {
 
-
                 upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
+                upcoming.setSessionId(seesionId);
                 historyServiceImp.addHistory(upcoming);
-
 
             } else {
 
@@ -255,7 +254,7 @@ public class TestController {
 
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-            System.out.println(endTime);
+
             reloadCount++;
         }
         ModelAndView modelAndView = new ModelAndView("testSolution");
@@ -516,9 +515,7 @@ public class TestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/random")
     public ModelAndView random() {
-        ModelAndView modelAndView = new ModelAndView("randomTestGenerator");
-
-        return modelAndView;
+        return new ModelAndView("randomTestGenerator");
     }
 
     @PostMapping(value = "/random/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -533,8 +530,6 @@ public class TestController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
