@@ -80,6 +80,9 @@ public class TopicServiceImp implements TopicService {
 
     public Set<BigInteger> findTopicIdByTestId(Long id) {
         return topicRepository.findTopicByTestId(id);
+    }
 
+    public Long findTopicIdByTest(Long id) {
+        return topicRepository.findTopicIdByTestId(id);
     }
 }

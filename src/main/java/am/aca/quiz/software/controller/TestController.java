@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -203,8 +205,7 @@ public class TestController {
 
     }
 
-
-    @PostMapping("/solve/{id}")
+    @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
 
@@ -311,13 +312,11 @@ public class TestController {
                 e.printStackTrace();
             }
         });
+        double testScore = new BigDecimal(Double.toString(score.getValue())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setTestScore(testScore);
+        double userScore = new BigDecimal(Double.toString(score.getKey())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setUserScore(userScore);
 
-        testScoreDto.setTestScore(score.getValue());
-        testScoreDto.setUserScore(score.getKey());
-
-        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
-            modelAndView.addObject("answerList", elem.getValue());
-        }
         modelAndView.addObject("questionList", questionDtos);
         modelAndView.addObject("testScore", testScoreDto);
 
@@ -473,14 +472,17 @@ public class TestController {
 
         List<Long> userIds = testUsersDto.getUsersId();
 
+        Long topicId = topicServiceImp.findTopicIdByTest(testUsersDto.getTestId());
+
 
         String subject = "New Test Notification";
 
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
-                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck." /* +
-                "Please, visit the following link: http://localhost:8080/test/solve/" + testUsersDto.getTestId()*/ ;
-                //TODO
+                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.   " +
+                "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId + "/" + testUsersDto.getTestId();
+
+            //Todo
 
             userIds.forEach(
                 i -> {

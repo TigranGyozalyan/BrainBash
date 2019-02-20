@@ -82,7 +82,7 @@
 <input type="hidden" th:value="${id}" id="testId"/>
 <input type="hidden" th:value="${user_id}" id="userId">
 
-<form th:action="@{'/test/solve/'+${id}}" method="post">
+<form th:action="@{'/test/solve/'+${id}}" method="get">
     <input type="submit" id="submit">
 </form>
 
