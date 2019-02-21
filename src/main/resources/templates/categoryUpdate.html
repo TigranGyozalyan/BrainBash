@@ -7,6 +7,12 @@
 </head>
 <body>
 
+<style>
+    body {
+        background: #89d0d7;
+    }
+</style>
+
 <form th:action="@{/category/update}" method="post">
     Type: <input name="type" type="text" th:value="${category.type}">
     <br/>

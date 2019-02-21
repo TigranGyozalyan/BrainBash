@@ -5,46 +5,12 @@
     <title>Admin Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/buttonStyle.css}">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
 
     <style>
-
-
         body {
-            background: #43d17b;
+            background: #89d0d7;
         }
-
-        .button {
-
-            background: #3498db;
-            padding: 20px 15px 20px 32px;
-            width: 200px;
-            border-radius: 12px;
-            font-size: larger;
-            font-family: 'Roboto';
-            color: #FFF;
-            user-select: none;
-            border: 2px solid #6666ff;
-            margin-top: 20px;
-        }
-
-        .button:hover {
-            cursor: pointer;
-        }
-
-        .button:after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            border-radius: 50%;
-            background-color: darken(#f1c40f, 20%);
-            opacity: 0.4;
-            bottom: -30px;
-        }
-
-
     </style>
 
 </head>
@@ -83,7 +49,8 @@
     <input class="button" type="submit" value="Organize Test">
 </form>
 
-<input class="button" style="background: #2d3a43;" type="button" onclick="location.href='http://localhost:8080/user/profile'" value="Go Back To Profile">
+<input class="button" style="background: #2d3a43;" type="button"
+       onclick="location.href='http://localhost:8080/user/profile'" value="Go Back To Profile">
 
 </body>
 </html>
