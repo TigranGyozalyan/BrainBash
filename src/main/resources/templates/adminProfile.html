@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Admin Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/buttonStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
 
     <style>
         body {
-            background: #3498db;
+            background: #89d0d7;
         }
     </style>
 
@@ -49,7 +49,8 @@
     <input class="button" type="submit" value="Organize Test">
 </form>
 
-<input type="button" onclick="location.href='http://localhost:8080/user/profile'" value="Go Back To Profile">
+<input class="button" style="background: #2d3a43;" type="button"
+       onclick="location.href='http://localhost:8080/user/profile'" value="Go Back To Profile">
 
 </body>
 </html>

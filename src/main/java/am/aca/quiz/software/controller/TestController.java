@@ -208,7 +208,7 @@ public class TestController {
     @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
-        String seesionId = UUID.randomUUID().toString();
+        String sessionId = UUID.randomUUID().toString();
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
@@ -232,11 +232,11 @@ public class TestController {
             if (upcoming == null) {
 
                 upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
-                upcoming.setSessionId(seesionId);
+                upcoming.setSessionId(sessionId);
                 historyServiceImp.addHistory(upcoming);
 
             } else {
-                upcoming.setSessionId(seesionId);
+                upcoming.setSessionId(sessionId);
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
 
@@ -564,7 +564,16 @@ public class TestController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("testList");
+
+           ModelAndView modelAndView = new ModelAndView("redirect:/testList");
+        try {
+            modelAndView.addObject("testList", testMapper.mapEntitiesToDto(testServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+
     }
 
 }

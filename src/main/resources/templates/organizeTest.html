@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <title>Organize Test</title>
     <script
-            src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-            crossorigin="anonymous">
-
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
     </script>
-
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
 </head>
 <body>
 
 <table>
-       <form th:action="@{'/test/selectUser/'+${id}}" method="post">
-           <input type="text" placeholder="Search User" name="search">
+    <form th:action="@{'/test/selectUser/'+${id}}" method="post">
+        <input type="text" placeholder="Search User" name="search">
 
-           <input type="submit" name="submit" value="Search"/>
-       </form>
-        <br/>
+        <input type="submit" name="submit" value="Search"/>
+    </form>
+    <br/>
 
-        <span>
+    <span>
             <label for="startTime">Choose a time for your appointment:</label>
 
-        <input  type="datetime-local" id="startTime" value="" >
+        <input type="datetime-local" id="startTime" value="">
         </span>
-
 
 
     </br>
@@ -45,7 +44,7 @@
         <td><span th:text="${user.name}">Name</span></td>
         <td><span th:text="${user.surname}">Surname</span></td>
         <td><span th:text="${user.nickname}">Nickname</span></td>
-        <td><input type="hidden" th:value="${user.id}" name="userId"/></td>
+        <input type="hidden"  th:value="${user.id}" name="userId"/>
         <td><input type="checkbox" name="userSelect" th:value="${user.id}"/></td>
     </tr>
 
@@ -55,10 +54,10 @@
 </table>
 
 <span>
-        <button type="button" name="editOptions" id="editOptions">Organize Test</button>
+        <button type="button" class="button" name="editOptions" id="editOptions">Organize Test</button>
 
         </span>
-<input type="button" onclick="location.href='http://localhost:8080/test/organize'" value="Back to Test List">
+<input type="button" class="button" onclick="location.href='http://localhost:8080/test/organize'" value="Back to Test List">
 
 
 </body>
