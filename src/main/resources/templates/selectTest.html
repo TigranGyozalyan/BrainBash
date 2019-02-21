@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Select Test</title>
+    <meta charset="UTF-8">
+    <title>Select Test</title>
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
 </head>
 <body>
 
 <table>
-        <div class="test">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Duration</th>
-            </tr>
-            </thead>
+    <div class="test">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Duration</th>
+        </tr>
+        </thead>
 
-            <tbody>
-            <tr th:each="test : ${testList}">
-                <td><span th:text="${test.test_name}">Name</span></td>
-                <td><span th:text="${test.description}">Description</span></td>
-                <td><span th:text="${test.duration}">Duration</span></td>
+        <tbody>
+        <tr th:each="test : ${testList}">
+            <td><span th:text="${test.test_name}">Name</span></td>
+            <td><span th:text="${test.description}">Description</span></td>
+            <td><span th:text="${test.duration}">Duration</span></td>
 
-                <td>
-                    <a th:href="@{'/test/selectUser/'+${test.id}}">Select Test</a>
-                </td>
+            <td>
+                <a th:href="@{'/test/selectUser/'+${test.id}}">Select Test</a>
+            </td>
 
-            </tr>
-            </tbody>
-        </div>
-    </table>
+        </tr>
+        </tbody>
+    </div>
+</table>
 
-<input type="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
+<input type="button" class="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
 
 <form action="/test/random" method="post">
-    <input type="submit" name="random" value="Generate Random Test" />
+    <input type="submit" class="button" name="random" value="Generate Random Test"/>
 </form>
 
 </body>

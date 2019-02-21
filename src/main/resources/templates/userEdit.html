@@ -1,28 +1,37 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org"><html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User Edit</title>
+    <meta charset="UTF-8">
+    <title>User Edit</title>
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
+    <style>
+        body {
+            background: #89d0d7;
+        }
+    </style>
 </head>
 <body>
 
 <form th:action="@{/user}" method="post">
 
-     <table>
+    <table>
         <thead>
-            <tr>
-               <th>Email</th>
-               <th>Name</th>
-               <th>Surname</th>
-               <th>Role</th>
-            </tr>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Role</th>
+        </tr>
         </thead>
         <tbody>
-         <tr th:each="role : ${roles}">
-         <td><span th:text="${user.email}">Email</span></td>
-         <td><span th:text="${user.name}">Name</span> </td>
-         <td><span th:text="${user.surname}">Surname</span> </td>
-         <td><input type="checkbox" th:name="${role}" th:checked="${user.role.contains(role)}" th:text="${role}"></td>
-         </tr>
+        <tr th:each="role : ${roles}">
+            <td><span th:text="${user.email}">Email</span></td>
+            <td><span th:text="${user.name}">Name</span></td>
+            <td><span th:text="${user.surname}">Surname</span></td>
+            <td><input type="checkbox" th:name="${role}" th:checked="${user.role.contains(role)}" th:text="${role}">
+            </td>
+        </tr>
         </tbody>
     </table>
     <input type="hidden" th:value="${user.id}" name="userId">
