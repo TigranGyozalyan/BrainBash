@@ -481,17 +481,20 @@ public class TestController {
                 + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.   " +
                 "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId + "/" + testUsersDto.getTestId();
 
-            //Todo
-
             userIds.forEach(
                 i -> {
-                    try {
-                        mailService.sendText(userServiceImp
-                            .getById(i).getEmail(), subject, text);
+                    /*
+                     Send Mail Faster
+                     */
+                    new Thread(() -> {
+                        try {
+                            mailService.sendText(userServiceImp
+                                .getById(i).getEmail(), subject, text);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
 
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
                 });
 
 

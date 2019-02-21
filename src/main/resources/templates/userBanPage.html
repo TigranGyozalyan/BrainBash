@@ -9,6 +9,19 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/userBanPage.css}">
 </head>
+<style>
+    .button {
+        background-color: rgb(255, 255, 255);
+        color: #000000;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
 
 <body id="t">
 
@@ -78,6 +91,8 @@
     </div>
 </div>
 
+<input class="button" type="button" onclick="location.href='http://localhost:8080/user/profile'"
+       value="Back to Profile Page">
 
 <input type="hidden" th:value="${id}" id="testId"/>
 <input type="hidden" th:value="${user_id}" id="userId">

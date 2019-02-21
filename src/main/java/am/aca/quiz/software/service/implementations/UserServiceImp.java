@@ -1,6 +1,7 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
+import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,18 +43,23 @@ public class UserServiceImp implements UserService, UserDetailsService {
             return;
         }
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
+        userEntity.setRoles(Collections.singleton(Role.USER));
         addToDb(userEntity, password, email);
     }
 
+    @Transactional
     public void ubdateNonActiveUser(UserEntity userEntity) {
         addToDb(userEntity, userEntity.getPassword(), userEntity.getEmail());
     }
 
-    private void addToDb(UserEntity userEntity, String password, String email) {
+    @Transactional
+    protected void addToDb(UserEntity userEntity, String password, String email) {
         userEntity.setPassword(passwordEncoder.encode(password));
         userEntity.setActivationCode(UUID.randomUUID().toString());
         try {
-            mailService.sendActivationCode(email, userEntity);
+
+            new Thread(()-> mailService.sendActivationCode(email, userEntity)).start();
+
         } catch (MailException e) {
             throw new RuntimeException("Invalid Mail");
         }
