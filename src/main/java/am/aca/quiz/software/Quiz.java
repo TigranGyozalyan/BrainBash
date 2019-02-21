@@ -29,7 +29,7 @@ public class Quiz implements CommandLineRunner {
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(8);
     }
 
 

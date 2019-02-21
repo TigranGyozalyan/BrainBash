@@ -232,9 +232,6 @@ public class HistoryController {
                     history.setSessionId(null);
 
                     historyServiceImp.addHistory(history);
-
-                } else {
-                    //TODO FUN PAGE
                 }
             }
         } catch (SQLException e) {
