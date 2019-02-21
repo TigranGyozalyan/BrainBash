@@ -471,37 +471,36 @@ public class TestController {
 
         List<Long> userIds = testUsersDto.getUsersId();
 
-        Long topicId = topicServiceImp.findTopicIdByTest(testUsersDto.getTestId());
+        List<Long> topicId = topicServiceImp.findTopicIdByTest(testUsersDto.getTestId());
 
 
         String subject = "New Test Notification";
 
+
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
                 + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.   " +
-                "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId + "/" + testUsersDto.getTestId();
+                "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId.get(0) + "/" + testUsersDto.getTestId();
 
-            userIds.forEach(
-                i -> {
+            new Thread(() -> {
+                userIds.forEach(
+                    i -> {
                     /*
                      Send Mail Faster
                      */
-                    new Thread(() -> {
+
                         try {
                             mailService.sendText(userServiceImp
                                 .getById(i).getEmail(), subject, text);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                    }).start();
+                    });
 
-                });
-
-
+            }).start();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         return new ModelAndView("redirect:/test/organize");
     }
