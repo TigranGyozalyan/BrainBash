@@ -3,7 +3,6 @@ package am.aca.quiz.software.service;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.enums.Status;
-import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
@@ -43,7 +42,7 @@ public class ThreadService {
 
         List<HistoryEntity> userHistoriesUpcoming = historyServiceImp.findAllByStatus(Status.UPCOMING);
 
-        List<HistoryEntity> userHistoriesIngoing=historyServiceImp.findAllByStatus(Status.INPROGRESS);
+        List<HistoryEntity> userHistoriesIngoing = historyServiceImp.findAllByStatus(Status.INPROGRESS);
 
         threadTestList.addAll(userHistoriesUpcoming);
         threadTestList.addAll(userHistoriesIngoing);

@@ -1,7 +1,6 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.UserEntity;
-import am.aca.quiz.software.entity.enums.Role;
 import am.aca.quiz.software.repository.UserRepository;
 import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.interfaces.UserService;
@@ -12,10 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,13 +44,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
         addToDb(userEntity, password, email);
     }
 
-    public void ubdateNonActiveUser(UserEntity userEntity){
-        addToDb(userEntity,userEntity.getPassword(),userEntity.getEmail());
+    public void ubdateNonActiveUser(UserEntity userEntity) {
+        addToDb(userEntity, userEntity.getPassword(), userEntity.getEmail());
     }
 
-    private void addToDb(UserEntity userEntity,String password,String email) {
+    private void addToDb(UserEntity userEntity, String password, String email) {
         userEntity.setPassword(passwordEncoder.encode(password));
-        userEntity.setRoles(Collections.singleton(Role.USER));
         userEntity.setActivationCode(UUID.randomUUID().toString());
         try {
             mailService.sendActivationCode(email, userEntity);
@@ -127,13 +123,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    public UserEntity findByActiovationCode(String code){
+    public UserEntity findByActiovationCode(String code) {
         return userRepository.findByActivationCode(code);
     }
 
     public boolean activateUser(String code) {
 
-        activate=code;
+        activate = code;
 
         UserEntity user = findByActiovationCode(code);
 

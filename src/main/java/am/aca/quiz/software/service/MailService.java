@@ -1,7 +1,6 @@
 package am.aca.quiz.software.service;
 
 import am.aca.quiz.software.entity.UserEntity;
-import am.aca.quiz.software.service.implementations.UserServiceImp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,6 +35,7 @@ public class MailService {
             e.printStackTrace();
         }
     }
+
     public void sendActivationCode(String email, UserEntity userEntity) {
 
         if (!StringUtils.isEmpty(userEntity.getEmail())) {

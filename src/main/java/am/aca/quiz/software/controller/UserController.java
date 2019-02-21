@@ -7,7 +7,6 @@ import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +23,9 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImp userServiceImp;
     private final UserMapper userMapper;
+    private final MailService mailService;
     private String email;
     private boolean message;
-    private final MailService mailService;
 
     public UserController(UserServiceImp userServiceImp, UserMapper userMapper, MailService mailService) {
         this.userServiceImp = userServiceImp;
@@ -36,7 +35,7 @@ public class UserController {
 
 
     @GetMapping("/register")
-    public ModelAndView reloadData(){
+    public ModelAndView reloadData() {
         return new ModelAndView("userRegistration");
     }
 
@@ -52,8 +51,8 @@ public class UserController {
         String password2 = formData.get("password2");
 
         try {
-            UserEntity userEntity=userServiceImp.findByEmail(email);
-            if (userEntity==null ) {
+            UserEntity userEntity = userServiceImp.findByEmail(email);
+            if (userEntity == null) {
                 try {
                     userServiceImp.addUser(name, lastName, nickname, email, password, password2);
                 } catch (SQLException e) {
@@ -61,36 +60,34 @@ public class UserController {
                 }
                 userEntity = userServiceImp.findByEmail(email);
 
-                modelAndView = new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
+                modelAndView = new ModelAndView("redirect:/user/resend/" + userEntity.getActivationCode());
                 modelAndView.addObject("code", userEntity.getActivationCode());
                 return modelAndView;
-            }
-            else {
-                if(!userEntity.isActive()){
+            } else {
+                if (!userEntity.isActive()) {
                     userEntity = userServiceImp.findByEmail(email);
                     userEntity.setPassword(password);
                     userEntity.setName(name);
                     userEntity.setSurname(lastName);
-                    userEntity.setName(nickname);
+                    userEntity.setNickname(nickname);
 
                     userServiceImp.ubdateNonActiveUser(userEntity);
 
-                    modelAndView = new ModelAndView("redirect:/user/resend/"+userEntity.getActivationCode());
+                    modelAndView = new ModelAndView("redirect:/user/resend/" + userEntity.getActivationCode());
                     modelAndView.addObject("code", userEntity.getActivationCode());
                     return modelAndView;
-                }
-                else {
+                } else {
                     modelAndView.addObject("message", "User exists");
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        modelAndView.addObject("name",name);
-        modelAndView.addObject("surname",lastName);
-        modelAndView.addObject("email",email);
-        modelAndView.addObject("nickname",nickname);
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("surname", lastName);
+        modelAndView.addObject("email", email);
+        modelAndView.addObject("nickname", nickname);
 
         return modelAndView;
     }
@@ -99,26 +96,26 @@ public class UserController {
         Spring autowire's into resendPage code instead of us
      */
     @GetMapping("/resend/{code}")
-    public ModelAndView resend(@PathVariable("code") String code){
-        ModelAndView modelAndView=new ModelAndView("resendPage");
+    public ModelAndView resend(@PathVariable("code") String code) {
+        ModelAndView modelAndView = new ModelAndView("resendPage");
         modelAndView.addObject("message2", "Check Your Email");
 
         return modelAndView;
     }
 
     @GetMapping("/resend/email/{code}")
-    public ModelAndView resendLogic(@PathVariable("code") String code){
-        ModelAndView modelAndView=new ModelAndView("resendPage");
+    public ModelAndView resendLogic(@PathVariable("code") String code) {
+        ModelAndView modelAndView = new ModelAndView("resendPage");
 
-        UserEntity userEntity=userServiceImp.findByActiovationCode(code);
+        UserEntity userEntity = userServiceImp.findByActiovationCode(code);
         userEntity.setActivationCode(UUID.randomUUID().toString());
         userServiceImp.updateUser(userEntity);
-        mailService.sendActivationCode(userEntity.getEmail(),userEntity);
+        mailService.sendActivationCode(userEntity.getEmail(), userEntity);
 
-        modelAndView.addObject("code",userEntity.getActivationCode());
+        modelAndView.addObject("code", userEntity.getActivationCode());
         modelAndView.addObject("message2", "Check Your Email");
 
-        return  modelAndView;
+        return modelAndView;
     }
 
 
