@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "questions", indexes = {@Index(name = "IDX_question", columnList = "question"),
-        @Index(name = "IDX_topicId", columnList = "topic_entity_id")}
+    @Index(name = "IDX_topicId", columnList = "topic_entity_id")}
 )
 public class QuestionEntity {
 
@@ -40,8 +40,8 @@ public class QuestionEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "question_test",
-            joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
+        joinColumns = {@JoinColumn(name = "question_id", updatable = false)},
+        inverseJoinColumns = {@JoinColumn(name = "test_id", updatable = false)})
     private Set<TestEntity> testEntities = new HashSet<>();
 
     @ManyToOne
@@ -128,12 +128,12 @@ public class QuestionEntity {
     @Override
     public String toString() {
         return "QuestionEntity{" +
-                "id=" + id +
-                ", question='" + question + '\'' +
-                ", points=" + points +
-                ", level=" + level +
-                ", correct_amount=" + correct_amount +
-                '}';
+            "id=" + id +
+            ", question='" + question + '\'' +
+            ", points=" + points +
+            ", level=" + level +
+            ", correct_amount=" + correct_amount +
+            '}';
     }
 }
 

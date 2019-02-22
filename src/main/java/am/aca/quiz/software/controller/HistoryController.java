@@ -60,8 +60,8 @@ public class HistoryController {
 
 
         List<HistoryDto> historyDtos = historyMapper.mapEntitiesToDto(historyEntityList.stream()
-                .filter(i -> i.getStatus().equals(Status.UPCOMING))
-                .collect(Collectors.toList()));
+            .filter(i -> i.getStatus().equals(Status.UPCOMING))
+            .collect(Collectors.toList()));
 
         modelAndView.addObject("historyList", historyDtos);
 
@@ -177,9 +177,9 @@ public class HistoryController {
                 historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByEmail(user));
             } else if (!historyServiceImp.findByName(user).isEmpty()) {
                 historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByName(user));
-            }else if (!historyServiceImp.findBySurname(user).isEmpty()){
+            } else if (!historyServiceImp.findBySurname(user).isEmpty()) {
                 historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findBySurname(user));
-            }else {
+            } else {
                 historyDtos = historyMapper.mapEntitiesToDto(historyServiceImp.findByNickname(user));
             }
 
@@ -221,7 +221,7 @@ public class HistoryController {
             HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
 
             LocalDateTime endTime =
-                    LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
             history.setScore(score);
             history.setEndTime(endTime);

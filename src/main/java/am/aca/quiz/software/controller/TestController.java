@@ -40,11 +40,11 @@ public class TestController {
     private final QuestionController questionController;
     private final HistoryServiceImp historyServiceImp;
     private final MailService mailService;
-    private ScorePair<Double, Double> score;
-    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private final AnswerServiceImp answerServiceImp;
     private final AnswerMapper answerMapper;
     private final ScoreServiceImp scoreServiceImp;
+    private ScorePair<Double, Double> score;
+    private List<SubmitQuestionDto> userSubmitQuestionDtos;
     private long endTime;
     private int reloadCount = 0;
     private Long testId;

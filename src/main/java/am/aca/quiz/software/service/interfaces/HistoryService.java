@@ -2,11 +2,9 @@ package am.aca.quiz.software.service.interfaces;
 
 
 import am.aca.quiz.software.entity.HistoryEntity;
-import am.aca.quiz.software.entity.enums.Status;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

@@ -2,7 +2,6 @@ package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.QuestionEntity;
 import am.aca.quiz.software.entity.TopicEntity;
-import am.aca.quiz.software.entity.enums.Level;
 import am.aca.quiz.software.repository.QuestionRepository;
 import am.aca.quiz.software.service.interfaces.QuestionService;
 import org.springframework.stereotype.Service;

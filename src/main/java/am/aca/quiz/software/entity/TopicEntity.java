@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "topic",indexes = {@Index(name = "IDX_topic_name",columnList = "topic_name")})
+@Table(name = "topic", indexes = {@Index(name = "IDX_topic_name", columnList = "topic_name")})
 public class TopicEntity {
 
     @Id
@@ -34,12 +34,12 @@ public class TopicEntity {
         this.subCategory = subCategory;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTopicName() {
@@ -77,9 +77,9 @@ public class TopicEntity {
     @Override
     public String toString() {
         return "TopicEntity{" +
-                "id=" + id +
-                ", topicName='" + topicName + '\'' +
-                ", subCategory=" + subCategory +
-                '}';
+            "id=" + id +
+            ", topicName='" + topicName + '\'' +
+            ", subCategory=" + subCategory +
+            '}';
     }
 }

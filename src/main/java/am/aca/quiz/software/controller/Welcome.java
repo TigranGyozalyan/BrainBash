@@ -42,7 +42,7 @@ public class Welcome {
             return modelAndView;
         }
         return new ModelAndView("redirect:/user/profile" +
-                "");
+            "");
     }
 
     @GetMapping("animation")

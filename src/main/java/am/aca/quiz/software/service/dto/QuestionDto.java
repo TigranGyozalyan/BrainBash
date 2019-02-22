@@ -68,9 +68,9 @@ public class QuestionDto {
         if (o == null || getClass() != o.getClass()) return false;
         QuestionDto that = (QuestionDto) o;
         return points == that.points &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(question, that.question) &&
-                level.equals(that.level);
+            Objects.equals(id, that.id) &&
+            Objects.equals(question, that.question) &&
+            level.equals(that.level);
     }
 
     @Override

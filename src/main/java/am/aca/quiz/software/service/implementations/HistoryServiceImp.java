@@ -1,9 +1,6 @@
 package am.aca.quiz.software.service.implementations;
 
 import am.aca.quiz.software.entity.HistoryEntity;
-import am.aca.quiz.software.entity.TestEntity;
-import am.aca.quiz.software.entity.UserEntity;
-import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.repository.HistoryRepository;
 import am.aca.quiz.software.service.interfaces.HistoryService;
 import am.aca.quiz.software.service.interfaces.TestService;
@@ -12,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 

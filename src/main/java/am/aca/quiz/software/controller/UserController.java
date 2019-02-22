@@ -169,9 +169,9 @@ public class UserController {
              */
 
             Set<String> roles = Arrays
-                    .stream(Role.values())
-                    .map(Role::name)
-                    .collect(Collectors.toSet());
+                .stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
 
 
             userEntity.getRoles().clear();

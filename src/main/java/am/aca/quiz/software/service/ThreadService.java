@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ThreadService {
@@ -33,41 +36,41 @@ public class ThreadService {
 
     @Async("threadPoolTaskExecutor")
     @Scheduled(cron = "0 */1 * * * ?")
-    public  void  findUser() throws InterruptedException {
+    public void findUser() throws InterruptedException {
 
         System.out.println("START : " + LocalTime.now());
         Set<HistoryDto> upcomingTest = new HashSet<>();
 
         List<HistoryDto> userHistories = historyMapper
-                .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
+            .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
         userHistories.forEach(i -> upcomingTest.add(i));
 
         if (!upcomingTest.isEmpty()) {
 
-                LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now();
 
-                System.out.println(now);
-                System.out.println("SET SIZE " + upcomingTest.size());
+            System.out.println(now);
+            System.out.println("SET SIZE " + upcomingTest.size());
 
-            Iterator<HistoryDto> iterator=upcomingTest.iterator();
-                while (iterator.hasNext()) {
-                    HistoryDto i = iterator.next();
-                    LocalDateTime userStartTime = i.getStartTime();
-                    try {
-                        if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
-                            HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
-                            historyEntity.setScore(0);
-                            historyEntity.setStatus(Status.COMPLETED);
-                            historyEntity.setEndTime(now);
-                            historyServiceImp.addHistory(historyEntity);
+            Iterator<HistoryDto> iterator = upcomingTest.iterator();
+            while (iterator.hasNext()) {
+                HistoryDto i = iterator.next();
+                LocalDateTime userStartTime = i.getStartTime();
+                try {
+                    if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
+                        HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
+                        historyEntity.setScore(0);
+                        historyEntity.setStatus(Status.COMPLETED);
+                        historyEntity.setEndTime(now);
+                        historyServiceImp.addHistory(historyEntity);
 
-                            iterator.remove();
-                        }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                        iterator.remove();
                     }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
+            }
         }
         System.out.println("END : " + LocalTime.now());
     }

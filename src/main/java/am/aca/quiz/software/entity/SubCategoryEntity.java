@@ -32,12 +32,12 @@ public class SubCategoryEntity {
         this.category = category;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTypeName() {
@@ -67,9 +67,9 @@ public class SubCategoryEntity {
     @Override
     public String toString() {
         return "SubCategoryEntity{" +
-                "id=" + id +
-                ", typeName='" + typeName + '\'' +
-                ", category=" + category +
-                '}';
+            "id=" + id +
+            ", typeName='" + typeName + '\'' +
+            ", category=" + category +
+            '}';
     }
 }

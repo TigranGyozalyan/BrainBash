@@ -49,9 +49,9 @@ public class ScoreMapper implements MapEntityToDto<ScoreEntity, ScoreDto> {
     public List<ScoreDto> mapEntitiesToDto(List<ScoreEntity> scoreEntityList) {
 
         return scoreEntityList
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 }

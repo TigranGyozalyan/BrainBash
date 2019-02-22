@@ -1,7 +1,6 @@
 package am.aca.quiz.software.service.mapper;
 
 import am.aca.quiz.software.entity.SubCategoryEntity;
-import am.aca.quiz.software.service.dto.CategoryDto;
 import am.aca.quiz.software.service.dto.SubCategoryDto;
 import am.aca.quiz.software.service.mapper.structure.MapEntityToDto;
 import org.springframework.stereotype.Component;
@@ -28,9 +27,9 @@ public class SubCategoryMapper implements MapEntityToDto<SubCategoryEntity, SubC
     public List<SubCategoryDto> mapEntitiesToDto(List<SubCategoryEntity> subCategoryEntityList) {
 
         return subCategoryEntityList
-                .stream()
-                .map(this::mapEntityToDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(this::mapEntityToDto)
+            .collect(Collectors.toList());
 
     }
 }
