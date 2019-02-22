@@ -8,11 +8,18 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/testManagment.css}">
+
 </head>
 
-<body>
+<style>
+    body {
+        background: #89d0d7;
+    }
+</style>
 
-<form th:action="@{/test/list}">
+<body>
+    <form>
+
     <label>
         Test Title: <input id="test_name"/>
     </label>
@@ -34,10 +41,12 @@
         </label>
         <button type="submit" onclick="createTest()" class="submit">Create a test</button>
     </div>
+        <input type="button"  onclick="location.href='http://localhost:8080/test/list'" value="Back to Test List">
 
-</form>
+    </form>
 
-<script th:src="@{/js/test.js}"></script>
+
+    <script th:src="@{/js/test.js}"></script>
 
 </body>
 </html>

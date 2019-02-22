@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history", indexes = {@Index(name = "IDX_STATUS", columnList = "status"),
-    @Index(name = "IDX_userId_testId_status", columnList = "status,user_id,test_id")}
+    @Index(name = "IDX_userId_testId_status", columnList = "status,user_id,test_id"),
+    @Index(name = "IDX_session_is", columnList = "session_id")}
 )
 public class HistoryEntity {
 
@@ -38,6 +39,9 @@ public class HistoryEntity {
     @ManyToOne
     @JoinColumn(name = "test_id")
     private TestEntity testEntity;
+
+    @Column(name = "session_id")
+    private String sessionId;
 
     public HistoryEntity() {
     }
@@ -82,6 +86,15 @@ public class HistoryEntity {
 //        this.status = Status.valueOf(status.toLowerCase());
 //    }
 
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -117,7 +130,7 @@ public class HistoryEntity {
 
     @Override
     public String toString() {
-        return "HistoryEntity{" +
+        return "HistoryDto{" +
             "id=" + id +
             ", startTime=" + startTime +
             ", endTime=" + endTime +

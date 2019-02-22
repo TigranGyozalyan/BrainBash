@@ -2,6 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <title>SubCategory List</title>
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
+    <style>
+        body {
+            background: #89d0d7;
+        }
+    </style>
 </head>
 <body>
 
@@ -9,22 +16,22 @@
     <table>
         <thead>
         <tr>
-            <th>Type</th>
+            <th>Name</th>
 
         </tr>
         </thead>
         <tbody>
         <tr th:each="subCategory : ${subCategoryList}">
-            <td><span th:text="${subCategory.typeName}">Type</span> </td>
+            <td><span th:text="${subCategory.typeName}">Type</span></td>
 
             <td><a th:href="@{'/subcategory/update/'+${subCategory.id}}">edit</a></td>
             <td><a th:href="@{'/subcategory/delete/'+${subCategory.id}}">delete</a></td>
         </tr>
         </tbody>
     </table>
-    <input type="button"  onclick="location.href='http://localhost:8080/subcategory/add'" value="Add SubCategory"  >
+    <input type="button" class="button" onclick="location.href='http://localhost:8080/subcategory/add'" value="Add SubCategory">
 </form>
-<input type="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
+<input type="button" class="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
 
 </body>
 </html>

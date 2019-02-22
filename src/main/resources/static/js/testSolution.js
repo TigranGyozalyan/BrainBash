@@ -2,7 +2,6 @@ let questionCount = 0;
 let wrapperDiv = $('#wrapper');
 let interval;
 let $wrapper;
-
 let current;
 let end;
 
@@ -43,15 +42,9 @@ wrapperDiv.ready(function () {
             $wrapper.append($questionDiv);
         });
         let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', "submitTest()").html('Submit').attr('id', 'submitId');
-        //  let $send=$('<form>').attr('action','http://localhost:8080/test/scorepage').attr('method','get');
-        // let $score = $('<button />').attr('class', 'btn-check').attr('onclick', "location.href='http://localhost:8080/test/scorepage'").attr('value', 'Go to Score').html('Go to Score').attr('id', 'scoreId');
-        //    let $sendFinish=$('</form>');
-        // $score.prop('disabled', true);
-        // $score.hide();
-        // $wrapper.append($send);
+
         $wrapper.append($submit);
-        ///  $wrapper.append($sendFinish);
-        // $wrapper.append($score);
+
 
         $.post('/test/timer/' + id, function (timerData) {
 
@@ -109,7 +102,6 @@ function submitTest() {
     let rawData = $('.question').map(function () {
         let questionId = parseInt($(this).attr('id'));
 
-        // $('#submission').attr('action','http://localhost:8080/').attr('method','POST');
         let answers = $(this).find('[answerId]').map(function () {
             if ($(this).is(':checked')) {
                 return parseInt($(this).attr('answerId'));
@@ -150,37 +142,15 @@ function submitTest() {
         dataType: "json",
         async : false
     });
-    alert('done here');
+
     location.href='/test/scorepage';
 
 }
 
 
-$.when(submitTest()).done(function sendData() {
-
-    // console.log('in function sendData');
-    // let timeData = JSON.stringify({
-    //     currentTime: parseInt(current),
-    //     endTime: parseInt(end)
-    //
-    // });
-    // console.log(timeData);
-    //
-    // $.ajax({
-    //     type: "POST",
-    //     data: timeData,
-    //     url: "/history/test/update",
-    //     contentType: "application/json; charset=utf-8",
-    //     dataType: "json",
-    //     success: (function () {
-    //
-    //     })
-    // });
-    // location.href='http://localhost:8080/test/scorepage';
-});
-
 // Disable Back Button
 history.pushState(null, null, location.href);
+
 window.onpopstate = function () {
     history.go(1);
 };

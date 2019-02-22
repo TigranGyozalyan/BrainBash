@@ -1,6 +1,12 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+q<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <style>
+
+    .countStyle {
+        font-size: 35px;
+        float: left;
+    }
+
 div {
     white-space: pre-wrap;
 }
@@ -171,6 +177,13 @@ div {
       window.onpopstate = function () {
           history.go(1);
       };
+
+
+let count = 0;
+$('.Question').each(function(){
+    count++;
+    $(this).prepend($('<span/>').html(count + '.').attr('class','countStyle'))
+})
 
 </script>
 
