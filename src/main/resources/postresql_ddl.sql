@@ -1,3 +1,7 @@
+/*DDL for a PostgreSQL database. */
+
+
+
 INSERT INTO public.category (id, type) VALUES (2, 'SQL');
 INSERT INTO public.category (id, type) VALUES (3, 'Networking');
 INSERT INTO public.category (id, type) VALUES (8, 'Programming');
