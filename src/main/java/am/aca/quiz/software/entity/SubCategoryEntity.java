@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "sub_category", indexes = {@Index(name = "IDX_type_name", columnList = "type_name")})
+@Table(name = "sub_category")
 
 public class SubCategoryEntity {
 

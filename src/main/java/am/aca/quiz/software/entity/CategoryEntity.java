@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "category", indexes = {@Index(name = "IDX_TYPE", columnList = "type")})
+@Table(name = "category")
 public class CategoryEntity {
 
     @Id
