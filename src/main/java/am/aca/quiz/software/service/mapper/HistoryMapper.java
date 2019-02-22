@@ -1,6 +1,5 @@
 package am.aca.quiz.software.service.mapper;
 
-import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> {
+public class HistoryMapper implements MapEntityToDto<am.aca.quiz.software.entity.HistoryEntity, HistoryDto> {
     private UserServiceImp userServiceImp;
     private UserMapper userMapper;
     private TestServiceImp testServiceImp;
@@ -24,7 +23,7 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
     }
 
     @Override
-    public HistoryDto mapEntityToDto(HistoryEntity historyEntity) {
+    public HistoryDto mapEntityToDto(am.aca.quiz.software.entity.HistoryEntity historyEntity) {
         HistoryDto historyDto = new HistoryDto();
 
         historyDto.setEndTime(historyEntity.getEndTime());
@@ -42,7 +41,7 @@ public class HistoryMapper implements MapEntityToDto<HistoryEntity, HistoryDto> 
     }
 
     @Override
-    public List<HistoryDto> mapEntitiesToDto(List<HistoryEntity> historyEntityList) {
+    public List<HistoryDto> mapEntitiesToDto(List<am.aca.quiz.software.entity.HistoryEntity> historyEntityList) {
 
         return historyEntityList
             .stream()

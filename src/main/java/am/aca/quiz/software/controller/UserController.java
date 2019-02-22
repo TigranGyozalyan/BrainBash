@@ -3,6 +3,7 @@ package am.aca.quiz.software.controller;
 
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Role;
+import am.aca.quiz.software.service.MailService;
 import am.aca.quiz.software.service.dto.UserDto;
 import am.aca.quiz.software.service.implementations.UserServiceImp;
 import am.aca.quiz.software.service.mapper.UserMapper;
@@ -13,10 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -25,15 +23,21 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImp userServiceImp;
     private final UserMapper userMapper;
+    private final MailService mailService;
     private String email;
     private boolean message;
 
-
-    public UserController(UserServiceImp userServiceImp, UserMapper userMapper) {
+    public UserController(UserServiceImp userServiceImp, UserMapper userMapper, MailService mailService) {
         this.userServiceImp = userServiceImp;
         this.userMapper = userMapper;
+        this.mailService = mailService;
     }
 
+
+    @GetMapping("/register")
+    public ModelAndView reloadData() {
+        return new ModelAndView("userRegistration");
+    }
 
     @PostMapping(value = "/register")
     public ModelAndView registerUser(@RequestParam Map<String, String> formData) {
@@ -47,24 +51,73 @@ public class UserController {
         String password2 = formData.get("password2");
 
         try {
-            UserEntity dbUser = userServiceImp.findByEmail(email);
-            if (dbUser == null) {
+            UserEntity userEntity = userServiceImp.findByEmail(email);
+            if (userEntity == null) {
                 try {
-
                     userServiceImp.addUser(name, lastName, nickname, email, password, password2);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                modelAndView.addObject("message2", "Check Your Email");
+                userEntity = userServiceImp.findByEmail(email);
+
+                modelAndView = new ModelAndView("redirect:/user/resend/" + userEntity.getActivationCode());
+                modelAndView.addObject("code", userEntity.getActivationCode());
+                return modelAndView;
             } else {
-                modelAndView.addObject("message", "User exists");
+                if (!userEntity.isActive()) {
+                    userEntity = userServiceImp.findByEmail(email);
+                    userEntity.setPassword(password);
+                    userEntity.setName(name);
+                    userEntity.setSurname(lastName);
+                    userEntity.setNickname(nickname);
+
+                    userServiceImp.ubdateNonActiveUser(userEntity);
+
+                    modelAndView = new ModelAndView("redirect:/user/resend/" + userEntity.getActivationCode());
+                    modelAndView.addObject("code", userEntity.getActivationCode());
+                    return modelAndView;
+                } else {
+                    modelAndView.addObject("message", "User exists");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("surname", lastName);
+        modelAndView.addObject("email", email);
+        modelAndView.addObject("nickname", nickname);
+
         return modelAndView;
     }
+
+    /*
+        Spring autowire's into resendPage code instead of us
+     */
+    @GetMapping("/resend/{code}")
+    public ModelAndView resend(@PathVariable("code") String code) {
+        ModelAndView modelAndView = new ModelAndView("resendPage");
+        modelAndView.addObject("message2", "Check Your Email");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/resend/email/{code}")
+    public ModelAndView resendLogic(@PathVariable("code") String code) {
+        ModelAndView modelAndView = new ModelAndView("resendPage");
+
+        UserEntity userEntity = userServiceImp.findByActiovationCode(code);
+        userEntity.setActivationCode(UUID.randomUUID().toString());
+        userServiceImp.updateUser(userEntity);
+        mailService.sendActivationCode(userEntity.getEmail(), userEntity);
+
+        modelAndView.addObject("code", userEntity.getActivationCode());
+        modelAndView.addObject("message2", "Check Your Email");
+
+        return modelAndView;
+    }
+
 
     @GetMapping(value = "/profile")
     public ModelAndView profilePage(Principal principal) {
@@ -105,10 +158,8 @@ public class UserController {
 
         }
 
-
         return modelAndView;
     }
-
 
     @PostMapping("/delete")
     public ModelAndView deleteAccount(@RequestParam Map<String, String> formData) {
@@ -299,6 +350,7 @@ public class UserController {
 
         return modelAndView;
     }
+
 
     @PostMapping("/role")
     public ResponseEntity<UserDto> getUserRole(Principal principal) {

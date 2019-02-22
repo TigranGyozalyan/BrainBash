@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -203,16 +205,15 @@ public class TestController {
 
     }
 
-
-    @PostMapping("/solve/{id}")
+    @GetMapping("/solve/{id}")
     public ModelAndView loadTest(@PathVariable("id") Long id, Principal principal) throws SQLException {
 
-
+        String sessionId = UUID.randomUUID().toString();
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
-            userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING"
-        );
+            userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING");
+
         if (historyEntity != null) {
             if (currentTime.isBefore(historyEntity.getStartTime())) {
                 ModelAndView modelAndView = new ModelAndView("userBanPage");
@@ -230,13 +231,12 @@ public class TestController {
 
             if (upcoming == null) {
 
-
                 upcoming = new HistoryEntity(LocalDateTime.now(), Status.INPROGRESS, 0, userServiceImp.findByEmail(principal.getName()), testServiceImp.getById(id));
+                upcoming.setSessionId(sessionId);
                 historyServiceImp.addHistory(upcoming);
 
-
             } else {
-
+                upcoming.setSessionId(sessionId);
                 LocalDateTime now = LocalDateTime.now();
                 LocalDateTime duration = upcoming.getStartTime().plusMinutes(testServiceImp.getById(id).getDuration());
 
@@ -254,7 +254,7 @@ public class TestController {
 
         if (reloadCount == 0) {
             endTime = System.currentTimeMillis() + testServiceImp.getById(id).getDuration() * 1000 * 60;
-            System.out.println(endTime);
+
             reloadCount++;
         }
         ModelAndView modelAndView = new ModelAndView("testSolution");
@@ -311,13 +311,11 @@ public class TestController {
                 e.printStackTrace();
             }
         });
+        double testScore = new BigDecimal(Double.toString(score.getValue())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setTestScore(testScore);
+        double userScore = new BigDecimal(Double.toString(score.getKey())).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        testScoreDto.setUserScore(userScore);
 
-        testScoreDto.setTestScore(score.getValue());
-        testScoreDto.setUserScore(score.getKey());
-
-        for (Map.Entry<Long, List<AnswerDto>> elem : answersByQuestionId.entrySet()) {
-            modelAndView.addObject("answerList", elem.getValue());
-        }
         modelAndView.addObject("questionList", questionDtos);
         modelAndView.addObject("testScore", testScoreDto);
 
@@ -473,29 +471,36 @@ public class TestController {
 
         List<Long> userIds = testUsersDto.getUsersId();
 
+        List<Long> topicId = topicServiceImp.findTopicIdByTest(testUsersDto.getTestId());
+
 
         String subject = "New Test Notification";
 
+
         try {
             String text = "Your Test Will Start on " + testUsersDto.getStartTime() + ". And Will Last "
-                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.";
+                + testServiceImp.getById(testUsersDto.getTestId()).getDuration() + " minutes. Good luck.   " +
+                "Please, visit the following link: http://localhost:8080/test/transfer/" + topicId.get(0) + "/" + testUsersDto.getTestId();
 
-            userIds.forEach(
-                i -> {
-                    try {
-                        mailService.sendText(userServiceImp
-                            .getById(i).getEmail(), subject, text);
+            new Thread(() -> {
+                userIds.forEach(
+                    i -> {
+                    /*
+                     Send Mail Faster
+                     */
 
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
+                        try {
+                            mailService.sendText(userServiceImp
+                                .getById(i).getEmail(), subject, text);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
-
+            }).start();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         return new ModelAndView("redirect:/test/organize");
     }
@@ -512,9 +517,7 @@ public class TestController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/random")
     public ModelAndView random() {
-        ModelAndView modelAndView = new ModelAndView("randomTestGenerator");
-
-        return modelAndView;
+        return new ModelAndView("randomTestGenerator");
     }
 
     @PostMapping(value = "/random/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -529,8 +532,6 @@ public class TestController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
@@ -563,7 +564,16 @@ public class TestController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("testList");
+
+           ModelAndView modelAndView = new ModelAndView("redirect:/testList");
+        try {
+            modelAndView.addObject("testList", testMapper.mapEntitiesToDto(testServiceImp.getAll()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+
     }
 
 }

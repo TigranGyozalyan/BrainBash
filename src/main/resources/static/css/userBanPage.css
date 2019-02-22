@@ -161,14 +161,12 @@ a {
     color: #A0A0A0;
     margin-top: 15px;
 }
-/* Increase line height at higher resolutions. */
 
 @media (min-width: 641px) and (min-height: 641px) {
     #help-box-inner {
         line-height: 18px;
     }
 }
-/* Decrease padding at low sizes. */
 
 @media (max-width: 640px), (max-height: 640px) {
     body {
@@ -193,7 +191,6 @@ a {
         margin-top: 10px;
     }
 }
-/* Don't allow overflow when in a subframe. */
 
 html[subframe] body {
     overflow: hidden;
@@ -220,20 +217,17 @@ html[subframe] body {
     margin: 0 10px;
     visibility: hidden;
 }
-/* Show details only when hovering. */
 
 #sub-frame-error:hover #sub-frame-error-details {
     visibility: visible;
 }
-/* If the iframe is too small, always hide the error code. */
-/* TODO(mmenke): See if overflow: no-display works better, once supported. */
+
 
 @media (max-width: 200px), (max-height: 95px) {
     #sub-frame-error-details {
         display: none;
     }
 }
-/* details-button is special; it's a <button> element that looks like a link. */
 
 #details-button {
     background-color: inherit;
@@ -264,7 +258,6 @@ html[subframe] body {
     display: block;
     width: 100%;
 }
-/* Offline page */
 
 .offline .interstitial-wrapper {
     color: #2b2b2b;

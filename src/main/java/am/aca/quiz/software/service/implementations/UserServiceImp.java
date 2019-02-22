@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -28,6 +27,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
+    private String activate;
+
+
     public UserServiceImp(UserRepository userRepository, MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -40,28 +42,30 @@ public class UserServiceImp implements UserService, UserDetailsService {
         if (!password.equals(password2)) {
             return;
         }
-
         UserEntity userEntity = new UserEntity(fName, lName, email, nickname);
-        userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setRoles(Collections.singleton(Role.USER));
+        addToDb(userEntity, password, email);
+    }
 
+    @Transactional
+    public void ubdateNonActiveUser(UserEntity userEntity) {
+        addToDb(userEntity, userEntity.getPassword(), userEntity.getEmail());
+    }
+
+    @Transactional
+    protected void addToDb(UserEntity userEntity, String password, String email) {
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setActivationCode(UUID.randomUUID().toString());
         try {
 
-            userEntity.setActivationCode(UUID.randomUUID().toString());
+            new Thread(()-> mailService.sendActivationCode(email, userEntity)).start();
 
-            userEntity.setRoles(Collections.singleton(Role.USER));
-
-            if (!StringUtils.isEmpty(userEntity.getEmail())) {
-                String message =
-                    "Hello," + userEntity.getName() + "\n" +
-                        "Please, visit the following link: http://localhost:8080/user/activate/" +
-                        userEntity.getActivationCode();
-                mailService.sendText(email, "Activation", message);
-            }
         } catch (MailException e) {
             throw new RuntimeException("Invalid Mail");
         }
         userRepository.save(userEntity);
     }
+
 
     @Override
     public List<UserEntity> getAll() throws SQLException {
@@ -126,9 +130,15 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userRepository.save(userEntity);
     }
 
+    public UserEntity findByActiovationCode(String code) {
+        return userRepository.findByActivationCode(code);
+    }
+
     public boolean activateUser(String code) {
 
-        UserEntity user = userRepository.findByActivationCode(code);
+        activate = code;
+
+        UserEntity user = findByActiovationCode(code);
 
         if (user == null) {
             return false;
@@ -153,4 +163,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public List<UserEntity> findByNicknameLike(String nickname) {
         return userRepository.findByNickNameLike(nickname);
     }
+
+    public String getCode() {
+        return activate;
+    }
+
+    public void setCode(String code) {
+        this.activate = code;
+    }
+
 }

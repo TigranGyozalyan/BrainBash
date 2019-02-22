@@ -1,6 +1,12 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+q<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <style>
+
+    .countStyle {
+        font-size: 35px;
+        float: left;
+    }
+
 div {
     white-space: pre-wrap;
 }
@@ -147,7 +153,7 @@ div {
             </thead>
             <tbody>
 
-            <tr th:each="answer : ${answerList}">
+            <tr th:each="answer : ${question.getAnswerDtoList()}">
                 <td><span th:text="${answer.answer}">Answer</span></td>
                 <td><span th:text="${answer.description}">Description</span></td>
                 <td><span th:text="${answer.correct}">Correct</span></td>
@@ -171,6 +177,13 @@ div {
       window.onpopstate = function () {
           history.go(1);
       };
+
+
+let count = 0;
+$('.Question').each(function(){
+    count++;
+    $(this).prepend($('<span/>').html(count + '.').attr('class','countStyle'))
+})
 
 </script>
 

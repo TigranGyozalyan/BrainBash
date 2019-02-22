@@ -3,7 +3,6 @@ package am.aca.quiz.software.service;
 
 import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.enums.Status;
-import am.aca.quiz.software.service.dto.HistoryDto;
 import am.aca.quiz.software.service.implementations.HistoryServiceImp;
 import am.aca.quiz.software.service.implementations.TestServiceImp;
 import am.aca.quiz.software.service.mapper.HistoryMapper;
@@ -35,43 +34,68 @@ public class ThreadService {
     }
 
     @Async("threadPoolTaskExecutor")
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "*/30 * * * * ?")
     public void findUser() throws InterruptedException {
 
         System.out.println("START : " + LocalTime.now());
-        Set<HistoryDto> upcomingTest = new HashSet<>();
+        Set<HistoryEntity> threadTestList = new HashSet<>();
 
-        List<HistoryDto> userHistories = historyMapper
-            .mapEntitiesToDto(historyServiceImp.findAllByStatus(Status.UPCOMING));
-        userHistories.forEach(i -> upcomingTest.add(i));
+        List<HistoryEntity> userHistoriesUpcoming = historyServiceImp.findAllByStatus(Status.UPCOMING);
 
-        if (!upcomingTest.isEmpty()) {
+        List<HistoryEntity> userHistoriesIngoing = historyServiceImp.findAllByStatus(Status.INPROGRESS);
+
+        threadTestList.addAll(userHistoriesUpcoming);
+        threadTestList.addAll(userHistoriesIngoing);
+
+        if (!threadTestList.isEmpty()) {
 
             LocalDateTime now = LocalDateTime.now();
 
             System.out.println(now);
-            System.out.println("SET SIZE " + upcomingTest.size());
+            System.out.println("SET SIZE " + threadTestList.size());
 
-            Iterator<HistoryDto> iterator = upcomingTest.iterator();
+            Iterator<HistoryEntity> iterator = threadTestList.iterator();
             while (iterator.hasNext()) {
-                HistoryDto i = iterator.next();
+                HistoryEntity i = iterator.next();
                 LocalDateTime userStartTime = i.getStartTime();
-                try {
-                    if (now.isAfter(userStartTime.plusMinutes(testServiceImp.getById(i.getTestId()).getDuration()))) {
-                        HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
-                        historyEntity.setScore(0);
-                        historyEntity.setStatus(Status.COMPLETED);
-                        historyEntity.setEndTime(now);
-                        historyServiceImp.addHistory(historyEntity);
+                if (i.getStatus().equals(Status.INPROGRESS)) {
+                    try {
+                        if (i.getSessionId() != null) {
+                            if (now.isAfter(userStartTime.plusMinutes
+                                (testServiceImp.getById(i.getTestEntity().getId()).getDuration())
+                                .plusSeconds(3))) {
 
-                        iterator.remove();
+                                threadUpdate(now, i);
+                                iterator.remove();
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
+                } else {
+                    try {
+                        if (now.isAfter(userStartTime.plusMinutes(testServiceImp
+                            .getById(i.getTestEntity().getId()).getDuration()))) {
 
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                            threadUpdate(now, i);
+                            iterator.remove();
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
         System.out.println("END : " + LocalTime.now());
+    }
+
+    private void threadUpdate(LocalDateTime now, HistoryEntity i) throws SQLException {
+        am.aca.quiz.software.entity.HistoryEntity historyEntity = historyServiceImp.getById(i.getId());
+        historyEntity.setScore(0);
+        historyEntity.setStatus(Status.COMPLETED);
+        historyEntity.setEndTime(now);
+        historyEntity.setSessionId(null);
+        historyServiceImp.addHistory(historyEntity);
     }
 }

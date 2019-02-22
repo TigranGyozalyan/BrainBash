@@ -1,35 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>History</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
+
+
+    <style>
+        body {
+            background: #89d0d7;
+        }
+    </style>
 </head>
 <body>
 
 
 <form action="/history/history/past" method="get">
-    <input type="submit" value="Past history">
+    <input style="float: left" class="button" type="submit" value="Past history">
 </form>
 
 <form action="/history/history/future" method="get">
-    <input type="submit" value="Future history">
+    <input style="float: left" class="button" type="submit" value="Future history">
 </form>
 
 <form action="/history/history/inprogress" method="get">
-    <input type="submit" value="In Progress history">
+    <input class="button" type="submit" value="In Progress history">
 </form>
 
 
 <form action="/history/history/all" method="get">
-    <input type="submit" value="All history">
+    <input class="button" type="submit" value="All history">
 </form>
 
 <form action="/history/history/search" method="get">
-    <input type="submit" value="Search">
+    <input class="button" type="submit" value="Search">
 </form>
 
 
-<input type="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
+<input class="button" type="button" onclick="location.href='http://localhost:8080/user/admin'"
+       value="Back to Control Page">
 </body>
 </html>

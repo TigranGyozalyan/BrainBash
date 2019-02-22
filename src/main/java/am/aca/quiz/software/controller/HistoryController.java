@@ -1,6 +1,5 @@
 package am.aca.quiz.software.controller;
 
-import am.aca.quiz.software.entity.HistoryEntity;
 import am.aca.quiz.software.entity.UserEntity;
 import am.aca.quiz.software.entity.enums.Status;
 import am.aca.quiz.software.service.dto.HistoryDto;
@@ -55,7 +54,7 @@ public class HistoryController {
             e.printStackTrace();
         }
 
-        List<HistoryEntity> historyEntityList = historyServiceImp.findAllByUserId(userEntity.getId());
+        List<am.aca.quiz.software.entity.HistoryEntity> historyEntityList = historyServiceImp.findAllByUserId(userEntity.getId());
         ModelAndView modelAndView = new ModelAndView("futureHistory");
 
 
@@ -216,19 +215,25 @@ public class HistoryController {
 
         try {
             double score = testController.getScore().getKey();
+
             UserEntity userEntity = userServiceImp.findByEmail(principal.getName());
+            am.aca.quiz.software.entity.HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
 
-            HistoryEntity history = historyServiceImp.findHistoryByUserIdAndTetId(userEntity.getId(), testController.getTestId(), "INPROGRESS");
+            if (history != null) {
+                if (history.getSessionId() != null) {
 
-            LocalDateTime endTime =
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
+                    LocalDateTime endTime =
+                        LocalDateTime.ofInstant(Instant.ofEpochMilli(timerDto.getEndTime()), ZoneId.systemDefault());
 
-            history.setScore(score);
-            history.setEndTime(endTime);
-            history.setStatus(Status.COMPLETED);
-            historyServiceImp.addHistory(history);
+                    history.setScore(score);
+                    history.setEndTime(endTime);
 
+                    history.setStatus(Status.COMPLETED);
+                    history.setSessionId(null);
 
+                    historyServiceImp.addHistory(history);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

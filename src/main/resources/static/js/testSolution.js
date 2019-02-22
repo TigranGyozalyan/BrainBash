@@ -2,7 +2,6 @@ let questionCount = 0;
 let wrapperDiv = $('#wrapper');
 let interval;
 let $wrapper;
-
 let current;
 let end;
 
@@ -42,16 +41,10 @@ wrapperDiv.ready(function () {
             $questionDiv.append($answerContainer);
             $wrapper.append($questionDiv);
         });
-        let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', 'submitTest()').html('Submit').attr('id', 'submitId');
-        //  let $send=$('<form>').attr('action','http://localhost:8080/test/scorepage').attr('method','get');
-        let $score = $('<button />').attr('class', 'btn-check').attr('onclick', "sendData();location.href='http://localhost:8080/test/scorepage'").attr('value', 'Go to Score').html('Go to Score').attr('id', 'scoreId');
-        //    let $sendFinish=$('</form>');
-        $score.prop('disabled', true);
-        $score.hide();
-        // $wrapper.append($send);
+        let $submit = $('<button/>').attr('class', 'btn-check').attr('onclick', "submitTest()").html('Submit').attr('id', 'submitId');
+
         $wrapper.append($submit);
-        ///  $wrapper.append($sendFinish);
-        $wrapper.append($score);
+
 
         $.post('/test/timer/' + id, function (timerData) {
 
@@ -102,13 +95,13 @@ function correct_answer_count(array) {
 }
 
 function submitTest() {
+
     $wrapper.css("pointer-events", "none");
     $('.btn-check').css("pointer-events", "auto");
     clearInterval(interval);
     let rawData = $('.question').map(function () {
         let questionId = parseInt($(this).attr('id'));
 
-        // $('#submission').attr('action','http://localhost:8080/').attr('method','POST');
         let answers = $(this).find('[answerId]').map(function () {
             if ($(this).is(':checked')) {
                 return parseInt($(this).attr('answerId'));
@@ -125,26 +118,15 @@ function submitTest() {
     console.log(data);
 
 
-    $.ajax({
+     $.ajax({
         type: "POST",
         data: data,
         url: "/test/process",
         contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: (function () {
-
-        })
+         dataType: "json",
+         async : false
     });
 
-
-    $('#submitId').remove();
-    $('#scoreId').prop('disabled', false).show();
-
-
-}
-
-
-function sendData() {
     let timeData = JSON.stringify({
         currentTime: parseInt(current),
         endTime: parseInt(end)
@@ -158,15 +140,17 @@ function sendData() {
         url: "/history/test/update",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: (function () {
-
-        })
+        async : false
     });
+
+    location.href='/test/scorepage';
 
 }
 
+
 // Disable Back Button
 history.pushState(null, null, location.href);
+
 window.onpopstate = function () {
     history.go(1);
 };

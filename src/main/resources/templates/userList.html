@@ -1,34 +1,41 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User List</title>
+    <link rel="stylesheet" th:href="@{/css/tableStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminButton.css}">
+    <style>
+        body {
+            background: #89d0d7;
+        }
+    </style>
 </head>
 <body>
-       <form method="post">
-           <table>
-               <thead>
-               <tr>
-                   <th>Email</th>
-                   <th>Name</th>
-                   <th>Surname</th>
-                   <th>Role</th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr th:each="user : ${userList}">
-                   <td><span th:text="${user.email}">Email</span> </td>
-                   <td><span th:text="${user.name}">Name</span> </td>
-                   <td><span th:text="${user.surname}">Surname</span> </td>
-                    <td><span th:text="${user.role}">Role</span></td>
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userList}">
+            <td><span th:text="${user.email}">Email</span></td>
+            <td><span th:text="${user.name}">Name</span></td>
+            <td><span th:text="${user.surname}">Surname</span></td>
+            <td><span th:text="${user.role}">Role</span></td>
 
-                    <td><a th:href="@{'/user/'+${user.id}}">edit</a></td>
+            <td><a th:href="@{'/user/'+${user.id}}">edit</a></td>
 
-               </tr>
-               </tbody>
-           </table>
+        </tr>
+        </tbody>
+    </table>
 
-       </form>
+</form>
 </body>
 
-<input type="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
+<input type="button" class="button" onclick="location.href='http://localhost:8080/user/admin'" value="Back to Control Page">
 
 </html>
