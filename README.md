@@ -1,4 +1,4 @@
-# quiz_software
+# BrainBash
 Team Members: Aram Yeghiazaryan, Edgar Ohanyan, Tigran Gyozalyan.
 
 BrainBash is a multipurpose testing website designed for everyone. 
