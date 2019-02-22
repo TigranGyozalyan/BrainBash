@@ -50,6 +50,7 @@ $().ready(function () {
         $.each($("input[name='cat']:checked"), function () {
 
             categoryChecked.push($(this).attr("id"));
+            console.log(categoryChecked);
         });
 
         let main = $("#subcategoryMenu");
@@ -58,7 +59,7 @@ $().ready(function () {
         for (let i = 0; i < subcategories.length; i++) {
             for (let j = 0; j < categoryChecked.length; j++) {
 
-                // console.log(categoryChecked[j]+1);
+                // console.log(parseInt(categoryChecked[j])+1+" "+subcategories[i].categoryId);
 
                 if (parseInt(categoryChecked[j]) + 1 === subcategories[i].categoryId) {
                     main
