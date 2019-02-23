@@ -28,42 +28,63 @@ $.get('/subcategory', function (categories) {
     subcategories = categories;
 });
 
+let categoryTemp=[];
 let categoryChecked = [];
 let subcategoryChecked = [];
+let categorySelected=[];
+let subcategorySelected=[];
+let subcategoryTemp=[];
 
 function loadCategories(array) {
     let main = $("#categoryMenu");
-
-    console.log(array);
+    categoryTemp=array;
+    console.log(categoryTemp);
     for (let i = 0; i < array.length; i++) {
         main.append($("<li>")
-            .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span> <input type='checkbox' name='cat' id='" + i + "' ></a>")
+            .append("<a href='#" + array[i].id + "'><span>" + array[i].type + "</span> <input type='checkbox' name='cat' id='" + array[i].type + "' ></a>")
             .append()
             .append("</li>"));
     }
 
 }
 
+
 $().ready(function () {
     $('#editOptions').click(function () {
+        categorySelected.length=0;
         categoryChecked.length = 0;
         $.each($("input[name='cat']:checked"), function () {
 
-            categoryChecked.push($(this).attr("id"));
+            categorySelected.push($(this).attr("id"));
+           //  console.log(categorySelected);
         });
+
+
+        for(let i=0;i<categoryTemp.length;i++){
+           for(let j=0;j<categorySelected.length;j++){
+               if(categorySelected[j]===categoryTemp[i].type){
+                   categoryChecked.push(categoryTemp[i].id);
+               }
+           }
+        }
+      //  console.log(categoryChecked);
 
         let main = $("#subcategoryMenu");
         main.empty();
         main.append($("<button name='edit' id='edit'>Select </button>"));
+        subcategoryTemp=subcategories;
+
+        console.log(subcategoryTemp);
+
         for (let i = 0; i < subcategories.length; i++) {
             for (let j = 0; j < categoryChecked.length; j++) {
 
-                // console.log(categoryChecked[j]+1);
+               //  console.log(parseInt(categoryChecked[j])+" "+subcategories[i].categoryId);
 
-                if (parseInt(categoryChecked[j]) + 1 === subcategories[i].categoryId) {
+                if (parseInt(categoryChecked[j]) === subcategories[i].categoryId) {
                     main
                         .append($("<li>")
-                            .append("<a href='#" + subcategories[i].id + "'><span>" + subcategories[i].typeName + "</span> <input type='checkbox' name='sub' id='" + i + "' ></a>")
+                            .append("<a href='#" + subcategories[i].id + "'><span>" + subcategories[i].typeName + "</span> <input type='checkbox' name='sub' id='" + subcategories[i].typeName  + "' ></a>")
                             .append()
                             .append("</li>"));
 
@@ -71,26 +92,47 @@ $().ready(function () {
             }
         }
 
-        $('#edit').click(function () {
-            subcategoryChecked.length = 0;
-            $.each($("input[name='sub']:checked"), function () {
 
-                subcategoryChecked.push($(this).attr("id"));
+
+
+        $('#edit').click(function () {
+
+            subcategoryChecked.length = 0;
+            subcategorySelected.length=0;
+
+            $.each($("input[name='sub']"), function () {
+                if ($(this).is(':checked')) {
+                    let found = jQuery.inArray($(this).attr("id"), subcategorySelected);
+                    if (found < 0) {
+                        subcategorySelected.push($(this).attr("id"));
+                    }
+                }
 
             });
+
+           // console.log(subcategorySelected);
+
+            for(let i=0;i<subcategoryTemp.length;i++){
+                for(let j=0;j<subcategorySelected.length;j++){
+                    if(subcategorySelected[j]===subcategoryTemp[i].typeName){
+                        subcategoryChecked.push(subcategoryTemp[i].id);
+                    }
+                }
+            }
+
+           console.log(subcategoryChecked);
 
             let topic = $("#topicMenu");
 
             topic.empty();
             for (let i = 0; i < topics.length; i++) {
                 for (let j = 0; j < subcategoryChecked.length; j++) {
-                    if (parseInt(subcategoryChecked[j]) + 1 === topics[i].subCategoryId) {
+                    if (parseInt(subcategoryChecked[j]) === topics[i].subCategoryId) {
                         topic
                             .append($("<li>")
                                 .append("<a href='/test/menu/" + topics[i].id + "'><span>" + topics[i].topicName + "</span></a>")
                                 .append()
                                 .append("</li>"));
-
                     }
                 }
             }

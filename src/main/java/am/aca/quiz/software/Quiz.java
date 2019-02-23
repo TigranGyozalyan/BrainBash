@@ -14,6 +14,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+/**
+ * Created by
+ * Tigran Gyozalyan,
+ * Aram Yeghizaryan,
+ * Edgar Ohanyan
+ * 2019 February
+ */
+
+
+
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
