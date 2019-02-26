@@ -10,7 +10,7 @@ Specialists can challenge themselves and strengthen their knowledge.
 Manual: <br />
 --To run the program,you will need to create your own database. <br />
     *There is a ddl file in resources for a postgreSQL database. Executing it will give you a data sample.* <br />
---After creating the database you will need to attach it in application.properties.
+--After creating the database you will need to attach it in application.properties. <br />
 --Also,in order to have mailing enabled you will a gmail account that will send appropriate mails to users.Once again,attach it to 
 application.properties. <br />
 --After running the program,you are provided with an administrator account with the following credentials: <br />
