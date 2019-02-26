@@ -25,6 +25,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT * FROM users where nickname ILIKE ?1", nativeQuery = true)
     List<UserEntity> findByNickNameLike(String Nickname);
 
+    @Query(value = "select user_id from user_role where roles='ADMIN'",nativeQuery = true)
+    List<Long>  findAdminIfExists();
+
+
 
 }
 

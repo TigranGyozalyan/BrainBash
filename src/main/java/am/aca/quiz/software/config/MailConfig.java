@@ -85,3 +85,4 @@ public class MailConfig {
         this.protocol = protocol;
     }
 }
+

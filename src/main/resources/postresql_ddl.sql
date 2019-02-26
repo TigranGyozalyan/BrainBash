@@ -1,3 +1,7 @@
+/*DDL for a PostgreSQL database. */
+
+
+
 INSERT INTO public.category (id, type) VALUES (2, 'SQL');
 INSERT INTO public.category (id, type) VALUES (3, 'Networking');
 INSERT INTO public.category (id, type) VALUES (8, 'Programming');
@@ -625,17 +629,9 @@ value of grade is ''B'' and there is a matching case statement that will cause "
 be printed. There is no break statement after the case, though, so the next case statement
 will be reached, and "good" will be printed. There is a break after this case statement,
 though, so the switch statement will end. The correct answer is thus option B.', true, 56);
-INSERT INTO public.users (id, activation_code, active, emails, first_name, nickname, passwords, last_name) VALUES (63, null, true, 'yeghiazaryan99@gmail.com', 'Aram', 'aaa', '$2a$08$5KMFFxYsJ21FlL01wiaGVe9GD2VTrSPTIx8gQf5exDD4yGlqc7rJK', 'Yeghiazaryan');
-INSERT INTO public.users (id, activation_code, active, emails, first_name, nickname, passwords, last_name) VALUES (6, null, true, 'nerseshakobyan001@gmail.com', 'Nerses', 'Nerso', '$2a$12$VnMTPei5pgspGIPqugS4ReAww.cB9PbWGGeSrSdqPhKvqR9qpr5oy', 'Hakobyan');
-INSERT INTO public.users (id, activation_code, active, emails, first_name, nickname, passwords, last_name) VALUES (4, null, true, 'edgarohanyan@gmail.com', 'Edgar', 'edgarohanyan', '$2a$12$7lfuJ/5O7.J5t2i7S3Qzu..A2nsus747nid2arSY9n5nbmF1IgoOG', 'Ohanyan');
-INSERT INTO public.average_score (id, count, score_value, topic_id, user_id) VALUES (46, 1, 4, 13, 63);
-INSERT INTO public.average_score (id, count, score_value, topic_id, user_id) VALUES (45, 3, 9, 14, 63);
 INSERT INTO public.test (id, description, duration, test_name) VALUES (47, 'This Test Contains questions from java core', 30, 'Java Core Test');
 INSERT INTO public.test (id, description, duration, test_name) VALUES (48, 'Shuffle Test from Java Core and Syntax ', 1, 'Java Test Shuffle ');
 INSERT INTO public.test (id, description, duration, test_name) VALUES (49, 'This Test Contains Whole Java Course ', 90, 'Java Big Test');
-INSERT INTO public.history (id, end_time, score, session_id, start_time, status, test_id, user_id) VALUES (37, '2019-02-22 02:03:52.679000', 0, null, '2019-02-22 02:03:44.411000', 'COMPLETED', 47, 63);
-INSERT INTO public.history (id, end_time, score, session_id, start_time, status, test_id, user_id) VALUES (38, '2019-02-22 12:33:44.839000', 4, null, '2019-02-22 12:32:44.585000', 'COMPLETED', 48, 63);
-INSERT INTO public.history (id, end_time, score, session_id, start_time, status, test_id, user_id) VALUES (39, '2019-02-22 12:43:41.094000', 26, null, '2019-02-22 12:36:52.972000', 'COMPLETED', 47, 63);
 INSERT INTO public.question_test (question_id, test_id) VALUES (36, 47);
 INSERT INTO public.question_test (question_id, test_id) VALUES (37, 47);
 INSERT INTO public.question_test (question_id, test_id) VALUES (38, 47);
@@ -681,8 +677,6 @@ INSERT INTO public.question_test (question_id, test_id) VALUES (54, 49);
 INSERT INTO public.question_test (question_id, test_id) VALUES (55, 49);
 INSERT INTO public.question_test (question_id, test_id) VALUES (56, 49);
 
-INSERT INTO public.user_role (user_id, roles) VALUES (6, 'USER');
-INSERT INTO public.user_role (user_id, roles) VALUES (63, 'ADMIN');
-INSERT INTO public.user_role (user_id, roles) VALUES (4, 'ADMIN');
+
 
 
