@@ -17,4 +17,4 @@ application.properties.
 --After running the program,you are provided with an administrator account with the following credentials:
     username: admin@admin.com
     password: adminadmin
-After the following steps your program is ready to run. Good luck! 
+After the following steps you are good to go. Good luck! 
