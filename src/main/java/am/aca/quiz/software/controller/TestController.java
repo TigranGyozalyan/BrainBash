@@ -211,6 +211,7 @@ public class TestController {
         String sessionId = UUID.randomUUID().toString();
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
+
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
             userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING");
 
