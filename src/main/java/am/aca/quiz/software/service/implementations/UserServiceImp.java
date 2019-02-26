@@ -58,7 +58,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userEntity.setActivationCode(UUID.randomUUID().toString());
         try {
 
-            new Thread(()-> mailService.sendActivationCode(email, userEntity)).start();
+            new Thread(() -> mailService.sendActivationCode(email, userEntity)).start();
 
         } catch (MailException e) {
             throw new RuntimeException("Invalid Mail");
@@ -171,5 +171,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     public void setCode(String code) {
         this.activate = code;
     }
+
+    public List<Long> findAdminsIfExist(){
+        return userRepository.findAdminIfExists();
+    }
+
 
 }

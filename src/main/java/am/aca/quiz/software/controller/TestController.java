@@ -47,7 +47,7 @@ public class TestController {
     private int reloadCount = 0;
     private Long testId;
 
-
+///////////////////
     public TestController(TestServiceImp testServiceImp, TestMapper testMapper, TopicServiceImp topicServiceImp, TopicMapper topicMapper, QuestionServiceImp questionServiceImp, QuestionMapper questionMapper, UserMapper user, UserMapper userMapper, UserServiceImp userServiceImp, QuestionController questionController, HistoryServiceImp historyServiceImp, MailService mailService, AnswerServiceImp answerServiceImp, AnswerMapper answerMapper, ScoreServiceImp scoreServiceImp) {
         this.testServiceImp = testServiceImp;
         this.testMapper = testMapper;
@@ -211,6 +211,7 @@ public class TestController {
         String sessionId = UUID.randomUUID().toString();
         LocalDateTime currentTime = LocalDateTime.now();
         TestEntity testEntity = testServiceImp.getById(id);
+
         HistoryEntity historyEntity = historyServiceImp.findHistoryByUserIdAndTetId(
             userServiceImp.findByEmail(principal.getName()).getId(), testEntity.getId(), "UPCOMING");
 
@@ -565,7 +566,7 @@ public class TestController {
         }
 
 
-           ModelAndView modelAndView = new ModelAndView("redirect:/testList");
+        ModelAndView modelAndView = new ModelAndView("redirect:/testList");
         try {
             modelAndView.addObject("testList", testMapper.mapEntitiesToDto(testServiceImp.getAll()));
         } catch (SQLException e) {
